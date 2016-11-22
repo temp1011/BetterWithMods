@@ -275,6 +275,9 @@ item.bwm:broadhead_arrow.name=Broadhead Arrow
 
 item.bwm:breeding_harness.name=Breeding Harness
 
+item.bwm:arcane_scroll.name=Arcane Scroll
+
+enchantment.level.-1=
 lore.bwm:dynamite=Dwarven Fishing Pole
 
 material.hellfire=Hellfire
