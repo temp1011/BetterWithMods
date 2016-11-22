@@ -37,6 +37,7 @@ public class BWCrafting {
         addTurntableRecipes();
         addSawRecipes();
         addHERecipes();
+        addHardcoreDiamonds();
     }
 
     public static void postInit() {
@@ -242,6 +243,7 @@ public class BWCrafting {
             RecipeUtils.removeRecipes(Items.BEETROOT_SOUP, 0);
             addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
         }
+        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("diamond_ingot"), "gemDiamond", "ingotIron", BWMItems.CREEPER_OYSTER));
     }
 
     private static void addSawRecipes() {
@@ -449,6 +451,41 @@ public class BWCrafting {
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 8), new ItemStack[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 7), new ItemStack[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 4), new ItemStack[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+    }
+
+    public static void addHardcoreDiamonds()
+    {
+        if(BWConfig.hardcoreDiamonds)
+        {
+            RecipeUtils.removeRecipes(Items.DIAMOND_AXE, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_HOE, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_PICKAXE, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_SHOVEL, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_SWORD, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_HELMET, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_CHESTPLATE, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_LEGGINGS, 0);
+            RecipeUtils.removeRecipes(Items.DIAMOND_BOOTS, 0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_AXE, "DD", "DS", " S", 'D', ItemMaterial.getMaterial("diamond_ingot"), 'S', "stickWood").setMirrored(true));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_HOE, "DD", " S", " S", 'D', ItemMaterial.getMaterial("diamond_ingot"), 'S', "stickWood").setMirrored(true));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_PICKAXE, "DDD", " S ", " S ", 'D', ItemMaterial.getMaterial("diamond_ingot"), 'S', "stickWood"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_SHOVEL, "D", "S", "S", 'D', ItemMaterial.getMaterial("diamond_ingot"), 'S', "stickWood"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_SWORD, "D", "D", "S", 'D', ItemMaterial.getMaterial("diamond_ingot"), 'S', "stickWood"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_HELMET, "DDD", "D D", 'D', ItemMaterial.getMaterial("diamond_ingot")));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_CHESTPLATE, "D D", "DDD", "DDD", 'D', ItemMaterial.getMaterial("diamond_ingot")));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_LEGGINGS, "DDD", "D D", "D D", 'D', ItemMaterial.getMaterial("diamond_ingot")));
+            GameRegistry.addRecipe(new ShapedOreRecipe(Items.DIAMOND_BOOTS, "D D", "D D", 'D', ItemMaterial.getMaterial("diamond_ingot")));
+
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 3), new ItemStack[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 2), new ItemStack[]{new ItemStack(Items.DIAMOND_HOE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 3), new ItemStack[]{new ItemStack(Items.DIAMOND_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 1), new ItemStack[]{new ItemStack(Items.DIAMOND_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 2), new ItemStack[]{new ItemStack(Items.DIAMOND_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 5), new ItemStack[]{new ItemStack(Items.DIAMOND_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 8), new ItemStack[]{new ItemStack(Items.DIAMOND_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 7), new ItemStack[]{new ItemStack(Items.DIAMOND_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial("diamond_ingot", 4), new ItemStack[]{new ItemStack(Items.DIAMOND_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+        }
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
