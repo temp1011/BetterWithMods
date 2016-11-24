@@ -244,6 +244,12 @@ public class BWCrafting {
             addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new ItemStack[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
         }
         GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("diamond_ingot"), "gemDiamond", "ingotIron", BWMItems.CREEPER_OYSTER));
+        GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("chain_mail"),"N N"," N ","N N",'N',"nuggetIron"));
+        GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_HELMET),"CCC","C C",'C',ItemMaterial.getMaterial("chain_mail"));
+        GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_CHESTPLATE),"C C","CCC","CCC",'C',ItemMaterial.getMaterial("chain_mail"));
+        GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS),"CCC","C C","C C",'C',ItemMaterial.getMaterial("chain_mail"));
+        GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS),"C C","C C",'C',ItemMaterial.getMaterial("chain_mail"));
+
     }
 
     private static void addSawRecipes() {
@@ -402,6 +408,7 @@ public class BWCrafting {
 
     private static void addCrucibleRecipes() {
         addOreStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel"), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCoal", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", BWConfig.steelRequiresEnd ? ItemMaterial.getMaterial("soul_flux") : null});
+        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack[]{ItemMaterial.getMaterial("nugget_iron", 9)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 2), new ItemStack[]{new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 2), new ItemStack[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 3), new ItemStack[]{new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
@@ -451,6 +458,13 @@ public class BWCrafting {
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 8), new ItemStack[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 7), new ItemStack[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(ItemMaterial.getMaterial("ingot_steel", 4), new ItemStack[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCrucibleRecipe(ItemMaterial.getMaterial("nugget_iron", 5), new ItemStack[]{ItemMaterial.getMaterial("chain_mail")});
+        addStokedCrucibleRecipe(ItemMaterial.getMaterial("nugget_iron", 25), new ItemStack[]{new ItemStack(Items.CHAINMAIL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCrucibleRecipe(ItemMaterial.getMaterial("nugget_iron", 40), new ItemStack[]{new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCrucibleRecipe(ItemMaterial.getMaterial("nugget_iron", 35), new ItemStack[]{new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCrucibleRecipe(ItemMaterial.getMaterial("nugget_iron", 20), new ItemStack[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+
+
     }
 
     public static void addHardcoreDiamonds()
