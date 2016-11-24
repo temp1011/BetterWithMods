@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,6 +40,29 @@ public abstract class BlockMini extends BWMBlock {
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 5);
     }
+    public int getMaxOrientation() {
+        return 5;
+    }
+    public boolean rotate(World world,BlockPos pos, IBlockState state,EntityPlayer player,PropertyInteger property) {
+        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
+        if (world.isRemote && emptyHands)
+            return true;
+        else if (!world.isRemote && emptyHands) {
+            int nextOrient = (state.getValue(property) + 1)%getMaxOrientation()+1;
+            world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+            world.setBlockState(pos, state.withProperty(property, nextOrient));
+            world.notifyNeighborsOfStateChange(pos, this);
+            world.scheduleBlockUpdate(pos, this, 10, 5);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
+       return rotate(world,pos,state,player,ORIENTATION);
+    }
+
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
