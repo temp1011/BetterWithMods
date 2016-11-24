@@ -1,13 +1,21 @@
 package betterwithmods.integration.immersiveengineering;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.config.BWConfig;
 import betterwithmods.integration.ICompatModule;
+import betterwithmods.items.ItemMaterial;
 import blusunrize.immersiveengineering.api.crafting.SqueezerRecipe;
+import blusunrize.immersiveengineering.common.IEContent;
+import blusunrize.immersiveengineering.common.blocks.plant.BlockIECrop;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,10 +30,17 @@ public class ImmersiveEngineering implements ICompatModule {
 
     public static final String MODID = "immersiveengineering";
 
+    public static boolean overrideIndustrialHempDrops;
     @Override
     public void preInit() {
         BWMBlocks.registerBlock(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
+        BWConfig.config.load();
+        overrideIndustrialHempDrops = BWConfig.config.getBoolean("Override Hemp Drop",BWConfig.MOD_COMPAT,true,"Replaces drop from IE Industrial Hemp with BWM Hemp");
+        BWConfig.config.save();
+        if(overrideIndustrialHempDrops) {
+            MinecraftForge.EVENT_BUS.register(this);
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -57,5 +72,18 @@ public class ImmersiveEngineering implements ICompatModule {
     @Override
     public void postInit() {
 
+    }
+
+    @SubscribeEvent
+    public void overrideHempDrops(BlockEvent.HarvestDropsEvent e) {
+        IBlockState state = e.getState();
+        if(state.getBlock() instanceof BlockIECrop) {
+            e.getDrops().clear();
+            int meta = state.getBlock().getMetaFromState(state);
+            if(meta >= 4) {
+                e.getDrops().add(new ItemStack(IEContent.itemSeeds));
+                e.getDrops().add(ItemMaterial.getMaterial("hemp"));
+            }
+        }
     }
 }

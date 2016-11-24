@@ -32,6 +32,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -140,7 +141,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 }
             }
         }
-        if (meta != 6 && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1) {
+        if (meta != 6 && heldItem != null && heldItem.getItem().getHarvestLevel(heldItem, "shovel", player, planter) > -1) {
             EnumPlanterType type = state.getValue(TYPE);
             if (!player.capabilities.isCreativeMode) {
                 if (!player.inventory.addItemStackToInventory(new ItemStack(type.getFill(), 1, type.getBlockMeta())))
@@ -241,23 +242,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing dir, IPlantable plant) {
         BlockPos up = pos.up();
         EnumPlantType plantType = plant.getPlantType(world, up);
-        int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
-        switch (plantType) {
-            case Desert:
-            case Beach:
-                return meta == 5 || meta == 8;
-            case Cave:
-                return meta == 7;
-            case Crop:
-                return meta == 1 || meta == 4;
-            case Nether:
-                return meta == 3;
-            case Plains:
-                return meta == 1 || meta == 2;
-            case Water:
-                return meta == 6;
-        }
-        return false;
+        return world.getBlockState(pos).getValue(TYPE).isType(plantType);
     }
 
     @Override
@@ -342,8 +327,8 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             return meta;
         }
 
-        public EnumPlantType[] getTypes() {
-            return type;
+        public boolean isType(EnumPlantType type) {
+            return Arrays.asList(type).contains(type);
         }
     }
 }
