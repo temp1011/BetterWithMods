@@ -310,12 +310,12 @@ public class BWCrafting {
     }
 
     private static void addCauldronRecipes() {
-        addOreCauldronRecipe(ItemMaterial.getMaterial("nether_sludge", 8), new Object[]{"dustPotash", new OreStack("powderedHellfire", 4)});
-        addOreCauldronRecipe(ItemMaterial.getMaterial("nethercoal", 4), new Object[]{"powderedHellfire", "dustCoal"});
+        addOreCauldronRecipe(ItemMaterial.getMaterial("nether_sludge", 8), new Object[]{"dustPotash", new OreStack("dustHellfire", 4)});
+        addOreCauldronRecipe(ItemMaterial.getMaterial("nethercoal", 4), new Object[]{"dustHellfire", "dustCoal"});
         //Flour OreDict is foodFlour, Donuts need sugar
         addOreCauldronRecipe(new ItemStack(BWMItems.DONUT, 4, 0), new Object[]{"foodFlour", Items.SUGAR});
         addOreCauldronRecipe(new ItemStack(Items.BREAD), new Object[]{"foodFlour"});
-        addOreCauldronRecipe(ItemMaterial.getMaterial("concentrated_hellfire"), new Object[]{new OreStack("powderedHellfire", 8)});
+        addOreCauldronRecipe(ItemMaterial.getMaterial("concentrated_hellfire"), new Object[]{new OreStack("dustHellfire", 8)});
         addOreCauldronRecipe(new ItemStack(Items.DYE, 1, 2), new Object[]{"blockCactus"});
         addOreCauldronRecipe(ItemMaterial.getMaterial("filament"), new Object[]{"string", "dustGlowstone", "dustRedstone"});
         addOreCauldronRecipe(ItemMaterial.getMaterial("element"), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
@@ -329,7 +329,7 @@ public class BWCrafting {
         addCauldronRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), new ItemStack[]{ItemMaterial.getMaterial("scoured_leather_cut", 2), ItemMaterial.getMaterial("dung")});
         addOreCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[]{"dustSulfur", "dustSaltpeter", "dustCharcoal"});
         addOreCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[]{"dustSulfur", "dustSaltpeter", "dustCoal"});
-        addOreCauldronRecipe(ItemMaterial.getMaterial("blasting_oil", 2), new Object[]{"powderedHellfire", ItemMaterial.getMaterial("tallow")});
+        addOreCauldronRecipe(ItemMaterial.getMaterial("blasting_oil", 2), new Object[]{"dustHellfire", ItemMaterial.getMaterial("tallow")});
         addOreCauldronRecipe(ItemMaterial.getMaterial("fuse"), new Object[]{Items.GUNPOWDER, "string"});
 
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{new ItemStack(Items.LEATHER)});
