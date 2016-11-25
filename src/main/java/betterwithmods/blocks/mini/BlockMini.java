@@ -3,6 +3,7 @@ package betterwithmods.blocks.mini;
 import betterwithmods.blocks.BWMBlock;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,13 +27,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public abstract class BlockMini extends BWMBlock {
+    public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 6);
     public static final PropertyInteger ORIENTATION = createOrientation();
 
     public BlockMini(Material material, String name) {
         super(material);
         //this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0).withProperty(ORIENTATION, 0));
-        this.setSoundType(material == Material.CIRCUITS ? SoundType.WOOD : SoundType.STONE);
+        this.setSoundType(material == MINI ? SoundType.WOOD : SoundType.STONE);
         if (material == Material.CIRCUITS)
             this.setHarvestLevel("axe", 0);
     }
@@ -40,9 +42,11 @@ public abstract class BlockMini extends BWMBlock {
     public static PropertyInteger createOrientation() {
         return PropertyInteger.create("orientation", 0, 5);
     }
+
     public int getMaxOrientation() {
         return 5;
     }
+
     public boolean rotate(World world,BlockPos pos, IBlockState state,EntityPlayer player,PropertyInteger property) {
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
         if (world.isRemote && emptyHands)
@@ -81,17 +85,10 @@ public abstract class BlockMini extends BWMBlock {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {/*
-            if(stack.hasTagCompound()) {
-                ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(stack.getTagCompound().getInteger("type"));
-                world.setBlockState(pos, state.withProperty(TYPE, stack.getTagCompound().getInteger("type")));
-            }
-            else */
-            {
+        if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
                 int meta = stack.getItemDamage();
                 ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
                 world.setBlockState(pos, state.withProperty(TYPE, meta));
-            }
         }
     }
 
@@ -107,11 +104,7 @@ public abstract class BlockMini extends BWMBlock {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 6; i++) {
-            ItemStack stack = new ItemStack(this, 1, i);/*
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("type", i);
-            stack.setTagCompound(tag);*/
-            list.add(stack);
+            list.add( new ItemStack(this, 1, i));
         }
     }
 

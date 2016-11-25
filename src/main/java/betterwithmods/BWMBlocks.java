@@ -46,9 +46,9 @@ public final class BWMBlocks {
     public static final Block BOOSTER = new BlockGearBoostedRail().setRegistryName("booster");
     public static final Block WINDMILL_BLOCK = new BlockWindmill().setRegistryName("windmill_block");
     public static final Block WATERWHEEL = new BlockWaterwheel().setRegistryName("waterwheel");
-    public static final Block WOOD_SIDING = new BlockSiding(Material.CIRCUITS).setRegistryName("wood_siding");
-    public static final Block WOOD_MOULDING = new BlockMoulding(Material.CIRCUITS).setRegistryName("wood_moulding");
-    public static final Block WOOD_CORNER = new BlockCorner(Material.CIRCUITS).setRegistryName("wood_corner");
+    public static final Block WOOD_SIDING = new BlockSiding(BlockMini.MINI).setRegistryName("wood_siding");
+    public static final Block WOOD_MOULDING = new BlockMoulding(BlockMini.MINI).setRegistryName("wood_moulding");
+    public static final Block WOOD_CORNER = new BlockCorner(BlockMini.MINI).setRegistryName("wood_corner");
     public static final Block DEBARKED_NEW = new BlockDebarkedNew().setRegistryName("debarked_new");
     public static final Block DEBARKED_OLD = new BlockDebarkedOld().setRegistryName("debarked_old");
     public static final Block WOOD_BENCH = new BlockWoodBench().setRegistryName("wood_bench");
