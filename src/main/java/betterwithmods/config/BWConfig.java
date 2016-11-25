@@ -55,7 +55,7 @@ public class BWConfig {
     public static boolean rawEggDrop;
     public static int lensRange;
     public static boolean hardcoreDiamonds;
-
+    public static boolean dropsHempSeeds;
     public static void init(File file) {
         config = new Configuration(file);
         syncConfig();
@@ -113,6 +113,7 @@ public class BWConfig {
         lensRange = config.getInt("Lens Horizontal Range",Configuration.CATEGORY_GENERAL, 256, 32,256,"Range that lens light will travel");
         rawEggDrop = config.get(VANILLA_TWEAKS, "Eggs Drop Raw Egg When Thrown", true).getBoolean();
         hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to craft. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
+        dropsHempSeeds = config.getBoolean("Drop Hemp Seeds",MODPACK_TWEAKS,true,"Tall Grass Drops Hemp Seeds");
         config.save();
     }
 
