@@ -18,10 +18,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import java.util.Collections;
 import java.util.List;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.util.EnumFacing.AxisDirection;
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.EAST;
+import static net.minecraft.util.EnumFacing.NORTH;
+import static net.minecraft.util.EnumFacing.SOUTH;
+import static net.minecraft.util.EnumFacing.UP;
+import static net.minecraft.util.EnumFacing.WEST;
 
 /**
  * Created by tyler on 9/5/16.
@@ -137,7 +142,7 @@ public class EntityMiningCharge extends Entity {
         IBlockState state = world.getBlockState(pos);
         float resistance = state.getBlock().getExplosionResistance(world, pos, null, null);
         if (resistance < 100) {
-            Explosion explosion = new Explosion(world, igniter, posX, posY, posZ, 0, Collections.emptyList());
+            Explosion explosion = new Explosion(world, igniter, posX, posY, posZ, 0, false, false);
             if (state.getBlock().canDropFromExplosion(explosion)) {
                 if (state.getBlock() == Blocks.COBBLESTONE) //TODO: Possible charge registry to blast a block into an item.
                     Blocks.GRAVEL.dropBlockAsItem(world, pos, state, 0);
