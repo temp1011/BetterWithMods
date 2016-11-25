@@ -5,8 +5,10 @@ import betterwithmods.config.BWConfig;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.items.ItemMaterial;
 import blusunrize.immersiveengineering.api.crafting.SqueezerRecipe;
+import blusunrize.immersiveengineering.api.tool.ConveyorHandler;
 import blusunrize.immersiveengineering.common.IEContent;
 import blusunrize.immersiveengineering.common.blocks.plant.BlockIECrop;
+import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import static blusunrize.immersiveengineering.common.IERecipes.addOredictRecipe;
 
 /**
  * Created by tyler on 9/10/16.
@@ -64,6 +68,9 @@ public class ImmersiveEngineering implements ICompatModule {
 
     @Override
     public void init() {
+
+        ItemStack conveyorStack = ConveyorHandler.getConveyorStack("immersiveengineering:conveyor");
+        addOredictRecipe(Utils.copyStackWithAmount(conveyorStack, 8), new Object[]{"LLL", "IRI", Character.valueOf('I'), "ingotIron", Character.valueOf('R'), "dustRedstone", Character.valueOf('L'), ItemMaterial.getMaterial("leather_cut")});
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(TREATED_AXLE), "W", "R", "W", 'W', "plankTreatedWood", 'R', BWMBlocks.ROPE));
         Fluid seedOil = FluidRegistry.getFluid("plantoil");
         SqueezerRecipe.addRecipe(new FluidStack(seedOil, 120), null, new ItemStack(BWMBlocks.HEMP, 1, 0), 6400);

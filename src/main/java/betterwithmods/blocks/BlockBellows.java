@@ -239,20 +239,20 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
         for (int i = 0; i < 3; i++) {
             BlockPos dirPos = pos.offset(dir, 1 + i);
-
+            //
             Block target = world.getBlockState(dirPos).getBlock();
 
             if (target == Blocks.FIRE || target == BWMBlocks.STOKED_FLAME)
                 stokeFire(world, dirPos);
             else if (!world.isAirBlock(dirPos))
                 break;
-
+            //
             BlockPos posLeft = dirPos.offset(dirLeft);
 
             Block targetLeft = world.getBlockState(posLeft).getBlock();
             if (targetLeft == Blocks.FIRE || targetLeft == BWMBlocks.STOKED_FLAME)
                 stokeFire(world, posLeft);
-
+            //
             BlockPos posRight = dirPos.offset(dirRight);
 
             Block targetRight = world.getBlockState(posRight).getBlock();
@@ -264,7 +264,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     private void stokeFire(World world, BlockPos pos) {
         BlockPos down = pos.down();
         if (world.getBlockState(down).getBlock() == BWMBlocks.HIBACHI) {
-            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState());
+            int flag = (world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME) ? 4 : 3;
+            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState(),flag);
         } else
             world.setBlockToAir(pos);
     }
