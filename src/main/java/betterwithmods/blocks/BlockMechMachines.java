@@ -190,7 +190,6 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         return 0;
     }
 
-
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);

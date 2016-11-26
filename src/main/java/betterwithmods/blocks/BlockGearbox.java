@@ -316,4 +316,14 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DirUtils.FACING, ISACTIVE, DirUtils.UP, DirUtils.DOWN, DirUtils.NORTH, DirUtils.SOUTH, DirUtils.WEST, DirUtils.EAST);
     }
+
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        return isGearboxOn(worldIn,pos) ? 15 : 0;
+    }
 }
