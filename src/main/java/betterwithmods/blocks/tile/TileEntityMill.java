@@ -81,8 +81,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         if (this.containsIngredientsToGrind && mill.isMechanicalOn(worldObj, pos)) {
             if (!this.worldObj.isRemote) {
                 if (grindType == 2) {
-                    if (this.worldObj.rand.nextInt(20) < 2) {
-                        worldObj.playSound(null, pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 0.75F, worldObj.rand.nextFloat() * 0.4F + 0.8F);
+                    if (this.worldObj.rand.nextInt(25) < 2) {
+                        worldObj.playSound(null, pos, SoundEvents.ENTITY_GHAST_HURT, SoundCategory.BLOCKS, 0.75F, worldObj.rand.nextFloat() * 0.4F + 0.8F);
                     }
                 } else if (grindType == 3) {
                     if (this.worldObj.rand.nextInt(20) < 2)

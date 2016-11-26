@@ -344,7 +344,7 @@ public class BWCrafting {
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{new ItemStack(Items.LEATHER)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("tanned_leather")});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("scoured_leather")});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("leather_strap", 2)});
+        addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("leather_strap", 8)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("leather_cut", 2)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("tanned_leather_cut", 2)});
         addStokedCauldronRecipe(ItemMaterial.getMaterial("glue"), new ItemStack[]{ItemMaterial.getMaterial("scoured_leather_cut", 2)});
