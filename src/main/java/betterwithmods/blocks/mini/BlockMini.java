@@ -56,7 +56,7 @@ public abstract class BlockMini extends BWMBlock {
         if (world.isRemote && emptyHands)
             return true;
         else if (!world.isRemote && emptyHands) {
-            int nextOrient = (state.getValue(property) + 1) % getMaxOrientation() + 1;
+            int nextOrient = (state.getValue(property) + 1) % (getMaxOrientation()+1);
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
             world.setBlockState(pos, state.withProperty(property, nextOrient));
             world.notifyNeighborsOfStateChange(pos, this);

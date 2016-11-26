@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -13,6 +14,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -405,5 +407,19 @@ public class InvUtils {
                 ejectStackWithOffset(world, pos, stacks);
             }
         }
+    }
+
+    public static int calculateComparatorLevel(@Nonnull IItemHandler inventory) {
+        int i = 0;
+        float f = 0.0F;
+        for (int j = 0; j < inventory.getSlots(); ++j) {
+            ItemStack itemstack = inventory.getStackInSlot(j);
+            if (itemstack != null) {
+                f += (float) itemstack.stackSize / (float) itemstack.getMaxStackSize();
+                ++i;
+            }
+        }
+        f = f / (float) inventory.getSlots();
+        return MathHelper.floor_float(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 }
