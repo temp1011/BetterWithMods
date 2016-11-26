@@ -4,7 +4,6 @@ import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.craft.HopperFilters;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -22,8 +21,9 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
             if (tile.getSubtype() > 0) {
                 model = tile.getModel();
                 if (model == null && tile.filterType > 0) {
-                    ItemStack filter = HopperFilters.getFilter(tile.filterType);
-                    model = new ModelTransparent(RenderUtils.getResourceLocation(filter));
+                    if(tile.getFilterStack() != null) {
+                        model = new ModelTransparent(RenderUtils.getResourceLocation(tile.getFilterStack()));
+                    }
                 }
                 if (model != null) {
                     GlStateManager.pushMatrix();
@@ -32,6 +32,7 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
                     model.render(0.0622F);
                     GlStateManager.popMatrix();
                 }
+
             } else if (model != null) {
                 model = null;
             }

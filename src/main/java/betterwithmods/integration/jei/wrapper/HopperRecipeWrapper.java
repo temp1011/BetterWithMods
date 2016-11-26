@@ -8,6 +8,8 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Purpose:
@@ -18,7 +20,7 @@ import java.util.List;
 public class HopperRecipeWrapper extends BlankRecipeWrapper {
 
     private final ItemStack input;
-    private final ItemStack filter;
+    private final List<ItemStack> filter;
     private final List<ItemStack> outputs;
 
     public HopperRecipeWrapper(HopperInteractions.HopperRecipe recipe) {
@@ -32,7 +34,7 @@ public class HopperRecipeWrapper extends BlankRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, Lists.newArrayList(filter, input));
+        ingredients.setInputs(ItemStack.class, Stream.concat(outputs.stream(),filter.stream()).collect(Collectors.toList()));
         ingredients.setOutputs(ItemStack.class, outputs);
     }
 }

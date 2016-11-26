@@ -14,8 +14,13 @@ import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
-import com.google.common.collect.HashBiMap;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -59,9 +64,6 @@ public class BWRegistry {
     }
 
     public static void registerHopperFilters() {
-
-        HopperFilters.filters = HashBiMap.create();
-        HopperFilters.filters = HashBiMap.create();
         HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock);
         HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack));
         HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack));

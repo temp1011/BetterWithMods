@@ -35,7 +35,7 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.List;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
-    private final ItemStack filterStack;
+    private ItemStack filterStack;
     public short filterType;
     public boolean outputBlocked;
     public byte power;
@@ -211,8 +211,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private short getFilterType() {
         ItemStack filter = inventory.getStackInSlot(18);
-        if (filter != null && filter.stackSize > 0)
+
+        if (filter != null && filter.stackSize > 0) {
+            filterStack = filter;
             return (short) HopperFilters.getFilterType(filter);
+        }
         return 0;
     }
 

@@ -1,6 +1,5 @@
 package betterwithmods.integration.minetweaker;
 
-import betterwithmods.BWMod;
 import betterwithmods.craft.HopperFilters;
 import betterwithmods.integration.minetweaker.utils.BaseMultiModification;
 import com.google.common.collect.Sets;
@@ -35,10 +34,8 @@ public class HopperFilter {
     public static class Add extends BaseMultiModification {
         protected Add(ItemStack filter, Set<ItemStack> allowed) {
             super("hopperfilter");
-            BWMod.logger.info("hopper:" + allowed);
             HopperFilters.addFilter(filter, allowed);
         }
-
         @Override
         public boolean canUndo() {
             return false;
