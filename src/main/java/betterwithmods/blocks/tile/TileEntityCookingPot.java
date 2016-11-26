@@ -130,10 +130,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
                         }
                     }
                 }
-
                 facing = power.getIndex();
-                if (power != EnumFacing.UP) {
-                    ejectInventory(DirUtils.rotateFacingAroundY(power, false));
+                EnumFacing dumpToward = DirUtils.rotateFacingAroundY(power, false);
+                if (power != EnumFacing.UP && filledSlots() > 0) {
+                    ejectInventory(dumpToward);
                 }
 
             }
@@ -187,6 +187,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     public void ejectInventory(EnumFacing facing) {
+
+
         int index = InvUtils.getFirstOccupiedStackNotOfItem(inventory, Items.BRICK);
         if (index >= 0 && index < inventory.getSlots()) {
             ItemStack stack = inventory.getStackInSlot(index);
@@ -197,18 +199,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
             BlockPos target = pos.offset(facing);
             ItemStack eject = new ItemStack(stack.getItem(), ejectStackSize, stack.getItemDamage());
             InvUtils.copyTags(eject, stack);
-
-            boolean ejectIntoWorld = false;
-            if (this.worldObj.isAirBlock(target)) {
-                ejectIntoWorld = true;
-            } else if (this.worldObj.getBlockState(target).getBlock().isReplaceable(this.worldObj, target)) {
-                ejectIntoWorld = true;
-            } else {
-                if (!this.worldObj.getBlockState(target).getMaterial().isSolid()) {
-                    ejectIntoWorld = true;
-                }
-            }
-
+            IBlockState targetState = worldObj.getBlockState(target);
+            boolean ejectIntoWorld = worldObj.isAirBlock(target) || targetState.getBlock().isReplaceable(worldObj, target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(worldObj,target).maxY < 0.5d;
             if (ejectIntoWorld) {
                 this.worldObj.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ejectStack(worldObj, target, facing, eject);

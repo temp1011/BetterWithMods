@@ -190,6 +190,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         return 0;
     }
 
+
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
@@ -464,6 +465,7 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
         TileEntity tile = world.getTileEntity(pos);
         if (tile != null) {
             if (tile instanceof TileEntityCookingPot) {
+                //TODO Kills performance from rendering updates, should be fixed by separating cooking pots out
                 facing = ((TileEntityCookingPot) tile).facing;
             }
         }
