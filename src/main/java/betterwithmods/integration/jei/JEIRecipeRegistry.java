@@ -5,8 +5,11 @@ import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.craft.bulk.*;
+import betterwithmods.craft.steelanvil.*;
 import betterwithmods.integration.jei.wrapper.*;
 import mezz.jei.api.IJeiHelpers;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,14 @@ public class JEIRecipeRegistry {
         return getMillRecipes(CraftingManagerMill.getInstance(), helper);
     }
 
+    public static List<SteelAnvilShapelessRecipeWrapper> getSteelAnvilShapelessRecipes(IJeiHelpers helper) {
+        return getSteelAnvilShapelessRecipes(CraftingManagerSteelAnvil.INSTANCE, helper);
+    }
+
+    public static List<SteelAnvilShapedRecipeWrapper> getSteelAnvilShapedRecipes(IJeiHelpers helper) {
+        return getSteelAnvilShapedRecipes(CraftingManagerSteelAnvil.INSTANCE, helper);
+    }
+
     private static List<CrucibleRecipeWrapper> getCrucibleRecipes(CraftingManagerCrucible bulk, IJeiHelpers helper) {
         List<CrucibleRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
@@ -81,6 +92,24 @@ public class JEIRecipeRegistry {
         List<MillRecipeWrapper> recipes = new ArrayList<>();
         for (BulkRecipe recipe : bulk.getRecipes())
             recipes.add(new MillRecipeWrapper(helper, recipe));
+        return recipes;
+    }
+
+    private static List<SteelAnvilShapelessRecipeWrapper> getSteelAnvilShapelessRecipes(CraftingManagerSteelAnvil manager, IJeiHelpers helper) {
+        List<SteelAnvilShapelessRecipeWrapper> recipes = new ArrayList<>();
+        for (IRecipe recipe : manager.getRecipes()) {
+            if(recipe instanceof ShapelessOreRecipe)
+                recipes.add(new SteelAnvilShapelessRecipeWrapper(helper, (ShapelessOreRecipe) recipe));
+        }
+        return recipes;
+    }
+
+    private static List<SteelAnvilShapedRecipeWrapper> getSteelAnvilShapedRecipes(CraftingManagerSteelAnvil manager, IJeiHelpers helper) {
+        List<SteelAnvilShapedRecipeWrapper> recipes = new ArrayList<>();
+        for (IRecipe recipe : manager.getRecipes()) {
+            if(recipe instanceof ShapedSteelAnvilRecipe)
+                recipes.add(new SteelAnvilShapedRecipeWrapper(helper, (ShapedSteelAnvilRecipe) recipe));
+        }
         return recipes;
     }
 }

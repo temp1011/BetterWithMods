@@ -1,7 +1,10 @@
 package betterwithmods.blocks.mini;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.BWMBlock;
+import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -11,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -155,5 +159,63 @@ public abstract class BlockMini extends BWMBlock {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, TYPE, ORIENTATION);
+    }
+
+    public enum EnumType {
+
+        STONE(0, "stone", Blocks.STONE),
+        STONEBRICK(1, "stone_brick", Blocks.STONEBRICK),
+        WHITESTONE(2, "whitestone", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.WHITESTONE.getMeta())),
+        NETHERBRICK(3, "nether_brick", Blocks.NETHER_BRICK),
+        BRICK(4, "brick", Blocks.BRICK_BLOCK),
+        SANDSTONE(5, "sandstone", Blocks.SANDSTONE);
+
+        private static final BlockMini.EnumType[] META_LOOKUP = new BlockMini.EnumType[values().length];
+
+        private final int meta;
+        private final String name;
+        private final ItemStack block;
+
+        EnumType(int metaIn, String nameIn, Block blockIn) {
+            this(metaIn, nameIn, new ItemStack(blockIn));
+        }
+
+        EnumType(int metaIn, String nameIn, ItemStack blockIn) {
+            this.meta = metaIn;
+            this.name = nameIn;
+            this.block = blockIn;
+        }
+
+        public int getMetadata()
+        {
+            return this.meta;
+        }
+
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public ItemStack getBlock() {
+            return this.block;
+        }
+
+        public static BlockMini.EnumType byMetadata(int meta)
+        {
+            if (meta < 0 || meta >= META_LOOKUP.length)
+            {
+                meta = 0;
+            }
+
+            return META_LOOKUP[meta];
+        }
+
+        static
+        {
+            for (BlockMini.EnumType blockmini$enumtype : values())
+            {
+                META_LOOKUP[blockmini$enumtype.getMetadata()] = blockmini$enumtype;
+            }
+        }
     }
 }
