@@ -20,34 +20,38 @@ import java.util.function.Predicate;
  * @version 11/13/16
  */
 public class HopperFilters {
-    public static BiMap<Integer,Pair<ItemStack,Predicate<ItemStack>>> filters = HashBiMap.create();
+    public static BiMap<Integer, Pair<ItemStack, Predicate<ItemStack>>> filters = HashBiMap.create();
     public static int type = 1;
+
     public static int newType() {
         int t = type++;
         BWMod.logger.info(t);
         return t;
     }
+
     public static boolean containsStack(Set<ItemStack> set, ItemStack stack) {
-        Optional<ItemStack> found = set.stream().filter( s -> s.isItemEqual(stack)).findFirst();
+        Optional<ItemStack> found = set.stream().filter(s -> s.isItemEqual(stack)).findFirst();
         return found.isPresent();
     }
+
     public static void addFilter(ItemStack stack, Set<ItemStack> allowedItems) {
-        addFilter(newType(),stack, s -> containsStack(allowedItems,s));
+        addFilter(newType(), stack, s -> containsStack(allowedItems, s));
     }
 
-    public static void addFilter(int type,Item item, int meta, Predicate<ItemStack> allowed) {
-        addFilter(type,new ItemStack(item,1,meta), allowed);
+    public static void addFilter(int type, Item item, int meta, Predicate<ItemStack> allowed) {
+        addFilter(type, new ItemStack(item, 1, meta), allowed);
     }
 
-    public static void addFilter(int type,Block block, int meta, Predicate<ItemStack> allowed) {
-        addFilter(type,new ItemStack(block,1,meta), allowed);
+    public static void addFilter(int type, Block block, int meta, Predicate<ItemStack> allowed) {
+        addFilter(type, new ItemStack(block, 1, meta), allowed);
     }
-    public static void addFilter(int type,ItemStack filter, Predicate<ItemStack> allowed) {
-        if(getFilterType(filter) != 0) {
+
+    public static void addFilter(int type, ItemStack filter, Predicate<ItemStack> allowed) {
+        if (getFilterType(filter) != 0) {
             throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", getFilterType(filter), filter.getDisplayName()));
         }
-        if(!filters.containsKey(type))
-            filters.put(type,Pair.of(filter, allowed));
+        if (!filters.containsKey(type))
+            filters.put(type, Pair.of(filter, allowed));
         else {
             throw new IllegalArgumentException(String.format("Filter type %s already exists with ItemStack: %s", type, filter.getDisplayName()));
         }
@@ -63,7 +67,7 @@ public class HopperFilters {
 
     public static int getFilterType(ItemStack filter) {
         Optional<Integer> type = filters.inverse().keySet().stream().filter(p -> (p.getLeft().isItemEqual(filter) || (p.getLeft().getItem() == filter.getItem() && p.getLeft().getMetadata() == OreDictionary.WILDCARD_VALUE))).map(p -> filters.inverse().get(p)).findFirst();
-        if(type.isPresent())
+        if (type.isPresent())
             return type.get();
         return 0;
     }

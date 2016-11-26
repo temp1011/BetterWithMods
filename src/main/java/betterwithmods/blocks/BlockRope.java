@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockRope extends BWMBlock {
-    public static final float width = 0.125F;
     private static final AxisAlignedBB ROPE_AABB = new AxisAlignedBB(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
 
     public BlockRope() {
@@ -29,21 +28,13 @@ public class BlockRope extends BWMBlock {
         this.setHardness(0.5F);
     }
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(heldItem != null && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
-            return placeRopeUnder(heldItem,worldIn,pos,playerIn);
-        }
-        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
-    }
-
     public static boolean placeRopeUnder(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
         if (stack != null || player == null) {
             BlockPos bp = getLowestRopeBlock(world, pos).down();
             Block block = world.getBlockState(bp).getBlock();
             if ((world.isAirBlock(bp) || block.isReplaceable(world, bp)) && ((BlockRope) BWMBlocks.ROPE.getDefaultState().getBlock()).canBlockStay(world, bp)) {
                 world.setBlockState(bp, BWMBlocks.ROPE.getDefaultState());
-                world.playSound(null,bp,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getPlaceSound(), SoundCategory.BLOCKS,1,1);
+                world.playSound(null, bp, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getPlaceSound(), SoundCategory.BLOCKS, 1, 1);
                 if (player != null && !player.capabilities.isCreativeMode) // if this is placed by a pulley, let the pulley manage the stack size
                     stack.stackSize--;
                 return true;
@@ -64,6 +55,14 @@ public class BlockRope extends BWMBlock {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (heldItem != null && heldItem.getItem() instanceof ItemBlock && ((ItemBlock) heldItem.getItem()).getBlock() == this) {
+            return placeRopeUnder(heldItem, worldIn, pos, playerIn);
+        }
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
     @Override

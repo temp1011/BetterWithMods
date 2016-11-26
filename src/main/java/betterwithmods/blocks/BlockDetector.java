@@ -225,8 +225,7 @@ public class BlockDetector extends BWMBlock {
                     return true;
                 else {
                     IBlockState vState = world.getBlockState(offset);
-                    BlockVine vine = (BlockVine)vState.getBlock();
-                    return vState.getValue(vine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
+                    return vState.getValue(BlockVine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
                 }
             }
         }

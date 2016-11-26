@@ -17,8 +17,6 @@ public class HardcoreHardnessEventHandler {
      * Sets the wooden pickaxe to 1 usage. Why:
      * {@link Item#setMaxDamage} used with "1" gives 2 usages, and with "0" gives unbreakable item.
      * So we needed another solution to set it to 1 usage.
-     *
-     * @param event
      */
     @SubscribeEvent
     public void onBreaking(BlockEvent.BreakEvent event) {

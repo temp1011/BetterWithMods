@@ -68,6 +68,7 @@ public class BlockVineTrap extends BWMBlock {
         return false;
     }
 
+    @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         IBlockState iblockstate = getDefaultState().withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
         return (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D) ? iblockstate : iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP));
@@ -82,6 +83,7 @@ public class BlockVineTrap extends BWMBlock {
     /**
      * Convert the given metadata into a BlockState for this Block
      */
+    @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(HALF, meta == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
     }
@@ -89,10 +91,12 @@ public class BlockVineTrap extends BWMBlock {
     /**
      * Convert the BlockState into the correct metadata value
      */
+    @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP ? 1 : 0;
     }
 
+    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, HALF);
     }

@@ -7,14 +7,7 @@ import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockButton;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockLever;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.BlockTorch;
-import net.minecraft.block.BlockWallSign;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,12 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -78,6 +66,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
         return oldState.getBlock() != newState.getBlock();
     }
 
+    @Override
     public void update() {
         if (!this.worldObj.isRemote) {
             if (worldObj.getBlockState(pos).getBlock() != null && worldObj.getBlockState(pos).getBlock() instanceof BlockMechMachines && ((BlockMechMachines) worldObj.getBlockState(pos).getBlock()).isMechanicalOn(worldObj, pos)) {
@@ -328,7 +317,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             return;
 
         IBlockState state = worldObj.getBlockState(pos);
-        ItemStack stack = new ItemStack(state.getBlock(),1,state.getBlock().damageDropped(state));
+        ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
         Block target = state.getBlock();
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
@@ -373,7 +362,7 @@ public class TileEntityTurntable extends TileEntity implements IMechSubtype, ITi
             worldObj.setBlockState(pos, RecipeUtils.getStateFromStack(craft.getResult()));
             this.potteryRotation = 0;
         }
-        this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST,pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5,0,0,0, Block.getStateId(input));
+        this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0, Block.getStateId(input));
         this.worldObj.playSound(null, pos, block.getSoundType(input, this.worldObj, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.8F);
     }
 

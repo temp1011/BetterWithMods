@@ -27,12 +27,12 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
             update = false;
         }
         List<EnumFacing> low = findLowestTransfer(false);
-        if(!low.isEmpty()) {
+        if (!low.isEmpty()) {
             int exits = low.size();
             EnumFacing facing = low.get(rand.nextInt(exits));
             TileEntity tile = worldObj.getTileEntity(pos.offset(facing));
-            if(tile != null) {
-                if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+            if (tile != null) {
+                if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
                     //Insert item transfer code here.
                 }
             }

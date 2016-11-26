@@ -94,7 +94,7 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
                             BlockRope.placeRopeUnder(heldItem, world, down, player);
                         } else if (world.getBlockState(down).getBlock().isReplaceable(world, down) || world.isAirBlock(down)) {
                             world.setBlockState(down, BWMBlocks.ROPE.getDefaultState());
-                            world.playSound(null,down,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getPlaceSound(), SoundCategory.BLOCKS,1,1);
+                            world.playSound(null, down, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getPlaceSound(), SoundCategory.BLOCKS, 1, 1);
                             if (!player.capabilities.isCreativeMode)
                                 heldItem.stackSize--;
                         } else
@@ -105,8 +105,8 @@ public class BlockAnchor extends BlockDirectional implements ITurnable {
             }
             return false;
         } else if (!world.isRemote) {
-            if(retractRope(world, pos, player))
-            world.playSound(null,pos,BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(),world,null, null).getBreakSound(), SoundCategory.BLOCKS,1,1);
+            if (retractRope(world, pos, player))
+                world.playSound(null, pos, BWMBlocks.ROPE.getSoundType(BWMBlocks.ROPE.getDefaultState(), world, null, null).getBreakSound(), SoundCategory.BLOCKS, 1, 1);
         }
         return true;
     }

@@ -1,5 +1,6 @@
 package betterwithmods.client.container;
 
+import betterwithmods.BWMod;
 import betterwithmods.blocks.tile.TileEntityInfernalEnchanter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -9,8 +10,6 @@ import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
-
 /**
  * Created by tyler on 9/11/16.
  */
@@ -18,8 +17,9 @@ public class GuiInfernalEnchanter extends GuiContainer {
     private TileEntityInfernalEnchanter tile;
     private ContainerInfernalEnchanter container;
     private EntityPlayer player;
+
     public GuiInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
-        super(new ContainerInfernalEnchanter(player,tile));
+        super(new ContainerInfernalEnchanter(player, tile));
         this.container = (ContainerInfernalEnchanter) inventorySlots;
         this.player = player;
         this.tile = tile;
@@ -29,31 +29,31 @@ public class GuiInfernalEnchanter extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation("betterwithmods", "textures/gui/infernal_enchanter.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/infernal_enchanter.png"));
 
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
-        if(!inventorySlots.getSlot(0).getHasStack())
-            drawTexturedModalRect(xPos+17, yPos+37, 176, 0, 16, 16);
-        if(!inventorySlots.getSlot(1).getHasStack())
-            drawTexturedModalRect(xPos+17, yPos+75, 192, 0, 16, 16);
-        EnchantmentNameParts.getInstance().reseedRandomGenerator((long)this.container.xpSeed);
+        if (!inventorySlots.getSlot(0).getHasStack())
+            drawTexturedModalRect(xPos + 17, yPos + 37, 176, 0, 16, 16);
+        if (!inventorySlots.getSlot(1).getHasStack())
+            drawTexturedModalRect(xPos + 17, yPos + 75, 192, 0, 16, 16);
+        EnchantmentNameParts.getInstance().reseedRandomGenerator((long) this.container.xpSeed);
 
-        for(int i = 0; i < container.enchantLevels.length;i++) {
+        for (int i = 0; i < container.enchantLevels.length; i++) {
             int val = container.enchantLevels[i];
-            if(val != 0) {
+            if (val != 0) {
                 int color = 0x407F10;
-                if(mc.thePlayer.experienceLevel >= val) {
-                    int y = yPos+17+(19*i);
-                    drawTexturedModalRect(xPos+60,y,0,211,108,19);
+                if (mc.thePlayer.experienceLevel >= val) {
+                    int y = yPos + 17 + (19 * i);
+                    drawTexturedModalRect(xPos + 60, y, 0, 211, 108, 19);
                     color = 0x80FF20;
                 }
                 String s = String.valueOf(val);
-                this.fontRendererObj.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRendererObj.getStringWidth(s), yPos+8 + 19 * (i + 1), color);
+                this.fontRendererObj.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRendererObj.getStringWidth(s), yPos + 8 + 19 * (i + 1), color);
                 FontRenderer fontrenderer = this.mc.standardGalacticFontRenderer;
                 String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRendererObj, 86 - this.fontRendererObj.getStringWidth(s));
-                fontrenderer.drawSplitString(s1, xPos+62,yPos+19 + 19 * i, 108, (6839882 & 16711422) >> 1);
+                fontrenderer.drawSplitString(s1, xPos + 62, yPos + 19 + 19 * i, 108, (6839882 & 16711422) >> 1);
             }
         }
     }
@@ -74,17 +74,6 @@ public class GuiInfernalEnchanter extends GuiContainer {
         s = "V";
         this.fontRendererObj.drawString(s, 50 - this.fontRendererObj.getStringWidth(s) / 2, 98, 0x404040);
 
-
-    }
-
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
 
     }
 }

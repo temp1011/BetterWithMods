@@ -47,12 +47,12 @@ public abstract class BlockMini extends BWMBlock {
         return 5;
     }
 
-    public boolean rotate(World world,BlockPos pos, IBlockState state,EntityPlayer player,PropertyInteger property) {
+    public boolean rotate(World world, BlockPos pos, IBlockState state, EntityPlayer player, PropertyInteger property) {
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
         if (world.isRemote && emptyHands)
             return true;
         else if (!world.isRemote && emptyHands) {
-            int nextOrient = (state.getValue(property) + 1)%getMaxOrientation()+1;
+            int nextOrient = (state.getValue(property) + 1) % getMaxOrientation() + 1;
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
             world.setBlockState(pos, state.withProperty(property, nextOrient));
             world.notifyNeighborsOfStateChange(pos, this);
@@ -64,7 +64,7 @@ public abstract class BlockMini extends BWMBlock {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
-       return rotate(world,pos,state,player,ORIENTATION);
+        return rotate(world, pos, state, player, ORIENTATION);
     }
 
 
@@ -86,9 +86,9 @@ public abstract class BlockMini extends BWMBlock {
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
         if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityMultiType) {
-                int meta = stack.getItemDamage();
-                ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
-                world.setBlockState(pos, state.withProperty(TYPE, meta));
+            int meta = stack.getItemDamage();
+            ((TileEntityMultiType) world.getTileEntity(pos)).setCosmeticType(meta);
+            world.setBlockState(pos, state.withProperty(TYPE, meta));
         }
     }
 
@@ -104,7 +104,7 @@ public abstract class BlockMini extends BWMBlock {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 6; i++) {
-            list.add( new ItemStack(this, 1, i));
+            list.add(new ItemStack(this, 1, i));
         }
     }
 

@@ -250,6 +250,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 : (blockState.getBlock() instanceof BlockRailBase || blockState.getBlock() instanceof BlockRedstoneWire ? 0 : 1)));
     }
 
+    @Override
     public boolean canRenderOnFire() {
         return false;
     }
@@ -337,6 +338,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         this.targetY = i;
     }
 
+    @Override
     public boolean canBeCollidedWith() {
         return !this.isDead;
     }

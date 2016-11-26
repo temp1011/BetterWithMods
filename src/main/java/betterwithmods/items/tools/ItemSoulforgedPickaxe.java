@@ -25,6 +25,6 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
 
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of("pickaxe","shovel");
+        return ImmutableSet.of("pickaxe", "shovel");
     }
 }

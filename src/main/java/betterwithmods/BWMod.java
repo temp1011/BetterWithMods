@@ -34,11 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
@@ -52,10 +48,10 @@ public class BWMod {
      */
     private static final Map<String, String> compatClasses;
     public static Logger logger;
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @SidedProxy(serverSide = "betterwithmods.proxy.ServerProxy", clientSide = "betterwithmods.proxy.ClientProxy")
     public static IProxy proxy;
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
     public static IForgeRegistry<Item> itemRegistry;
@@ -141,7 +137,10 @@ public class BWMod {
         if (BWConfig.hardcoreHardness) HardcoreFunctions.applyHCHardness();
         if (BWConfig.earlyPickaxesRebalance) Items.STONE_PICKAXE.setMaxDamage(6 - 1);
         if (BWConfig.removeLowTools) HardcoreFunctions.removeLowTierToolRecipes();
-        if (BWConfig.axeOnLeaves) { Blocks.LEAVES.setHarvestLevel("axe",0); Blocks.LEAVES2.setHarvestLevel("axe",1); }
+        if (BWConfig.axeOnLeaves) {
+            Blocks.LEAVES.setHarvestLevel("axe", 0);
+            Blocks.LEAVES2.setHarvestLevel("axe", 1);
+        }
 
         BWRegistry.init();
         loadCompatibilityModules();

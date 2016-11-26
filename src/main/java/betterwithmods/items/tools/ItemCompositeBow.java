@@ -79,6 +79,7 @@ public class ItemCompositeBow extends ItemBow {
         return f;
     }
 
+    @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityLiving;
@@ -97,10 +98,10 @@ public class ItemCompositeBow extends ItemBow {
                 float velocity = getArrowVelocity(itemstack, i);
 
                 if ((double) velocity >= 0.1D) {
-                    boolean flag1 = player.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow ? ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, player) : false);
+                    boolean flag1 = player.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, player));
 
                     if (!worldIn.isRemote) {
-                        ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
+                        ItemArrow itemarrow = itemstack.getItem() instanceof ItemArrow ? (ItemArrow) itemstack.getItem() : (ItemArrow) Items.ARROW;
                         EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, player);
                         entityarrow.setAim(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
 
@@ -132,7 +133,7 @@ public class ItemCompositeBow extends ItemBow {
                         worldIn.spawnEntityInWorld(entityarrow);
                     }
 
-                    worldIn.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+                    worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
                     if (!flag1) {
                         --itemstack.stackSize;

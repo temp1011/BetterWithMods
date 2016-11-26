@@ -39,10 +39,10 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public short filterType;
     public boolean outputBlocked;
     public byte power;
+    public int soulsRetained;
     private int ejectCounter;
     private int containedXP;
     private int xpDropDelay;
-    public int soulsRetained;
     private String filter;
 
     public TileEntityFilteredHopper() {
@@ -218,7 +218,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private boolean canFilterProcessItem(ItemStack stack) {
         if (this.filterType > 0) {
-            if(HopperFilters.getAllowedItems(filterType) != null)
+            if (HopperFilters.getAllowedItems(filterType) != null)
                 return HopperFilters.getAllowedItems(filterType).test(stack);
         }
         return true;
@@ -250,11 +250,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             boolean flag = false;
             for (EntityItem item : items) {
                 ItemStack stack = item.getEntityItem();
-                if(HopperInteractions.attemptToCraft(filterType(),worldObj,getPos(),item))
-                    this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (HopperInteractions.attemptToCraft(filterType(), worldObj, getPos(), item))
+                    this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (this.canFilterProcessItem(stack)) {
                     flag = putDropInInventoryAllSlots(inventory, item) || flag;
-                    this.worldObj.playSound((EntityPlayer)null, pos.getX(), pos.getY(),pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    this.worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
 
             }

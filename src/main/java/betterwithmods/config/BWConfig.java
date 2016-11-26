@@ -108,9 +108,9 @@ public class BWConfig {
                 "The speed at which the pulley rope and platform moves up");
         downSpeed = config.getFloat("Vertical speed down", PULLEY, 0.1F, 0.0F, 1.0F,
                 "The speed at which the pulley rope and platform moves down");
-        canKilnSmeltOres = config.getBoolean("Can Kiln Smelt Ores",Configuration.CATEGORY_GENERAL,true,"Allows Ores to be smelted in the kiln");
-        axeOnLeaves = config.getBoolean("Axes Effective On Leaves",Configuration.CATEGORY_GENERAL,true,"Makes axes quickly break leaves.");
-        lensRange = config.getInt("Lens Horizontal Range",Configuration.CATEGORY_GENERAL, 256, 32,256,"Range that lens light will travel");
+        canKilnSmeltOres = config.getBoolean("Can Kiln Smelt Ores", Configuration.CATEGORY_GENERAL, true, "Allows Ores to be smelted in the kiln");
+        axeOnLeaves = config.getBoolean("Axes Effective On Leaves", Configuration.CATEGORY_GENERAL, true, "Makes axes quickly break leaves.");
+        lensRange = config.getInt("Lens Horizontal Range", Configuration.CATEGORY_GENERAL, 256, 32, 256, "Range that lens light will travel");
         rawEggDrop = config.get(VANILLA_TWEAKS, "Eggs Drop Raw Egg When Thrown", true).getBoolean();
         hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to craft. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
         dropsHempSeeds = config.getBoolean("Drop Hemp Seeds",MODPACK_TWEAKS,true,"Tall Grass Drops Hemp Seeds");

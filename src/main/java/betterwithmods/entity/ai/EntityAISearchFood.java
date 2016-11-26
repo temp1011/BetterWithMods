@@ -127,16 +127,14 @@ public class EntityAISearchFood extends EntityAIBase {
                 if (entity.getGrowingAge() == 0 && !entity.isInLove()) {
                     bred = true;
                     entity.setInLove(null);
-                }
-                else if (entity.isChild()) {
+                } else if (entity.isChild()) {
                     bred = true;
-                    entity.ageUp((int)((float)(-entity.getGrowingAge() / 20) * 0.1F), true);
+                    entity.ageUp((int) ((float) (-entity.getGrowingAge() / 20) * 0.1F), true);
                 }
             }
             if (!bred) {
                 targetItem.getEntityItem().stackSize += 1;
-            }
-            else if (targetItem.getEntityItem().stackSize < 1) {
+            } else if (targetItem.getEntityItem().stackSize < 1) {
                 targetItem.setDead();
             }
         }

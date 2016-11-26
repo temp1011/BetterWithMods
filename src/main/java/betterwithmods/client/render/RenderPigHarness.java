@@ -15,16 +15,16 @@ import net.minecraft.util.ResourceLocation;
  * @version 11/15/16
  */
 public class RenderPigHarness extends RenderPig {
-    private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID,"textures/entity/pig_harness.png");
+    private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID, "textures/entity/pig_harness.png");
 
 
     public RenderPigHarness(RenderManager renderManagerIn) {
-        super(renderManagerIn, new ModelPig(),0.7f);
+        super(renderManagerIn, new ModelPig(), 0.7f);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityPig entity) {
-        if(MobAIEvent.getHarness(entity) != null)
+        if (MobAIEvent.getHarness(entity) != null)
             return HARNESS;
         return super.getEntityTexture(entity);
     }

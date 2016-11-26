@@ -17,19 +17,22 @@ import java.util.List;
  */
 public class HopperRecipeWrapper extends BlankRecipeWrapper {
 
-    private ItemStack input, filter;
-    private List<ItemStack> outputs;
+    private final ItemStack input;
+    private final ItemStack filter;
+    private final List<ItemStack> outputs;
+
     public HopperRecipeWrapper(HopperInteractions.HopperRecipe recipe) {
         this.input = recipe.getInput();
 
         this.outputs = Lists.newArrayList(recipe.getOutput());
-        if(!recipe.getSecondaryOutput().isEmpty())
+        if (!recipe.getSecondaryOutput().isEmpty())
             this.outputs.addAll(recipe.getSecondaryOutput());
         this.filter = HopperFilters.getFilter(recipe.getFilterType());
     }
+
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, Lists.newArrayList(filter,input));
+        ingredients.setInputs(ItemStack.class, Lists.newArrayList(filter, input));
         ingredients.setOutputs(ItemStack.class, outputs);
     }
 }

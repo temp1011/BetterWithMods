@@ -16,7 +16,6 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
     private int occupiedStacks;
 
 
-
     @Override
     public void renderTileEntityAt(TileEntityFilteredHopper tile, double x, double y, double z, float partialTicks, int destroyStage) {
         if (tile != null) {

@@ -15,13 +15,7 @@ import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
 import com.google.common.collect.HashBiMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockTorch;
+import net.minecraft.block.*;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -68,14 +62,15 @@ public class BWRegistry {
 
         HopperFilters.filters = HashBiMap.create();
         HopperFilters.filters = HashBiMap.create();
-        HopperFilters.addFilter(1,Blocks.LADDER,0, stack -> isNotBlock(stack));
-        HopperFilters.addFilter(2,Blocks.TRAPDOOR,0, stack -> isNarrow(stack) || isParticulate(stack));
+        HopperFilters.addFilter(1, Blocks.LADDER, 0, BWRegistry::isNotBlock);
+        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> isNarrow(stack) || isParticulate(stack));
         HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> isNarrow(stack) || isFlat(stack) || isParticulate(stack));
         HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, stack -> isParticulate(stack) || isFlat(stack));
-        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), stack -> isParticulate(stack));
-        HopperFilters.addFilter(6,Blocks.SOUL_SAND,0, stack -> false);
-        HopperFilters.addFilter(7,Blocks.IRON_BARS,0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1);
+        HopperFilters.addFilter(5, BWMBlocks.PANE, BlockBWMPane.EnumPaneType.WICKER.getMeta(), BWRegistry::isParticulate);
+        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> false);
+        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> isNotBlock(stack) && stack.getMaxStackSize() > 1);
     }
+
     public static void registerBlockDispenserBehavior() {
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(BWMItems.DYNAMITE, new DispenserBehaviorDynamite());
         if (BWConfig.hardcoreBuckets) {
@@ -115,6 +110,7 @@ public class BWRegistry {
                     return stack;
                 });
     }
+
     /**
      * Registers an entity for this mod. Handles automatic available ID
      * assignment.
@@ -274,9 +270,9 @@ public class BWRegistry {
 
     private static boolean isNotBlock(ItemStack stack) {
         Item item = stack.getItem();
-        if(item instanceof ItemBlock) {
+        if (item instanceof ItemBlock) {
             Block block = ((ItemBlock) item).getBlock();
-            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack,"treeSapling");
+            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || InvUtils.isOre(stack, "treeSapling");
         }
         return true;
     }

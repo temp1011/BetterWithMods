@@ -11,21 +11,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class SaveSoupEvent {
     @SubscribeEvent
-    public void saveSoup(LivingEntityUseItemEvent.Finish event)
-    {
-        if(event.getItem() != null)
-        {
-            if(event.getItem().getItem() instanceof ItemSoup)
-            {
-                if(event.getItem().stackSize > 0)
-                {
+    public void saveSoup(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem() != null) {
+            if (event.getItem().getItem() instanceof ItemSoup) {
+                if (event.getItem().stackSize > 0) {
                     ItemStack result = event.getResultStack();
                     event.setResultStack(event.getItem());
-                    if(event.getEntityLiving() instanceof EntityPlayer)
-                    {
+                    if (event.getEntityLiving() instanceof EntityPlayer) {
                         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-                        if (!player.inventory.addItemStackToInventory(result))
-                        {
+                        if (!player.inventory.addItemStackToInventory(result)) {
                             player.dropItem(result, false);
                         }
                     }

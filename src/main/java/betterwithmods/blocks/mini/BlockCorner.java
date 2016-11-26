@@ -36,9 +36,10 @@ public class BlockCorner extends BlockMini {
     public int getMaxOrientation() {
         return 7;
     }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
-        return rotate(world,pos,state,player,ORIENTATION);
+        return rotate(world, pos, state, player, ORIENTATION);
     }
 
     @Override

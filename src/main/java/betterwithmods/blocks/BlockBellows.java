@@ -47,6 +47,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     public int tickRate(World world) {
         return 37;
     }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {//TODO: Maybe make this try to work with items that don't have a use action?
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND) == null && player.getHeldItem(EnumHand.OFF_HAND) == null && player.isSneaking();
@@ -62,6 +63,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         }
         return false;
     }
+
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return state.getBlock() == this && !state.getValue(ACTIVE);
@@ -265,7 +267,7 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
         BlockPos down = pos.down();
         if (world.getBlockState(down).getBlock() == BWMBlocks.HIBACHI) {
             int flag = (world.getBlockState(pos).getBlock() == BWMBlocks.STOKED_FLAME) ? 4 : 3;
-            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState(),flag);
+            world.setBlockState(pos, BWMBlocks.STOKED_FLAME.getDefaultState(), flag);
         } else
             world.setBlockToAir(pos);
     }

@@ -69,6 +69,7 @@ public class InvUtils {
     public static boolean isOre(ItemStack stack, String ore) {
         return InvUtils.listContains(stack, OreDictionary.getOres(ore));
     }
+
     public static boolean listContains(ItemStack check, List<ItemStack> list) {
         if (list != null) {
             if (list.isEmpty()) return false;

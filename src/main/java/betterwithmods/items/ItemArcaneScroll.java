@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,11 +24,10 @@ public class ItemArcaneScroll extends Item {
 
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for(Iterator<Enchantment> iter = Enchantment.REGISTRY.iterator();iter.hasNext();) {
-            Enchantment enchantment = iter.next();
+        for (Enchantment enchantment : Enchantment.REGISTRY) {
             ItemStack stack = new ItemStack(this);
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("enchant",Enchantment.getEnchantmentID(enchantment));
+            tag.setInteger("enchant", Enchantment.getEnchantmentID(enchantment));
             stack.setTagCompound(tag);
             subItems.add(stack);
         }
@@ -48,10 +46,12 @@ public class ItemArcaneScroll extends Item {
     /**
      * Return an item rarity from EnumRarity
      */
+    @Override
     public EnumRarity getRarity(ItemStack stack) {
-       return EnumRarity.UNCOMMON;
+        return EnumRarity.UNCOMMON;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         int id = stack.getTagCompound() != null ? stack.getTagCompound().getInteger("enchant") : 0;

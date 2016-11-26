@@ -82,16 +82,6 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     }
 
     @Override
-    public int getMaximumSoulIntake(IBlockState state) {
-        int meta = state.getValue(TYPE).getMeta();
-        if (meta < 8)
-            return 8 - meta;
-        else if (meta == 9)
-            return 64;
-        return 0;
-    }
-
-    @Override
     public int processSouls(World world, BlockPos pos, int souls) {
         return Math.min(getMaximumSoulIntake(world, pos), souls);
     }
@@ -148,9 +138,9 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(item,1,0));
-        list.add(new ItemStack(item,1,8));
-        list.add(new ItemStack(item,1,9));
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 8));
+        list.add(new ItemStack(item, 1, 9));
     }
 
     @Override

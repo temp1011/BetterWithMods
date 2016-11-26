@@ -26,22 +26,12 @@ import java.util.List;
  * @version 11/13/16
  */
 public class HopperInteractions {
-    public static ArrayList<HopperRecipe> recipes = new ArrayList<>();
-
-    public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
-        for (HopperRecipe recipe : recipes) {
-            if (recipe.isRecipe(filterType, input)) {
-                recipe.craft(input, world, pos);
-                return true;
-            }
-        }
-        return false;
-    }
+    public static final ArrayList<HopperRecipe> recipes = new ArrayList<>();
 
     static {
         recipes.add(new SoulUrn(ItemMaterial.getMaterial("ground_netherrack"), ItemMaterial.getMaterial("hellfire_dust")));
         recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"), ItemMaterial.getMaterial("sawdust")));
-        recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND),new ItemStack(Blocks.SAND,1,1)) {
+        recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
@@ -59,7 +49,7 @@ public class HopperInteractions {
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 int stackSize = hopper.soulsRetained;
-                if(stackSize > item.getEntityItem().stackSize)
+                if (stackSize > item.getEntityItem().stackSize)
                     stackSize = item.getEntityItem().stackSize;
                 hopper.soulsRetained -= stackSize;
                 item.getEntityItem().stackSize -= stackSize;
@@ -74,9 +64,19 @@ public class HopperInteractions {
         });
     }
 
+    public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
+        for (HopperRecipe recipe : recipes) {
+            if (recipe.isRecipe(filterType, input)) {
+                recipe.craft(input, world, pos);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static class SoulUrn extends HopperRecipe {
         public SoulUrn(ItemStack input, ItemStack output) {
-            super(6, input, output, new ItemStack(BWMBlocks.URN,1,8));
+            super(6, input, output, new ItemStack(BWMBlocks.URN, 1, 8));
         }
 
         @Override
@@ -96,10 +96,10 @@ public class HopperInteractions {
     }
 
     public static abstract class HopperRecipe {
-        private int filterType;
-        ItemStack input;
-        ItemStack output;
-        List<ItemStack> secondaryOutput;
+        final ItemStack input;
+        final ItemStack output;
+        final List<ItemStack> secondaryOutput;
+        private final int filterType;
 
         public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
             this.filterType = filterType;
@@ -126,10 +126,9 @@ public class HopperInteractions {
             onCraft(world, pos, inputStack);
         }
 
-        public void onCraft(World world, BlockPos pos, EntityItem item)
-        {
+        public void onCraft(World world, BlockPos pos, EntityItem item) {
             item.getEntityItem().stackSize--;
-            if(item.getEntityItem().stackSize <= 0)
+            if (item.getEntityItem().stackSize <= 0)
                 item.setDead();
         }
 

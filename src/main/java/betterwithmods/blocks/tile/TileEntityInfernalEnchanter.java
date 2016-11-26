@@ -16,16 +16,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by tyler on 9/11/16.
  */
 public class TileEntityInfernalEnchanter extends TileEntity implements ITickable {
+    private final static int RADIUS = 8;
     private int bookcaseCount;
-    private final int radius = 8;
+
     @Override
     public void update() {
 
-        if(worldObj.getTotalWorldTime()%20==0) {
+        if (worldObj.getTotalWorldTime() % 20 == 0) {
             bookcaseCount = 0;
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
+            for (int x = -RADIUS; x <= RADIUS; x++) {
+                for (int y = -RADIUS; y <= RADIUS; y++) {
+                    for (int z = -RADIUS; z <= RADIUS; z++) {
                         BlockPos pos = getPos().add(x, y, z);
                         bookcaseCount += (ForgeHooks.getEnchantPower(worldObj, pos) > 0) ? 1 : 0;
                     }
@@ -37,7 +38,7 @@ public class TileEntityInfernalEnchanter extends TileEntity implements ITickable
             // bookcase * item.enchants + 1
 
         }
-        if(worldObj.getTotalWorldTime()%5==0) {
+        if (worldObj.getTotalWorldTime() % 5 == 0) {
             int x = pos.getX(), y = pos.getY(), z = pos.getZ();
             worldObj.spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .125, 0, 0, 0);
             worldObj.spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .125, 0, 0, 0);
@@ -57,7 +58,7 @@ public class TileEntityInfernalEnchanter extends TileEntity implements ITickable
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("bookcaseCount",bookcaseCount);
+        compound.setInteger("bookcaseCount", bookcaseCount);
         return super.writeToNBT(compound);
     }
 

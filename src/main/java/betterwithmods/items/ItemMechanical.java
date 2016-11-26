@@ -105,7 +105,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
                 BlockPos checkPos = new BlockPos(xPos, yPos, zPos);
 
                 if (yPos == y - radius && isWheel) {
-                    valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) &&  !isNearMechMachine(world, checkPos, axis);
+                    valid = (world.isAirBlock(checkPos) || world.isMaterialInBB(new AxisAlignedBB(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.WATER)) && !isNearMechMachine(world, checkPos, axis);
                 } else if (xP == 0 && yPos == y && zP == 0)
                     continue;
                 else {
@@ -124,11 +124,11 @@ public class ItemMechanical extends Item implements IMultiLocations {
     }
 
     private boolean isNearMechMachine(World world, BlockPos pos, EnumFacing.Axis axis) {
-        for(int i = -3; i < 4; i++) {
+        for (int i = -3; i < 4; i++) {
             int xP = axis == EnumFacing.Axis.X ? i : 0;
             int zP = axis == EnumFacing.Axis.Z ? i : 0;
             BlockPos check = pos.add(xP, 0, zP);
-            if(world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
+            if (world.getBlockState(check).getBlock() instanceof BlockMillGenerator) {
                 return true;
             }
         }
@@ -233,7 +233,7 @@ public class ItemMechanical extends Item implements IMultiLocations {
         return true;
     }
 
-    private boolean vertCheck (World world, BlockPos pos, EnumFacing.Axis axis, boolean negative) {
+    private boolean vertCheck(World world, BlockPos pos, EnumFacing.Axis axis, boolean negative) {
         for (int i = 0; i < 4; i++) {
             int xP = axis == EnumFacing.Axis.X ? i : 0;
             int zP = axis == EnumFacing.Axis.Z ? i : 0;

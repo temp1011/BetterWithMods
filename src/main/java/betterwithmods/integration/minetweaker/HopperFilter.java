@@ -28,15 +28,15 @@ public class HopperFilter {
     @ZenMethod
     public static void add(IItemStack filter, IIngredient[] allowed) {
         //in toStacks converts IIngredient[] to IItemStack[], outer toStacks converts IItemStack[] to ItemStack[]
-        Set<ItemStack> set = Sets.<ItemStack>newHashSet(toStacks(toStacks(allowed)));
+        Set<ItemStack> set = Sets.newHashSet(toStacks(toStacks(allowed)));
         MineTweakerAPI.apply(new HopperFilter.Add(toStack(filter), set));
     }
 
     public static class Add extends BaseMultiModification {
         protected Add(ItemStack filter, Set<ItemStack> allowed) {
             super("hopperfilter");
-            BWMod.logger.info("hopper:"+allowed);
-            HopperFilters.addFilter(filter,allowed);
+            BWMod.logger.info("hopper:" + allowed);
+            HopperFilters.addFilter(filter, allowed);
         }
 
         @Override

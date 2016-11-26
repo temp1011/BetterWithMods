@@ -54,8 +54,8 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         t.setByte("RunningState", runningState);
         t.setFloat("CurrentRotation", currentRotation);
         t.setFloat("RotationSpeed", previousRotation);
-        if(facing != null)
-            t.setByte("Facing", (byte)facing.ordinal());
+        if (facing != null)
+            t.setByte("Facing", (byte) facing.ordinal());
         return t;
     }
 
@@ -69,7 +69,7 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
 
     @Override
     public void update() {
-        if(facing == null) {
+        if (facing == null) {
             facing = ((BlockMillGenerator) worldObj.getBlockState(pos).getBlock()).getAxleDirectionFromState(worldObj.getBlockState(pos));
         }
         if (this.runningState != 0) {
@@ -92,17 +92,17 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         }
     }
 
+    public EnumFacing getOrientation() {
+        return facing;
+    }
+
     public void setOrientation(EnumFacing facing) {
         if (facing != null) {
-            if(facing.getAxisDirection() != EnumFacing.AxisDirection.POSITIVE)
+            if (facing.getAxisDirection() != EnumFacing.AxisDirection.POSITIVE)
                 this.facing = facing.getOpposite();
             else
                 this.facing = facing;
         }
-    }
-
-    public EnumFacing getOrientation() {
-        return facing;
     }
 
     public abstract void updateSpeed();

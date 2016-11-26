@@ -15,15 +15,15 @@ import net.minecraft.util.ResourceLocation;
  * @version 11/15/16
  */
 public class RenderSheepHarness extends RenderSheep {
-    private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID,"textures/entity/sheep_harness.png");
+    private static final ResourceLocation HARNESS = new ResourceLocation(BWMod.MODID, "textures/entity/sheep_harness.png");
 
     public RenderSheepHarness(RenderManager renderManagerIn) {
-        super(renderManagerIn, new ModelSheep2(),0.7f);
+        super(renderManagerIn, new ModelSheep2(), 0.7f);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntitySheep entity) {
-        if(MobAIEvent.getHarness(entity) != null)
+        if (MobAIEvent.getHarness(entity) != null)
             return HARNESS;
         return super.getEntityTexture(entity);
     }

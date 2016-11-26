@@ -23,10 +23,11 @@ import javax.annotation.Nullable;
  * Created by tyler on 9/11/16.
  */
 public class ContainerInfernalEnchanter extends Container {
-    private TileEntityInfernalEnchanter tile;
-    private ItemStackHandler handler;
     public int[] enchantLevels;
     public int xpSeed;
+    private TileEntityInfernalEnchanter tile;
+    private ItemStackHandler handler;
+
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
@@ -54,11 +55,12 @@ public class ContainerInfernalEnchanter extends Container {
     }
 
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
         if (id > 0 && id < 3) {
             enchantLevels[id] = data;
-        } else if( id == 3) {
+        } else if (id == 3) {
             xpSeed = data;
         }
     }
@@ -66,8 +68,8 @@ public class ContainerInfernalEnchanter extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icontainerlistener = (IContainerListener) this.listeners.get(i);
+        for (IContainerListener listener : this.listeners) {
+            IContainerListener icontainerlistener = listener;
             this.broadcastData(icontainerlistener);
         }
     }
@@ -104,18 +106,19 @@ public class ContainerInfernalEnchanter extends Container {
 
         }
         for (int i = 1; i <= enchantLevels.length; i++) {
-            if(enchantment == null || i > enchantment.getMaxLevel())
-                enchantLevels[i-1] = 0;
+            if (enchantment == null || i > enchantment.getMaxLevel())
+                enchantLevels[i - 1] = 0;
             else
-                enchantLevels[i-1] = (int) Math.ceil(30 / Math.min(enchantLevels.length, enchantment.getMaxLevel())) * i * enchantCount;
+                enchantLevels[i - 1] = (int) Math.ceil(30 / Math.min(enchantLevels.length, enchantment.getMaxLevel())) * i * enchantCount;
         }
         detectAndSendChanges();
     }
 
+    @Override
     @Nullable
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack previous = null;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack current = slot.getStack();
@@ -138,7 +141,7 @@ public class ContainerInfernalEnchanter extends Container {
             }
 
             if (current.stackSize == 0)
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
             else
                 slot.onSlotChanged();
 

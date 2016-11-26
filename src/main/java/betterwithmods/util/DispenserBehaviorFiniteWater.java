@@ -21,6 +21,7 @@ public class DispenserBehaviorFiniteWater extends BehaviorDefaultDispenseItem {
     /**
      * Dispense the specified stack, play the dispense sound and spawn particles.
      */
+    @Override
     public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
         if (FluidUtil.getFluidContained(stack) != null) {
             return dumpContainer(source, stack);

@@ -60,6 +60,7 @@ public class EntityMiningCharge extends Entity {
         setNoGravity(true);
     }
 
+    @Override
     protected void entityInit() {
         this.dataManager.register(FUSE, 80);
         this.dataManager.register(FACING, EnumFacing.NORTH.getIndex());
@@ -69,6 +70,7 @@ public class EntityMiningCharge extends Entity {
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
+    @Override
     protected boolean canTriggerWalking() {
         return false;
     }
@@ -76,6 +78,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
+    @Override
     public boolean canBeCollidedWith() {
         return !this.isDead;
     }
@@ -83,6 +86,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -157,6 +161,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
         compound.setShort("Fuse", (short) this.getFuse());
         compound.setByte("Facing", (byte) this.getFacing().getIndex());
@@ -165,6 +170,7 @@ public class EntityMiningCharge extends Entity {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
         this.setFuse(compound.getShort("Fuse"));
         this.setFacing(compound.getByte("Facing"));
@@ -177,10 +183,12 @@ public class EntityMiningCharge extends Entity {
         return this.igniter;
     }
 
+    @Override
     public float getEyeHeight() {
         return 0.0F;
     }
 
+    @Override
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (FUSE.equals(key)) {
             this.fuse = this.getFuseDM();

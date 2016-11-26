@@ -23,15 +23,14 @@ import javax.annotation.Nullable;
 /**
  * Created by tyler on 9/11/16.
  */
-public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvider{
-    public BlockInfernalEnchanter()
-    {
+public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvider {
+    public BlockInfernalEnchanter() {
         super(Material.IRON);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0,0,0,1,0.5d,1);
+        return new AxisAlignedBB(0, 0, 0, 1, 0.5d, 1);
     }
 
     @Override
@@ -58,9 +57,9 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        worldIn.playSound(null,pos, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS,1,1);
-        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        worldIn.playSound(null, pos, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS, 1, 1);
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package betterwithmods.blocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.BWSounds;
 import betterwithmods.api.block.IAxle;
 import betterwithmods.api.block.IMechanical;
@@ -17,11 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -230,7 +227,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
 
     public void breakGearbox(World world, BlockPos pos) {
         if (BWConfig.dropsGearbox)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/gearbox"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/gearbox"));
         /*
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.PLANKS));
 		InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 3, 22));

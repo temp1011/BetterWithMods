@@ -70,7 +70,7 @@ public class NetherSpawnEvent {
     @SubscribeEvent
     public void generateMossNearSpawner(TickEvent.WorldTickEvent evt) {
         List<BlockPos> positions = evt.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
-        positions.forEach( pos -> {
+        positions.forEach(pos -> {
             int x = rand.nextInt(9) - 4;
             int y = rand.nextInt(5) - 1;
             int z = rand.nextInt(9) - 4;

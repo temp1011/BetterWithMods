@@ -320,28 +320,28 @@ public class BlockMechMachines extends BWMBlock implements IMechanicalBlock, ITi
 
     private void breakMill(World world, BlockPos pos) {
         if (BWConfig.dropsMill)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/mill"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/mill"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakPulley(World world, BlockPos pos) {
         if (BWConfig.dropsPulley)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/pulley"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/pulley"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     public void breakHopper(World world, BlockPos pos) {
         if (BWConfig.dropsHopper)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/hopper"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/hopper"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }
 
     private void breakTurntable(World world, BlockPos pos) {
         if (BWConfig.dropsTurntable)
-            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation("betterwithmods", "block/turntable"));
+            InvUtils.ejectBrokenItems(world, pos, new ResourceLocation(BWMod.MODID, "block/turntable"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F, world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);
     }

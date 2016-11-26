@@ -19,7 +19,7 @@ import net.minecraft.util.registry.RegistryDefaulted;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -37,6 +37,27 @@ public class BucketEvent {
         }
     }
 
+    private static boolean isFluidContainer(ItemStack stack) {
+        return stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+    }
+
+    private static int getCapacity(ItemStack stack) {
+        ItemStack copy = stack.copy();
+        if (FluidUtil.getFluidHandler(copy) != null) {
+            net.minecraftforge.fluids.capability.IFluidHandler handler = FluidUtil.getFluidHandler(copy);
+            handler.drain(Integer.MAX_VALUE, true);
+            return handler.fill(new FluidStack(FluidRegistry.WATER, Integer.MAX_VALUE), true);
+        }
+        return 0;
+    }
+
+    private static boolean containsWater(ItemStack stack) {
+        if (isFluidContainer(stack)) {
+            if (FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == FluidRegistry.WATER)
+                return true;
+        }
+        return false;
+    }
 
     @SubscribeEvent
     public void fluidContainerUse(PlayerInteractEvent.RightClickBlock evt) {
@@ -142,31 +163,5 @@ public class BucketEvent {
                 }
             }
         }
-    }
-
-    private static boolean isFluidContainer(ItemStack stack) {
-        if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null))
-                return true;
-        return false;
-    }
-
-    private static int getCapacity(ItemStack stack)
-    {
-        ItemStack copy = stack.copy();
-        if(FluidUtil.getFluidHandler(copy) != null)
-        {
-            net.minecraftforge.fluids.capability.IFluidHandler handler = FluidUtil.getFluidHandler(copy);
-            handler.drain(Integer.MAX_VALUE, true);
-            return handler.fill(new FluidStack(FluidRegistry.WATER, Integer.MAX_VALUE), true);
-        }
-        return 0;
-    }
-
-    private static boolean containsWater(ItemStack stack) {
-        if (isFluidContainer(stack)) {
-            if (FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == FluidRegistry.WATER)
-                return true;
-        }
-        return false;
     }
 }

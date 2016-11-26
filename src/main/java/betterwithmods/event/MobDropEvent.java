@@ -13,11 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntityWolf;
@@ -139,13 +135,14 @@ public class MobDropEvent {
         }
         return false;
     }
+
     private boolean isBattleAxe(EntityLivingBase entity) {
         DamageSource source = entity.getLastDamageSource();
-        if(source != null && source.getSourceOfDamage() != null) {
+        if (source != null && source.getSourceOfDamage() != null) {
             Entity e = source.getSourceOfDamage();
-            if(e instanceof EntityLivingBase) {
+            if (e instanceof EntityLivingBase) {
                 ItemStack held = ((EntityLivingBase) e).getHeldItemMainhand();
-                if(held != null && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
+                if (held != null && held.isItemEqual(new ItemStack(BWMItems.STEEL_BATTLEAXE))) {
                     return true;
                 }
             }

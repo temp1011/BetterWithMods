@@ -58,29 +58,28 @@ public class HopperRecipeCategory extends BlankRecipeCategory<HopperRecipeWrappe
     @Override
     public void drawExtras(Minecraft minecraft) {
         int l = minecraft.fontRendererObj.getStringWidth("Throw");
-        minecraft.fontRendererObj.drawString("Throw",width/2-l+5,-11,0x808080);
-        minecraft.fontRendererObj.drawString("Filter",width/2-50,16,0x808080);
-        minecraft.fontRendererObj.drawString("Outputs",width/2+10,-11,0x808080);
+        minecraft.fontRendererObj.drawString("Throw", width / 2 - l + 5, -11, 0x808080);
+        minecraft.fontRendererObj.drawString("Filter", width / 2 - 50, 16, 0x808080);
+        minecraft.fontRendererObj.drawString("Outputs", width / 2 + 10, -11, 0x808080);
     }
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull HopperRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
-        int x = width/2-18, y = 0;
+        int x = width / 2 - 18, y = 0;
 
-        guiItemStacks.init(0,true,x-27,y+27); //filter
-        guiItemStacks.init(1,true,x,y); //input item
+        guiItemStacks.init(0, true, x - 27, y + 27); //filter
+        guiItemStacks.init(1, true, x, y); //input item
 
-        guiItemStacks.init(2,false,x+28,y); //main output
+        guiItemStacks.init(2, false, x + 28, y); //main output
 
-        guiItemStacks.init(3,false,x+28,y+27); //inventory result
+        guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
 
-        guiItemStacks.init(4,false,x,y+27); //hopper
+        guiItemStacks.init(4, false, x, y + 27); //hopper
 
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3,ingredients.getOutputs(ItemStack.class).subList(1,3));
-        guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES,1,4));
-
+        guiItemStacks.set(3, ingredients.getOutputs(ItemStack.class).subList(1, 3));
+        guiItemStacks.set(4, new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 4));
 
 
     }

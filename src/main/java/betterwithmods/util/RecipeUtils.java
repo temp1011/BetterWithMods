@@ -22,12 +22,14 @@ import java.util.Map;
 public final class RecipeUtils {
     private RecipeUtils() {
     }
+
     public static IBlockState getStateFromStack(ItemStack stack) {
-        if(stack != null && stack.getItem() instanceof ItemBlock){
+        if (stack != null && stack.getItem() instanceof ItemBlock) {
             return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
         }
         return Blocks.AIR.getDefaultState();
     }
+
     /**
      * Remove all recipes.
      *

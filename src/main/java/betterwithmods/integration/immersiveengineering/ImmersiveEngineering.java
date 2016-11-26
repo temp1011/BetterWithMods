@@ -35,14 +35,15 @@ public class ImmersiveEngineering implements ICompatModule {
     public static final String MODID = "immersiveengineering";
 
     public static boolean overrideIndustrialHempDrops;
+
     @Override
     public void preInit() {
         BWMBlocks.registerBlock(TREATED_AXLE);
         GameRegistry.registerTileEntity(TileEntityImmersiveAxle.class, "bwm.immersive_axle");
         BWConfig.config.load();
-        overrideIndustrialHempDrops = BWConfig.config.getBoolean("Override Hemp Drop",BWConfig.MOD_COMPAT,true,"Replaces drop from IE Industrial Hemp with BWM Hemp");
+        overrideIndustrialHempDrops = BWConfig.config.getBoolean("Override Hemp Drop", BWConfig.MOD_COMPAT, true, "Replaces drop from IE Industrial Hemp with BWM Hemp");
         BWConfig.config.save();
-        if(overrideIndustrialHempDrops) {
+        if (overrideIndustrialHempDrops) {
             MinecraftForge.EVENT_BUS.register(this);
         }
     }
@@ -84,10 +85,10 @@ public class ImmersiveEngineering implements ICompatModule {
     @SubscribeEvent
     public void overrideHempDrops(BlockEvent.HarvestDropsEvent e) {
         IBlockState state = e.getState();
-        if(state.getBlock() instanceof BlockIECrop) {
+        if (state.getBlock() instanceof BlockIECrop) {
             e.getDrops().clear();
             int meta = state.getBlock().getMetaFromState(state);
-            if(meta >= 4) {
+            if (meta >= 4) {
                 e.getDrops().add(new ItemStack(IEContent.itemSeeds));
                 e.getDrops().add(ItemMaterial.getMaterial("hemp"));
             }

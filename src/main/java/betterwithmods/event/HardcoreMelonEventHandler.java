@@ -29,21 +29,20 @@ public class HardcoreMelonEventHandler {
     public void onNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
         if (!BWConfig.hardcoreMelons) return;
         World world = event.getWorld();
-        makeGourdFall(world,event.getPos());
-        makeGourdFall(world,event.getPos().up());
+        makeGourdFall(world, event.getPos());
+        makeGourdFall(world, event.getPos().up());
     }
 
-    private void makeGourdFall(World world, BlockPos pos)
-    {
+    private void makeGourdFall(World world, BlockPos pos) {
         IBlockState blockstate = world.getBlockState(pos);
         Block block = blockstate.getBlock();
         if (block instanceof BlockMelon || block instanceof BlockPumpkin) {
             BlockPos bottompos = pos.down();
             IBlockState bottomstate = world.getBlockState(bottompos);
-            if(world.isAirBlock(bottompos) || BlockFalling.canFallThrough(bottomstate)) {
+            if (world.isAirBlock(bottompos) || BlockFalling.canFallThrough(bottomstate)) {
                 if (!world.isRemote && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
-                    EntityFallingGourd entitygourd = new EntityFallingGourd(world, (double)pos.getX() + 0.5, pos.getY(), (double)pos.getZ() + 0.5, blockstate);
-                    if(block instanceof BlockPumpkin) entitygourd.setSeedStack(new ItemStack(Items.PUMPKIN_SEEDS));
+                    EntityFallingGourd entitygourd = new EntityFallingGourd(world, (double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5, blockstate);
+                    if (block instanceof BlockPumpkin) entitygourd.setSeedStack(new ItemStack(Items.PUMPKIN_SEEDS));
                     else entitygourd.setSeedStack(new ItemStack(Items.MELON_SEEDS));
                     world.spawnEntityInWorld(entitygourd);
                 }

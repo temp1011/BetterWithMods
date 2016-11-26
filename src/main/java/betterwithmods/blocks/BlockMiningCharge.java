@@ -101,6 +101,7 @@ public class BlockMiningCharge extends BWMBlock {
         return getDefaultState().withProperty(DirUtils.FACING, facing);
     }
 
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos)) {
@@ -109,6 +110,7 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
         if (worldIn.isBlockPowered(pos)) {
             this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
@@ -131,10 +133,12 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
+    @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         this.explode(worldIn, pos, state, null);
     }
 
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (heldItem != null && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
             this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
@@ -152,6 +156,7 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
+    @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote && entityIn instanceof EntityArrow) {
             EntityArrow entityarrow = (EntityArrow) entityIn;
@@ -162,16 +167,19 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
+    @Override
     public boolean canDropFromExplosion(Explosion explosionIn) {
         return false;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta) {
         boolean explode = (meta & 1) > 0;
         EnumFacing facing = EnumFacing.getFront(meta >> 1);
         return this.getDefaultState().withProperty(EXPLODE, explode).withProperty(DirUtils.FACING, facing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state) {
         int facing = state.getValue(DirUtils.FACING).getIndex() << 1;
         int explode = state.getValue(EXPLODE) ? 1 : 0;

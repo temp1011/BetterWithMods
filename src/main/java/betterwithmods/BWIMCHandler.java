@@ -2,12 +2,7 @@ package betterwithmods;
 
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.OreStack;
-import betterwithmods.craft.bulk.CraftingManagerBulk;
-import betterwithmods.craft.bulk.CraftingManagerCauldron;
-import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
-import betterwithmods.craft.bulk.CraftingManagerCrucible;
-import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
-import betterwithmods.craft.bulk.CraftingManagerMill;
+import betterwithmods.craft.bulk.*;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.util.NetherSpawnWhitelist;
 import com.google.common.collect.ImmutableList;

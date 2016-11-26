@@ -4,22 +4,8 @@ import betterwithmods.craft.HopperInteractions;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.craft.bulk.BulkRecipe;
-import betterwithmods.craft.bulk.CraftingManagerCauldron;
-import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
-import betterwithmods.craft.bulk.CraftingManagerCrucible;
-import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
-import betterwithmods.craft.bulk.CraftingManagerMill;
-import betterwithmods.integration.jei.wrapper.CauldronRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.CrucibleRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.KilnWrapper;
-import betterwithmods.integration.jei.wrapper.MillRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.SawWrapper;
-import betterwithmods.integration.jei.wrapper.SoulUrnWrapper;
-import betterwithmods.integration.jei.wrapper.StokedCauldronRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.StokedCrucibleRecipeWrapper;
-import betterwithmods.integration.jei.wrapper.TurntableRecipeWrapper;
+import betterwithmods.craft.bulk.*;
+import betterwithmods.integration.jei.wrapper.*;
 import mezz.jei.api.IJeiHelpers;
 
 import java.util.ArrayList;
@@ -28,17 +14,19 @@ import java.util.stream.Collectors;
 
 public class JEIRecipeRegistry {
     public static List<HopperRecipeWrapper> getHopperRecipes() {
-       return HopperInteractions.recipes.stream().map(recipe -> recipe instanceof HopperInteractions.SoulUrn ? new SoulUrnWrapper((HopperInteractions.SoulUrn) recipe) : new HopperRecipeWrapper(recipe)).collect(Collectors.toList());
+        return HopperInteractions.recipes.stream().map(recipe -> recipe instanceof HopperInteractions.SoulUrn ? new SoulUrnWrapper((HopperInteractions.SoulUrn) recipe) : new HopperRecipeWrapper(recipe)).collect(Collectors.toList());
     }
+
     public static List<TurntableRecipeWrapper> getTurntableRecipes() {
         return TurntableInteraction.INSTANCE.getRecipes().stream().map(recipe -> new TurntableRecipeWrapper((TurntableInteraction.TurntableRecipe) recipe)).collect(Collectors.toList());
     }
+
     public static List<KilnWrapper> getKilnRecipes() {
-        return KilnInteraction.INSTANCE.getRecipes().stream().map(recipe -> new KilnWrapper(recipe)).collect(Collectors.toList());
+        return KilnInteraction.INSTANCE.getRecipes().stream().map(KilnWrapper::new).collect(Collectors.toList());
     }
 
     public static List<SawWrapper> getSawRecipes() {
-        return SawInteraction.INSTANCE.getRecipes().stream().map(recipe -> new SawWrapper(recipe)).collect(Collectors.toList());
+        return SawInteraction.INSTANCE.getRecipes().stream().map(SawWrapper::new).collect(Collectors.toList());
     }
 
     public static List<CauldronRecipeWrapper> getCauldronRecipes(IJeiHelpers helper) {
