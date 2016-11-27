@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.BWSounds;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -146,8 +147,10 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);// world.markBlockForUpdate(pos);
 
                 if (gettingPower) {
+                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.7F, world.rand.nextFloat() * 0.25F + 2.5F);
                     blow(world, pos);
                 } else
+                    world.playSound(null, pos, BWSounds.BELLOW, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.25F + 2.5F);
                     liftCollidingEntities(world, pos);
             } else {
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);

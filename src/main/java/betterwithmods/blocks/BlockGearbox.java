@@ -89,9 +89,10 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         if (isOn != gettingPower) {
             if (isOn)
                 setGearboxState(world, pos, false);
-            else
+            else {
                 setGearboxState(world, pos, true);
-            world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F);
+                world.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.25F);
+            }
         }
     }
 
@@ -244,7 +245,7 @@ public class BlockGearbox extends BWMBlock implements IMechanicalBlock, IMechani
         if (state.getValue(ISACTIVE)) {
             emitGearboxParticles(world, pos, rand);
             if (rand.nextInt(50) == 0)
-                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, world.rand.nextFloat() * 0.25F + 0.25F, false);
+                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F, false);
         }
     }
 

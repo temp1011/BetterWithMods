@@ -76,7 +76,7 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
             this.previousRotation = (this.runningState > 1 ? this.runningSpeed * 5 : this.runningSpeed) * this.waterMod;//this.currentRotation;
             this.currentRotation += (this.runningState > 1 ? 5 : this.runningState) * this.runningSpeed * this.waterMod;
             if (this.worldObj.rand.nextInt(100) == 0)
-                this.worldObj.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.75F, worldObj.rand.nextFloat() * 0.25F + 0.25F);
+                this.worldObj.playSound(null, pos, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, worldObj.rand.nextFloat() * 0.25F + 0.25F);
         }
         if (this.currentRotation >= 360.0F)
             this.currentRotation -= 360.0F;
