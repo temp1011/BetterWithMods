@@ -31,7 +31,7 @@ public class InvUtils {
         cropNames = getOreNames("crop");
     }
 
-    private static ArrayList<ItemStack> getOreNames(String prefix) {
+    public static ArrayList<ItemStack> getOreNames(String prefix) {
         ArrayList<ItemStack> list = new ArrayList<>();
         String[] var2 = OreDictionary.getOreNames();
         for (String name : var2) {

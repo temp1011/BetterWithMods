@@ -242,7 +242,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing dir, IPlantable plant) {
         BlockPos up = pos.up();
         EnumPlantType plantType = plant.getPlantType(world, up);
-        return world.getBlockState(pos).getValue(TYPE).isType(plantType);
+        return dir == EnumFacing.UP && world.getBlockState(pos).getValue(TYPE).isType(plantType);
     }
 
     @Override
