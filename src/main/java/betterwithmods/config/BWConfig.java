@@ -57,6 +57,7 @@ public class BWConfig {
     public static boolean hardcoreDiamonds;
     public static boolean dropsHempSeeds;
     public static boolean hardcoreLavaBuckets;
+    public static boolean hardcoreEndermen;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -116,7 +117,7 @@ public class BWConfig {
         hardcoreDiamonds = config.get(HARDCORE, "Require Diamond Ingots", true, "Diamond tools and armor require diamond ingots to craft. Allows diamond tools and armor to be recycled in a crucible").setRequiresMcRestart(true).getBoolean();
         dropsHempSeeds = config.getBoolean("Drop Hemp Seeds",MODPACK_TWEAKS,true,"Tall Grass Drops Hemp Seeds");
         hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets",HARDCORE,true,"Makes lava buckets hot if you don't have a fire resistance potion");
-
+        hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE,true,"Changes to Endermen AI that make them even more menacing");
         config.save();
     }
 
