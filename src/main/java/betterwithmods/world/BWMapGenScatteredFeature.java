@@ -22,6 +22,10 @@ public class BWMapGenScatteredFeature extends MapGenScatteredFeature {
 
     public static class Start extends MapGenScatteredFeature.Start
     {
+        public Start()
+        {
+        }
+
         Start(World worldIn, Random random, int chunkX, int chunkZ)
         {
             this(worldIn, random, chunkX, chunkZ, worldIn.getBiome(new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8)));

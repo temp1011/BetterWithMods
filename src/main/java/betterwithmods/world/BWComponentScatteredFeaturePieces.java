@@ -1,6 +1,12 @@
 package betterwithmods.world;
 
+import betterwithmods.event.BWMWorldGenEvent;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.ComponentScatteredFeaturePieces;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -23,8 +29,6 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
         @Override
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
             boolean result = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn);
-            //TODO only when past spawn radius
-            this.setBlockState(worldIn, Blocks.ENCHANTING_TABLE.getDefaultState(), 10, 1, 10, structureBoundingBoxIn);
 
             //Replace clay with obsidian
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 10, 0, 7, structureBoundingBoxIn);
@@ -69,7 +73,42 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 9, 5, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 11, 5, 0, structureBoundingBoxIn);
 
+            if(BWMWorldGenEvent.isInRadius(worldIn, new BlockPos(this.getXWithOffset(10, 10), this.getYWithOffset(1), this.getZWithOffset(10, 10)))) {
+                //Dig hole
+                this.setAir(worldIn, 10, 0, 10, structureBoundingBoxIn);
+                this.setAir(worldIn, 11, 0, 10, structureBoundingBoxIn);
+                this.setAir(worldIn, 10, 0, 9, structureBoundingBoxIn);
+                this.setAir(worldIn, 10, -11, 10, structureBoundingBoxIn);
+                for(int x = 0; x < 3; x++) {
+                    for(int z = 0; z < 3; z++) {
+                        this.setAir(worldIn, 9 + x, -12, 9 + z, structureBoundingBoxIn);
+                        this.setAir(worldIn, 9 + x, -13, 9 + z, structureBoundingBoxIn);
+                    }
+                }
+
+                //Create ladder
+                for(int i = 0; i >= -13; i--)
+                    this.setBlockState(worldIn, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.WEST), 11, i, 9, structureBoundingBoxIn);
+
+                //Remove chest loot
+                for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+                {
+                    int k1 = enumfacing.getFrontOffsetX() * 2;
+                    int l1 = enumfacing.getFrontOffsetZ() * 2;
+                    TileEntity tileentity = worldIn.getTileEntity(new BlockPos(this.getXWithOffset(10 + k1, 10 + l1), this.getYWithOffset(-11), this.getZWithOffset(10 + k1, 10 + l1)));
+                    if (tileentity instanceof TileEntityChest)
+                        //TODO create desert temple loot table that only has rotten flesh and bones?
+                        ((TileEntityChest)tileentity).setLootTable(null, randomIn.nextLong());
+                }
+            }
+            else
+                this.setBlockState(worldIn, Blocks.ENCHANTING_TABLE.getDefaultState(), 10, 1, 10, structureBoundingBoxIn);
+
             return result;
+        }
+
+        private void setAir(World world, int x, int y, int z, StructureBoundingBox structureBoundingBox) {
+            this.setBlockState(world, Blocks.AIR.getDefaultState(), x, y, z, structureBoundingBox);
         }
     }
 }
