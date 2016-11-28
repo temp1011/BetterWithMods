@@ -3,6 +3,7 @@ package betterwithmods.util;
 import betterwithmods.BWCrafting;
 import betterwithmods.BWMod;
 import betterwithmods.craft.bulk.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -38,16 +39,32 @@ public final class RecipeUtils {
      *             If {@link OreDictionary#WILDCARD_VALUE} all recipes of the item will be removed.
      */
     public static void removeRecipes(Item item, int meta) {
+        removeRecipes(new ItemStack(item, 1, meta));
+    }
+
+    /**
+     * Remove all recipes.
+     *
+     * @param block Block to remove recipes of.
+     */
+    public static void removeRecipes(Block block) {
+        removeRecipes(new ItemStack(block));
+    }
+
+    /**
+     * Remove all recipes.
+     *
+     * @param stack ItemStack to remove recipes of.
+     */
+    public static void removeRecipes(ItemStack stack) {
         List<IRecipe> recipeList = CraftingManager.getInstance().getRecipeList();
         final ListIterator<IRecipe> li = recipeList.listIterator();
         boolean found = false;
         while (li.hasNext()) {
             ItemStack output = li.next().getRecipeOutput();
-            if (output != null && output.getItem() == item) {
-                if (meta == OreDictionary.WILDCARD_VALUE || output.getMetadata() == meta) {
-                    li.remove();
-                    found = true;
-                }
+            if (OreDictionary.itemMatches(stack, output, false)) {
+                li.remove();
+                found = true;
             }
         }
         if (!found)
