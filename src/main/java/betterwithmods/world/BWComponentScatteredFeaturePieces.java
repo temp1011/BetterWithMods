@@ -3,10 +3,7 @@ package betterwithmods.world;
 import betterwithmods.BWMBlocks;
 import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.event.BWMWorldGenEvent;
-import net.minecraft.block.BlockFlowerPot;
-import net.minecraft.block.BlockLadder;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.Blocks;
@@ -25,6 +22,10 @@ import java.util.Random;
  * Created by blueyu2 on 11/27/16.
  */
 public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeaturePieces {
+
+    private static boolean isInRadius(World worldIn, StructureBoundingBox structureBoundingBoxIn) {
+        return BWMWorldGenEvent.isInRadius(worldIn, structureBoundingBoxIn.maxX - structureBoundingBoxIn.minX, structureBoundingBoxIn.maxZ - structureBoundingBoxIn.minZ);
+    }
 
     public static class DesertPyramid extends ComponentScatteredFeaturePieces.DesertPyramid
     {
@@ -81,7 +82,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 9, 5, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 11, 5, 0, structureBoundingBoxIn);
 
-            if(BWMWorldGenEvent.isInRadius(worldIn, new BlockPos(this.getXWithOffset(10, 10), this.getYWithOffset(1), this.getZWithOffset(10, 10)))) {
+            if(isInRadius(worldIn, structureBoundingBoxIn)) {
                 //Dig hole
                 this.setAir(worldIn, 10, 0, 10, structureBoundingBoxIn);
                 this.setAir(worldIn, 11, 0, 10, structureBoundingBoxIn);
@@ -236,17 +237,58 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
 
             this.setBlockState(worldIn, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD), 5, 4, 11, structureBoundingBoxIn);
             this.setBlockState(worldIn, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD), 6, 4, 11, structureBoundingBoxIn);
-            //TODO add Vessel of the Dragon
             this.setAir(worldIn, 6, 3, 10, structureBoundingBoxIn);
-            this.setBlockState(worldIn, BWMBlocks.HAND_CRANK.getDefaultState(), 5, 3, 10, structureBoundingBoxIn);
+            this.setAir(worldIn, 5, 3, 10, structureBoundingBoxIn);
 
-            //TODO remove tripwire, remove chest loot, center lever & wall. change dispensers to have either rotten or poison arrows?
+            if(isInRadius(worldIn, structureBoundingBoxIn)) {
+                //Remove hooks
+                this.setAir(worldIn, 1, -3, 8, structureBoundingBoxIn);
+                this.setAir(worldIn, 4, -3, 8, structureBoundingBoxIn);
+                //Remove tripwire
+                this.setAir(worldIn, 2, -3, 8, structureBoundingBoxIn);
+                this.setAir(worldIn, 3, -3, 8, structureBoundingBoxIn);
+                //Re-add hooks
+                this.setBlockState(worldIn, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.EAST), 1, -3, 8, structureBoundingBoxIn);
+                this.setBlockState(worldIn, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.WEST), 4, -3, 8, structureBoundingBoxIn);
+
+                //Remove hooks
+                this.setAir(worldIn, 7, -3, 1, structureBoundingBoxIn);
+                this.setAir(worldIn, 7, -3, 5, structureBoundingBoxIn);
+                //Remove tripwire
+                this.setAir(worldIn, 7, -3, 2, structureBoundingBoxIn);
+                this.setAir(worldIn, 7, -3, 3, structureBoundingBoxIn);
+                this.setAir(worldIn, 7, -3, 4, structureBoundingBoxIn);
+                //Re-add hooks
+                this.setBlockState(worldIn, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.NORTH), 7, -3, 1, structureBoundingBoxIn);
+                this.setBlockState(worldIn, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.SOUTH), 7, -3, 5, structureBoundingBoxIn);
+
+                //Remove puzzle
+                this.setAir(worldIn, 9, -2, 12, structureBoundingBoxIn);
+                this.setAir(worldIn, 9, -2, 11, structureBoundingBoxIn);
+                this.setAir(worldIn, 9, -3, 11, structureBoundingBoxIn);
+
+                //Remove Chest Loot
+                removeChest(worldIn, 8, -3, 3, randomIn);
+                removeChest(worldIn, 9, -3, 10, randomIn);
+            }
+            else {
+                this.setBlockState(worldIn, BWMBlocks.HAND_CRANK.getDefaultState(), 5, 3, 10, structureBoundingBoxIn);
+                //TODO add Vessel of the Dragon @ 6, 3, 10
+            }
+            //TODO change dispensers to have either rotten or poison arrows?
 
             return result;
         }
 
         private void setAir(World world, int x, int y, int z, StructureBoundingBox structureBoundingBox) {
             this.setBlockState(world, Blocks.AIR.getDefaultState(), x, y, z, structureBoundingBox);
+        }
+
+        private void removeChest(World worldIn, int x, int y, int z, Random randomIn) {
+            TileEntity tileentity = worldIn.getTileEntity(new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z)));
+            if (tileentity instanceof TileEntityChest)
+                //TODO create jungle temple loot table?
+                ((TileEntityChest)tileentity).setLootTable(null, randomIn.nextLong());
         }
     }
 }

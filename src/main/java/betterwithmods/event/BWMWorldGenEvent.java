@@ -17,8 +17,14 @@ public class BWMWorldGenEvent {
             event.setNewGen(new BWMapGenScatteredFeature());
     }
 
+
+
     public static boolean isInRadius(World world, BlockPos pos) {
+        return isInRadius(world, pos.getX(), pos.getZ());
+    }
+
+    public static boolean isInRadius(World world, int x, int z) {
         BlockPos center = world.getSpawnPoint();
-        return Math.sqrt(Math.pow(pos.getX() - center.getX(), 2) + Math.pow(pos.getZ() - center.getZ(), 2)) < RespawnEventHandler.HARDCORE_SPAWN_RADIUS;
+        return Math.sqrt(Math.pow(x - center.getX(), 2) + Math.pow(z - center.getZ(), 2)) < RespawnEventHandler.HARDCORE_SPAWN_RADIUS;
     }
 }
