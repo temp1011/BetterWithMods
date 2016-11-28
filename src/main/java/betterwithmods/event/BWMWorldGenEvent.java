@@ -1,5 +1,6 @@
 package betterwithmods.event;
 
+import betterwithmods.config.BWConfig;
 import betterwithmods.world.BWMapGenScatteredFeature;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,6 +14,9 @@ public class BWMWorldGenEvent {
 
     @SubscribeEvent
     public void overrideScatteredFeature(InitMapGenEvent event){
+        if(!BWConfig.hardcoreStructures)
+            return;
+
         if(event.getType().equals(InitMapGenEvent.EventType.SCATTERED_FEATURE))
             event.setNewGen(new BWMapGenScatteredFeature());
     }

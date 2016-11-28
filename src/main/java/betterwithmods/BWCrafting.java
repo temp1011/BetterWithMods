@@ -261,6 +261,10 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS), "CCC", "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS), "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial("ingot_steel"));
+        if(BWConfig.hardcoreStructures) {
+            RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
+            RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
+        }
     }
 
     private static void addSawRecipes() {

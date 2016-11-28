@@ -132,11 +132,13 @@ public class BWMod {
     }
 
     private static void registerWorldGen() {
-        MapGenStructureIO.registerStructure(BWMapGenScatteredFeature.Start.class, "BWTemple");
-        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.DesertPyramid.class, "BWTeDP");
-        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.JunglePyramid.class, "BWTeJP");
-        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.SwampHut.class, "BWTeSH");
-        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.Igloo.class, "BWIglu");
+        if(BWConfig.hardcoreStructures) {
+            MapGenStructureIO.registerStructure(BWMapGenScatteredFeature.Start.class, "BWTemple");
+            MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.DesertPyramid.class, "BWTeDP");
+            MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.JunglePyramid.class, "BWTeJP");
+            MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.SwampHut.class, "BWTeSH");
+            MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.Igloo.class, "BWIglu");
+        }
     }
 
     @EventHandler

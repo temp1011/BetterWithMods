@@ -189,25 +189,23 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                     }
                 }
 
-                //TODO have witches spawn randomly around hut instead of same spot. or at least have two at the bottom of the hut
                 if (!this.hasWitch)
                 {
-                    int x = this.getXWithOffset(2, 5);
-                    int y = this.getYWithOffset(2);
-                    int z = this.getZWithOffset(2, 5);
+                    int amount = randomIn.nextInt(3);
+                    for(int i = 0; i < amount + 1; i++) {
+                        int x = this.getXWithOffset(i * 3, 5);
+                        int y = this.getYWithOffset(2);
+                        int z = this.getZWithOffset(i * 3, 5);
 
-                    if (structureBoundingBoxIn.isVecInside(new BlockPos(x, y, z)))
-                    {
-                        //int amount = randomIn.nextInt(3);
-                        for(int i = 0; i < 3; i++) {
+                        if (structureBoundingBoxIn.isVecInside(new BlockPos(x, y, z))) {
                             EntityWitch entitywitch = new EntityWitch(worldIn);
                             entitywitch.setLocationAndAngles((double)x + 0.5D, (double)y, (double)z + 0.5D, 0.0F, 0.0F);
                             entitywitch.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(x, y, z)),null);
                             entitywitch.enablePersistence();
                             worldIn.spawnEntityInWorld(entitywitch);
                         }
-                        this.hasWitch = true;
                     }
+                    this.hasWitch = true;
                 }
             }
 
@@ -233,10 +231,6 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
         {
             boolean result = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn);
-
-            //For finding them
-            System.out.println(this.boundingBox.minX + ", " + this.boundingBox.minY + ", " + this.boundingBox.minZ);
-
             this.setBlockState(worldIn, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD), 5, 4, 11, structureBoundingBoxIn);
             this.setBlockState(worldIn, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.blockType, BlockAesthetic.EnumType.CHOPBLOCKBLOOD), 6, 4, 11, structureBoundingBoxIn);
             this.setAir(worldIn, 6, 3, 10, structureBoundingBoxIn);
