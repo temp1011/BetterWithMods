@@ -22,17 +22,15 @@ import java.util.Random;
  * Created by blueyu2 on 11/27/16.
  */
 public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeaturePieces {
-
-    private static boolean isInRadius(World worldIn, StructureBoundingBox structureBoundingBoxIn) {
-        return BWMWorldGenEvent.isInRadius(worldIn, structureBoundingBoxIn.maxX - structureBoundingBoxIn.minX, structureBoundingBoxIn.maxZ - structureBoundingBoxIn.minZ);
-    }
-
     public static class DesertPyramid extends ComponentScatteredFeaturePieces.DesertPyramid
     {
+        final int worldX, worldZ;
 
-        DesertPyramid(Random p_i2062_1_, int p_i2062_2_, int p_i2062_3_)
+        DesertPyramid(Random random, int x, int z)
         {
-            super(p_i2062_1_, p_i2062_2_, p_i2062_3_);
+            super(random, x, z);
+            this.worldX = x;
+            this.worldZ = z;
         }
 
         @Override
@@ -82,7 +80,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 9, 5, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 11, 5, 0, structureBoundingBoxIn);
 
-            if(isInRadius(worldIn, structureBoundingBoxIn)) {
+            if(BWMWorldGenEvent.isInRadius(worldIn, worldX, worldZ)) {
                 //Dig hole
                 this.setAir(worldIn, 10, 0, 10, structureBoundingBoxIn);
                 this.setAir(worldIn, 11, 0, 10, structureBoundingBoxIn);
@@ -222,9 +220,13 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
 
     public static class JunglePyramid extends ComponentScatteredFeaturePieces.JunglePyramid
     {
+        final int worldX, worldZ;
+
         JunglePyramid(Random rand, int x, int z)
         {
             super(rand, x, z);
+            this.worldX = x;
+            this.worldZ = z;
         }
 
         @Override
@@ -240,7 +242,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setAir(worldIn, 6, 3, 10, structureBoundingBoxIn);
             this.setAir(worldIn, 5, 3, 10, structureBoundingBoxIn);
 
-            if(isInRadius(worldIn, structureBoundingBoxIn)) {
+            if(BWMWorldGenEvent.isInRadius(worldIn, worldX, worldZ)) {
                 //Remove hooks
                 this.setAir(worldIn, 1, -3, 8, structureBoundingBoxIn);
                 this.setAir(worldIn, 4, -3, 8, structureBoundingBoxIn);
