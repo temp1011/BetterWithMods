@@ -37,27 +37,27 @@ public class BWMapGenScatteredFeature extends MapGenScatteredFeature {
             {
                 if (biomeIn == Biomes.SWAMPLAND)
                 {
-                    BWComponentScatteredFeaturePieces.SwampHut componentscatteredfeaturepieces$swamphut = new BWComponentScatteredFeaturePieces.SwampHut(random, chunkX * 16, chunkZ * 16);
-                    this.components.add(componentscatteredfeaturepieces$swamphut);
+                    BWComponentScatteredFeaturePieces.SwampHut swampHut = new BWComponentScatteredFeaturePieces.SwampHut(random, chunkX * 16, chunkZ * 16);
+                    this.components.add(swampHut);
                 }
                 else if (biomeIn != Biomes.DESERT && biomeIn != Biomes.DESERT_HILLS)
                 {
                     if (biomeIn == Biomes.ICE_PLAINS || biomeIn == Biomes.COLD_TAIGA)
                     {
-                        BWComponentScatteredFeaturePieces.Igloo componentscatteredfeaturepieces$igloo = new BWComponentScatteredFeaturePieces.Igloo(random, chunkX * 16, chunkZ * 16);
-                        this.components.add(componentscatteredfeaturepieces$igloo);
+                        BWComponentScatteredFeaturePieces.Igloo igloo = new BWComponentScatteredFeaturePieces.Igloo(random, chunkX * 16, chunkZ * 16);
+                        this.components.add(igloo);
                     }
                 }
                 else
                 {
-                    BWComponentScatteredFeaturePieces.DesertPyramid componentscatteredfeaturepieces$desertpyramid = new BWComponentScatteredFeaturePieces.DesertPyramid(random, chunkX * 16, chunkZ * 16);
-                    this.components.add(componentscatteredfeaturepieces$desertpyramid);
+                    BWComponentScatteredFeaturePieces.DesertPyramid desertPyramid = new BWComponentScatteredFeaturePieces.DesertPyramid(random, chunkX * 16, chunkZ * 16);
+                    this.components.add(desertPyramid);
                 }
             }
             else
             {
-                BWComponentScatteredFeaturePieces.JunglePyramid componentscatteredfeaturepieces$junglepyramid = new BWComponentScatteredFeaturePieces.JunglePyramid(random, chunkX * 16, chunkZ * 16);
-                this.components.add(componentscatteredfeaturepieces$junglepyramid);
+                BWComponentScatteredFeaturePieces.JunglePyramid junglePyramid = new BWComponentScatteredFeaturePieces.JunglePyramid(random, chunkX * 16, chunkZ * 16);
+                this.components.add(junglePyramid);
             }
 
             this.updateBoundingBox();

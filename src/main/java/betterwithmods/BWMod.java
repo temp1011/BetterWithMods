@@ -164,7 +164,6 @@ public class BWMod {
         getLoadedModules().forEach(ICompatModule::preInit);
         BWCrafting.init();
         registerEntities();
-        registerWorldGen();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
         BWNetwork.INSTANCE.init();
         proxy.preInit();
@@ -172,6 +171,7 @@ public class BWMod {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        registerWorldGen();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new BWGuiHandler());
         BWRegistry.registerHeatSources();
         GameRegistry.registerFuelHandler(new BWFuelHandler());
