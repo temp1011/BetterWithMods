@@ -117,6 +117,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreEndermenEvent());
+        MinecraftForge.EVENT_BUS.register(new HardcoreRedstoneEvent());
         MinecraftForge.TERRAIN_GEN_BUS.register(new BWMWorldGenEvent());
     }
 

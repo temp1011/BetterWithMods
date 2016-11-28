@@ -58,6 +58,7 @@ public class BWConfig {
     public static boolean dropsHempSeeds;
     public static boolean hardcoreLavaBuckets;
     public static boolean hardcoreEndermen;
+    public static boolean hardcoreRedstone;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -118,6 +119,7 @@ public class BWConfig {
         dropsHempSeeds = config.getBoolean("Drop Hemp Seeds",MODPACK_TWEAKS,true,"Tall Grass Drops Hemp Seeds");
         hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets",HARDCORE,true,"Makes lava buckets hot if you don't have a fire resistance potion");
         hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE,true,"Changes to Endermen AI that make them even more menacing");
+        hardcoreRedstone = config.get(HARDCORE, "Hardcore Redstone",true,"Prevents wooden doors, trapdoors, and fence gates from being activated by redstone. Changes various redstone related recipes").setRequiresMcRestart(true).getBoolean();
         config.save();
     }
 
