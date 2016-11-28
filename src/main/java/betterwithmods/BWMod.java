@@ -16,9 +16,12 @@ import betterwithmods.util.HardcoreFunctions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.RecipeUtils;
 import betterwithmods.util.item.ItemExt;
+import betterwithmods.world.BWComponentScatteredFeaturePieces;
+import betterwithmods.world.BWMapGenScatteredFeature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Loader;
@@ -114,6 +117,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreEndermenEvent());
+        MinecraftForge.TERRAIN_GEN_BUS.register(new BWMWorldGenEvent());
     }
 
     private static void registerEntities() {
@@ -124,6 +128,14 @@ public class BWMod {
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingGourd.class, "entityFallingGourd", 64, 1, true);
+    }
+
+    private static void registerWorldGen() {
+        MapGenStructureIO.registerStructure(BWMapGenScatteredFeature.Start.class, "BWTemple");
+        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.DesertPyramid.class, "BWTeDP");
+        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.JunglePyramid.class, "BWTeJP");
+        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.SwampHut.class, "BWTeSH");
+        MapGenStructureIO.registerStructureComponent(BWComponentScatteredFeaturePieces.Igloo.class, "BWIglu");
     }
 
     @EventHandler
@@ -152,6 +164,7 @@ public class BWMod {
         getLoadedModules().forEach(ICompatModule::preInit);
         BWCrafting.init();
         registerEntities();
+        registerWorldGen();
         CapabilityManager.INSTANCE.register(IMechanicalPower.class, new MechanicalCapability.CapabilityMechanicalPower(), MechanicalCapability.DefaultMechanicalPower.class);
         BWNetwork.INSTANCE.init();
         proxy.preInit();
