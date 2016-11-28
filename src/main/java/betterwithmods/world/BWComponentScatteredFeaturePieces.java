@@ -104,7 +104,6 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                     int l1 = enumfacing.getFrontOffsetZ() * 2;
                     TileEntity tileentity = worldIn.getTileEntity(new BlockPos(this.getXWithOffset(10 + k1, 10 + l1), this.getYWithOffset(-11), this.getZWithOffset(10 + k1, 10 + l1)));
                     if (tileentity instanceof TileEntityChest)
-                        //TODO create desert temple loot table that only has rotten flesh and bones?
                         ((TileEntityChest)tileentity).setLootTable(null, randomIn.nextLong());
                 }
             }
@@ -271,7 +270,6 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                 this.setBlockState(worldIn, BWMBlocks.HAND_CRANK.getDefaultState(), 5, 3, 10, structureBoundingBoxIn);
                 //TODO add Vessel of the Dragon @ 6, 3, 10
             }
-            //TODO change dispensers to have either rotten or poison arrows?
 
             return result;
         }
@@ -283,7 +281,6 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
         private void removeChest(World worldIn, int x, int y, int z, Random randomIn) {
             TileEntity tileentity = worldIn.getTileEntity(new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z)));
             if (tileentity instanceof TileEntityChest)
-                //TODO create jungle temple loot table?
                 ((TileEntityChest)tileentity).setLootTable(null, randomIn.nextLong());
         }
     }
