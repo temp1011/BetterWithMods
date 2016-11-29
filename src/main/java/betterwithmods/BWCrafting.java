@@ -394,7 +394,7 @@ public class BWCrafting {
 
     private static void addKilnOres() {
         if (BWConfig.canKilnSmeltOres) {
-            InvUtils.oreNames.forEach(ore -> {
+            InvUtils.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {
                 ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
                 if (ore != null && output != null)
                     addKilnRecipe(ore, output);
