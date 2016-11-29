@@ -59,6 +59,7 @@ public class BWConfig {
     public static boolean hardcoreLavaBuckets;
     public static boolean hardcoreEndermen;
     public static boolean hardcoreRedstone;
+    public static boolean hardcoreOres;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -120,6 +121,7 @@ public class BWConfig {
         hardcoreLavaBuckets = hardcoreBuckets && config.getBoolean("Hardcore Lava Buckets",HARDCORE,true,"Makes lava buckets hot if you don't have a fire resistance potion");
         hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE,true,"Changes to Endermen AI that make them even more menacing");
         hardcoreRedstone = config.get(HARDCORE, "Hardcore Redstone",true,"Prevents wooden doors, trapdoors, and fence gates from being activated by redstone. Changes various redstone related recipes").setRequiresMcRestart(true).getBoolean();
+        hardcoreOres = config.get(HARDCORE, "Hardcore Ores",true,"Makes ores only smelt to a single nugget if available").setRequiresMcRestart(true).getBoolean();
         config.save();
     }
 
