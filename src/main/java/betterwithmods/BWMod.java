@@ -196,7 +196,7 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         RecipeUtils.gatherCookableFood();
         BWRegistry.registerWood();
-        InvUtils.initOreDictGathering();
+        InvUtils.postInitOreDictGathering();
         BWCrafting.postInit();
         ColorUtils.initColors();
         registerEventHandlers();

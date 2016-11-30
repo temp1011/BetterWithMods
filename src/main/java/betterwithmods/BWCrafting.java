@@ -4,9 +4,18 @@ import betterwithmods.blocks.BlockUnfiredPottery.EnumPotteryType;
 import betterwithmods.blocks.BlockUrn;
 import betterwithmods.blocks.mini.BlockMini;
 import betterwithmods.config.BWConfig;
-import betterwithmods.craft.*;
-import betterwithmods.craft.bulk.*;
-import betterwithmods.craft.steelanvil.*;
+import betterwithmods.craft.BlockMetaRecipe;
+import betterwithmods.craft.KilnInteraction;
+import betterwithmods.craft.OreStack;
+import betterwithmods.craft.SawInteraction;
+import betterwithmods.craft.TurntableInteraction;
+import betterwithmods.craft.bulk.CraftingManagerCauldron;
+import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
+import betterwithmods.craft.bulk.CraftingManagerCrucible;
+import betterwithmods.craft.bulk.CraftingManagerCrucibleStoked;
+import betterwithmods.craft.bulk.CraftingManagerMill;
+import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.craft.steelanvil.ShapedSteelAnvilRecipe;
 import betterwithmods.items.ItemBark;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
@@ -16,7 +25,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFishFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -42,6 +55,7 @@ public class BWCrafting {
     }
 
     public static void postInit() {
+        addHardcoreOreRecipes();
         addKilnOres();
     }
 
@@ -261,6 +275,16 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS), "CCC", "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS), "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial("ingot_steel"));
+
+        if(BWConfig.hardcoreOres) {
+            RecipeUtils.removeRecipes(Items.COMPASS,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS)," N ","NRN"," N ", 'N',"nuggetIron",'R',"dustRedstone"));
+            RecipeUtils.removeRecipes(Items.CLOCK,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK)," N ","NQN"," N ", 'N',"nuggetGold",'Q',"gemQuartz"));
+            RecipeUtils.removeRecipes(Items.BUCKET,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET),"N N"," N ",'N',"nuggetIron"));
+        }
+
         if(BWConfig.hardcoreStructures) {
             RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
             RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
@@ -398,7 +422,7 @@ public class BWCrafting {
 
     private static void addKilnOres() {
         if (BWConfig.canKilnSmeltOres) {
-            InvUtils.oreNames.forEach(ore -> {
+            InvUtils.oreNames.stream().filter(ore -> ore.getItem() instanceof ItemBlock).forEach(ore -> {
                 ItemStack output = FurnaceRecipes.instance().getSmeltingResult(ore);
                 if (ore != null && output != null)
                     addKilnRecipe(ore, output);
@@ -421,6 +445,23 @@ public class BWCrafting {
         }
         addKilnRecipe(BWMBlocks.DEBARKED_OLD, new ItemStack(Items.COAL, 2, 1));
         addKilnRecipe(BWMBlocks.DEBARKED_NEW, new ItemStack(Items.COAL, 2, 1));
+    }
+
+    private static void addHardcoreOreRecipes() {
+        if(BWConfig.hardcoreOres) {
+            for (ItemStack ore : InvUtils.oreNames) {
+                ItemStack nugget = InvUtils.getMatchingSuffixStack(ore, "ore", "nugget");
+                if (nugget != null) {
+                    RecipeUtils.removeFurnaceRecipe(ore);
+                    FurnaceRecipes.instance().getSmeltingList().put(ore, nugget);
+                    List<ItemStack> dusts = InvUtils.getMatchingSuffix(ore,"ore","dust");
+                    if(dusts.size() > 0) {
+                        dusts.forEach(RecipeUtils::removeFurnaceRecipe);
+                        dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
+                    }
+                }
+            }
+        }
     }
 
     private static void addCrucibleRecipes() {
@@ -456,7 +497,11 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.IRON_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7, 0), new ItemStack[]{new ItemStack(Items.IRON_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new ItemStack[]{new ItemStack(Items.IRON_DOOR)});
-        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        if(BWConfig.hardcoreOres) {
+            addStokedCrucibleRecipe(new ItemStack(InvUtils.getOreNames("nuggetIron").get(0).getItem(), 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        } else {
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        }
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.CHEST_MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.FURNACE_MINECART)});
@@ -528,10 +573,10 @@ public class BWCrafting {
         addShapedSteelAnvilRecipe(BWMBlocks.BLOCK_DISPENSER, "MMMM", "MUUM", "STTS", "SRRS", 'M', Blocks.MOSSY_COBBLESTONE, 'U', new ItemStack(BWMBlocks.URN, 1, 8), 'S', "stone", 'R', "dustRedstone", 'T', Blocks.REDSTONE_TORCH);
         addShapedSteelAnvilRecipe(BWMBlocks.BUDDY_BLOCK, "SSLS", "LTTS", "STTL", "SLSS", 'S', "stone", 'T', Blocks.REDSTONE_TORCH, 'L', ItemMaterial.getMaterial("polished_lapis"));
         addShapedSteelAnvilRecipe(BWMBlocks.DETECTOR, "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', ItemMaterial.getMaterial("polished_lapis"), 'T', Blocks.REDSTONE_TORCH, 'S', "stone", 'R', "dustRedstone");
-        addShapedSteelAnvilRecipe(BWMItems.STEEL_HELMET, "SSSS","S  S", "S  S", " PP ", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel"));
-        addShapedSteelAnvilRecipe(BWMItems.STEEL_CHEST, "P  P","SSSS","SSSS", "SSSS", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel"));
-        addShapedSteelAnvilRecipe(BWMItems.STEEL_PANTS, "SSSS","PSSP","P  P", "P  P", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel"));
-        addShapedSteelAnvilRecipe(BWMItems.STEEL_BOOTS, " SS "," SS ", "SPPS", 'P',ItemMaterial.getMaterial("armor_plate"),'S',ItemMaterial.getMaterial("ingot_steel"));
+        addShapedSteelAnvilRecipe(BWMItems.STEEL_HELMET, "SSSS", "S  S", "S  S", " PP ", 'P', ItemMaterial.getMaterial("armor_plate"), 'S', ItemMaterial.getMaterial("ingot_steel"));
+        addShapedSteelAnvilRecipe(BWMItems.STEEL_CHEST, "P  P", "SSSS", "SSSS", "SSSS", 'P', ItemMaterial.getMaterial("armor_plate"), 'S', ItemMaterial.getMaterial("ingot_steel"));
+        addShapedSteelAnvilRecipe(BWMItems.STEEL_PANTS, "SSSS", "PSSP", "P  P", "P  P", 'P', ItemMaterial.getMaterial("armor_plate"), 'S', ItemMaterial.getMaterial("ingot_steel"));
+        addShapedSteelAnvilRecipe(BWMItems.STEEL_BOOTS, " SS ", " SS ", "SPPS", 'P', ItemMaterial.getMaterial("armor_plate"), 'S', ItemMaterial.getMaterial("ingot_steel"));
         addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("polished_lapis", 2), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
         addShapedSteelAnvilRecipe(BWMItems.STEEL_AXE, "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft")).setMirrored(true);
         addShapedSteelAnvilRecipe(BWMItems.STEEL_HOE, "XX", " H", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft")).setMirrored(true);
@@ -541,10 +586,10 @@ public class BWCrafting {
         addShapedSteelAnvilRecipe(BWMItems.STEEL_BATTLEAXE, "XXX", "XHX", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft")).setMirrored(true);
         addShapedSteelAnvilRecipe(BWMItems.STEEL_MATTOCK, " XXX", "X H ", "  H ", "  H ", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getMaterial("haft"));
         addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("armor_plate"), "BSPB", 'B', ItemMaterial.getMaterial("leather_strap"), 'S', ItemMaterial.getMaterial("ingot_steel"), 'P', ItemMaterial.getMaterial("padding")).setMirrored(true);
-        addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("broadhead",6)," N "," N ", "NNN", " N ",'N',"nuggetSoulforgedSteel");
+        addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("broadhead", 6), " N ", " N ", "NNN", " N ", 'N', "nuggetSoulforgedSteel");
         addShapedSteelAnvilRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), "XXXX", "XXXX", "XXXX", "XXXX", 'X', "ingotSoulforgedSteel");
         addShapedSteelAnvilRecipe(new ItemStack(BWMBlocks.AESTHETIC, 6, 0), "X  X", "XXXX", 'X', "stone");
-        addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("chain_mail", 2),"N N ", " N N", "N N ", " N N", 'N',"nuggetIron").setMirrored(true);
+        addShapedSteelAnvilRecipe(ItemMaterial.getMaterial("chain_mail", 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron").setMirrored(true);
 
         for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
             addShapedSteelAnvilRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 8, type.getMetadata()), "XXXX", 'X', type.getBlock());
@@ -554,7 +599,7 @@ public class BWCrafting {
     }
 
     private static void addHardcoreRedstone() {
-        if(!BWConfig.hardcoreRedstone)
+        if (!BWConfig.hardcoreRedstone)
             return;
 
         RecipeUtils.removeRecipes(Blocks.DISPENSER);
