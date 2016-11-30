@@ -52,7 +52,6 @@ public class BWCrafting {
         addHardcoreDiamonds();
         addSteelAnvilRecipes();
         addHardcoreRedstone();
-
     }
 
     public static void postInit() {
@@ -284,6 +283,11 @@ public class BWCrafting {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK)," N ","NQN"," N ", 'N',"nuggetGold",'Q',"gemQuartz"));
             RecipeUtils.removeRecipes(Items.BUCKET,0);
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET),"N N"," N ",'N',"nuggetIron"));
+        }
+
+        if(BWConfig.hardcoreStructures) {
+            RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
+            RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
         }
     }
 

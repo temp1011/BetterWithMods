@@ -60,6 +60,7 @@ public class BWConfig {
     public static boolean hardcoreEndermen;
     public static boolean hardcoreRedstone;
     public static boolean hardcoreOres;
+    public static boolean hardcoreStructures;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -122,6 +123,7 @@ public class BWConfig {
         hardcoreEndermen = config.getBoolean("Hardcore Endermen", HARDCORE,true,"Changes to Endermen AI that make them even more menacing");
         hardcoreRedstone = config.get(HARDCORE, "Hardcore Redstone",true,"Prevents wooden doors, trapdoors, and fence gates from being activated by redstone. Changes various redstone related recipes").setRequiresMcRestart(true).getBoolean();
         hardcoreOres = config.get(HARDCORE, "Hardcore Ores",true,"Makes ores only smelt to a single nugget if available").setRequiresMcRestart(true).getBoolean();
+        hardcoreStructures = config.get(HARDCORE, "Hardcore Structures",true,"Changes various structures to be affected by the Hardcore Spawn radius. Removes Enchanting Table and Brewing Stand recipes").setRequiresMcRestart(true).getBoolean();
         config.save();
     }
 
