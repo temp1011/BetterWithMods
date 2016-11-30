@@ -5,6 +5,7 @@ import betterwithmods.BWMItems;
 import betterwithmods.blocks.BlockAesthetic;
 import betterwithmods.config.BWConfig;
 import betterwithmods.entity.EntityShearedCreeper;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.state.IBlockState;
@@ -158,10 +159,7 @@ public class MobDropEvent {
             for (EntityItem item : evt.getDrops()) {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    if (rand.nextBoolean())
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.stackSize, 26));
-                    else
-                        item.setEntityItemStack(new ItemStack(BWMItems.MATERIAL, stack.stackSize, 25));
+                    item.setEntityItemStack(ItemMaterial.getMaterial("niter"));
                 }
             }
         }
