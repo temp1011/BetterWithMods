@@ -276,6 +276,15 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_LEGGINGS), "CCC", "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS), "C C", "C C", 'C', ItemMaterial.getMaterial("chain_mail"));
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.STEEL_ANVIL), "SSS", " S ", "SSS", 'S', ItemMaterial.getMaterial("ingot_steel"));
+
+        if(BWConfig.hardcoreOres) {
+            RecipeUtils.removeRecipes(Items.COMPASS,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.COMPASS)," N ","NRN"," N ", 'N',"nuggetIron",'R',"dustRedstone"));
+            RecipeUtils.removeRecipes(Items.CLOCK,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.CLOCK)," N ","NQN"," N ", 'N',"nuggetGold",'Q',"gemQuartz"));
+            RecipeUtils.removeRecipes(Items.BUCKET,0);
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET),"N N"," N ",'N',"nuggetIron"));
+        }
     }
 
     private static void addSawRecipes() {
@@ -484,7 +493,11 @@ public class BWCrafting {
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new ItemStack[]{new ItemStack(Items.IRON_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 7, 0), new ItemStack[]{new ItemStack(Items.IRON_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new ItemStack[]{new ItemStack(Items.IRON_DOOR)});
-        addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        if(BWConfig.hardcoreOres) {
+            addStokedCrucibleRecipe(new ItemStack(InvUtils.getOreNames("nuggetIron").get(0).getItem(), 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        } else {
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new ItemStack[]{new ItemStack(Items.BUCKET)});
+        }
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.CHEST_MINECART)});
         addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 5), new ItemStack[]{new ItemStack(Items.FURNACE_MINECART)});
