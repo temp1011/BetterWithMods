@@ -61,6 +61,7 @@ public class BWConfig {
     public static boolean hardcoreRedstone;
     public static boolean hardcoreOres;
     public static boolean hardcoreStructures;
+    public static boolean armorDrops;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -94,6 +95,7 @@ public class BWConfig {
         slimeSpawn = config.get(VANILLA_TWEAKS, "Prevent Slimes Spawning on Non-Stone Non-Dirt Materials", true)
                 .getBoolean();
         produceDung = config.get(VANILLA_TWEAKS, "Animals Produce Dung", true).getBoolean();
+        armorDrops = config.get(VANILLA_TWEAKS, "Undead drop all armor", true, "This option will force zombies and skeletons to drop any non-standard equipment, including enchanted versions of their default weapons.").getBoolean();
 
         dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean();
         dropsSaw = config.get(MODPACK_TWEAKS, "Saw generating drops when overpowered", true).getBoolean();

@@ -21,8 +21,11 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemShears;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemBow;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -37,6 +40,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MobDropEvent {
@@ -153,16 +158,57 @@ public class MobDropEvent {
 
     @SubscribeEvent
     public void mobDrops(LivingDropsEvent evt) {
+        if (BWConfig.armorDrops) {
+            if (evt.getEntity() instanceof EntityZombie || evt.getEntity() instanceof EntitySkeleton) {
+                EntityMob mob = (EntityMob)evt.getEntity();
+                List<ItemStack> drops = new ArrayList<>();
+                for(EntityItem item : evt.getDrops()) {
+                    if (item.getEntityItem() != null) {
+                        drops.add(item.getEntityItem().copy());
+                    }
+                }
+                for (ItemStack item : mob.getEquipmentAndArmor()) {
+                    if (item != null) {
+                        if (!InvUtils.listContainsArmor(item, drops)) {
+                            if (isNonDefaultArmor(mob, item)) {
+                                createDamagedItem(evt, item.copy());
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (!BWConfig.hardcoreGunpowder)
             return;
         if (evt.getEntity() instanceof EntityCreeper || evt.getEntity() instanceof EntityGhast) {
             for (EntityItem item : evt.getDrops()) {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    item.setEntityItemStack(ItemMaterial.getMaterial("niter"));
+                    item.setEntityItemStack(ItemMaterial.getMaterial("niter", stack.stackSize));
                 }
             }
         }
+    }
+
+    private boolean isNonDefaultArmor(EntityMob mob, ItemStack stack) {
+        Item item = stack.getItem();
+        if (mob instanceof EntitySkeleton) {
+            if (item instanceof ItemBow || item instanceof ItemSword)
+                return stack.hasTagCompound();
+        }
+        else if (mob instanceof EntityPigZombie) {
+            if (item == Items.GOLDEN_SWORD) {
+                return stack.hasTagCompound();
+            }
+        }
+        return true;
+    }
+
+    private void createDamagedItem(LivingDropsEvent evt, ItemStack stack) {
+        if(stack.isItemStackDamageable()) {
+            stack.setItemDamage((int)(rand.nextFloat() * stack.getMaxDamage()));
+        }
+        addDrop(evt, stack);
     }
 
     public void addDrop(LivingDropsEvent evt, ItemStack drop) {

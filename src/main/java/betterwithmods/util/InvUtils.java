@@ -2,8 +2,7 @@ package betterwithmods.util;
 
 import betterwithmods.craft.OreStack;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -90,6 +89,22 @@ public class InvUtils {
             for (ItemStack item : list) {
                 if (ItemStack.areItemsEqual(check, item) || (check.getItem() == item.getItem() && item.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     return !item.hasTagCompound() || ItemStack.areItemStackTagsEqual(check, item);
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean listContainsArmor(ItemStack stack, List<ItemStack> list) {
+        if (list != null) {
+            if (list.isEmpty()) return false;
+            Item item = stack.getItem();
+            boolean isTool = item instanceof ItemTool || item instanceof ItemArmor || item instanceof ItemBow;
+            for (ItemStack check : list) {
+                if (isTool && item == check.getItem())
+                    return true;
+                else if (ItemStack.areItemsEqual(check, stack) || (check.getItem() == stack.getItem() && check.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                    return !stack.hasTagCompound() || ItemStack.areItemStackTagsEqual(check, stack);
                 }
             }
         }
