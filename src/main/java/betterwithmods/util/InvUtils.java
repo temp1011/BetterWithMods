@@ -2,7 +2,8 @@ package betterwithmods.util;
 
 import betterwithmods.craft.OreStack;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -99,7 +100,7 @@ public class InvUtils {
         if (list != null) {
             if (list.isEmpty()) return false;
             Item item = stack.getItem();
-            boolean isTool = item instanceof ItemTool || item instanceof ItemArmor || item instanceof ItemBow;
+            boolean isTool = stack.isItemStackDamageable();
             for (ItemStack check : list) {
                 if (isTool && item == check.getItem())
                     return true;
