@@ -30,12 +30,17 @@ repositories {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
     }
+    maven {
+        name "Base"
+        url "http://blamejared.com/maven"
+    }
 }
 dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:+"
     deobfCompile "slimeknights.mantle:Mantle:1.10.2+"
     deobfCompile "slimeknights:TConstruct:1.10.2+"
-    compile files('libs/')
+    deobfCompile "MineTweaker3:MineTweaker3-MC1102-Main:1.10.2-3.0.14.59"
+    compile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
 }
 
 jar {
