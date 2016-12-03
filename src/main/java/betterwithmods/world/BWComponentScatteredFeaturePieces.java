@@ -80,6 +80,9 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 9, 5, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.OBSIDIAN.getDefaultState(), 11, 5, 0, structureBoundingBoxIn);
 
+            //Replace Pressure Plate
+            this.setBlockState(worldIn, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 10, -11, 10, structureBoundingBoxIn);
+
             if(BWMWorldGenEvent.isInRadius(worldIn, worldX, worldZ)) {
                 //Dig hole
                 this.setAir(worldIn, 10, 0, 10, structureBoundingBoxIn);
