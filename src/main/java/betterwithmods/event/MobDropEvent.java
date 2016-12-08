@@ -21,11 +21,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemBow;
+import net.minecraft.item.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -160,9 +156,9 @@ public class MobDropEvent {
     public void mobDrops(LivingDropsEvent evt) {
         if (BWConfig.armorDrops) {
             if (evt.getEntity() instanceof EntityZombie || evt.getEntity() instanceof EntitySkeleton) {
-                EntityMob mob = (EntityMob)evt.getEntity();
+                EntityMob mob = (EntityMob) evt.getEntity();
                 List<ItemStack> drops = new ArrayList<>();
-                for(EntityItem item : evt.getDrops()) {
+                for (EntityItem item : evt.getDrops()) {
                     if (item.getEntityItem() != null) {
                         drops.add(item.getEntityItem().copy());
                     }
@@ -195,8 +191,7 @@ public class MobDropEvent {
         if (mob instanceof EntitySkeleton) {
             if (item instanceof ItemBow || item instanceof ItemSword)
                 return stack.hasTagCompound();
-        }
-        else if (mob instanceof EntityPigZombie) {
+        } else if (mob instanceof EntityPigZombie) {
             if (item == Items.GOLDEN_SWORD) {
                 return stack.hasTagCompound();
             }
@@ -205,8 +200,8 @@ public class MobDropEvent {
     }
 
     private void createDamagedItem(LivingDropsEvent evt, ItemStack stack) {
-        if(stack.isItemStackDamageable()) {
-            stack.setItemDamage((int)(rand.nextFloat() * stack.getMaxDamage()));
+        if (stack.isItemStackDamageable()) {
+            stack.setItemDamage((int) (rand.nextFloat() * stack.getMaxDamage()));
         }
         addDrop(evt, stack);
     }

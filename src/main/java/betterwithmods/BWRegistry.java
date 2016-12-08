@@ -14,24 +14,14 @@ import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockTorch;
+import net.minecraft.block.*;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemSeeds;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
@@ -58,7 +48,7 @@ public class BWRegistry {
         registerBlockDispenserBehavior();
         registerHopperFilters();
 
-        if(BWConfig.dropsHempSeeds) {
+        if (BWConfig.dropsHempSeeds) {
             MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1, 0), 5);
         }
     }

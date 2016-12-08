@@ -32,6 +32,7 @@ public class BlockVineTrap extends BWMBlock {
         super(Material.LEAVES);
         this.setSoundType(SoundType.PLANT);
     }
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return state.getValue(HALF) == BlockSlab.EnumBlockHalf.BOTTOM ? VINETRAP_AABB : VINETRAP_TOP_AABB;

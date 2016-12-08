@@ -33,14 +33,16 @@ public class InvUtils {
         cropNames = getOreNames("crop");
 
     }
+
     public static ItemStack getMatchingSuffixStack(ItemStack stack, String startingPrefix, String resultingPrefix) {
         List<ItemStack> list = getMatchingSuffix(stack, startingPrefix, resultingPrefix);
-        if(list.size() > 0)
+        if (list.size() > 0)
             return list.get(0);
         return null;
     }
+
     public static List<ItemStack> getMatchingSuffix(ItemStack stack, String startingPrefix, String resultingPrefix) {
-        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).filter(ore -> ore.startsWith(startingPrefix)).map( ore -> OreDictionary.getOres(resultingPrefix + ore.substring(startingPrefix.length()))).flatMap(List::stream).collect(Collectors.toList());
+        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).filter(ore -> ore.startsWith(startingPrefix)).map(ore -> OreDictionary.getOres(resultingPrefix + ore.substring(startingPrefix.length()))).flatMap(List::stream).collect(Collectors.toList());
     }
 
     public static ArrayList<ItemStack> getOreNames(String prefix) {

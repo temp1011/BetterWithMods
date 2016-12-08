@@ -27,6 +27,9 @@ import net.minecraft.world.World;
  */
 public class BlockSteelAnvil extends BlockContainer {
 
+    private static final AxisAlignedBB NS_AABB = new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+    private static final AxisAlignedBB EW_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
+
     public BlockSteelAnvil() {
         super(Material.IRON);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
@@ -59,9 +62,6 @@ public class BlockSteelAnvil extends BlockContainer {
             side = DirUtils.convertEntityOrientationToFlatFacing(living, side);
         return state.withProperty(DirUtils.HORIZONTAL, side);
     }
-
-    private static final AxisAlignedBB NS_AABB = new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
-    private static final AxisAlignedBB EW_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {

@@ -200,7 +200,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
             ItemStack eject = new ItemStack(stack.getItem(), ejectStackSize, stack.getItemDamage());
             InvUtils.copyTags(eject, stack);
             IBlockState targetState = getWorld().getBlockState(target);
-            boolean ejectIntoWorld = getWorld().isAirBlock(target) || targetState.getBlock().isReplaceable(getWorld(), target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(getWorld(),target).maxY < 0.5d;
+            boolean ejectIntoWorld = getWorld().isAirBlock(target) || targetState.getBlock().isReplaceable(getWorld(), target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(getWorld(), target).maxY < 0.5d;
             if (ejectIntoWorld) {
                 this.getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((getWorld().rand.nextFloat() - getWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ejectStack(getWorld(), target, facing, eject);

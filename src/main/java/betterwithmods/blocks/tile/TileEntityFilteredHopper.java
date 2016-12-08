@@ -35,11 +35,11 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.List;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype {
-    private ItemStack filterStack;
     public short filterType;
     public boolean outputBlocked;
     public byte power;
     public int soulsRetained;
+    private ItemStack filterStack;
     private int ejectCounter;
     private int containedXP;
     private int xpDropDelay;

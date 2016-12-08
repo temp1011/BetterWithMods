@@ -27,7 +27,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
 
     private boolean shouldEndermanAttackPlayer(@Nonnull EntityEnderman enderman, @Nonnull EntityPlayer player) {
         ItemStack stack = player.inventory.armorItemInSlot(3);
-        if(stack != null && stack.getItem() == BWMItems.ENDER_SPECTACLES) {
+        if (stack != null && stack.getItem() == BWMItems.ENDER_SPECTACLES) {
             return false;
         } else {
             return enderman.shouldAttackPlayer(player);
@@ -68,7 +68,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     @Override
     public boolean continueExecuting() {
         if (this.player != null) {
-            if (!shouldEndermanAttackPlayer(enderman,player)) {
+            if (!shouldEndermanAttackPlayer(enderman, player)) {
                 return false;
             } else {
                 this.enderman.faceEntity(this.player, 10.0F, 10.0F);
@@ -93,7 +93,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
             }
         } else {
             if (this.targetEntity != null) {
-                if (shouldEndermanAttackPlayer(enderman,targetEntity)) {
+                if (shouldEndermanAttackPlayer(enderman, targetEntity)) {
                     if (this.targetEntity.getDistanceSqToEntity(this.enderman) < 16.0D) {
                         this.enderman.teleportRandomly();
                     }

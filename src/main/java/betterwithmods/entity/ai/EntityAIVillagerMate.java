@@ -31,6 +31,13 @@ public class EntityAIVillagerMate extends EntityAIBase {
         this.setMutexBits(3);
     }
 
+    public static boolean isWillingToMate(EntityVillager villager) {
+        if (villager != null) {
+            return ReflectionHelper.getPrivateValue(EntityVillager.class, villager, "isWillingToMate", "field_175565_bs");
+        }
+        return false;
+    }
+
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
@@ -131,13 +138,6 @@ public class EntityAIVillagerMate extends EntityAIBase {
 
     public boolean canMateWith(EntityVillager village, EntityVillager mate) {
         return village != mate && (isWillingToMate(villager) && isWillingToMate(mate));
-    }
-
-    public static boolean isWillingToMate(EntityVillager villager) {
-        if (villager != null) {
-            return ReflectionHelper.getPrivateValue(EntityVillager.class, villager, "isWillingToMate", "field_175565_bs");
-        }
-        return false;
     }
 
 }

@@ -25,7 +25,7 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
         if (state.getProperties().containsKey(BlockMillGenerator.AXIS)) {
             axis = state.getValue(BlockMillGenerator.AXIS);
         }
-        switch(axis) {
+        switch (axis) {
             case X:
                 shafts.setRotateAngle(shafts.axle, 0, 0, -(float) Math.toRadians(rotation));
                 sail.setRotateAngleForSails(0, 0, -(float) Math.toRadians(rotation));

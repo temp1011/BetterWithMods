@@ -29,7 +29,7 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
             axis = state.getValue(BlockMillGenerator.AXIS);
         }
 
-        switch(axis) {
+        switch (axis) {
             case X:
                 waterwheel.setRotateAngle(waterwheel.axle, 0, 0, (float) Math.toRadians(rotation));
                 GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
