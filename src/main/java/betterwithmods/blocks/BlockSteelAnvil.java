@@ -5,7 +5,6 @@ import betterwithmods.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,8 +21,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
 
 /**
  * Created by blueyu2 on 11/21/16.
@@ -63,18 +60,20 @@ public class BlockSteelAnvil extends BlockContainer {
         return state.withProperty(DirUtils.HORIZONTAL, side);
     }
 
+    private static final AxisAlignedBB NS_AABB = new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+    private static final AxisAlignedBB EW_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        switch (state.getValue(DirUtils.HORIZONTAL))
-        {
+        switch (state.getValue(DirUtils.HORIZONTAL)) {
             case NORTH:
             case SOUTH:
-                return new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+                return NS_AABB;
             case EAST:
             case WEST:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
+                return EW_AABB;
             default:
-                return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                return FULL_BLOCK_AABB;
         }
     }
 

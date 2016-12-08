@@ -64,9 +64,9 @@ public class ContainerSteelAnvil extends Container {
         return this.world.getBlockState(pos).getBlock() == BWMBlocks.STEEL_ANVIL  && playerIn.getDistanceSq(pos) <= 64.0D;
     }
 
-    private final int INV_FIRST = 17;
-    private final int INV_LAST = 44;
-    private final int HOT_LAST = 53;
+    private static final int INV_FIRST = 17;
+    private static final int INV_LAST = 44;
+    private static final int HOT_LAST = 53;
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)

@@ -37,6 +37,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute() {
         double d0 = this.getTargetDistance();
         this.player = this.enderman.getEntityWorld().getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, player -> player != null && shouldEndermanAttackPlayer(enderman, player));
@@ -46,6 +47,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting() {
         this.aggroTime = 5;
         this.teleportTime = 0;
@@ -54,6 +56,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     /**
      * Resets the task
      */
+    @Override
     public void resetTask() {
         this.player = null;
         super.resetTask();
@@ -62,6 +65,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting() {
         if (this.player != null) {
             if (!shouldEndermanAttackPlayer(enderman,player)) {
@@ -71,13 +75,14 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
                 return true;
             }
         } else {
-            return this.targetEntity != null && ((EntityPlayer) this.targetEntity).isEntityAlive() ? true : super.continueExecuting();
+            return this.targetEntity != null && this.targetEntity.isEntityAlive() || super.continueExecuting();
         }
     }
 
     /**
      * Updates the task
      */
+    @Override
     public void updateTask() {
 
         if (this.player != null) {

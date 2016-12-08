@@ -34,20 +34,19 @@ public class InventorySteelAnvilCrafting extends InventoryCrafting {
     public ItemStack decrStackSize(int index, int count) {
         ItemStack stack = anvil.getStackInSlot(index);
         if (stack != null) {
-            ItemStack itemstack;
+            ItemStack newStack;
             if (stack.stackSize <= count) {
-                itemstack = stack.copy();
-                stack = null;
+                newStack = stack.copy();
                 anvil.setInventorySlotContents(index, null);
                 this.container.onCraftMatrixChanged(this);
-                return itemstack;
+                return newStack;
             }
             else {
-                itemstack = stack.splitStack(count);
+                newStack = stack.splitStack(count);
                 if (stack.stackSize == 0)
-                    stack = null;
+                    anvil.setInventorySlotContents(index, null);
                 this.container.onCraftMatrixChanged(this);
-                return itemstack;
+                return newStack;
             }
         }
         else
