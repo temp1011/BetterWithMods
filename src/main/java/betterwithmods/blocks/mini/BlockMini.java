@@ -83,8 +83,8 @@ public abstract class BlockMini extends BWMBlock {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return metaBlockPlace(facing, flX, flY, flZ);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        return metaBlockPlace(facing, hitX, hitY, hitZ);
     }
 
     @Override

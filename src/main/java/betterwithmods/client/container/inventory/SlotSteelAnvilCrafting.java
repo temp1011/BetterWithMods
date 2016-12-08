@@ -13,11 +13,11 @@ import net.minecraft.item.ItemStack;
 public class SlotSteelAnvilCrafting extends SlotCrafting {
 
     private final InventoryCrafting craftMatrix;
-    private final EntityPlayer thePlayer;
+    private final EntityPlayer player;
 
     public SlotSteelAnvilCrafting(EntityPlayer player, InventoryCrafting craftingInventory, IInventory inventoryIn, int slotIndex, int xPosition, int yPosition) {
         super(player, craftingInventory, inventoryIn, slotIndex, xPosition, yPosition);
-        this.thePlayer = player;
+        this.player = player;
         this.craftMatrix = craftingInventory;
     }
 
@@ -27,7 +27,7 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
         net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
         this.onCrafting(stack);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
-        ItemStack[] aitemstack = CraftingManagerSteelAnvil.INSTANCE.getRemainingItems(this.craftMatrix, playerIn.worldObj);
+        ItemStack[] aitemstack = CraftingManagerSteelAnvil.INSTANCE.getRemainingItems(this.craftMatrix, playerIn.getEntityWorld());
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
         for (int i = 0; i < aitemstack.length; ++i)
@@ -52,9 +52,9 @@ public class SlotSteelAnvilCrafting extends SlotCrafting {
                     itemstack1.stackSize += itemstack.stackSize;
                     this.craftMatrix.setInventorySlotContents(i, itemstack1);
                 }
-                else if (!this.thePlayer.inventory.addItemStackToInventory(itemstack1))
+                else if (!this.player.inventory.addItemStackToInventory(itemstack1))
                 {
-                    this.thePlayer.dropItem(itemstack1, false);
+                    this.player.dropItem(itemstack1, false);
                 }
             }
         }

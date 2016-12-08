@@ -39,7 +39,7 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
      */
     public boolean shouldExecute() {
         double d0 = this.getTargetDistance();
-        this.player = this.enderman.worldObj.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, player -> player != null && shouldEndermanAttackPlayer(enderman, player));
+        this.player = this.enderman.getEntityWorld().getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, player -> player != null && shouldEndermanAttackPlayer(enderman, player));
         return this.player != null;
     }
 

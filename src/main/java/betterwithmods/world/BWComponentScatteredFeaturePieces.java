@@ -204,7 +204,7 @@ public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeature
                             entitywitch.setLocationAndAngles((double)x + 0.5D, (double)y, (double)z + 0.5D, 0.0F, 0.0F);
                             entitywitch.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(x, y, z)),null);
                             entitywitch.enablePersistence();
-                            worldIn.spawnEntityInWorld(entitywitch);
+                            worldIn.spawnEntity(entitywitch);
                         }
                     }
                     this.hasWitch = true;

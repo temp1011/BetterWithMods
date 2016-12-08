@@ -17,7 +17,7 @@ public class BWMapGenScatteredFeature extends MapGenScatteredFeature {
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new BWMapGenScatteredFeature.Start(this.worldObj, this.rand, chunkX, chunkZ);
+        return new BWMapGenScatteredFeature.Start(this.world, this.rand, chunkX, chunkZ);
     }
 
     public static class Start extends MapGenScatteredFeature.Start

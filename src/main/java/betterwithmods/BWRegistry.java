@@ -106,7 +106,7 @@ public class BWRegistry {
                     EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
                             pos.getZ() + 0.5F, null, facing);
                     miningCharge.setNoGravity(false);
-                    worldIn.spawnEntityInWorld(miningCharge);
+                    worldIn.spawnEntity(miningCharge);
                     worldIn.playSound(null, miningCharge.posX, miningCharge.posY, miningCharge.posZ,
                             SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return stack;

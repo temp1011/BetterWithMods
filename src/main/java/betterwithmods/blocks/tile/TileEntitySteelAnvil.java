@@ -3,12 +3,10 @@ package betterwithmods.blocks.tile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
@@ -94,8 +92,8 @@ public class TileEntitySteelAnvil extends TileEntity implements IInventory, ISid
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(pos) == this && player.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return this.getWorld().getTileEntity(pos) == this && player.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
     @Override

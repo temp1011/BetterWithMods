@@ -181,7 +181,7 @@ public class BucketEvent {
 
     @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
-        World world = e.player.worldObj;
+        World world = e.player.getEntityWorld();
         if(BWConfig.hardcoreLavaBuckets) {
             if(world.getTotalWorldTime() % 10 == 0) {
                 if (!e.player.isPotionActive(MobEffects.FIRE_RESISTANCE)) {

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class HardcoreEndermenEvent {
     @SubscribeEvent
     public void onTeleport(EnderTeleportEvent evt) {
-        evt.getEntityLiving().worldObj.playSound(null,evt.getEntityLiving().getPosition(),SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.HOSTILE,1,1);
+        evt.getEntityLiving().getEntityWorld().playSound(null,evt.getEntityLiving().getPosition(),SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.HOSTILE,1,1);
     }
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent evt) {

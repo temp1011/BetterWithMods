@@ -133,7 +133,7 @@ public class InvUtils {
                     item.motionY = (double) ((float) world.rand.nextGaussian() * f1 + 0.2F);
                     item.motionZ = (double) ((float) world.rand.nextGaussian() * f1);
                     copyTags(item.getEntityItem(), stack);
-                    world.spawnEntityInWorld(item);
+                    world.spawnEntity(item);
                 }
             }
         }
@@ -416,7 +416,7 @@ public class InvUtils {
         item.motionY = (double) ((float) world.rand.nextGaussian() * velocity + 0.2F);
         item.motionZ = (double) ((float) world.rand.nextGaussian() * velocity);
         item.setPickupDelay(pickupDelay);
-        world.spawnEntityInWorld(item);
+        world.spawnEntity(item);
     }
 
     public static void ejectStack(World world, double x, double y, double z, ItemStack stack) {
@@ -448,6 +448,6 @@ public class InvUtils {
             }
         }
         f = f / (float) inventory.getSlots();
-        return MathHelper.floor_float(f * 14.0F) + (i > 0 ? 1 : 0);
+        return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 }
