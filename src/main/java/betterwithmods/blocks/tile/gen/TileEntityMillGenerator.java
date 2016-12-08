@@ -29,7 +29,6 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
     public float currentRotation = 0.0F;
     public float previousRotation = 0.0F;
     protected byte waterMod = 1;
-    protected EnumFacing facing = null;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -43,8 +42,6 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
             previousRotation = tag.getFloat("RotationSpeed");
         if (tag.hasKey("DyeIndex"))
             dyeIndex = tag.getByte("DyeIndex");
-        if (tag.hasKey("Facing"))
-            facing = EnumFacing.getFront(tag.getByte("Facing"));
     }
 
     @Override
@@ -54,8 +51,6 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
         t.setByte("RunningState", runningState);
         t.setFloat("CurrentRotation", currentRotation);
         t.setFloat("RotationSpeed", previousRotation);
-        if (facing != null)
-            t.setByte("Facing", (byte) facing.ordinal());
         return t;
     }
 
@@ -69,9 +64,6 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
 
     @Override
     public void update() {
-        if (facing == null) {
-            facing = ((BlockMillGenerator) getWorld().getBlockState(pos).getBlock()).getAxleDirectionFromState(getWorld().getBlockState(pos));
-        }
         if (this.runningState != 0) {
             this.previousRotation = (this.runningState > 1 ? this.runningSpeed * 5 : this.runningSpeed) * this.waterMod;//this.currentRotation;
             this.currentRotation += (this.runningState > 1 ? 5 : this.runningState) * this.runningSpeed * this.waterMod;
@@ -89,19 +81,6 @@ public abstract class TileEntityMillGenerator extends TileEntity implements ITic
                 overpowerTime = 30;
             else if (this.runningState == 2 && overpowerTime > 0)
                 overpowerTime--;
-        }
-    }
-
-    public EnumFacing getOrientation() {
-        return facing;
-    }
-
-    public void setOrientation(EnumFacing facing) {
-        if (facing != null) {
-            if (facing.getAxisDirection() != EnumFacing.AxisDirection.POSITIVE)
-                this.facing = facing.getOpposite();
-            else
-                this.facing = facing;
         }
     }
 
