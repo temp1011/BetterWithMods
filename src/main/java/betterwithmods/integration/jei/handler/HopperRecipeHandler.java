@@ -25,7 +25,7 @@ public class HopperRecipeHandler implements IRecipeHandler<HopperRecipeWrapper> 
     @Override
     public String getRecipeCategoryUid(HopperRecipeWrapper recipe) {
         if (recipe instanceof SoulUrnWrapper) {
-            return "bwm.hopper.soulurn";
+            return "bwm.hopper.soul_urn";
         }
         return getRecipeCategoryUid();
     }

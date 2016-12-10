@@ -322,23 +322,23 @@ inv.cauldron.name=Cauldron
 inv.cauldron.stoked.name=Stoked Cauldron
 inv.crucible.name=Crucible
 inv.crucible.stoked.name=Stoked Crucible
-inv.filteredhopper.name=Filtered Hopper
+inv.filtered_hopper.name=Filtered Hopper
 inv.mill.name=Mill Stone
 inv.bwm.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
-inv.steelanvil.name=Steel Anvil
+inv.steel_anvil.name=Steel Anvil
 
 inv.hopper.name=Hopper Recipes
-inv.hopper.soulurn.name=Hopper Soul Urn Recipes
+inv.hopper.soul_urn.name=Hopper Soul Urn Recipes
 
 itemGroup.bwm:bwTab=Better With Mods
 
 fluid.betterwithmods:soulforged_steel.name=Molten Soulforged Steel
 fluid.betterwithmods:hellfire.name=Molten Hellfire
-material.soulforgedsteel.name=Soulforged Steel
+material.soulforged_steel.name=Soulforged Steel
 material.hellfire.name=Hellfire
 modifier.mending.name=Mending
 modifier.mending.desc=§oKillsteal!§r\nAbsorbs experience to repair the tool.

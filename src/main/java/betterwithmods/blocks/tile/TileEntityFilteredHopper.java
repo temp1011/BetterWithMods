@@ -554,7 +554,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public String getName() {
-        return "inv.filteredhopper.name";
+        return "inv.filtered_hopper.name";
     }
 
     @Override

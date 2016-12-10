@@ -33,12 +33,12 @@ public class SteelAnvilRecipeCategory extends BlankRecipeCategory<ICraftingRecip
     public SteelAnvilRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = new ResourceLocation(BWMod.MODID, "textures/gui/jei/steel_anvil.png");
         background = guiHelper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
-        localizedName = Translator.translateToLocal("inv.steelanvil.name");
+        localizedName = Translator.translateToLocal("inv.steel_anvil.name");
     }
 
     @Override
     public String getUid() {
-        return "bwm.steelanvil";
+        return "bwm.steel_anvil";
     }
 
     @Override
