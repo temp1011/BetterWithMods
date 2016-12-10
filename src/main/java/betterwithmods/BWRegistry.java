@@ -136,8 +136,14 @@ public class BWRegistry {
 
         OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
-
+        //Added bark subtype entries for Roots compatibility
         OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("barkOak", new ItemStack(BWMItems.BARK, 1, 0));
+        OreDictionary.registerOre("barkSpruce", new ItemStack(BWMItems.BARK, 1, 1));
+        OreDictionary.registerOre("barkBirch", new ItemStack(BWMItems.BARK, 1, 2));
+        OreDictionary.registerOre("barkJungle", new ItemStack(BWMItems.BARK, 1, 3));
+        OreDictionary.registerOre("barkAcacia", new ItemStack(BWMItems.BARK, 1, 4));
+        OreDictionary.registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
         OreDictionary.registerOre("craftingToolKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         // TFC compatibility

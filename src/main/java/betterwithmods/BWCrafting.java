@@ -346,11 +346,11 @@ public class BWCrafting {
         addOreCauldronRecipe(new ItemStack(Items.DYE, 1, 2), new Object[]{"blockCactus"});
         addOreCauldronRecipe(ItemMaterial.getMaterial("filament"), new Object[]{"string", "dustGlowstone", "dustRedstone"});
         addOreCauldronRecipe(ItemMaterial.getMaterial("element"), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
-
+        String[] barkNames = {"barkOak", "barkSpruce", "barkBirch", "barkJungle", "barkAcacia", "barkDarkOak"};
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             int meta = type.getMetadata();
-            addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather"), new Object[]{ItemMaterial.getMaterial("scoured_leather"), new ItemStack(BWMItems.BARK, ItemBark.getTanningStackSize(meta), meta)});
-            addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), new Object[]{ItemMaterial.getMaterial("scoured_leather_cut", 2), new ItemStack(BWMItems.BARK, ItemBark.getTanningStackSize(meta), meta)});
+            addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather"), new Object[]{ItemMaterial.getMaterial("scoured_leather"), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
+            addOreCauldronRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), new Object[]{ItemMaterial.getMaterial("scoured_leather_cut", 2), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
         }
         addCauldronRecipe(ItemMaterial.getMaterial("tanned_leather"), new ItemStack[]{ItemMaterial.getMaterial("scoured_leather"), ItemMaterial.getMaterial("dung")});
         addCauldronRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), new ItemStack[]{ItemMaterial.getMaterial("scoured_leather_cut", 2), ItemMaterial.getMaterial("dung")});
