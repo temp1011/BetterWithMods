@@ -68,10 +68,18 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.NETHER_BRICK_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.NETHERBRICK.getMetadata())).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.BRICK_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.BRICK.getMetadata())).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.SANDSTONE_STAIRS, "M ", "MM", 'M', new ItemStack(BWMBlocks.STONE_MOULDING, 1, BlockMini.EnumType.SANDSTONE.getMetadata())).setMirrored(true));
-        for (int i = 0; i < 4; i++)
-            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
-        for (int i = 0; i < 2; i++)
-            GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, 4 + i), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i));
+        if(BWConfig.hardcoreLumber) {
+            for (int i = 0; i < 4; i++)
+                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, i), null, ItemMaterial.getMaterial("sawdust", 2), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i)));
+            for (int i = 0; i < 2; i++)
+                GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 1, 4 + i), null, ItemMaterial.getMaterial("sawdust", 2), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i)));
+        }
+        else {
+            for (int i = 0; i < 4; i++)
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, i), new ItemStack(BWMBlocks.DEBARKED_OLD, 1, i));
+            for (int i = 0; i < 2; i++)
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 3, 4 + i), new ItemStack(BWMBlocks.DEBARKED_NEW, 1, i));
+        }
         GameRegistry.addShapedRecipe(new ItemStack(Blocks.BOOKSHELF), "SSS", "BBB", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'B', Items.BOOK);
         GameRegistry.addShapedRecipe(new ItemStack(Blocks.CHEST), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.NOTEBLOCK), "SSS", "SRS", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'R', "dustRedstone"));
@@ -155,7 +163,7 @@ public class BWCrafting {
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("windmill_blade"), "CCC", "CCC", "WWW", 'W', "slabWood", 'C', "fabricHemp"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ANCHOR), " I ", "SSS", 'S', "stone", 'I', "ingotIron"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.HIBACHI), "HHH", "SES", "SRS", 'S', "stone", 'R', "dustRedstone", 'H', ItemMaterial.getMaterial("concentrated_hellfire"), 'E', ItemMaterial.getMaterial("element")));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("leather_strap", 4), "craftingToolKnife", ItemMaterial.getMaterial("tanned_leather_cut")));
+        GameRegistry.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial("leather_strap", 4), ItemMaterial.getMaterial("tanned_leather_cut")));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("leather_belt"), " L ", "L L", " L ", 'L', ItemMaterial.getMaterial("leather_strap")));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.BELLOWS), "WWW", "LLL", "BGB", 'W', new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE), 'L', ItemMaterial.getMaterial("tanned_leather_cut"), 'B', ItemMaterial.getMaterial("leather_belt"), 'G', "gearWood"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.GEARBOX), "PGP", "GLG", "PGP", 'P', "plankWood", 'G', "gearWood", 'L', ItemMaterial.getMaterial("redstone_latch")));
@@ -191,9 +199,9 @@ public class BWCrafting {
         //GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[] {"dustSulfur", "dustSaltpeter", "dustCharcoal"}));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("redstone_latch"), "GGG", " R ", 'G', "nuggetGold", 'R', "dustRedstone"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMBlocks.ROPE), "XX", "XX", "XX", 'X', "fiberHemp"));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("leather_cut", 2), Items.LEATHER, "craftingToolKnife"));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), ItemMaterial.getMaterial("tanned_leather"), "craftingToolKnife"));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(ItemMaterial.getMaterial("scoured_leather_cut", 2), ItemMaterial.getMaterial("scoured_leather"), "craftingToolKnife"));
+        GameRegistry.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial("leather_cut", 2), new ItemStack(Items.LEATHER)));
+        GameRegistry.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial("tanned_leather_cut", 2), ItemMaterial.getMaterial("tanned_leather")));
+        GameRegistry.addRecipe(new CuttingRecipe(ItemMaterial.getMaterial("scoured_leather_cut", 2), ItemMaterial.getMaterial("scoured_leather")));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("sharpening_stone"), "X ", " X", 'X', Items.FLINT).setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(ItemMaterial.getMaterial("knife_blade"), "I ", " X", 'X', ItemMaterial.getMaterial("sharpening_stone"), 'I', "ingotIron").setMirrored(true));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWMItems.KNIFE), "I ", " X", 'X', "stickWood", 'I', ItemMaterial.getMaterial("knife_blade")).setMirrored(true));

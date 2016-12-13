@@ -71,7 +71,7 @@ public class BWConfig {
     private static void syncConfig() {
         HARDCORE_CAT = config.getCategory(HARDCORE);
         hardcoreGunpowder = config.get(HARDCORE, "Hardcore Gunpowder", true, "Creepers and Ghasts will drop brimstone or niter instead of gunpowder").getBoolean();
-        hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe").getBoolean();
+        hardcoreLumber = config.get(HARDCORE, "Hardcore Lumberjack", true, "Logs break into planks if you don't use an axe. Need an axe to chop logs into planks").setRequiresMcRestart(true).getBoolean();
         hardcoreBuckets = config.get(HARDCORE, "Hardcore Buckets", true, "Water sources cannot be moved outside the End").getBoolean();
         hardcoreMelons = config.get(HARDCORE, "Hardcore Melons", true, "Melons and pumpkins are affected by gravity and need a saw to slice up.").getBoolean();
         hardcoreFluidContainer = config.get(HARDCORE, "Hardcore Buckets Affects Modded Fluid Containers", true).getBoolean();
