@@ -1,5 +1,6 @@
 package betterwithmods.event;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.config.BWConfig;
@@ -134,6 +135,11 @@ public class HungerEventHandler {
             return;
         IBlockState state = event.getState();
         float f = player.inventory.getStrVsBlock(state);
+
+        //Hardcore Stumping
+        if (state.getBlock() == BWMBlocks.STUMP) {
+            f = 1.0F;
+        }
 
         if (f > 1.0F) {
             int i = EnchantmentHelper.getEfficiencyModifier(player);
