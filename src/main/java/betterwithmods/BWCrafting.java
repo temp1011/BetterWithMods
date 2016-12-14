@@ -40,6 +40,7 @@ public class BWCrafting {
         addHardcoreDiamonds();
         addSteelAnvilRecipes();
         addHardcoreRedstone();
+        addHardcoreStumping();
     }
 
     public static void postInit() {
@@ -625,6 +626,13 @@ public class BWCrafting {
         RecipeUtils.removeRecipes(Blocks.HOPPER);
         GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.HOPPER, "ICI", "IRI", " I ", 'I', "ingotIron", 'C', "chestWood", 'R', ItemMaterial.getMaterial("redstone_latch")));
         GameRegistry.addRecipe(new ShapedOreRecipe(Items.COMPARATOR, " R ", "RQR", "SSS", 'R', Blocks.REDSTONE_TORCH, 'Q', "gemQuartz", 'S', new ItemStack(BWMBlocks.STONE_SIDING, 1, BlockMini.EnumType.STONE.getMetadata())));
+    }
+
+    private static void addHardcoreStumping() {
+        if (!BWConfig.hardcoreStumping)
+            return;
+
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
