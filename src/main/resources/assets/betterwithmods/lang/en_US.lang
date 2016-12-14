@@ -194,6 +194,12 @@ tile.bwm:advanced_gearbox.name=Advanced Gearbox
 tile.bwm:raw_pastry.0.name=Cake Batter
 tile.bwm:raw_pastry.1.name=Oven Ready Pumpkin Pie
 tile.bwm:raw_pastry.2.name=Cookie Dough
+tile.bwm:stump.0.name=Oak Stump
+tile.bwm:stump.1.name=Spruce Stump
+tile.bwm:stump.2.name=Birch Stump
+tile.bwm:stump.3.name=Jungle Stump
+tile.bwm:stump.4.name=Acacia Stump
+tile.bwm:stump.5.name=Dark Oak Stump
 
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
