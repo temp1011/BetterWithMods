@@ -21,6 +21,7 @@ import betterwithmods.world.BWMapGenScatteredFeature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.world.MinecraftException;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -208,5 +210,26 @@ public class BWMod {
             MinecraftForge.EVENT_BUS.register(new ConfigSyncHandler());
         proxy.postInit();
 
+    }
+
+    @Mod.EventHandler
+    public void remap(FMLMissingMappingsEvent evt) throws MinecraftException {
+        for (FMLMissingMappingsEvent.MissingMapping mapping : evt.get()) {
+            switch (mapping.type) {
+                case ITEM:
+                    if (Objects.equals(mapping.name, "betterwithmods:creativeGenerator")) {
+                        Item creativeGeneratorItem = Item.getItemFromBlock(BWMBlocks.CREATIVE_GENERATOR);
+                        if (creativeGeneratorItem == null)
+                            throw new MinecraftException("Creative Generator don't have an item. Can't remap.");
+                        mapping.remap(creativeGeneratorItem);
+                    }
+                    break;
+                case BLOCK:
+                    if (Objects.equals(mapping.name, "betterwithmods:creativeGenerator")) {
+                        mapping.remap(BWMBlocks.CREATIVE_GENERATOR);
+                    }
+                    break;
+            }
+        }
     }
 }

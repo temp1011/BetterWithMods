@@ -15,7 +15,7 @@ public class SteelAnvilShapelessRecipeHandler implements IRecipeHandler<SteelAnv
 
     @Override
     public String getRecipeCategoryUid() {
-        return "bwm.steelanvil";
+        return "bwm.steel_anvil";
     }
 
     @Override

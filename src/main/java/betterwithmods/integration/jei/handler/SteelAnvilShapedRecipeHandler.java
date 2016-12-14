@@ -15,7 +15,7 @@ public class SteelAnvilShapedRecipeHandler implements IRecipeHandler<SteelAnvilS
 
     @Override
     public String getRecipeCategoryUid() {
-        return "bwm.steelanvil";
+        return "bwm.steel_anvil";
     }
 
     @Override
