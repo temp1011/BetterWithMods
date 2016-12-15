@@ -1,6 +1,7 @@
 package betterwithmods.event;
 
 import betterwithmods.blocks.BlockStump;
+import betterwithmods.config.BWConfig;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -43,6 +44,7 @@ public class StumpingEventHandler {
      */
     @SubscribeEvent
     public void addStumpsToGeneratedTrees(DecorateBiomeEvent.Post event) {
+        if (!BWConfig.hardcoreStumping) return;
         for (int dx = 0; dx < 16; dx++) {
             int x = event.getPos().getX() + dx;
             x += 8;
