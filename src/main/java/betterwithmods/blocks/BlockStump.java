@@ -7,6 +7,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.HardcoreFunctions;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -14,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -49,14 +51,19 @@ public class BlockStump extends Block implements IMultiVariants {
      *
      * @param worldIn  The world where stump will be placed.
      * @param position The position at the base of the tree.
-     * @param log      The log of the trunk that must be checked.
      * @return true when the trunk is high enough.
      */
-    public static boolean canPlaceStump(World worldIn, BlockPos position, IBlockState log) {
+    public static boolean canPlaceStump(World worldIn, BlockPos position) {
         for (int i = 0; i < MIN_TRUNK_HEIGHT; i++) {
             IBlockState state = worldIn.getBlockState(position.up(i));
-            if (!(state.getBlock() == log.getBlock())) return false;
-            if (!(HardcoreFunctions.getWoodType(state) == HardcoreFunctions.getWoodType(log))) return false;
+            if (!(state.getBlock() == Blocks.LOG ||
+                    state.getBlock() == Blocks.LOG2)) {
+                return false;
+            }
+            if (i == 0 && state.getProperties().containsKey(BlockLog.LOG_AXIS)
+                    && state.getValue(BlockLog.LOG_AXIS) != BlockLog.EnumAxis.Y) {
+                return false;
+            }
         }
         return true;
     }

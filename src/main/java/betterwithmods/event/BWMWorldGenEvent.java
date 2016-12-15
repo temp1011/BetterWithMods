@@ -36,7 +36,7 @@ public class BWMWorldGenEvent {
     }
 
     @SubscribeEvent
-    public void addStumps(SaplingGrowTreeEvent event) {
+    public void addStumpToTree(SaplingGrowTreeEvent event) {
         if (!BWConfig.hardcoreStumping)
             return;
         IBlockState state = event.getWorld().getBlockState(event.getPos());

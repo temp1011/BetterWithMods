@@ -36,7 +36,7 @@ public class WorldGenCanopyTreeWithStump extends WorldGenCanopyTree {
     }
 
     private void attemptToPlaceStump(World worldIn, BlockPos position) {
-        if (BlockStump.canPlaceStump(worldIn, position, LOG)) {
+        if (BlockStump.canPlaceStump(worldIn, position)) {
             IBlockState stump = BlockStump.getStump(LOG);
             if (stump == null) return;
             this.setBlockAndNotifyAdequately(worldIn, position, stump);

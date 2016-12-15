@@ -32,7 +32,7 @@ public class WorldGenMegaJungleWithStump extends WorldGenMegaJungle {
     }
 
     private void attemptToPlaceStump(World worldIn, BlockPos position) {
-        if (BlockStump.canPlaceStump(worldIn, position, this.woodMetadata)) {
+        if (BlockStump.canPlaceStump(worldIn, position)) {
             IBlockState stump = BlockStump.getStump(woodMetadata);
             if (stump == null) return;
             this.setBlockAndNotifyAdequately(worldIn, position, stump);
