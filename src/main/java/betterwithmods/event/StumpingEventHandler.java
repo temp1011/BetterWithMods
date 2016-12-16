@@ -45,6 +45,7 @@ public class StumpingEventHandler {
     @SubscribeEvent
     public void addStumpsToGeneratedTrees(DecorateBiomeEvent.Post event) {
         if (!BWConfig.hardcoreStumping) return;
+        if (!event.getWorld().provider.isSurfaceWorld()) return;
         for (int dx = 0; dx < 16; dx++) {
             int x = event.getPos().getX() + dx;
             x += 8;
