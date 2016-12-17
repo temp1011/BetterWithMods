@@ -1,0 +1,56 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "betterwithmods:stump",
+    "textures": {
+      "end_overlay": "betterwithmods:blocks/stump_end_overlay",
+      "side_overlay": "betterwithmods:blocks/stump_side_overlay"
+    },
+    "uvlock": false
+  },
+  "variants": {
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "variant": {
+      "oak": {
+        "textures": {
+          "end": "blocks/log_oak_top",
+          "side": "blocks/log_oak"
+        }
+      },
+      "spruce": {
+        "textures": {
+          "end": "blocks/log_spruce_top",
+          "side": "blocks/log_spruce"
+        }
+      },
+      "birch": {
+        "textures": {
+          "end": "blocks/log_birch_top",
+          "side": "blocks/log_birch"
+        }
+      },
+      "jungle": {
+        "textures": {
+          "end": "blocks/log_jungle_top",
+          "side": "blocks/log_jungle"
+        }
+      },
+      "acacia": {
+        "textures": {
+          "end": "blocks/log_acacia_top",
+          "side": "blocks/log_acacia"
+        }
+      },
+      "dark_oak": {
+        "textures": {
+          "end": "blocks/log_big_oak_top",
+          "side": "blocks/log_big_oak"
+        }
+      }
+    }
+  }
+}

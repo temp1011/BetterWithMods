@@ -73,6 +73,7 @@ public final class BWMItems {
     public static final Item HEARTY_STEW = new ItemSoup(10).setMaxStackSize(64).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("hearty_stew");
     public static final Item RAW_KEBAB = new ItemFood(6, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
     public static final Item PORK_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
+    public static final Item STUMP_REMOVER = new ItemStumpRemover().setRegistryName("stump_remover");
 
     private BWMItems() {
     }
@@ -118,6 +119,7 @@ public final class BWMItems {
         registerItem(HEARTY_STEW);
         registerItem(RAW_KEBAB);
         registerItem(PORK_DINNER);
+        registerItem(STUMP_REMOVER);
     }
 
     /**
@@ -177,6 +179,7 @@ public final class BWMItems {
         setInventoryModel(HEARTY_STEW);
         setInventoryModel(RAW_KEBAB);
         setInventoryModel(PORK_DINNER);
+        setInventoryModel(STUMP_REMOVER);
     }
 
     @SideOnly(Side.CLIENT)

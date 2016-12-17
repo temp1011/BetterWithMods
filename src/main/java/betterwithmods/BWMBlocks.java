@@ -72,6 +72,7 @@ public final class BWMBlocks {
     public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
     public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
     public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
+    public static final Block STUMP = new BlockStump().setRegistryName("stump");
 
     private BWMBlocks() {
     }
@@ -128,6 +129,7 @@ public final class BWMBlocks {
         registerBlock(STONE_SIDING, new ItemBlockMini(STONE_SIDING));
         registerBlock(STONE_MOULDING, new ItemBlockMini(STONE_MOULDING));
         registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
+        registerBlock(STUMP, new ItemBlockMeta(STUMP));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -233,6 +235,7 @@ public final class BWMBlocks {
         setInventoryModel(STONE_SIDING);
         setInventoryModel(STONE_MOULDING);
         setInventoryModel(STONE_CORNER);
+        setInventoryModel(STUMP);
     }
 
     @SideOnly(Side.CLIENT)

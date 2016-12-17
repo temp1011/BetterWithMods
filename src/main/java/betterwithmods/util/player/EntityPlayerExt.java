@@ -1,5 +1,6 @@
 package betterwithmods.util.player;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -150,6 +151,11 @@ public final class EntityPlayerExt {
     }
 
     public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos) {
+        //Hardcore Stumping
+        if (player.getEntityWorld().getBlockState(pos).getBlock() == BWMBlocks.STUMP) {
+            return false;
+        }
+
         ItemStack stack = player.getHeldItemMainhand();
         return stack != null && ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
