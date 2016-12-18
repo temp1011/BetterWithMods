@@ -122,6 +122,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new HardcoreRedstoneEvent());
         MinecraftForge.TERRAIN_GEN_BUS.register(new BWMWorldGenEvent());
         MinecraftForge.EVENT_BUS.register(new StumpingEventHandler());
+        MinecraftForge.EVENT_BUS.register(new DropEventHandler());
     }
 
     private static void registerEntities() {

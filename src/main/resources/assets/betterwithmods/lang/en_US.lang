@@ -312,6 +312,10 @@ item.bwm:arcane_scroll.name=Arcane Scroll
 
 item.bwm:stump_remover.name=Stump Remover
 
+item.bwm:gravel_pile.name=Pile of Gravel
+item.bwm:dirt_pile.name=Pile of Dirt
+item.bwm:sand_pile.name=Pile of Sand
+
 enchantment.level.-1=
 lore.bwm:dynamite=Dwarven Fishing Pole
 
