@@ -44,7 +44,12 @@ public class HopperInteractions {
                 onCraft(world, pos, inputStack);
             }
         });
-        recipes.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), null) {
+        recipes.add(new HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), null, new ItemStack(Blocks.SOUL_SAND)) {
+            @Override
+            public void craft(EntityItem inputStack, World world, BlockPos pos) {
+                onCraft(world, pos, inputStack);
+            }
+
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
