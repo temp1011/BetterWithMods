@@ -81,18 +81,12 @@ public class TConstruct implements ICompatModule {
     public void initClient() {
         registerRenderInfo(soulforgedSteel, 5066061, 0.1F, 0.3F, 0.1F);
         registerRenderInfo(hellfire, 14426647, 0.0F, 0.2F, 0.0F);
-        registerClientRendering();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void postInitClient() {
 
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void registerClientRendering() {
-        RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, "stone_ladder"))), new ModelTransparent(new ResourceLocation(MODID, "textures/blocks/stone_ladder.png")));
     }
 
     @SideOnly(Side.CLIENT)

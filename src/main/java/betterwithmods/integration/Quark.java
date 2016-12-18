@@ -43,17 +43,11 @@ public class Quark implements ICompatModule {
     @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
-        registerClientRendering();
+
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void postInitClient() {
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void registerClientRendering() {
-        for (int i = 0; i < 5; i++)
-            RenderUtils.addFilter(new ItemStack(Block.REGISTRY.getObject(new ResourceLocation(MODID, wood[i] + "_trapdoor"))), new ModelTransparent(new ResourceLocation(MODID, "textures/blocks/trapdoor_" + wood[i] + ".png")));
     }
 }
