@@ -17,7 +17,7 @@ public class Buoyancy {
 
     @ZenMethod
     public static void set(IItemStack input, float buoyancy) {
-        if (buoyancy * buoyancy >= 1) {
+        if (buoyancy * buoyancy > 1) {
             LogHelper.logError("Buoyancy must be [-1.0,1.0]");
         } else {
             ItemStack stack = toStack(input);
