@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "snowy=false,variant=dirt": {
+      "model": "betterwithmods:normal_dirt_slab"
+    },
+    "snowy=true,variant=dirt": {
+      "model": "betterwithmods:snowy_dirt_slab"
+    },
+    "snowy=false,variant=grass": {
+      "model": "betterwithmods:grass_slab"
+    },
+    "snowy=true,variant=grass": {
+      "model": "betterwithmods:snowy_grass_slab"
+    },
+    "snowy=false,variant=mycelium": {
+      "model": "betterwithmods:mycelium_slab"
+    },
+    "snowy=true,variant=mycelium": {
+      "model": "betterwithmods:snowy_mycelium_slab"
+    }
+  }
+}

@@ -17,20 +17,28 @@ public class BuoyancyEventHandler {
      */
     @SubscribeEvent
     public void replaceServerEntityItem(EntityJoinWorldEvent event) {
-        if (!BWConfig.hardcoreBuoy) return;
         World world = event.getWorld();
         if (world.isRemote) return;
-
-        if (!(event.getEntity().getClass() == EntityItem.class)) return;
-        EntityItem entityItem = (EntityItem) event.getEntity();
-
-        if (entityItem.getEntityItem().stackSize > 0) {
+        if (BWConfig.hardcoreBuoy && event.getEntity().getClass() == EntityItem.class) {
+            EntityItem entityItem = (EntityItem) event.getEntity();
+            if (entityItem.getEntityItem().stackSize > 0) {
+                event.setResult(Result.DENY);
+                event.setCanceled(true);
+                EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
+                entityItem.setDead();
+                entityItem.setInfinitePickupDelay();
+                world.spawnEntity(newEntity);
+            }
+        }
+        /* FIXME
+        else if (event.getEntity().getClass() == EntityFallingBlock.class) {
+            EntityFallingBlock entityBlock = (EntityFallingBlock) event.getEntity();
             event.setResult(Result.DENY);
             event.setCanceled(true);
-            EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
-            entityItem.setDead();
-            entityItem.setInfinitePickupDelay();
+            EntityFallingBlockCustom newEntity = new EntityFallingBlockCustom(entityBlock);
+            entityBlock.setDead();
             world.spawnEntity(newEntity);
         }
+        */
     }
 }

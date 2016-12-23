@@ -74,9 +74,9 @@ public final class BWMItems {
     public static final Item RAW_KEBAB = new ItemFood(6, false).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("raw_kebab");
     public static final Item PORK_DINNER = new ItemFood(8, false).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("pork_dinner");
     public static final Item STUMP_REMOVER = new ItemStumpRemover().setRegistryName("stump_remover");
-    public static final Item DIRT_PILE = new Item().setRegistryName("dirt_pile");
-    public static final Item GRAVEL_PILE = new Item().setRegistryName("gravel_pile");
-    public static final Item SAND_PILE = new Item().setRegistryName("sand_pile");
+    public static final Item DIRT_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("dirt_pile");
+    public static final Item GRAVEL_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("gravel_pile");
+    public static final Item SAND_PILE = new Item().setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("sand_pile");
 
     private BWMItems() {
     }

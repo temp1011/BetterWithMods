@@ -1,8 +1,6 @@
 package betterwithmods.integration;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.client.model.filters.ModelTransparent;
-import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

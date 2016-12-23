@@ -41,6 +41,7 @@ public class BWCrafting {
         addSteelAnvilRecipes();
         addHardcoreRedstone();
         addHardcoreStumping();
+        addPileRecipes();
     }
 
     public static void postInit() {
@@ -648,6 +649,20 @@ public class BWCrafting {
             return;
 
         GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.STUMP_REMOVER, 2), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Blocks.RED_MUSHROOM), new ItemStack(Items.ROTTEN_FLESH));
+    }
+
+    private static void addPileRecipes() {
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.DIRT_PILE, 4), new ItemStack(Blocks.DIRT));
+        GameRegistry.addShapelessRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE));
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.DIRT_PILE, 2), new ItemStack(BWMBlocks.DIRT_SLAB));
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE));
+        GameRegistry.addShapelessRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMBlocks.DIRT_SLAB));
+
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.GRAVEL_PILE, 4), new ItemStack(Blocks.GRAVEL));
+        GameRegistry.addShapelessRecipe(new ItemStack(Blocks.GRAVEL), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
+
+        GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.SAND_PILE, 4), new ItemStack(Blocks.SAND));
+        GameRegistry.addShapelessRecipe(new ItemStack(Blocks.SAND), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE));
     }
 
     public static void addSawRecipe(Block block, int meta, ItemStack output) {
