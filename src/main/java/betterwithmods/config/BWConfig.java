@@ -130,7 +130,8 @@ public class BWConfig {
         hardcoreOres = config.get(HARDCORE, "Hardcore Ores", true, "Makes ores only smelt to a single nugget if available").setRequiresMcRestart(true).getBoolean();
         hardcoreStructures = config.get(HARDCORE, "Hardcore Structures", true, "Changes various structures to be affected by the Hardcore Spawn radius. Removes Enchanting Table and Brewing Stand recipes").setRequiresMcRestart(true).getBoolean();
         hardcoreStumping = config.get(HARDCORE, "Hardcore Stumping", true, "The bottom block of trees is very hard. Promotes landscapes filled with iconic stumps to show the triumphant march of progress").setRequiresMcRestart(true).getBoolean();
-        config.save();
+        if(config.hasChanged())
+            config.save();
     }
 
     @SubscribeEvent
