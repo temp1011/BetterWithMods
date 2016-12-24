@@ -63,6 +63,7 @@ public class BWConfig {
     public static boolean hardcoreStructures;
     public static boolean armorDrops;
     public static boolean hardcoreStumping;
+    public static int reclaimCount;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -104,6 +105,7 @@ public class BWConfig {
         dropsPulley = config.get(MODPACK_TWEAKS, "Pulley generating drops when overpowered", true).getBoolean();
         dropsMill = config.get(MODPACK_TWEAKS, "Mill generating drops when overpowered", true).getBoolean();
         dropsTurntable = config.get(MODPACK_TWEAKS, "Turntable generating drops when overpowered", true).getBoolean();
+        reclaimCount = config.getInt("Nugget Reclaim", MODPACK_TWEAKS, 9, 0, 9, "Amount (in nuggets per ingot) tools and armor in the crucible reclaim. Does not affect diamond or soulforged steel ingot reclamation. (Set to 0 to disable reclamation entirely.)");
 
         debug = config.get(DEBUG, "Debug Mode", false, "Prints Fake Player IDs to console.").getBoolean();
         dumpBlockData = config

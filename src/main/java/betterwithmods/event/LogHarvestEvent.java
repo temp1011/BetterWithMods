@@ -56,7 +56,7 @@ public class LogHarvestEvent {
             if (playerStack == null)
                 return;
             BlockPos playerPos = pos.offset(evt.getFace());
-            if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || playerStack.getItem().getToolClasses(playerStack).contains("axe")) {
+            if (playerStack != null && (playerStack.getItem().getHarvestLevel(playerStack, "axe", player, world.getBlockState(pos)) >= 0) || (playerStack.getItem().getToolClasses(playerStack).contains("axe") && (!playerStack.getItem().getToolClasses(playerStack).contains("pickaxe") || !playerStack.getItem().getToolClasses(playerStack).contains("shovel")))) {
                 if (block == Blocks.LOG) {
                     IBlockState state = world.getBlockState(pos);
                     IBlockState dbl = BWMBlocks.DEBARKED_OLD.getDefaultState().withProperty(BlockLog.LOG_AXIS, state.getValue(BlockLog.LOG_AXIS)).withProperty(BlockOldLog.VARIANT, state.getValue(BlockOldLog.VARIANT));
