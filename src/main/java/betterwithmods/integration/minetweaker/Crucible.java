@@ -24,13 +24,13 @@ public class Crucible {
     public static final String clazz = "mods.betterwithmods.Crucible";
 
     @ZenMethod
-    public static void addRecipe(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         BulkRecipe r = new BulkRecipe("crucible", InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
         MineTweakerAPI.apply(new BulkAdd("crucible", CraftingManagerCrucible.getInstance(), r));
     }
 
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
+    public static void remove(IItemStack output) {
         MineTweakerAPI.apply(new BulkRemove("crucible", CraftingManagerCrucible.getInstance(), InputHelper.toStack(output)));
     }
 

@@ -23,13 +23,13 @@ public class Mill {
     public static final String clazz = "mods.betterwithmods.Mill";
 
     @ZenMethod
-    public static void addRecipe(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         BulkRecipe r = new BulkRecipe("mill", InputHelper.toStack(output),InputHelper.toStack(secondaryOutput),InputHelper.toObjects(inputs));
         MineTweakerAPI.apply(new BulkAdd("mill", CraftingManagerMill.getInstance(),r));
     }
 
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
+    public static void remove(IItemStack output) {
         MineTweakerAPI.apply(new BulkRemove("mill",CraftingManagerMill.getInstance(),InputHelper.toStack(output)));
     }
 
