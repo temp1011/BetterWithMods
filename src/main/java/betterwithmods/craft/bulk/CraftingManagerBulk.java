@@ -2,12 +2,14 @@ package betterwithmods.craft.bulk;
 
 import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class CraftingManagerBulk {
@@ -57,29 +59,19 @@ public abstract class CraftingManagerBulk {
         this.recipes.add(recipe);
     }
 
-    public boolean removeRecipe(ItemStack output, Object[] inputs) {
-        return removeRecipe(output, null, inputs);
-    }
-
-    public boolean removeRecipe(ItemStack output, ItemStack secondary, Object input) {
-        Object[] inputs = new Object[1];
-        inputs[0] = input;
-        return removeRecipe(output, secondary, inputs);
-    }
-
-    public boolean removeRecipe(ItemStack output, Object input) {
-        return removeRecipe(output, null, input);
-    }
-
-    public boolean removeRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        BulkRecipe recipe = createRecipe(output, secondary, inputs);
-        int matchingIndex = getMatchingRecipeIndex(recipe);
-
-        if (matchingIndex >= 0) {
-            this.recipes.remove(matchingIndex);
-            return true;
+    public List<BulkRecipe> removeRecipes(ItemStack output) {
+        List<BulkRecipe> removed = Lists.newArrayList();
+        Iterator<BulkRecipe> it = recipes.iterator();
+        while(it.hasNext())
+        {
+            BulkRecipe ir = it.next();
+            if(ir.getOutput().isItemEqual(output))
+            {
+                removed.add(ir);
+                it.remove();
+            }
         }
-        return false;
+        return removed;
     }
 
     public ItemStack[] getCraftingResult(ItemStackHandler inv) {

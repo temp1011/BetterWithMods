@@ -19,7 +19,7 @@ public class BlockMetaWrapper extends BlankRecipeWrapper {
     public final ItemStack input;
 
     public BlockMetaWrapper(BlockMetaRecipe recipe) {
-        this.input = recipe.getStack();
+        this.input = recipe.getInput();
         outputs.addAll(recipe.getOutputs());
     }
 

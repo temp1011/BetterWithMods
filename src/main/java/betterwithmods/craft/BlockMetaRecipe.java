@@ -30,7 +30,7 @@ public class BlockMetaRecipe {
         return outputs;
     }
 
-    public ItemStack getStack() {
+    public ItemStack getInput() {
         return new ItemStack(block, 1, meta);
     }
 

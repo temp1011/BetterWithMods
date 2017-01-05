@@ -39,8 +39,12 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:+"
     deobfCompile "slimeknights.mantle:Mantle:1.10.2+"
     deobfCompile "slimeknights:TConstruct:1.10.2+"
-    deobfCompile "MineTweaker3:MineTweaker3-MC1102-Main:1.10.2-3.0.14.59"
-    deobfCompile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
+
+    deobfCompile "MineTweaker3:MineTweaker3-API:+"
+    deobfCompile "com.blamejared:MTLib:+"
+    runtime "MineTweaker3:MineTweaker3-MC1102-Main:+"
+
+//    deobfCompile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
 }
 
 jar {

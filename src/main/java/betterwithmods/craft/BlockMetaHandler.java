@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,4 +74,18 @@ public abstract class BlockMetaHandler {
         return null;
     }
 
+    public List<BlockMetaRecipe> removeRecipes(ItemStack input) {
+        List<BlockMetaRecipe> removed = Lists.newArrayList();
+        Iterator<BlockMetaRecipe> it = recipes.iterator();
+        while(it.hasNext())
+        {
+            BlockMetaRecipe ir = it.next();
+            if(ir.getInput().isItemEqual(input))
+            {
+                removed.add(ir);
+                it.remove();
+            }
+        }
+        return removed;
+    }
 }
