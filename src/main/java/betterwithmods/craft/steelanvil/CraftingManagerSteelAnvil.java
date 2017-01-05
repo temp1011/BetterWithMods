@@ -39,7 +39,6 @@ public class CraftingManagerSteelAnvil {
             if(OreDictionary.itemMatches(ir.getRecipeOutput(), result, true))
             {
                 removed.add(ir);
-                it.remove();
             }
         }
         return removed;

@@ -68,7 +68,6 @@ public abstract class CraftingManagerBulk {
             if(ir.getOutput().isItemEqual(output))
             {
                 removed.add(ir);
-                it.remove();
             }
         }
         return removed;

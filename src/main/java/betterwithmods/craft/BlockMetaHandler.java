@@ -83,7 +83,6 @@ public abstract class BlockMetaHandler {
             if(ir.getInput().isItemEqual(input))
             {
                 removed.add(ir);
-                it.remove();
             }
         }
         return removed;
