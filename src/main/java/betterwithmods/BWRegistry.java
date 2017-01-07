@@ -121,6 +121,7 @@ public class BWRegistry {
         OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.MATERIAL, 1, 0));
         OreDictionary.registerOre("cropHemp", new ItemStack(BWMItems.MATERIAL, 1, 2));
         OreDictionary.registerOre("dyeBrown", new ItemStack(BWMItems.MATERIAL, 1, 5));
+        OreDictionary.registerOre("dung", new ItemStack(BWMItems.MATERIAL, 1, 5));
         OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.MATERIAL, 1, 12));
         OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 14));
         OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.MATERIAL, 1, 15));
