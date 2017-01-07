@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public final class BWMBlocks {
-    //Substitution aliases
+    //Substitution aliases, don't use. Use the refs in {@link Blocks} instead.
     private static final Block GRASS_CUSTOM = new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass");
     private static final Block MYCELIUM_CUSTOM = new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel");
 
