@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static net.minecraft.block.BlockDirt.SNOWY;
 
@@ -40,6 +42,7 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
         super(Material.GROUND);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, DirtSlabType.DIRT).withProperty(SNOWY, false));
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+        this.setTickRandomly(true);
     }
 
     @Override
@@ -164,6 +167,29 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
             case MYCELIUM:
             default:
                 return 0.6F;
+        }
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (!worldIn.isRemote) {
+            if (state.getValue(VARIANT) == DirtSlabType.GRASS) {
+                BlockGrassCustom.handleGrassSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
+            } else if (state.getValue(VARIANT) == DirtSlabType.MYCELIUM) {
+                BlockMyceliumCustom.handleMyceliumSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        super.randomDisplayTick(stateIn, worldIn, pos, rand);
+        if (!(stateIn.getValue(VARIANT) == DirtSlabType.MYCELIUM)) {
+            return;
+        }
+
+        if (rand.nextInt(10) == 0) {
+            worldIn.spawnParticle(EnumParticleTypes.TOWN_AURA, (double) ((float) pos.getX() + rand.nextFloat()), (double) ((float) pos.getY() + 1.1F), (double) ((float) pos.getZ() + rand.nextFloat()), 0.0D, 0.0D, 0.0D);
         }
     }
 

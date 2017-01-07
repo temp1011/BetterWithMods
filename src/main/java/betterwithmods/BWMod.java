@@ -36,6 +36,7 @@ import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
@@ -155,6 +156,12 @@ public class BWMod {
         logger = evt.getModLog();
 
         BWConfig.init(evt.getSuggestedConfigurationFile());
+
+        try {
+            BWMBlocks.substituteBlocks();
+        } catch (ExistingSubstitutionException e) {
+            e.printStackTrace();
+        }
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();

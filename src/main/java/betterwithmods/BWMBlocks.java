@@ -12,6 +12,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +21,10 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public final class BWMBlocks {
+    //Substitution aliases
+    private static final Block GRASS_CUSTOM = new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass");
+    private static final Block MYCELIUM_CUSTOM = new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel");
+
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
@@ -156,6 +161,23 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "multi_type", "bwm.multiType");
 
         GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "gearbox", "bwm.gearbox");
+    }
+
+    public static void substituteBlocks() throws ExistingSubstitutionException {
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:grass", GameRegistry.Type.BLOCK,
+                GRASS_CUSTOM);
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:mycelium", GameRegistry.Type.BLOCK,
+                MYCELIUM_CUSTOM);
+        /*
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:grass", GameRegistry.Type.BLOCK,
+                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:mycelium", GameRegistry.Type.BLOCK,
+                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycelium"));
+                */
     }
 
     /**
