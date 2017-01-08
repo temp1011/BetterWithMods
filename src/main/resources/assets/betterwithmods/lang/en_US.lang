@@ -317,8 +317,8 @@ lore.bwm:dynamite=Dwarven Fishing Pole
 
 material.hellfire=Hellfire
 material.hellfire.ability=Molten
-material.soulforged=Soulforged Steel
-material.soulforged.ability=Soul-Sucking
+material.soulforgedsteel.name=Soulforged Steel
+material.soulforgedsteel.ability=Soul-Sucking
 fluid.molten.hellfire=Molten Hellfire
 fluid.molten.soulforge=Molten Soulforged Steel
 
