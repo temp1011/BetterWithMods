@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 /**
+ * Custom grass block. Spreading now handles {@link BlockDirtSlab}, and only works in sunlight.
  * @author Koward
  */
 public class BlockGrassCustom extends BlockGrass {

@@ -21,10 +21,6 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public final class BWMBlocks {
-    //Substitution aliases, don't use. Use the refs in {@link Blocks} instead.
-    private static final Block GRASS_CUSTOM = new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass");
-    private static final Block MYCELIUM_CUSTOM = new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel");
-
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
@@ -163,21 +159,18 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "gearbox", "bwm.gearbox");
     }
 
+    /**
+     * Substitute vanilla blocks with our custom instances.
+     * Should be done at the earliest point in preInit. The earlier, the better.
+     * @throws ExistingSubstitutionException
+     */
     public static void substituteBlocks() throws ExistingSubstitutionException {
-        GameRegistry.addSubstitutionAlias(
-                "minecraft:grass", GameRegistry.Type.BLOCK,
-                GRASS_CUSTOM);
-        GameRegistry.addSubstitutionAlias(
-                "minecraft:mycelium", GameRegistry.Type.BLOCK,
-                MYCELIUM_CUSTOM);
-        /*
         GameRegistry.addSubstitutionAlias(
                 "minecraft:grass", GameRegistry.Type.BLOCK,
                 new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
         GameRegistry.addSubstitutionAlias(
                 "minecraft:mycelium", GameRegistry.Type.BLOCK,
-                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycelium"));
-                */
+                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
     }
 
     /**

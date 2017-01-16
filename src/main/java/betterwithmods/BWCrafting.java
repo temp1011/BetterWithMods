@@ -657,6 +657,7 @@ public class BWCrafting {
         GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.DIRT_PILE, 2), new ItemStack(BWMBlocks.DIRT_SLAB));
         GameRegistry.addShapelessRecipe(new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE));
         GameRegistry.addShapelessRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMBlocks.DIRT_SLAB));
+        GameRegistry.addRecipe(new ItemStack(BWMBlocks.DIRT_SLAB, 4), "##", '#', Blocks.DIRT);
 
         GameRegistry.addShapelessRecipe(new ItemStack(BWMItems.GRAVEL_PILE, 4), new ItemStack(Blocks.GRAVEL));
         GameRegistry.addShapelessRecipe(new ItemStack(Blocks.GRAVEL), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE));

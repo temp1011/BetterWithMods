@@ -155,13 +155,13 @@ public class BWMod {
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
 
-        BWConfig.init(evt.getSuggestedConfigurationFile());
-
-        try {
+        try {//Don't move this after config init. It would randomly crash
             BWMBlocks.substituteBlocks();
         } catch (ExistingSubstitutionException e) {
             e.printStackTrace();
         }
+
+        BWConfig.init(evt.getSuggestedConfigurationFile());
 
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
