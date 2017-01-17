@@ -6,6 +6,7 @@ import betterwithmods.client.container.BWGuiHandler;
 import betterwithmods.config.BWConfig;
 import betterwithmods.config.ConfigSyncHandler;
 import betterwithmods.entity.*;
+import betterwithmods.entity.item.EntityFallingBlockCustom;
 import betterwithmods.entity.item.EntityItemBuoy;
 import betterwithmods.event.*;
 import betterwithmods.integration.ICompatModule;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
@@ -122,8 +124,12 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new HardcoreRedstoneEvent());
         MinecraftForge.TERRAIN_GEN_BUS.register(new BWMWorldGenEvent());
         MinecraftForge.EVENT_BUS.register(new StumpingEventHandler());
+        MinecraftForge.EVENT_BUS.register(new InferiorDropsEventHandler());
     }
 
+    /**
+     * All names should be snake_case by convention (enforced in 1.11).
+     */
     private static void registerEntities() {
         BWRegistry.registerEntity(EntityExtendingRope.class, "ExtendingRope", 64, 20, true);
         BWRegistry.registerEntity(EntityDynamite.class, "BWMDynamite", 10, 50, true);
@@ -132,6 +138,7 @@ public class BWMod {
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entityShearedCreeper", 64, 1, true);
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entityBroadheadArrow", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingGourd.class, "entityFallingGourd", 64, 1, true);
+        BWRegistry.registerEntity(EntityFallingBlockCustom.class, "falling_block_custom", 64, 20, true);
     }
 
     private static void registerWorldGen() {
@@ -147,6 +154,12 @@ public class BWMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
+
+        try {//Don't move this after config init. It would randomly crash
+            BWMBlocks.substituteBlocks();
+        } catch (ExistingSubstitutionException e) {
+            e.printStackTrace();
+        }
 
         BWConfig.init(evt.getSuggestedConfigurationFile());
 

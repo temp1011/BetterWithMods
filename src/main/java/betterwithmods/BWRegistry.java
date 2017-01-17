@@ -328,7 +328,8 @@ public class BWRegistry {
 
     private static boolean isParticulate(ItemStack stack) {
         Item item = stack.getItem();
-        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames);
+        return InvUtils.listContains(stack, OreDictionary.getOres("sand")) || item instanceof ItemSeeds || InvUtils.listContains(stack, OreDictionary.getOres("listAllseeds")) || item == Items.GUNPOWDER || item == Items.SUGAR || item == Items.BLAZE_POWDER || InvUtils.listContains(stack, OreDictionary.getOres("foodFlour")) || InvUtils.listContains(stack, InvUtils.dustNames)
+                || item == BWMItems.DIRT_PILE || item == BWMItems.GRAVEL_PILE || item == BWMItems.SAND_PILE;
     }
 
     private static boolean isFlat(ItemStack stack) {

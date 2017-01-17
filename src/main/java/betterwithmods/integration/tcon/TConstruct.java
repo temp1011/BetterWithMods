@@ -1,8 +1,6 @@
 package betterwithmods.integration.tcon;
 
 import betterwithmods.BWMod;
-import betterwithmods.client.model.filters.ModelTransparent;
-import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.util.NetherSpawnWhitelist;
 import net.minecraft.block.Block;

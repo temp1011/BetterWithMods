@@ -3,6 +3,7 @@ package betterwithmods.util.player;
 import betterwithmods.BWMBlocks;
 import betterwithmods.util.item.ItemExt;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -14,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import java.util.UUID;
@@ -150,14 +153,40 @@ public final class EntityPlayerExt {
         return modifier;
     }
 
+    /**
+     * This pos-sensitive version should be used when it's available, as it uses {@link IBlockState#getActualState(IBlockAccess, BlockPos)}.
+     *
+     * @param player
+     * @param pos
+     * @return
+     */
     public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos) {
+        ItemStack stack = player.getHeldItemMainhand();
+        World world = player.getEntityWorld();
+        IBlockState state = world.getBlockState(pos).getActualState(world, pos);
+        return isCurrentToolEffectiveOnBlock(stack, state) && ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+    }
+
+    /**
+     * Partial copy of {@link ForgeHooks#isToolEffective(IBlockAccess, BlockPos, ItemStack)} build 2185
+     *
+     * @param stack The tool.
+     * @param state The block.
+     * @return Whether the tool can harvest well the block.
+     */
+    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state) {
+        if (stack == null) return false;
+
         //Hardcore Stumping
-        if (player.getEntityWorld().getBlockState(pos).getBlock() == BWMBlocks.STUMP) {
+        if (state.getBlock() == BWMBlocks.STUMP) {
             return false;
         }
 
-        ItemStack stack = player.getHeldItemMainhand();
-        return stack != null && ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+        for (String type : stack.getItem().getToolClasses(stack)) {
+            if (state.getBlock().isToolEffective(type, state))
+                return true;
+        }
+        return false;
     }
 
     public static ItemStack getPlayerHead(EntityPlayer player) {

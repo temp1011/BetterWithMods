@@ -7,11 +7,14 @@ import betterwithmods.blocks.tile.gen.TileEntityCreativeGen;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.items.ItemSimpleSlab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,6 +76,7 @@ public final class BWMBlocks {
     public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
     public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
     public static final Block STUMP = new BlockStump().setRegistryName("stump");
+    public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
 
     private BWMBlocks() {
     }
@@ -130,6 +134,7 @@ public final class BWMBlocks {
         registerBlock(STONE_MOULDING, new ItemBlockMini(STONE_MOULDING));
         registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
         registerBlock(STUMP, new ItemBlockMeta(STUMP));
+        registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -154,6 +159,21 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "multi_type", "bwm.multiType");
 
         GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "gearbox", "bwm.gearbox");
+    }
+
+    /**
+     * Substitute vanilla blocks with our custom instances.
+     * Should be done at the earliest point in preInit. The earlier, the better.
+     *
+     * @throws ExistingSubstitutionException
+     */
+    public static void substituteBlocks() throws ExistingSubstitutionException {
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:grass", GameRegistry.Type.BLOCK,
+                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
+        GameRegistry.addSubstitutionAlias(
+                "minecraft:mycelium", GameRegistry.Type.BLOCK,
+                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
     }
 
     /**
@@ -236,6 +256,7 @@ public final class BWMBlocks {
         setInventoryModel(STONE_MOULDING);
         setInventoryModel(STONE_CORNER);
         setInventoryModel(STUMP);
+        setInventoryModel(DIRT_SLAB);
     }
 
     @SideOnly(Side.CLIENT)
