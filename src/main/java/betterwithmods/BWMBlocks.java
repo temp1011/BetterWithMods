@@ -7,9 +7,11 @@ import betterwithmods.blocks.tile.gen.TileEntityCreativeGen;
 import betterwithmods.blocks.tile.gen.TileEntityWaterwheel;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillHorizontal;
 import betterwithmods.blocks.tile.gen.TileEntityWindmillVertical;
+import betterwithmods.items.ItemSimpleSlab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
@@ -132,7 +134,7 @@ public final class BWMBlocks {
         registerBlock(STONE_MOULDING, new ItemBlockMini(STONE_MOULDING));
         registerBlock(STONE_CORNER, new ItemBlockMini(STONE_CORNER));
         registerBlock(STUMP, new ItemBlockMeta(STUMP));
-        registerBlock(DIRT_SLAB, new ItemBlockMeta(DIRT_SLAB));
+        registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
 
         registerBlock(TEMP_LIQUID_SOURCE, null);
     }
@@ -162,6 +164,7 @@ public final class BWMBlocks {
     /**
      * Substitute vanilla blocks with our custom instances.
      * Should be done at the earliest point in preInit. The earlier, the better.
+     *
      * @throws ExistingSubstitutionException
      */
     public static void substituteBlocks() throws ExistingSubstitutionException {
