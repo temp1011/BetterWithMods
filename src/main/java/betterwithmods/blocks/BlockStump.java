@@ -18,7 +18,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -148,14 +147,5 @@ public class BlockStump extends Block implements IMultiVariants {
             variants.add("variant=" + blockplanks$enumtype.getName());
         }
         return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
-    }
-
-    /**
-     * Stumps have the log texture with overlays on ends and sides
-     */
-    @SideOnly(Side.CLIENT)
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
     }
 }

@@ -1,11 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "betterwithmods:stump",
-    "textures": {
-      "end_overlay": "betterwithmods:blocks/stump_end_overlay",
-      "side_overlay": "betterwithmods:blocks/stump_side_overlay"
-    },
+    "model": "oak_log",
     "uvlock": false
   },
   "variants": {
@@ -17,38 +13,38 @@
     "variant": {
       "oak": {
         "textures": {
-          "end": "blocks/log_oak_top",
-          "side": "blocks/log_oak"
+          "end": "betterwithmods:blocks/stump_oak_top",
+          "side": "betterwithmods:blocks/stump_oak"
         }
       },
       "spruce": {
         "textures": {
-          "end": "blocks/log_spruce_top",
-          "side": "blocks/log_spruce"
+          "end": "betterwithmods:blocks/stump_spruce_top",
+          "side": "betterwithmods:blocks/stump_spruce"
         }
       },
       "birch": {
         "textures": {
-          "end": "blocks/log_birch_top",
-          "side": "blocks/log_birch"
+          "end": "betterwithmods:blocks/stump_birch_top",
+          "side": "betterwithmods:blocks/stump_birch"
         }
       },
       "jungle": {
         "textures": {
-          "end": "blocks/log_jungle_top",
-          "side": "blocks/log_jungle"
+          "end": "betterwithmods:blocks/stump_jungle_top",
+          "side": "betterwithmods:blocks/stump_jungle"
         }
       },
       "acacia": {
         "textures": {
-          "end": "blocks/log_acacia_top",
-          "side": "blocks/log_acacia"
+          "end": "betterwithmods:blocks/stump_acacia_top",
+          "side": "betterwithmods:blocks/stump_acacia"
         }
       },
       "dark_oak": {
         "textures": {
-          "end": "blocks/log_big_oak_top",
-          "side": "blocks/log_big_oak"
+          "end": "betterwithmods:blocks/stump_big_oak_top",
+          "side": "betterwithmods:blocks/stump_big_oak"
         }
       }
     }
