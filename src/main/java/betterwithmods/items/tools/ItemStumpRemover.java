@@ -4,11 +4,13 @@ import betterwithmods.blocks.BlockStump;
 import betterwithmods.client.BWCreativeTabs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -34,8 +36,8 @@ public class ItemStumpRemover extends Item {
             IBlockState state = worldIn.getBlockState(pos);
             if (state.getBlock() instanceof BlockStump) {
                 if (!worldIn.isRemote) {
-                    worldIn.destroyBlock(pos, true);
-                    //TODO custom sound
+                    worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, 1, 1);
+                    worldIn.destroyBlock(pos, false);
                 }
 
                 --stack.stackSize;
