@@ -1,5 +1,6 @@
 package betterwithmods.integration.tcon;
 
+import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
 import betterwithmods.integration.ICompatModule;
 import betterwithmods.util.NetherSpawnWhitelist;
@@ -133,5 +134,7 @@ public class TConstruct implements ICompatModule {
     private void fixHellfireDust() {
         Pair<List<ItemStack>, Integer> dustOre = Pair.of(OreDictionary.getOres("powderedHellfire"), Material.VALUE_Ingot / 8);
         TinkerRegistry.registerMelting(new MeltingRecipe(RecipeMatch.of(dustOre.getLeft(), dustOre.getRight()), hellfireFluid));
+        TinkerRegistry.registerMelting(new MeltingRecipe(RecipeMatch.of(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), Material.VALUE_Ingot * 16), soulforgeFluid));
+        TinkerRegistry.registerBasinCasting(new ItemStack(BWMBlocks.AESTHETIC, 1, 2), null, soulforgeFluid, Material.VALUE_Ingot * 16);
     }
 }
