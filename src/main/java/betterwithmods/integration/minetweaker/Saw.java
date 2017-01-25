@@ -37,7 +37,7 @@ public class Saw {
         if (output == null) {
             MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + input.getDisplayName() + ", outputs were null");
         }
-        BlockMetaRecipe r = new BlockMetaRecipe(block,blockMeta.getMetadata(), Arrays.asList(outputs));
+        BlockMetaRecipe r = new BlockMetaRecipe("saw", block,blockMeta.getMetadata(), Arrays.asList(outputs));
         MineTweakerAPI.apply(new BMAdd("saw", SawInteraction.INSTANCE,r));
     }
 

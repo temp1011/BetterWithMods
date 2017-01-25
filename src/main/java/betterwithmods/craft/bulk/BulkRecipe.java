@@ -13,6 +13,7 @@ import java.util.List;
 
 //TODO Probably this should implement some recipe interface, at the very least.
 public class BulkRecipe {
+    protected String type;
     protected ItemStack output = null;
     protected ItemStack secondary = null;
     protected ArrayList<Object> input = new ArrayList<>();//Either ItemStack or OreStack
@@ -23,6 +24,7 @@ public class BulkRecipe {
     }
 
     public BulkRecipe(String type, ItemStack output, ItemStack secondaryOutput, Object... input) {
+        this.type = type;
         this.output = output.copy();
         if (secondaryOutput != null)
             this.secondary = secondaryOutput.copy();
@@ -152,6 +154,10 @@ public class BulkRecipe {
             return match;
         }
         return false;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public boolean consumeInvIngredients(ItemStackHandler inv) {

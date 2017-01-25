@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +24,8 @@ public class CraftingManagerSteelAnvil {
         return craft;
     }
 
-    public ShapelessOreRecipe addShapelessRecipe(ItemStack result, Object... ingredients) {
-        ShapelessOreRecipe recipe = new ShapelessOreRecipe(result, ingredients);
+    public ShapelessSteelAnvilRecipe addShapelessRecipe(ItemStack result, Object... ingredients) {
+        ShapelessSteelAnvilRecipe recipe = new ShapelessSteelAnvilRecipe(result, ingredients);
         recipes.add(recipe);
         return recipe;
     }

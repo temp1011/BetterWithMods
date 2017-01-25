@@ -36,7 +36,7 @@ public class Kiln {
         if (output == null) {
             MineTweakerAPI.getLogger().logError("Could not add " + clazz + " recipe for " + input.getDisplayName() + ", outputs were null");
         }
-        BlockMetaRecipe r = new BlockMetaRecipe(block,blockMeta.getMetadata(), Arrays.asList(outputs));
+        BlockMetaRecipe r = new BlockMetaRecipe("kiln", block, blockMeta.getMetadata(), Arrays.asList(outputs));
         MineTweakerAPI.apply(new BMAdd("kiln", KilnInteraction.INSTANCE,r));
     }
     

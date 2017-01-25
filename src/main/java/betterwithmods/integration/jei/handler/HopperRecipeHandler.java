@@ -1,5 +1,6 @@
 package betterwithmods.integration.jei.handler;
 
+import betterwithmods.craft.HopperInteractions;
 import betterwithmods.integration.jei.wrapper.HopperRecipeWrapper;
 import betterwithmods.integration.jei.wrapper.SoulUrnWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
@@ -11,10 +12,10 @@ import mezz.jei.api.recipe.IRecipeWrapper;
  * @author Tyler Marshall
  * @version 11/20/16
  */
-public class HopperRecipeHandler implements IRecipeHandler<HopperRecipeWrapper> {
+public class HopperRecipeHandler implements IRecipeHandler<HopperInteractions.HopperRecipe> {
     @Override
-    public Class<HopperRecipeWrapper> getRecipeClass() {
-        return HopperRecipeWrapper.class;
+    public Class<HopperInteractions.HopperRecipe> getRecipeClass() {
+        return HopperInteractions.HopperRecipe.class;
     }
 
     @Override
@@ -23,20 +24,22 @@ public class HopperRecipeHandler implements IRecipeHandler<HopperRecipeWrapper> 
     }
 
     @Override
-    public String getRecipeCategoryUid(HopperRecipeWrapper recipe) {
-        if (recipe instanceof SoulUrnWrapper) {
+    public String getRecipeCategoryUid(HopperInteractions.HopperRecipe recipe) {
+        if (recipe instanceof HopperInteractions.SoulUrn) {
             return "bwm.hopper.soul_urn";
         }
         return getRecipeCategoryUid();
     }
 
     @Override
-    public IRecipeWrapper getRecipeWrapper(HopperRecipeWrapper recipe) {
-        return recipe;
+    public IRecipeWrapper getRecipeWrapper(HopperInteractions.HopperRecipe recipe) {
+        if (recipe instanceof HopperInteractions.SoulUrn)
+            return new SoulUrnWrapper((HopperInteractions.SoulUrn)recipe);
+        return new HopperRecipeWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(HopperRecipeWrapper recipe) {
+    public boolean isRecipeValid(HopperInteractions.HopperRecipe recipe) {
         return true;
     }
 }

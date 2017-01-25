@@ -1,5 +1,7 @@
 package betterwithmods.integration.jei.handler;
 
+import betterwithmods.craft.steelanvil.ShapelessSteelAnvilRecipe;
+import betterwithmods.integration.jei.BWMJEIPlugin;
 import betterwithmods.integration.jei.wrapper.SteelAnvilShapelessRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -7,10 +9,10 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 /**
  * Created by blueyu2 on 11/25/16.
  */
-public class SteelAnvilShapelessRecipeHandler implements IRecipeHandler<SteelAnvilShapelessRecipeWrapper> {
+public class SteelAnvilShapelessRecipeHandler implements IRecipeHandler<ShapelessSteelAnvilRecipe> {
     @Override
-    public Class<SteelAnvilShapelessRecipeWrapper> getRecipeClass() {
-        return SteelAnvilShapelessRecipeWrapper.class;
+    public Class<ShapelessSteelAnvilRecipe> getRecipeClass() {
+        return ShapelessSteelAnvilRecipe.class;
     }
 
     @Override
@@ -19,17 +21,17 @@ public class SteelAnvilShapelessRecipeHandler implements IRecipeHandler<SteelAnv
     }
 
     @Override
-    public String getRecipeCategoryUid(SteelAnvilShapelessRecipeWrapper recipe) {
+    public String getRecipeCategoryUid(ShapelessSteelAnvilRecipe recipe) {
         return getRecipeCategoryUid();
     }
 
     @Override
-    public IRecipeWrapper getRecipeWrapper(SteelAnvilShapelessRecipeWrapper recipe) {
-        return recipe;
+    public IRecipeWrapper getRecipeWrapper(ShapelessSteelAnvilRecipe recipe) {
+        return new SteelAnvilShapelessRecipeWrapper(BWMJEIPlugin.helper, recipe);
     }
 
     @Override
-    public boolean isRecipeValid(SteelAnvilShapelessRecipeWrapper recipe) {
+    public boolean isRecipeValid(ShapelessSteelAnvilRecipe recipe) {
         return true;
     }
 }

@@ -298,7 +298,7 @@ public class BWCrafting {
         }
         addSawRecipe(Blocks.VINE, 0, new ItemStack(Blocks.VINE));
         addSawRecipe(Blocks.PUMPKIN, 0, new ItemStack(Blocks.PUMPKIN));
-        SawInteraction.INSTANCE.addRecipe(new BlockMetaRecipe(Blocks.MELON_BLOCK, 0, null) {
+        SawInteraction.INSTANCE.addRecipe(new BlockMetaRecipe("saw", Blocks.MELON_BLOCK, 0, null) {
             @Override
             public List<ItemStack> getOutputs() {
                 Random random = new Random();

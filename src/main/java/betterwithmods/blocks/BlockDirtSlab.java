@@ -2,6 +2,7 @@ package betterwithmods.blocks;
 
 import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -170,6 +171,22 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
         }
     }
 
+    private void handleSubtypeChange(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (!world.isRemote) {
+            int shrinkLight = WorldUtils.getNaturalLightFromNeighbors(world, pos.up());
+            int growthLight = shrinkLight - world.getSkylightSubtracted();
+            BlockPos check = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
+            Block block = world.getBlockState(check).getBlock();
+            if (block == Blocks.GRASS || (block == this && world.getBlockState(check).getValue(VARIANT) == DirtSlabType.GRASS)) {
+                if (growthLight >= 11)
+                    world.setBlockState(pos, state.withProperty(VARIANT, DirtSlabType.GRASS));
+            } else if (block == Blocks.MYCELIUM || (block == this && world.getBlockState(check).getValue(VARIANT) == DirtSlabType.MYCELIUM)) {
+                if (growthLight >= 9)
+                    world.setBlockState(pos, state.withProperty(VARIANT, DirtSlabType.MYCELIUM));
+            }
+        }
+    }
+
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isRemote) {
@@ -177,7 +194,8 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
                 BlockGrassCustom.handleGrassSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
             } else if (state.getValue(VARIANT) == DirtSlabType.MYCELIUM) {
                 BlockMyceliumCustom.handleMyceliumSpreading(worldIn, pos, rand, getDefaultState().withProperty(VARIANT, DirtSlabType.DIRT));
-            }
+            } else
+                handleSubtypeChange(worldIn, pos, state, rand);
         }
     }
 

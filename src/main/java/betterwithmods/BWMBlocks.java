@@ -140,25 +140,25 @@ public final class BWMBlocks {
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityMill.class, "millstone", "bwm.millstone");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityPulley.class, "pulley", "bwm.pulley");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityFilteredHopper.class, "hopper", "bwm.hopper");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCauldron.class, "cauldron", "bwm.cauldron");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCrucible.class, "crucible", "bwm.crucible");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityTurntable.class, "turntable", "bwm.turntable");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntitySteelAnvil.class, "steel_anvil", "bwm.steelAnvil");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityMill.class, "bwm_millstone", "millstone", "bwm.millstone");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityPulley.class, "bwm_pulley", "pulley", "bwm.pulley");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityFilteredHopper.class, "bwm_hopper", "hopper", "bwm.hopper");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCauldron.class, "bwm_cauldron", "cauldron", "bwm.cauldron");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCrucible.class, "bwm_crucible", "crucible", "bwm.crucible");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityTurntable.class, "bwm_turntable", "turntable", "bwm.turntable");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntitySteelAnvil.class, "bwm_steel_anvil", "steel_anvil", "bwm.steelAnvil");
 
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityVase.class, "vase", "bwm.vase");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityVase.class, "bwm_vase", "vase", "bwm.vase");
 
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillVertical.class, "vertical_windmill", "bwm.vertWindmill");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillHorizontal.class, "horizontal_windmill", "bwm.horizWindmill");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillVertical.class, "bwm_vertical_windmill", "vertical_windmill", "bwm.vertWindmill");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWindmillHorizontal.class, "bwm_horizontal_windmill", "horizontal_windmill", "bwm.horizWindmill");
 
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityWaterwheel.class, "waterwheel", "bwm.waterwheel");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityBlockDispenser.class, "block_dispenser", "bwm.block_dispenser");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityCreativeGen.class, "creative_generator", "creativeGenerator");
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "multi_type", "bwm.multiType");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityWaterwheel.class, "bwm_waterwheel", "waterwheel", "bwm.waterwheel");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityBlockDispenser.class, "bwm_block_dispenser", "block_dispenser", "bwm.block_dispenser");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityCreativeGen.class, "bwm_creative_generator", "creative_generator", "creativeGenerator");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityMultiType.class, "bwm_multi_type", "multi_type", "bwm.multiType");
 
-        GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "gearbox", "bwm.gearbox");
+        GameRegistry.registerTileEntityWithAlternatives(TileEntityGearbox.class, "bwm_gearbox", "gearbox", "bwm.gearbox");
     }
 
     /**
