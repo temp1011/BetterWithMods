@@ -284,7 +284,7 @@ public class BWCrafting {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.BUCKET), "N N", " N ", 'N', "nuggetIron"));
         }
 
-        if (BWConfig.hardcoreStructures) {
+        if (BWConfig.hardcoreStructureCraft) {
             RecipeUtils.removeRecipes(Blocks.ENCHANTING_TABLE);
             RecipeUtils.removeRecipes(Items.BREWING_STAND, 0);
         }
