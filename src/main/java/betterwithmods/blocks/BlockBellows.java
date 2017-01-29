@@ -300,8 +300,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     public void breakBellows(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial("gear"));
-        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial("tanned_leather"));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F,
                 world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);

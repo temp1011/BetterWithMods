@@ -12,9 +12,9 @@ public class BWFuelHandler implements IFuelHandler {
         Item item = fuel.getItem();
         int meta = fuel.getItemDamage();
         if (item instanceof ItemMaterial) {
-            if (meta == ItemMaterial.getMaterial("nethercoal").getMetadata()) return 3200;
-            else if (meta == ItemMaterial.getMaterial("sawdust").getMetadata()) return 25;
-            else if (meta == ItemMaterial.getMaterial("soul_dust").getMetadata()) return 25;
+            if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL).getMetadata()) return 3200;
+            else if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST).getMetadata()) return 25;
+            else if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST).getMetadata()) return 25;
         }
         else if (item == BWMItems.BARK)
             return 25;

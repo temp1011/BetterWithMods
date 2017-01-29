@@ -287,7 +287,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     protected boolean containsExplosives() {
-        return containsItem(ItemMaterial.getMaterial("hellfire_dust")) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(ItemMaterial.getMaterial("blasting_oil"));
+        return containsItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL));
     }
 
     private boolean containsItem(Item item) {
@@ -303,10 +303,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     private void explode() {
-        int hellfire = InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial("hellfire_dust"));
+        int hellfire = InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
         float expSize = hellfire * 10.0F / 64.0F;
         expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial("blasting_oil")) * 10.0F / 64.0F;
+        expSize += InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL)) * 10.0F / 64.0F;
         if (InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0) {
             if (expSize < 4.0F)
                 expSize = 4.0F;

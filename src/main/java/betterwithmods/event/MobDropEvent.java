@@ -82,7 +82,7 @@ public class MobDropEvent {
                     if (animal.getGrowingAge() > 99) {
                         int light = animal.getEntityWorld().getLight(animal.getPosition());
                         if (animal.getGrowingAge() == fearLevel[light]) {
-                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial("dung"), 0.0F);
+                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                             animal.setGrowingAge(99);
                         }
                     }
@@ -90,10 +90,10 @@ public class MobDropEvent {
             }
             if (!(animal instanceof EntityRabbit)) {
                 if (animal.getGrowingAge() == 100) {
-                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial("dung"), 0.0F);
+                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                 } else if (animal.isInLove()) {
                     if (rand.nextInt(1200) == 0) {
-                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial("dung"), 0.0F);
+                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
                     }
                 }
             }
@@ -112,7 +112,7 @@ public class MobDropEvent {
                 }
             }
             if (evt.getEntityLiving() instanceof EntityAgeable)
-                addDrop(evt, ItemMaterial.getMaterial("dung"));
+                addDrop(evt, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
             int headChance = evt.getEntityLiving().getEntityWorld().rand.nextInt(12);
             if (headChance < 5) {
                 if (evt.getEntityLiving() instanceof EntitySkeleton) {
@@ -180,7 +180,7 @@ public class MobDropEvent {
             for (EntityItem item : evt.getDrops()) {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    item.setEntityItemStack(ItemMaterial.getMaterial("niter", stack.stackSize));
+                    item.setEntityItemStack(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.stackSize));
                 }
             }
         }

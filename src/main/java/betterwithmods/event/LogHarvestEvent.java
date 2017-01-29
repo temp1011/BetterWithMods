@@ -128,7 +128,7 @@ public class LogHarvestEvent {
 
                                     ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack sawdust = ItemMaterial.getMaterial("sawdust", sawdustStack);
+                                    ItemStack sawdust = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, sawdustStack);
                                     newOutputs.add(planks);
                                     newOutputs.add(bark);
                                     newOutputs.add(sawdust);

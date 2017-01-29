@@ -26,7 +26,7 @@ public class BlastingOilEvent {
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
 
-                if (stack != null && stack.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
+                if (stack != null && stack.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
                     count += stack.stackSize;
                     inventory.extractItem(i, stack.stackSize, false);
                 }

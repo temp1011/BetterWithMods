@@ -122,7 +122,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     public void breakCrank(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial("gear"));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
         //world.playAuxSFX(2235, x, y, z, 0);
         world.setBlockToAir(pos);
     }

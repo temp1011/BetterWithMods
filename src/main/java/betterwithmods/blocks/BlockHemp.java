@@ -133,7 +133,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     protected Item getCrop() {
-        return ItemMaterial.getMaterial("hemp").getItem();
+        return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP).getItem();
     }
 
     @Override

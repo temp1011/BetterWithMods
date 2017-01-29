@@ -29,8 +29,8 @@ public class HopperInteractions {
     public static final ArrayList<HopperRecipe> recipes = new ArrayList<>();
 
     static {
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial("ground_netherrack"), ItemMaterial.getMaterial("hellfire_dust")));
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial("soul_dust"), ItemMaterial.getMaterial("sawdust")));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
         recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {

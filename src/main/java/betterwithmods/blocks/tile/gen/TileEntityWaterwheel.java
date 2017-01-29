@@ -40,7 +40,7 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
                     int zPos = (axis == EnumFacing.Axis.X ? i : 0);
                     BlockPos offset = pos.add(xPos, j, zPos);
                     if (j == -2)
-                        hasWater = (getWorld().getBlockState(offset).getBlock() instanceof BlockLiquid && getWorld().getBlockState(offset).getMaterial() == Material.WATER) || (getWorld().getBlockState(offset).getBlock() instanceof IFluidBlock && getWorld().getBlockState(offset).getMaterial() == Material.WATER);// == Blocks.water || getWorld().getBlock(xPos, yPos, zPos) == Blocks.flowing_water;//getWorld().isMaterialInBB(AxisAlignedBB.getBoundingBox(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), Material.water);
+                        hasWater = (getWorld().getBlockState(offset).getBlock() instanceof BlockLiquid && getWorld().getBlockState(offset).getMaterial() == Material.WATER) || (getWorld().getBlockState(offset).getBlock() instanceof IFluidBlock && getWorld().getBlockState(offset).getMaterial() == Material.WATER);// == Blocks.water || getWorld().getBlock(xPos, yPos, zPos) == Blocks.flowing_water;//getWorld().isMaterialInBB(AxisAlignedBB.getBoundingBox(xPos, yPos, zPos, xPos + 1, yPos + 1, zPos + 1), EnumMaterial.water);
                     if (!hasWater) {
                         hasWater = sidesHaveWater();
                         if (!hasWater)
