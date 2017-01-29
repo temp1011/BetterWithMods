@@ -1,9 +1,9 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
 import betterwithmods.BWSounds;
 import betterwithmods.api.block.IMechanicalBlock;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -300,8 +300,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     public void breakBellows(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 6));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial("gear"));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial("tanned_leather"));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F,
                 world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);

@@ -1,10 +1,10 @@
 package betterwithmods.blocks.tile;
 
-import betterwithmods.BWMItems;
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.craft.bulk.CraftingManagerBulk;
 import betterwithmods.craft.heat.BWMHeatRegistry;
 import betterwithmods.craft.heat.BWMHeatSource;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -287,11 +287,15 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     protected boolean containsExplosives() {
-        return containsItem(BWMItems.MATERIAL, 16) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(BWMItems.MATERIAL, 29);
+        return containsItem(ItemMaterial.getMaterial("hellfire_dust")) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(ItemMaterial.getMaterial("blasting_oil"));
     }
 
     private boolean containsItem(Item item) {
         return containsItem(item, OreDictionary.WILDCARD_VALUE);
+    }
+
+    private boolean containsItem(ItemStack stack) {
+        return containsItem(stack.getItem(), stack.getMetadata());
     }
 
     private boolean containsItem(Item item, int meta) {
@@ -299,10 +303,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     private void explode() {
-        int hellfire = InvUtils.countItemsInInventory(inventory, BWMItems.MATERIAL, 16);
+        int hellfire = InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial("hellfire_dust"));
         float expSize = hellfire * 10.0F / 64.0F;
         expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, BWMItems.MATERIAL, 29) * 10.0F / 64.0F;
+        expSize += InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial("blasting_oil")) * 10.0F / 64.0F;
         if (InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0) {
             if (expSize < 4.0F)
                 expSize = 4.0F;

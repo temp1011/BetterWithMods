@@ -118,25 +118,25 @@ public class BWRegistry {
     }
 
     public static void registerOres() {
-        OreDictionary.registerOre("gearWood", new ItemStack(BWMItems.MATERIAL, 1, 0));
-        OreDictionary.registerOre("cropHemp", new ItemStack(BWMItems.MATERIAL, 1, 2));
-        OreDictionary.registerOre("dyeBrown", new ItemStack(BWMItems.MATERIAL, 1, 5));
-        OreDictionary.registerOre("dung", new ItemStack(BWMItems.MATERIAL, 1, 5));
-        OreDictionary.registerOre("slimeball", new ItemStack(BWMItems.MATERIAL, 1, 12));
-        OreDictionary.registerOre("ingotSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 14));
-        OreDictionary.registerOre("dustNetherrack", new ItemStack(BWMItems.MATERIAL, 1, 15));
-        OreDictionary.registerOre("dustHellfire", new ItemStack(BWMItems.MATERIAL, 1, 16));
-        OreDictionary.registerOre("dustSoul", new ItemStack(BWMItems.MATERIAL, 1, 23));
-        OreDictionary.registerOre("ingotHellfire", new ItemStack(BWMItems.MATERIAL, 1, 17));
-        OreDictionary.registerOre("dustCoal", new ItemStack(BWMItems.MATERIAL, 1, 18));
-        OreDictionary.registerOre("dustPotash", new ItemStack(BWMItems.MATERIAL, 1, 21));
-        OreDictionary.registerOre("dustWood", new ItemStack(BWMItems.MATERIAL, 1, 22));
-        OreDictionary.registerOre("dustSulfur", new ItemStack(BWMItems.MATERIAL, 1, 25));
-        OreDictionary.registerOre("dustSaltpeter", new ItemStack(BWMItems.MATERIAL, 1, 26));
-        OreDictionary.registerOre("nuggetIron", new ItemStack(BWMItems.MATERIAL, 1, 30));
-        OreDictionary.registerOre("nuggetSoulforgedSteel", new ItemStack(BWMItems.MATERIAL, 1, 31));
-        OreDictionary.registerOre("foodFlour", new ItemStack(BWMItems.MATERIAL, 1, 37));
-        OreDictionary.registerOre("dustCharcoal", new ItemStack(BWMItems.MATERIAL, 1, 39));
+        OreDictionary.registerOre("gearWood", ItemMaterial.getMaterial("gear"));
+        OreDictionary.registerOre("cropHemp", ItemMaterial.getMaterial("hemp"));
+        OreDictionary.registerOre("dyeBrown", ItemMaterial.getMaterial("dung"));
+        OreDictionary.registerOre("dung", ItemMaterial.getMaterial("dung"));
+        OreDictionary.registerOre("slimeball", ItemMaterial.getMaterial("glue"));
+        OreDictionary.registerOre("ingotSoulforgedSteel", ItemMaterial.getMaterial("ingot_steel"));
+        OreDictionary.registerOre("dustNetherrack", ItemMaterial.getMaterial("ground_netherrack"));
+        OreDictionary.registerOre("dustHellfire", ItemMaterial.getMaterial("hellfire_dust"));
+        OreDictionary.registerOre("dustSoul", ItemMaterial.getMaterial("soul_dust"));
+        OreDictionary.registerOre("ingotHellfire", ItemMaterial.getMaterial("concentrated_hellfire"));
+        OreDictionary.registerOre("dustCoal", ItemMaterial.getMaterial("coal_dust"));
+        OreDictionary.registerOre("dustPotash", ItemMaterial.getMaterial("potash"));
+        OreDictionary.registerOre("dustWood", ItemMaterial.getMaterial("sawdust"));
+        OreDictionary.registerOre("dustSulfur", ItemMaterial.getMaterial("brimstone"));
+        OreDictionary.registerOre("dustSaltpeter", ItemMaterial.getMaterial("niter"));
+        OreDictionary.registerOre("nuggetIron", ItemMaterial.getMaterial("nugget_iron"));
+        OreDictionary.registerOre("nuggetSoulforgedSteel", ItemMaterial.getMaterial("nugget_steel"));
+        OreDictionary.registerOre("foodFlour", ItemMaterial.getMaterial("flour"));
+        OreDictionary.registerOre("dustCharcoal", ItemMaterial.getMaterial("charcoal_dust"));
 
         //OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
@@ -152,8 +152,8 @@ public class BWRegistry {
         OreDictionary.registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
         // TFC compatibility
         OreDictionary.registerOre("itemKnife", new ItemStack(BWMItems.KNIFE, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("fiberHemp", new ItemStack(BWMItems.MATERIAL, 1, 3));
-        OreDictionary.registerOre("fabricHemp", new ItemStack(BWMItems.MATERIAL, 1, 4));
+        OreDictionary.registerOre("fiberHemp", ItemMaterial.getMaterial("hemp_fibers"));
+        OreDictionary.registerOre("fabricHemp", ItemMaterial.getMaterial("hemp_cloth"));
 
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP);
         OreDictionary.registerOre("listAllmeatcooked", Items.COOKED_BEEF);
@@ -335,8 +335,16 @@ public class BWRegistry {
     private static boolean isFlat(ItemStack stack) {
         Item item = stack.getItem();
         int meta = stack.getMetadata();
-        if (item == BWMItems.MATERIAL) {
-            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
+        if (item instanceof ItemMaterial) {
+            return meta == ItemMaterial.getMaterial("nethercoal").getMetadata()
+                    || meta == ItemMaterial.getMaterial("hemp_cloth").getMetadata()
+                    || meta == ItemMaterial.getMaterial("tanned_leather").getMetadata()
+                    || meta == ItemMaterial.getMaterial("scoured_leather").getMetadata()
+                    || meta == ItemMaterial.getMaterial("leather_strap").getMetadata()
+                    || meta == ItemMaterial.getMaterial("leather_belt").getMetadata()
+                    || meta == ItemMaterial.getMaterial("leather_cut").getMetadata()
+                    || meta == ItemMaterial.getMaterial("tanned_leather_cut").getMetadata()
+                    || meta == ItemMaterial.getMaterial("scoured_leather_cut").getMetadata();
         }
         return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || InvUtils.listContains(stack, OreDictionary.getOres("string")) || InvUtils.listContains(stack, OreDictionary.getOres("paper"));
     }
@@ -344,6 +352,10 @@ public class BWRegistry {
     private static boolean isNarrow(ItemStack stack) {
         Item item = stack.getItem();
         int meta = stack.getMetadata();
-        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) || InvUtils.listContains(stack, InvUtils.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD || (item == BWMItems.MATERIAL && (meta == 8 || meta == 9));
+        if (item instanceof ItemMaterial) {
+            return meta == ItemMaterial.getMaterial("leather_strap").getMetadata()
+                    || meta == ItemMaterial.getMaterial("leather_belt").getMetadata();
+        }
+        return item == Item.getItemFromBlock(Blocks.RED_FLOWER) || item == Item.getItemFromBlock(Blocks.YELLOW_FLOWER) || item == Items.BONE || item == Items.ARROW || item == Items.SPECTRAL_ARROW || item == Items.TIPPED_ARROW || InvUtils.listContains(stack, OreDictionary.getOres("stickWood")) || InvUtils.listContains(stack, InvUtils.cropNames) || item == Items.REEDS || item == Items.BLAZE_ROD;
     }
 }

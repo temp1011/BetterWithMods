@@ -4,6 +4,7 @@ import betterwithmods.BWMItems;
 import betterwithmods.craft.bulk.CraftingManagerBulk;
 import betterwithmods.craft.bulk.CraftingManagerCauldron;
 import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -37,7 +38,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
         this.containsValidIngredients = false;
 
         if (this.fireIntensity > 0 && this.fireIntensity < 5) {
-            if (InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5) > -1 && hasNonFoulFood()) {
+            if (InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial("dung")) > -1 && hasNonFoulFood()) {
                 this.containsValidIngredients = true;
             } else if (CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
                 this.containsValidIngredients = true;
@@ -59,7 +60,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     @Override
     protected boolean attemptToCookNormal() {
-        int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, BWMItems.MATERIAL, 5);
+        int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial("dung"));
         if (dung > -1 && this.hasNonFoulFood()) {
             return spoilFood();
         } else

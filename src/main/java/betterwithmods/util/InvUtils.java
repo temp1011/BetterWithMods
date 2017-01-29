@@ -247,6 +247,11 @@ public class InvUtils {
         return countItemsInInventory(inv, item, OreDictionary.WILDCARD_VALUE);
     }
 
+
+    public static int countItemsInInventory(IItemHandler inv, ItemStack stack) {
+        return countItemsInInventory(inv, stack.getItem(), stack.getMetadata());
+    }
+
     public static int countItemsInInventory(IItemHandler inv, Item item, int meta) {
         int itemCount = 0;
         for (int i = 0; i < inv.getSlots(); i++) {
@@ -371,8 +376,8 @@ public class InvUtils {
         return -1;
     }
 
-    public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item) {
-        return getFirstOccupiedStackOfItem(inv, item, OreDictionary.WILDCARD_VALUE);
+    public static int getFirstOccupiedStackOfItem(IItemHandler inv, ItemStack stack) {
+        return getFirstOccupiedStackOfItem(inv, stack.getItem(), stack.getMetadata());
     }
 
     public static int getFirstOccupiedStackOfItem(IItemHandler inv, Item item, int meta) {
