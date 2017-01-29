@@ -5,6 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class BWFuelHandler implements IFuelHandler {
 
     @Override
@@ -12,9 +14,9 @@ public class BWFuelHandler implements IFuelHandler {
         Item item = fuel.getItem();
         int meta = fuel.getItemDamage();
         if (item instanceof ItemMaterial) {
-            if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL).getMetadata()) return 3200;
-            else if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST).getMetadata()) return 25;
-            else if (meta == ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST).getMetadata()) return 25;
+            if (meta == ItemMaterial.getMaterial(EnumMaterial.NETHERCOAL).getMetadata()) return 3200;
+            else if (meta == ItemMaterial.getMaterial(EnumMaterial.SAWDUST).getMetadata()) return 25;
+            else if (meta == ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST).getMetadata()) return 25;
         }
         else if (item == BWMItems.BARK)
             return 25;

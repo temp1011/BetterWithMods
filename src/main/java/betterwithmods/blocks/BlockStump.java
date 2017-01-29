@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 import static net.minecraft.block.BlockPlanks.VARIANT;
 
 /**
@@ -89,7 +90,7 @@ public class BlockStump extends Block implements IMultiVariants {
             ret.add(new ItemStack(BWMItems.BARK, 1, state.getValue(BlockPlanks.VARIANT).getMetadata()));
         }
         for (int i = 0; i < 6; ++i) {
-            ret.add(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST));
+            ret.add(ItemMaterial.getMaterial(EnumMaterial.SAWDUST));
         }
         return ret;
     }
@@ -102,7 +103,7 @@ public class BlockStump extends Block implements IMultiVariants {
     @Override
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
         for (int i = 0; i < 4; ++i) {
-            spawnAsEntity(worldIn, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 1));
+            spawnAsEntity(worldIn, pos, ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 1));
         }
     }
 

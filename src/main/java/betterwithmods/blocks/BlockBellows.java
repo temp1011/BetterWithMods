@@ -31,6 +31,8 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class BlockBellows extends BWMBlock implements IMechanicalBlock {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     public static final PropertyBool TRIGGER = PropertyBool.create("trigger");
@@ -300,8 +302,8 @@ public class BlockBellows extends BWMBlock implements IMechanicalBlock {
 
     public void breakBellows(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
-        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(EnumMaterial.GEAR));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(EnumMaterial.TANNED_LEATHER));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F,
                 world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
     public static final PropertyBool TOP = PropertyBool.create("top");
 
@@ -133,7 +135,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     protected Item getCrop() {
-        return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP).getItem();
+        return ItemMaterial.getMaterial(EnumMaterial.HEMP).getItem();
     }
 
     @Override

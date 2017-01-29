@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 /**
  * Purpose:
  *
@@ -26,7 +28,7 @@ public class BlastingOilEvent {
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
 
-                if (stack != null && stack.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
+                if (stack != null && stack.isItemEqual(ItemMaterial.getMaterial(EnumMaterial.BLASTING_OIL))) {
                     count += stack.stackSize;
                     inventory.extractItem(i, stack.stackSize, false);
                 }

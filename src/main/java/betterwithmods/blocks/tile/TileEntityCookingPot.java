@@ -30,6 +30,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 import static betterwithmods.blocks.tile.TileEntityFilteredHopper.putDropInInventoryAllSlots;
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 
 public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     public int cookCounter;
@@ -287,7 +288,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     protected boolean containsExplosives() {
-        return containsItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL));
+        return containsItem(ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST)) || containsItem(Item.getItemFromBlock(Blocks.TNT)) || containsItem(Items.GUNPOWDER) || containsItem(ItemMaterial.getMaterial(EnumMaterial.BLASTING_OIL));
     }
 
     private boolean containsItem(Item item) {
@@ -303,10 +304,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory {
     }
 
     private void explode() {
-        int hellfire = InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
+        int hellfire = InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST));
         float expSize = hellfire * 10.0F / 64.0F;
         expSize += InvUtils.countItemsInInventory(inventory, Items.GUNPOWDER) * 10.0F / 64.0F;
-        expSize += InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL)) * 10.0F / 64.0F;
+        expSize += InvUtils.countItemsInInventory(inventory, ItemMaterial.getMaterial(EnumMaterial.BLASTING_OIL)) * 10.0F / 64.0F;
         if (InvUtils.countItemsInInventory(inventory, Item.getItemFromBlock(Blocks.TNT)) > 0) {
             if (expSize < 4.0F)
                 expSize = 4.0F;

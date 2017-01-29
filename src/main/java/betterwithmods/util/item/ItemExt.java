@@ -11,6 +11,8 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 /**
  * Set of methods dealing with Items and ItemStacks.
  *
@@ -169,38 +171,38 @@ public final class ItemExt {
         buoyancy.put(Items.SKULL, 1.0F);
         buoyancy.put(Items.CARROT_ON_A_STICK, 1.0F);
         buoyancy.put(Items.PUMPKIN_PIE, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.HEMP), 1.0F);
         buoyancy.put("gearWood", 1.0F);
         buoyancy.put("foodFlour", 1.0F);
         buoyancy.put("string", 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.SCOURED_LEATHER), 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.DUNG), 1.0F);
         buoyancy.put(BWMItems.WINDMILL, 1.0F);
         buoyancy.put("fabricHemp", 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMItems.DONUT, 1.0F);
         buoyancy.put(BWMBlocks.GRATE, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_BELT), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WOOD_BLADE), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), 0.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HAFT), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.TANNED_LEATHER), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.LEATHER_STRAP), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.LEATHER_BELT), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.WOOD_BLADE), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.GLUE), 0.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.TALLOW), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.HAFT), 1.0F);
         buoyancy.put(BWMBlocks.URN, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.SAWDUST), 1.0F);
         buoyancy.put(BWMItems.DYNAMITE, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.NETHER_SLUDGE), 1.0F);
         buoyancy.put(Items.CARROT, 1.0F);
         buoyancy.put(BWMItems.CREEPER_OYSTER, 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.LEATHER_CUT), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.TANNED_LEATHER_CUT), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.SCOURED_LEATHER_CUT), 1.0F);
         buoyancy.put("barkWood", 1.0F);
         buoyancy.put(Items.DYE, EnumDyeColor.BROWN.getDyeDamage(), 1.0F);
-        buoyancy.put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX), 1.0F);
+        buoyancy.put(ItemMaterial.getMaterial(EnumMaterial.SOUL_FLUX), 1.0F);
         buoyancy.put(BWMBlocks.STUMP, 1.0F);
         buoyancy.put(BWMItems.STUMP_REMOVER, 1.0F);
     }

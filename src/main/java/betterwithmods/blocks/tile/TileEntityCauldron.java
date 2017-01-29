@@ -11,6 +11,8 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class TileEntityCauldron extends TileEntityCookingPot {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -38,7 +40,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
         this.containsValidIngredients = false;
 
         if (this.fireIntensity > 0 && this.fireIntensity < 5) {
-            if (InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG)) > -1 && hasNonFoulFood()) {
+            if (InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial(EnumMaterial.DUNG)) > -1 && hasNonFoulFood()) {
                 this.containsValidIngredients = true;
             } else if (CraftingManagerCauldron.getInstance().getCraftingResult(inventory) != null)
                 this.containsValidIngredients = true;
@@ -60,7 +62,7 @@ public class TileEntityCauldron extends TileEntityCookingPot {
 
     @Override
     protected boolean attemptToCookNormal() {
-        int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
+        int dung = InvUtils.getFirstOccupiedStackOfItem(inventory, ItemMaterial.getMaterial(EnumMaterial.DUNG));
         if (dung > -1 && this.hasNonFoulFood()) {
             return spoilFood();
         } else

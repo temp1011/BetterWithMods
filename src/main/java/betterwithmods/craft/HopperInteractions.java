@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 /**
  * Purpose:
  *
@@ -29,8 +30,8 @@ public class HopperInteractions {
     public static final ArrayList<HopperRecipe> recipes = new ArrayList<>();
 
     static {
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
-        recipes.add(new SoulUrn(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial(EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(EnumMaterial.HELLFIRE_DUST)));
+        recipes.add(new SoulUrn(ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(EnumMaterial.SAWDUST)));
         recipes.add(new HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {

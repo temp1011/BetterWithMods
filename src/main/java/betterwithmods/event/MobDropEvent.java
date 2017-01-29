@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class MobDropEvent {
     private static final int[] fearLevel = {1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 800, 700, 600, 500, 400, 300, 200, 100};
     private static final Random rand = new Random();
@@ -82,7 +84,7 @@ public class MobDropEvent {
                     if (animal.getGrowingAge() > 99) {
                         int light = animal.getEntityWorld().getLight(animal.getPosition());
                         if (animal.getGrowingAge() == fearLevel[light]) {
-                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
+                            evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(EnumMaterial.DUNG), 0.0F);
                             animal.setGrowingAge(99);
                         }
                     }
@@ -90,10 +92,10 @@ public class MobDropEvent {
             }
             if (!(animal instanceof EntityRabbit)) {
                 if (animal.getGrowingAge() == 100) {
-                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
+                    evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(EnumMaterial.DUNG), 0.0F);
                 } else if (animal.isInLove()) {
                     if (rand.nextInt(1200) == 0) {
-                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG), 0.0F);
+                        evt.getEntityLiving().entityDropItem(ItemMaterial.getMaterial(EnumMaterial.DUNG), 0.0F);
                     }
                 }
             }
@@ -112,7 +114,7 @@ public class MobDropEvent {
                 }
             }
             if (evt.getEntityLiving() instanceof EntityAgeable)
-                addDrop(evt, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
+                addDrop(evt, ItemMaterial.getMaterial(EnumMaterial.DUNG));
             int headChance = evt.getEntityLiving().getEntityWorld().rand.nextInt(12);
             if (headChance < 5) {
                 if (evt.getEntityLiving() instanceof EntitySkeleton) {
@@ -180,7 +182,7 @@ public class MobDropEvent {
             for (EntityItem item : evt.getDrops()) {
                 ItemStack stack = item.getEntityItem();
                 if (stack.getItem() == Items.GUNPOWDER) {
-                    item.setEntityItemStack(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER, stack.stackSize));
+                    item.setEntityItemStack(ItemMaterial.getMaterial(EnumMaterial.NITER, stack.stackSize));
                 }
             }
         }
