@@ -2,6 +2,7 @@ package betterwithmods.event;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMItems;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.player.EntityPlayerExt;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,8 @@ public class InferiorDropsEventHandler {
 
     @SubscribeEvent
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
+        if(!BWConfig.inferiorDrops)
+            return;
         Block block = event.getState().getBlock();
         boolean shouldDropInferior = true;
         EntityPlayer player = event.getHarvester();

@@ -65,6 +65,7 @@ public class BWConfig {
     public static boolean hardcoreStumping;
     public static boolean hardcoreStructureCraft;
     public static int reclaimCount;
+    public static boolean inferiorDrops;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -132,6 +133,7 @@ public class BWConfig {
         hardcoreStructures = config.get(HARDCORE, "Hardcore Structures", true, "Changes various structures to be affected by the Hardcore Spawn radius. Removes Enchanting Table and Brewing Stand recipes").setRequiresMcRestart(true).getBoolean();
         hardcoreStructureCraft = hardcoreStructures && config.get(HARDCORE, "Disable Brewing Stand and Enchanting Table Recipes", true, "If enabled with Hardcore Structures, disables crafting recipes for the brewing stand and enchanting table").setRequiresMcRestart(true).getBoolean();
         hardcoreStumping = config.get(HARDCORE, "Hardcore Stumping", true, "The bottom block of trees is very hard. Promotes landscapes filled with iconic stumps to show the triumphant march of progress").setRequiresMcRestart(true).getBoolean();
+        inferiorDrops = config.get(HARDCORE, "Inferior Dirt Drops", true, "Dirt, sand, and gravel will drop piles if not harvested with a shovel").getBoolean();
         if(config.hasChanged())
             config.save();
     }
