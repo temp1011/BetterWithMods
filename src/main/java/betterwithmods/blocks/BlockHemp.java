@@ -1,9 +1,9 @@
 package betterwithmods.blocks;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
+import betterwithmods.items.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;
@@ -22,6 +22,8 @@ import net.minecraftforge.common.IPlantable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 
 public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
     public static final PropertyBool TOP = PropertyBool.create("top");
@@ -133,7 +135,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     protected Item getCrop() {
-        return BWMItems.MATERIAL;
+        return ItemMaterial.getMaterial(EnumMaterial.HEMP).getItem();
     }
 
     @Override

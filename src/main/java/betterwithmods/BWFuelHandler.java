@@ -5,18 +5,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 public class BWFuelHandler implements IFuelHandler {
 
     @Override
     public int getBurnTime(ItemStack fuel) {
         Item item = fuel.getItem();
         int meta = fuel.getItemDamage();
-        if (item == BWMItems.MATERIAL && meta == 1)
-            return 3200;
-        else if (item == BWMItems.MATERIAL && meta == 22)
-            return 25;
-        else if (item == BWMItems.MATERIAL && meta == 23)
-            return 25;
+        if (item instanceof ItemMaterial) {
+            if (meta == ItemMaterial.getMaterial(EnumMaterial.NETHERCOAL).getMetadata()) return 3200;
+            else if (meta == ItemMaterial.getMaterial(EnumMaterial.SAWDUST).getMetadata()) return 25;
+            else if (meta == ItemMaterial.getMaterial(EnumMaterial.SOUL_DUST).getMetadata()) return 25;
+        }
         else if (item == BWMItems.BARK)
             return 25;
         else if (item == Item.getItemFromBlock(BWMBlocks.WOOD_SIDING))

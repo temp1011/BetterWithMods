@@ -1,10 +1,10 @@
 package betterwithmods.event;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.IDebarkable;
 import betterwithmods.config.BWConfig;
 import betterwithmods.craft.SawInteraction;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.items.tools.ItemKnife;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
@@ -32,6 +32,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 import static betterwithmods.BWMItems.BARK;
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 
 public class LogHarvestEvent {
     public static IRecipe findMatchingRecipe(InventoryCrafting inv, World world) {
@@ -128,7 +129,7 @@ public class LogHarvestEvent {
 
                                     ItemStack bark = new ItemStack(outputs.get(1).getItem(), barkStack, outputs.get(1).getItemDamage());
                                     int sawdustStack = fort ? 1 + world.rand.nextInt(fortune) : 1;
-                                    ItemStack sawdust = new ItemStack(BWMItems.MATERIAL, sawdustStack, 22);
+                                    ItemStack sawdust = ItemMaterial.getMaterial(EnumMaterial.SAWDUST, sawdustStack);
                                     newOutputs.add(planks);
                                     newOutputs.add(bark);
                                     newOutputs.add(sawdust);

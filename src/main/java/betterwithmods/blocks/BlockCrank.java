@@ -1,8 +1,8 @@
 package betterwithmods.blocks;
 
-import betterwithmods.BWMItems;
 import betterwithmods.api.block.IMechanicalBlock;
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.items.ItemMaterial;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -25,6 +25,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Random;
+
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
 
 public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVariants {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
@@ -122,7 +124,7 @@ public class BlockCrank extends BWMBlock implements IMechanicalBlock, IMultiVari
     public void breakCrank(World world, BlockPos pos) {
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
         InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+        InvUtils.ejectStackWithOffset(world, pos, ItemMaterial.getMaterial(EnumMaterial.GEAR));
         //world.playAuxSFX(2235, x, y, z, 0);
         world.setBlockToAir(pos);
     }

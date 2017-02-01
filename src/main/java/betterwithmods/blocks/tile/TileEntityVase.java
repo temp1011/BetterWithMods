@@ -13,6 +13,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
+import static betterwithmods.items.ItemMaterial.EnumMaterial;
+
 /**
  * Created by Christian on 24.09.2016.
  */
@@ -40,7 +42,7 @@ public class TileEntityVase extends TileBasicInventory {
 
     public void onBreak() {
         ItemStack vaseitem = inventory.getStackInSlot(0);
-        if (vaseitem != null && vaseitem.isItemEqual(ItemMaterial.getMaterial("blasting_oil"))) {
+        if (vaseitem != null && vaseitem.isItemEqual(ItemMaterial.getMaterial(EnumMaterial.BLASTING_OIL))) {
             float intensity = 1.5f; // TODO: fiddle with this.
             getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), intensity, true);
         } else {
