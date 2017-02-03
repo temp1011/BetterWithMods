@@ -234,7 +234,7 @@ public class BWMod {
                     if (Objects.equals(mapping.name, "betterwithmods:creativeGenerator")) {
                         Item creativeGeneratorItem = Item.getItemFromBlock(BWMBlocks.CREATIVE_GENERATOR);
                         if (creativeGeneratorItem == null)
-                            throw new MinecraftException("Creative Generator don't have an item. Can't remap.");
+                            throw new MinecraftException("The Creative Generator does not have an item. Can't remap.");
                         mapping.remap(creativeGeneratorItem);
                     }
                     break;
