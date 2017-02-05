@@ -39,7 +39,7 @@ public class BWConfig {
     public static boolean netherSpawn;
     public static boolean slimeSpawn;
     public static boolean produceDung;
-    public static boolean dropsGearbox;
+    //public static boolean dropsGearbox;
     public static boolean dropsSaw;
     public static boolean dropsHopper;
     public static boolean dropsPulley;
@@ -101,7 +101,7 @@ public class BWConfig {
         produceDung = config.get(VANILLA_TWEAKS, "Animals Produce Dung", true).getBoolean();
         armorDrops = config.get(VANILLA_TWEAKS, "Undead drop all armor", true, "This option will force zombies and skeletons to drop any non-standard equipment, including enchanted versions of their default weapons.").getBoolean();
 
-        dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean();
+        //dropsGearbox = config.get(MODPACK_TWEAKS, "Gearbox generating drops when overpowered", true).getBoolean();
         dropsSaw = config.get(MODPACK_TWEAKS, "Saw generating drops when overpowered", true).getBoolean();
         dropsHopper = config.get(MODPACK_TWEAKS, "Hopper generating drops when overpowered", true).getBoolean();
         dropsPulley = config.get(MODPACK_TWEAKS, "Pulley generating drops when overpowered", true).getBoolean();
