@@ -34,6 +34,10 @@ public class HardcoreRedstoneEvent {
                     continue;
             }
             world.notifyBlockOfStateChange(pos.offset(facing), event.getState().getBlock());
+            for (EnumFacing f1 : EnumFacing.VALUES) {
+                if (f1 != facing.getOpposite())
+                    world.notifyBlockOfStateChange(pos.offset(facing).offset(f1), event.getState().getBlock());
+            }
         }
     }
 }
