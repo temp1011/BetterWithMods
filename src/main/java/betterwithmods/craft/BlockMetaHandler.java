@@ -44,9 +44,8 @@ public abstract class BlockMetaHandler {
     }
 
     public boolean contains(ItemStack stack) {
-        if (stack == null)
+        if (stack == null || !(stack.getItem() instanceof ItemBlock))
             return false;
-        assert stack.getItem() instanceof ItemBlock;
         return contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
     }
 

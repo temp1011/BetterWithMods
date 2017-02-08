@@ -148,6 +148,8 @@ public class TileEntityWaterwheel extends TileEntityMillGenerator {
             this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWaterwheel.ISACTIVE, speed > 0));
             getWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getWorld()), 5);//this.getWorld().markBlockForUpdate(pos);
         }
+        else if (speed == 0 && this.getWorld().getBlockState(pos).getValue(BlockWaterwheel.ISACTIVE))
+            this.getWorld().setBlockState(pos, this.getWorld().getBlockState(pos).withProperty(BlockWaterwheel.ISACTIVE, false));
     }
 
     @Override

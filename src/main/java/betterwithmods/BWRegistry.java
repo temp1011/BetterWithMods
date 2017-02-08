@@ -15,6 +15,7 @@ import betterwithmods.potion.BWPotion;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.*;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -36,6 +37,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
@@ -140,7 +142,7 @@ public class BWRegistry {
         OreDictionary.registerOre("foodFlour", ItemMaterial.getMaterial(EnumMaterial.FLOUR));
         OreDictionary.registerOre("dustCharcoal", ItemMaterial.getMaterial(EnumMaterial.CHARCOAL_DUST));
 
-        //OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+        OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
         //Added bark subtype entries for Roots compatibility
         OreDictionary.registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
@@ -286,6 +288,18 @@ public class BWRegistry {
                     }
                 }
             }
+            else if (recipe instanceof ShapedOreRecipe) {
+                ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                if (shaped.getRecipeSize() == 1) {
+                    if (shaped.getInput()[0] instanceof ItemStack) {
+                        ItemStack stack = (ItemStack)shaped.getInput()[0];
+                        if (stack.isItemEqual(input)) {
+                            if (output.isItemEqual(shaped.getRecipeOutput()))
+                                toRemove.add(recipe);
+                        }
+                    }
+                }
+            }
             else if (recipe instanceof ShapelessRecipes) {
                 ShapelessRecipes shapeless = (ShapelessRecipes) recipe;
                 if (shapeless.recipeItems.size() == 1 && shapeless.recipeItems.get(0).isItemEqual(input)) {
@@ -305,7 +319,10 @@ public class BWRegistry {
             }
         }
         for(IRecipe remove : toRemove) {
-            CraftingManager.getInstance().getRecipeList().remove(remove);
+            if (!CraftingManager.getInstance().getRecipeList().remove(remove)) {
+                RecipeUtils.removeRecipes(remove.getRecipeOutput());
+            }
+
         }
     }
 
