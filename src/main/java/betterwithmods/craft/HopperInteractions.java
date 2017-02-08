@@ -87,7 +87,7 @@ public class HopperInteractions {
 
         @Override
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
+            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
             onCraft(world, pos, inputStack);
         }
 
@@ -126,7 +126,7 @@ public class HopperInteractions {
         }
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output);
+            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
             for (int i = 0; i < inputStack.getEntityItem().stackSize; i++)
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
             onCraft(world, pos, inputStack);
