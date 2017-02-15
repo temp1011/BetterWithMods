@@ -455,10 +455,12 @@ public class BWCrafting {
                 if (nugget != null) {
                     RecipeUtils.removeFurnaceRecipe(ore);
                     FurnaceRecipes.instance().getSmeltingList().put(ore, nugget);
-                    List<ItemStack> dusts = InvUtils.getMatchingSuffix(ore, "ore", "dust");
-                    if (dusts.size() > 0) {
-                        dusts.forEach(RecipeUtils::removeFurnaceRecipe);
-                        dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
+                    if (BWConfig.hardcoreDusts) {
+                        List<ItemStack> dusts = InvUtils.getMatchingSuffix(ore, "ore", "dust");
+                        if (dusts.size() > 0) {
+                            dusts.forEach(RecipeUtils::removeFurnaceRecipe);
+                            dusts.forEach(dust -> FurnaceRecipes.instance().getSmeltingList().put(dust, nugget));
+                        }
                     }
                 }
             }

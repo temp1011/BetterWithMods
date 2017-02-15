@@ -30,6 +30,11 @@ public class SteelAnvil {
 
     @ZenMethod
     public static void add(IItemStack result, @NotNull IIngredient[][] recipe) {
+        MineTweakerAPI.apply(new Add(addRecipe(result, recipe)));
+    }
+
+    private static ShapedSteelAnvilRecipe addRecipe(IItemStack result, IIngredient[][] recipe) {
+        char[][] sequence = {{'A', 'B', 'C', 'D'}, {'E', 'F', 'G', 'H'}, {'I', 'J', 'K', 'L'}, {'M', 'N', 'O', 'P'}};
         ItemStack output = InputHelper.toStack(result);
         int height = recipe.length;
         int width = 0;
@@ -48,13 +53,30 @@ public class SteelAnvil {
                 }
             }
         }
-        MineTweakerAPI.apply(new Add(new ShapedSteelAnvilRecipe(output,input)));
+        String[] str = new String[height];
+        for (int i = 0; i < str.length; i++) {
+            StringBuilder build = new StringBuilder();
+            for (int j = 0; j < width; j++) {
+                build.append(sequence[i][j]);
+            }
+            str[i] = build.toString();
+        }
+        Object[] in = new Object[(input.length * 2) + 1];
+        in[0] = str;
+        for (int i = 0; i < input.length; i++) {
+            int place = (i * 2) + 1;
+            int w = i % width;
+            int h = i / height;
+            in[place] = sequence[h][w];
+            in[place + 1] = input[i];
+        }
+        return new ShapedSteelAnvilRecipe(output, in);
     }
 
     public static class Add extends BaseListAddition<IRecipe> {
 
         protected Add(IRecipe recipe) {
-            super("steelAnvil", Arrays.asList(recipe));
+            super("steelAnvil", CraftingManagerSteelAnvil.INSTANCE.getRecipes(), Arrays.asList(recipe));
         }
 
         @Override

@@ -97,8 +97,6 @@ public class ShapedSteelAnvilRecipe implements IRecipe {
         }
     }
 
-
-
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         for (int x = 0; x <= MAX_MATRIX_WIDTH - width; x++) {
