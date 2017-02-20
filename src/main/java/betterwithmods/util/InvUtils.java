@@ -178,14 +178,22 @@ public class InvUtils {
         }
     }
 
+    private static boolean canInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
+        return insertingStacks(inv, stack, minSlot, maxSlot, true);
+    }
+
     public static boolean addSingleItemToInv(IItemHandler inv, Item item, int meta) {
         ItemStack stack = new ItemStack(item, 1, meta);
         return attemptToInsertStack(inv, stack, 0, inv.getSlots());
     }
 
     private static boolean attemptToInsertStack(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot) {
+        return insertingStacks(inv, stack, minSlot, maxSlot, false);
+    }
+
+    private static boolean insertingStacks(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, false) == null)
+            if (inv.insertItem(slot, stack, simulate) == null)
                 return true;
         }
         return false;
@@ -432,6 +440,10 @@ public class InvUtils {
 
     public static boolean addItemStackToInv(IItemHandler inventory, ItemStack stack) {
         return attemptToInsertStack(inventory, stack, 0, inventory.getSlots());
+    }
+
+    public static boolean checkItemStackInsert(IItemHandler inv, ItemStack stack) {
+        return canInsertStack(inv, stack, 0, inv.getSlots());
     }
 
     public static void ejectBrokenItems(World world, BlockPos pos, ResourceLocation lootLocation) {
