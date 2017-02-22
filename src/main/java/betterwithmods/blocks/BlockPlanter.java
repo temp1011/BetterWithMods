@@ -44,6 +44,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         this.setTickRandomly(true);
         this.setHardness(1.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumPlanterType.EMPTY));
+        this.setHarvestLevel("pickaxe", 0);
     }
 
     @Override
@@ -269,7 +270,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     }
 
     public enum EnumPlanterType implements IStringSerializable {
-        EMPTY("empty", null, 0, null),
+        EMPTY("empty", null, 0, new EnumPlantType[0]),
         DIRT("dirt", Blocks.DIRT, 1, new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),
         GRASS("grass", Blocks.GRASS, 2, new EnumPlantType[]{EnumPlantType.Plains}),
         SOULSAND("soul_sand", Blocks.SOUL_SAND, 3, new EnumPlantType[]{EnumPlantType.Nether}),
@@ -328,7 +329,9 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         }
 
         public boolean isType(EnumPlantType type) {
-            return Arrays.asList(type).contains(type);
+            if (this.type.length != 0)
+                return Arrays.asList(this.type).contains(type);
+            return false;
         }
     }
 }
