@@ -141,6 +141,8 @@ public class BWRegistry {
         OreDictionary.registerOre("nuggetSoulforgedSteel", ItemMaterial.getMaterial(EnumMaterial.NUGGET_STEEL));
         OreDictionary.registerOre("foodFlour", ItemMaterial.getMaterial(EnumMaterial.FLOUR));
         OreDictionary.registerOre("dustCharcoal", ItemMaterial.getMaterial(EnumMaterial.CHARCOAL_DUST));
+        OreDictionary.registerOre("foodCocoapowder", ItemMaterial.getMaterial(EnumMaterial.COCOA_POWDER));
+        OreDictionary.registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
 
         OreDictionary.registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         OreDictionary.registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
