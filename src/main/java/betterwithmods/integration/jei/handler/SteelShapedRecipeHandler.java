@@ -53,7 +53,7 @@ public class SteelShapedRecipeHandler implements IRecipeHandler<SteelShapedOreRe
                 inputCount++;
             }
         }
-        if(inputCount > 81)
+        if(inputCount > 16)
             return false;
 
         return inputCount > 0;

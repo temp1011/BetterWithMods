@@ -53,7 +53,7 @@ public class SteelShapelessRecipeHandler implements IRecipeHandler<SteelShapeles
             }
         }
 
-        if (inputCount > 81)
+        if (inputCount > 16)
             return false;
 
         return inputCount > 0;
