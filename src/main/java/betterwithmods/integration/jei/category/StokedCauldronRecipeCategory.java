@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.StokedCauldronRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.StokedCauldronRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;

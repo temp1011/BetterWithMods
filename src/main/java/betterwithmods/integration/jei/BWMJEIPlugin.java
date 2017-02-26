@@ -1,16 +1,16 @@
 package betterwithmods.integration.jei;
 
 import betterwithmods.BWMBlocks;
-import betterwithmods.client.container.GuiCauldron;
-import betterwithmods.client.container.GuiCrucible;
-import betterwithmods.client.container.GuiMill;
-import betterwithmods.client.container.GuiSteelAnvil;
+import betterwithmods.client.container.bulk.GuiCauldron;
+import betterwithmods.client.container.bulk.GuiCrucible;
+import betterwithmods.client.container.bulk.GuiMill;
+import betterwithmods.client.container.anvil.GuiSteelAnvil;
 import betterwithmods.craft.HopperInteractions;
 import betterwithmods.craft.KilnInteraction;
 import betterwithmods.craft.SawInteraction;
 import betterwithmods.craft.TurntableInteraction;
 import betterwithmods.craft.bulk.*;
-import betterwithmods.craft.steelanvil.CraftingManagerSteelAnvil;
+import betterwithmods.craft.steelanvil.SteelCraftingManager;
 import betterwithmods.integration.jei.category.*;
 import betterwithmods.integration.jei.handler.*;
 import mezz.jei.api.BlankModPlugin;
@@ -21,7 +21,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 
 @mezz.jei.api.JEIPlugin
 public class BWMJEIPlugin extends BlankModPlugin {
@@ -34,10 +33,10 @@ public class BWMJEIPlugin extends BlankModPlugin {
 
         reg.addRecipeCategories(new CauldronRecipeCategory(guiHelper), new StokedCauldronRecipeCategory(guiHelper), new CrucibleRecipeCategory(guiHelper),
                 new StokedCrucibleRecipeCategory(guiHelper), new MillRecipeCategory(guiHelper), new SawRecipeCategory(guiHelper), new KilnRecipeCategory(guiHelper),
-                new TurntableRecipeCategory(guiHelper), new HopperRecipeCategory(guiHelper), new SoulUrnCategory(guiHelper), new SteelAnvilRecipeCategory(guiHelper));
+                new TurntableRecipeCategory(guiHelper), new HopperRecipeCategory(guiHelper), new SoulUrnCategory(guiHelper), new SteelCraftingCategory(guiHelper));
 
         reg.addRecipeHandlers(new BulkRecipeHandler(), new BlockMetaRecipeHandler(), new TurntableHandler(), new HopperRecipeHandler(),
-                new SteelAnvilShapelessRecipeHandler(), new SteelAnvilShapedRecipeHandler());
+                new SteelShapedRecipeHandler(helper), new SteelShapelessRecipeHandler(helper));
 
         reg.addRecipes(CraftingManagerCauldron.getInstance().getRecipes());
         reg.addRecipes(CraftingManagerCauldronStoked.getInstance().getRecipes());
@@ -48,12 +47,12 @@ public class BWMJEIPlugin extends BlankModPlugin {
         reg.addRecipes(KilnInteraction.INSTANCE.getRecipes());
         reg.addRecipes(TurntableInteraction.INSTANCE.getRecipes());
         reg.addRecipes(HopperInteractions.recipes);
-        reg.addRecipes(CraftingManagerSteelAnvil.INSTANCE.getRecipes());
+        reg.addRecipes(SteelCraftingManager.getInstance().getRecipeList());
 
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 0), "bwm.mill");
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 2), "bwm.crucible", "bwm.crucible.stoked");
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 3), "bwm.cauldron", "bwm.cauldron.stoked");
-        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 4), "bwm.hopper", "bwm.hopper.soul_urn");
+        reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 4), "bwm.hopper", "bwm.other.soul_urn");
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, 5), "bwm.turntable");
         reg.addRecipeCategoryCraftingItem(new ItemStack(BWMBlocks.SAW), "bwm.saw");
         reg.addRecipeCategoryCraftingItem(new ItemStack(Blocks.BRICK_BLOCK), "bwm.kiln");

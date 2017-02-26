@@ -2,7 +2,7 @@ package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMBlocks;
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.SoulUrnWrapper;
+import betterwithmods.integration.jei.wrapper.other.SoulUrnWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;

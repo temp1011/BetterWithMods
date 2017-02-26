@@ -1,8 +1,7 @@
 package betterwithmods.integration.jei.handler;
 
-import betterwithmods.craft.BlockMetaRecipe;
 import betterwithmods.craft.TurntableInteraction;
-import betterwithmods.integration.jei.wrapper.TurntableRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.other.TurntableRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 

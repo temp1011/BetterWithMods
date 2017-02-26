@@ -2,7 +2,11 @@ package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.bulk.BulkRecipe;
 import betterwithmods.integration.jei.BWMJEIPlugin;
-import betterwithmods.integration.jei.wrapper.*;
+import betterwithmods.integration.jei.wrapper.bulk.CauldronRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.CrucibleRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.MillRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.StokedCauldronRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.StokedCrucibleRecipeWrapper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

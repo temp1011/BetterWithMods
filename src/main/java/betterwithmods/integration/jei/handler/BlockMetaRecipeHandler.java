@@ -1,8 +1,8 @@
 package betterwithmods.integration.jei.handler;
 
 import betterwithmods.craft.BlockMetaRecipe;
-import betterwithmods.integration.jei.wrapper.KilnWrapper;
-import betterwithmods.integration.jei.wrapper.SawWrapper;
+import betterwithmods.integration.jei.wrapper.bm.KilnWrapper;
+import betterwithmods.integration.jei.wrapper.bm.SawWrapper;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 

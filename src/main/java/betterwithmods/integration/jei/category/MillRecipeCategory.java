@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.MillRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.MillRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;

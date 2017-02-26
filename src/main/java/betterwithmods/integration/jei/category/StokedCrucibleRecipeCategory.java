@@ -1,7 +1,7 @@
 package betterwithmods.integration.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.StokedCrucibleRecipeWrapper;
+import betterwithmods.integration.jei.wrapper.bulk.StokedCrucibleRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;

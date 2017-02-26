@@ -2,7 +2,7 @@ package betterwithmods.integration.jei.category;
 
 
 import betterwithmods.BWMod;
-import betterwithmods.integration.jei.wrapper.KilnWrapper;
+import betterwithmods.integration.jei.wrapper.bm.KilnWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
