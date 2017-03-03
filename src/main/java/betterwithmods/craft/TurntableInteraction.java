@@ -10,11 +10,9 @@ import java.util.List;
 
 public class TurntableInteraction extends BlockMetaHandler {
     public static TurntableInteraction INSTANCE = new TurntableInteraction();
-    private String type;
 
     public TurntableInteraction() {
         super("turntable");
-        this.type = "turntable";
     }
 
     public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
@@ -35,14 +33,18 @@ public class TurntableInteraction extends BlockMetaHandler {
         addRecipe(new TurntableRecipe(block, meta, result, resultMeta, scraps == null ? Lists.newArrayList() : Arrays.asList(scraps)));
     }
 
-    public class TurntableRecipe extends BlockMetaRecipe {
+    public static class TurntableRecipe extends BlockMetaRecipe {
         private Block result;
         private int resultMeta;
 
         public TurntableRecipe(Block block, int meta, Block result, int resultMeta, List<ItemStack> scraps) {
-            super(type, block, meta, scraps);
+            super("turntable", block, meta, scraps);
             this.result = result;
             this.resultMeta = resultMeta;
+        }
+
+        public TurntableRecipe(ItemStack input, ItemStack output, List<ItemStack> scraps) {
+            this(((ItemBlock)input.getItem()).getBlock(),input.getMetadata(),((ItemBlock)output.getItem()).getBlock(),output.getMetadata(),scraps);
         }
 
         public ItemStack getResult() {
