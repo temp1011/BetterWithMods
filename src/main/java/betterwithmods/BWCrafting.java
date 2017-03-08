@@ -37,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -47,6 +48,8 @@ import static betterwithmods.items.ItemMaterial.EnumMaterial;
 
 public class BWCrafting {
     public static void init() {
+        RecipeSorter.register("bwm:chopping", ChoppingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:cutting", CuttingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         addVanillaRecipes();
         addCauldronRecipes();
         addCrucibleRecipes();

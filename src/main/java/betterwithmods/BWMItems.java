@@ -6,6 +6,7 @@ import betterwithmods.blocks.mini.BlockMini;
 import betterwithmods.blocks.mini.ItemBlockMini;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
+import betterwithmods.config.BWConfig;
 import betterwithmods.items.*;
 import betterwithmods.items.tools.*;
 import net.minecraft.block.Block;
