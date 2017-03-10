@@ -27,7 +27,7 @@ public class GuiFilteredHopper extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float f,
                                                    int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/other.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/hopper.png"));
 
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
