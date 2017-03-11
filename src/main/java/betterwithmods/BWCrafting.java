@@ -4,13 +4,7 @@ import betterwithmods.blocks.BlockUnfiredPottery.EnumPotteryType;
 import betterwithmods.blocks.BlockUrn;
 import betterwithmods.blocks.mini.BlockMini;
 import betterwithmods.config.BWConfig;
-import betterwithmods.craft.BlockMetaRecipe;
-import betterwithmods.craft.ChoppingRecipe;
-import betterwithmods.craft.CuttingRecipe;
-import betterwithmods.craft.KilnInteraction;
-import betterwithmods.craft.OreStack;
-import betterwithmods.craft.SawInteraction;
-import betterwithmods.craft.TurntableInteraction;
+import betterwithmods.craft.*;
 import betterwithmods.craft.bulk.CraftingManagerCauldron;
 import betterwithmods.craft.bulk.CraftingManagerCauldronStoked;
 import betterwithmods.craft.bulk.CraftingManagerCrucible;
@@ -50,6 +44,7 @@ public class BWCrafting {
     public static void init() {
         RecipeSorter.register("bwm:chopping", ChoppingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         RecipeSorter.register("bwm:cutting", CuttingRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        RecipeSorter.register("bwm:dyetag", DyeWithTagRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         addVanillaRecipes();
         addCauldronRecipes();
         addCrucibleRecipes();
@@ -241,7 +236,7 @@ public class BWCrafting {
         String[] dyes = {"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
 
         for (int i = 0; i < 16; i++) {
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]));
+            GameRegistry.addRecipe(new DyeWithTagRecipe(new ItemStack(BWMBlocks.VASE, 1, i), new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE), "dye" + dyes[i]));
         }
 
         GameRegistry.addShapedRecipe(new ItemStack(BWMBlocks.VINE_TRAP, 1), "VVV", 'V', new ItemStack(Blocks.VINE));
