@@ -4,6 +4,8 @@ import betterwithmods.craft.OreStack;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -456,6 +458,21 @@ public class InvUtils {
         }
     }
 
+    public static void writeToStack (IItemHandler inv, ItemStack stack) {
+        NBTTagCompound tag = saveAllItems(new NBTTagCompound(), inv);
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(tag);
+    }
+
+    public static void readFromStack (IItemHandler inv, ItemStack stack) {
+        if (stack != null && stack.hasTagCompound()) {
+            NBTTagCompound tag = stack.getTagCompound();
+            if (tag != null) {
+                loadAllItems(tag, inv);
+            }
+        }
+    }
+
     public static int calculateComparatorLevel(@Nonnull IItemHandler inventory) {
         int i = 0;
         float f = 0.0F;
@@ -468,5 +485,35 @@ public class InvUtils {
         }
         f = f / (float) inventory.getSlots();
         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+    }
+
+    private static NBTTagCompound saveAllItems(NBTTagCompound tag, IItemHandler inv) {
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inv.getSlots(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+
+            if (stack != null) {
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setByte("Slot", (byte)i);
+                stack.writeToNBT(compound);
+                list.appendTag(compound);
+            }
+        }
+
+        if (!list.hasNoTags())
+            tag.setTag("Items", list);
+
+        return tag;
+    }
+
+    private static void loadAllItems(NBTTagCompound tag, IItemHandler inv) {
+        NBTTagList list = tag.getTagList("Items", 10);
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound compound = list.getCompoundTagAt(i);
+            int slot = compound.getByte("Slot") & 255;
+
+            if (slot >= 0 && slot < inv.getSlots())
+                inv.insertItem(slot, ItemStack.loadItemStackFromNBT(compound), false);
+        }
     }
 }
