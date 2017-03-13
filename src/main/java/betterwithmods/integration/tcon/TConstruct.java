@@ -30,6 +30,7 @@ import slimeknights.tconstruct.library.smeltery.OreCastingRecipe;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+import slimeknights.tconstruct.smeltery.block.BlockTinkerFluid;
 import slimeknights.tconstruct.tools.TinkerMaterials;
 import slimeknights.tconstruct.tools.TinkerTraits;
 
@@ -47,20 +48,24 @@ public class TConstruct implements ICompatModule {
     public AbstractTrait mending;
     public FluidMolten soulforgeFluid;
     public FluidMolten hellfireFluid;
+    public Block blockSoulforgeFluid;
+    public Block blockHellfireFluid;
 
     @Override
     public void preInit() {
+        soulforgeFluid = fluidMetal("soulforged_steel", 5066061);
+        soulforgeFluid.setTemperature(681);
+        blockSoulforgeFluid = new BlockTinkerFluid(soulforgeFluid, net.minecraft.block.material.Material.LAVA).setRegistryName("molten_soulforged_steel");
+        hellfireFluid = fluidMetal("hellfire", 14426647);
+        hellfireFluid.setTemperature(850);
+        blockHellfireFluid = new BlockTinkerFluid(hellfireFluid, net.minecraft.block.material.Material.LAVA).setRegistryName("molten_hellfire");
     }
 
     @Override
     public void init() {
         mending = new TraitMending();
-        soulforgeFluid = fluidMetal("soulforged_steel", 5066061);
-        soulforgeFluid.setTemperature(681);
         soulforgedSteel.addItem("ingotSoulforgedSteel", 1, Material.VALUE_Ingot);
         soulforgedSteel.addTrait(mending);
-        hellfireFluid = fluidMetal("hellfire", 14426647);
-        hellfireFluid.setTemperature(850);
         hellfire.addItem("ingotHellfire", 1, Material.VALUE_Ingot);
         hellfire.addTrait(TinkerTraits.autosmelt);
 
