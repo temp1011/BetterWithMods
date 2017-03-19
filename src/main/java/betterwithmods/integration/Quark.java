@@ -1,13 +1,17 @@
 package betterwithmods.integration;
 
 import betterwithmods.BWMBlocks;
+import betterwithmods.config.BWConfig;
 import betterwithmods.util.NetherSpawnWhitelist;
+import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 @SuppressWarnings("unused")
 public class Quark implements ICompatModule {
@@ -31,6 +35,10 @@ public class Quark implements ICompatModule {
 
     @Override
     public void postInit() {
+        if (BWConfig.removeLowTools) {
+            RecipeUtils.removeRecipes(Items.STONE_HOE, OreDictionary.WILDCARD_VALUE);
+            RecipeUtils.removeRecipes(Items.STONE_SWORD, OreDictionary.WILDCARD_VALUE);
+        }
     }
 
     @SideOnly(Side.CLIENT)
