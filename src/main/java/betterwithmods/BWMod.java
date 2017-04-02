@@ -46,7 +46,7 @@ import java.util.*;
 @Mod(modid = BWMod.MODID, name = BWMod.NAME, version = BWMod.VERSION, dependencies = "required-after:Forge@[12.18.1.2076,);before:survivalist;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:techreborn;after:terraqueous", guiFactory = "betterwithmods.client.gui.BWGuiFactory")
 public class BWMod {
     public static final String MODID = "betterwithmods";
-    public static final String VERSION = "0.14.18 Beta";
+    public static final String VERSION = "0.14.20 Beta";
     public static final String NAME = "Better With Mods";
     private static final Set<ICompatModule> loadedModules = new HashSet<>();
 
@@ -121,7 +121,7 @@ public class BWMod {
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new HardcoreEndermenEvent());
-        MinecraftForge.EVENT_BUS.register(new HardcoreRedstoneEvent());
+        //MinecraftForge.EVENT_BUS.register(new HardcoreRedstoneEvent());
         MinecraftForge.TERRAIN_GEN_BUS.register(new BWMWorldGenEvent());
         MinecraftForge.EVENT_BUS.register(new StumpingEventHandler());
         MinecraftForge.EVENT_BUS.register(new InferiorDropsEventHandler());

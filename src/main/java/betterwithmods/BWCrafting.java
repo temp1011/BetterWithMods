@@ -547,10 +547,10 @@ public class BWCrafting {
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 8), new ItemStack[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
             //addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 5), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 4), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.CHAIN_MAIL)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 25), new ItemStack[]{new ItemStack(Items.CHAINMAIL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 40), new ItemStack[]{new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 35), new ItemStack[]{new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 20), new ItemStack[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 20), new ItemStack[]{new ItemStack(Items.CHAINMAIL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 32), new ItemStack[]{new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 28), new ItemStack[]{new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.NUGGET_IRON, 16), new ItemStack[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 7), new ItemStack[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL), new ItemStack[]{ItemMaterial.getMaterial(EnumMaterial.ARMOR_PLATE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(EnumMaterial.INGOT_STEEL, 16), new ItemStack[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 2)});
