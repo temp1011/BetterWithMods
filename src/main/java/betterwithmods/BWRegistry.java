@@ -28,12 +28,15 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -198,6 +201,9 @@ public class BWRegistry {
             ItemStack sawdust = ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2);
             if (BWConfig.hardcoreLumber) {
                 removeRecipe(plank, log);
+                if (Loader.isModLoaded("thermalexpansion")) {
+                    registerTESawmill(plank, log);
+                }
                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(Blocks.PLANKS, 2, type.getMetadata()), bark, sawdust, log));
             }
             SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), plank, bark, sawdust);
@@ -228,6 +234,9 @@ public class BWRegistry {
                                 output[2] = ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2);
                                 if (BWConfig.hardcoreLumber) {
                                     removeRecipe(output[0], new ItemStack(log.getItem(), 1, i));
+                                    if (Loader.isModLoaded("thermalexpansion")) {
+                                        registerTESawmill(output[0], new ItemStack(log.getItem(), 1, i));
+                                    }
                                     GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], new ItemStack(log.getItem(), 1, i)));
                                 }
                                 SawInteraction.INSTANCE.addRecipe(block, i, output);
@@ -243,6 +252,9 @@ public class BWRegistry {
                             output[2] = ItemMaterial.getMaterial(EnumMaterial.SAWDUST, 2);
                             if (BWConfig.hardcoreLumber) {
                                 removeRecipe(output[0], log);
+                                if (Loader.isModLoaded("thermalexpansion")) {
+                                    registerTESawmill(output[0], log);
+                                }
                                 GameRegistry.addRecipe(new ChoppingRecipe(new ItemStack(planks.getItem(), 2, planks.getMetadata()), output[1], output[2], log));
                             }
                             SawInteraction.INSTANCE.addRecipe(block, log.getMetadata(), output);
@@ -253,6 +265,20 @@ public class BWRegistry {
             }
         }
         BWCrafting.addKilnWood();
+    }
+
+    private static void registerTESawmill(ItemStack output, ItemStack input) {
+        if (output == null || input == null) return;
+        NBTTagCompound toSend = new NBTTagCompound();
+        toSend.setInteger("energy", 800);
+        toSend.setTag("input", new NBTTagCompound());
+        toSend.setTag("primaryOutput", new NBTTagCompound());
+        toSend.setTag("secondaryOutput", new NBTTagCompound());
+        input.writeToNBT(toSend.getCompoundTag("input"));
+        output.writeToNBT(toSend.getCompoundTag("primaryOutput"));
+        ItemMaterial.getMaterial(EnumMaterial.SAWDUST).writeToNBT(toSend.getCompoundTag("secondaryOutput"));
+        toSend.setInteger("secondaryChance", 100);
+        FMLInterModComms.sendMessage("thermalexpansion", "addsawmillrecipe", toSend);
     }
 
     private static ItemStack getRecipeOutput(ItemStack input) {
