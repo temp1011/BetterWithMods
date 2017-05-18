@@ -182,7 +182,7 @@ public class BucketEvent {
     }
 
     private void placeContainerFluid(PlayerInteractEvent.RightClickBlock evt, BlockPos pos, ItemStack equip) {
-        if (!evt.getEntityPlayer().capabilities.isCreativeMode) {
+        if (!evt.getEntityPlayer().capabilities.isCreativeMode && equip.getItem().hasContainerItem(equip)) {
             Item item = equip.getItem();
             evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
             for (EnumFacing facing : EnumFacing.HORIZONTALS) {
@@ -192,7 +192,7 @@ public class BucketEvent {
             }
             if (equip.stackSize == 1) {
                 EnumHand hand = evt.getHand();
-                evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.hasContainerItem(equip) ? item.getContainerItem(equip).copy() : null);
+                evt.getEntityPlayer().setItemStackToSlot(hand == EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, item.getContainerItem(equip).copy());
             }
             else if (equip.stackSize > 1) {
                 equip.stackSize--;
