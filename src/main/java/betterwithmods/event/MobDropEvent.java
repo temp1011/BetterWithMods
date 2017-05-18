@@ -21,6 +21,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -30,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -155,27 +157,20 @@ public class MobDropEvent {
     }
 
     @SubscribeEvent
-    public void mobDrops(LivingDropsEvent evt) {
+    public void setDropChance(EntityJoinWorldEvent evt) {
         if (BWConfig.armorDrops) {
             if (evt.getEntity() instanceof EntityZombie || evt.getEntity() instanceof EntitySkeleton) {
                 EntityMob mob = (EntityMob) evt.getEntity();
-                List<ItemStack> drops = new ArrayList<>();
-                for (EntityItem item : evt.getDrops()) {
-                    if (item.getEntityItem() != null) {
-                        drops.add(item.getEntityItem().copy());
-                    }
-                }
-                for (ItemStack item : mob.getEquipmentAndArmor()) {
-                    if (item != null) {
-                        if (!InvUtils.listContainsArmor(item, drops)) {
-                            if (isNonDefaultArmor(mob, item)) {
-                                createDamagedItem(evt, item.copy());
-                            }
-                        }
-                    }
+                mob.setCanPickUpLoot(true);
+                for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                    mob.setDropChance(slot, 1);
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void mobDrops(LivingDropsEvent evt) {
         if (!BWConfig.hardcoreGunpowder)
             return;
         if (evt.getEntity() instanceof EntityCreeper || evt.getEntity() instanceof EntityGhast) {

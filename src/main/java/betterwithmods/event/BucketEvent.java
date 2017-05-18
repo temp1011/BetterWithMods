@@ -121,15 +121,17 @@ public class BucketEvent {
 
     private void emptyBucket(FillBucketEvent evt, BlockPos pos, ItemStack equip) {
         Item item = equip.getItem();
-        evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
-        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            BlockPos p2 = pos.offset(facing);
-            if (!isWater(evt.getWorld().getBlockState(p2)) && (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2)))
-                evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+        if (item.getContainerItem(equip) != null) {
+            evt.getWorld().setBlockState(pos, Blocks.FLOWING_WATER.getStateFromMeta(2));
+            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                BlockPos p2 = pos.offset(facing);
+                if (!isWater(evt.getWorld().getBlockState(p2)) && (evt.getWorld().getBlockState(p2).getBlock().isAir(evt.getWorld().getBlockState(p2), evt.getWorld(), p2) || evt.getWorld().getBlockState(p2).getBlock().isReplaceable(evt.getWorld(), p2)))
+                    evt.getWorld().setBlockState(p2, Blocks.FLOWING_WATER.getStateFromMeta(5));
+            }
+            evt.getWorld().playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            evt.setFilledBucket(item.getContainerItem(equip).copy());
+            evt.setResult(Event.Result.ALLOW);
         }
-        evt.getWorld().playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        evt.setFilledBucket(item.getContainerItem(equip).copy());
-        evt.setResult(Event.Result.ALLOW);
     }
 
     private boolean isWater (IBlockState state) {
