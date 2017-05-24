@@ -28,6 +28,8 @@ public class InferiorDropsEventHandler {
         if (player != null) {
             ItemStack stack = event.getHarvester().getHeldItemMainhand();
             shouldDropInferior = !EntityPlayerExt.isCurrentToolEffectiveOnBlock(stack, event.getState());
+            if (shouldDropInferior && stack != null)
+                shouldDropInferior = !stack.getItem().getToolClasses(stack).contains("mattock");
         }
         if (!shouldDropInferior) {
             return;
