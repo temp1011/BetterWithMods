@@ -9,8 +9,7 @@ import betterwithmods.util.InvUtils;
 import betterwithmods.util.item.ToolsManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -23,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -39,6 +39,17 @@ public class HCStumping extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+    }
+
+    @Nullable
+    public static BlockPlanks.EnumType getWoodType(IBlockState state) {
+        if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
+            return state.getValue(BlockPlanks.VARIANT);
+        } else if (state.getProperties().containsKey(BlockOldLog.VARIANT)) {
+            return state.getValue(BlockOldLog.VARIANT);
+        } else if (state.getProperties().containsKey(BlockNewLog.VARIANT)) {
+            return state.getValue(BlockNewLog.VARIANT);
+        } else return null;
     }
 
     @Override
