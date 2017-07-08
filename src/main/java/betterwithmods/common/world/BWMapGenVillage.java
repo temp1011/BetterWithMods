@@ -1,8 +1,8 @@
 package betterwithmods.common.world;
 
 import betterwithmods.common.world.gen.village.AbandonedVillagePiece;
-import betterwithmods.common.world.gen.village.BWFieldBase;
-import betterwithmods.common.world.gen.village.BWStart;
+import betterwithmods.common.world.gen.village.Well;
+import betterwithmods.common.world.gen.village.field.BWFieldBase;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.module.hardcore.HCVillages;
 import com.google.common.collect.Lists;
@@ -37,7 +37,7 @@ public class BWMapGenVillage extends MapGenVillage {
                 iterator.remove();
             }
         }
-        return list.stream().filter(piece -> AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) || BWStart.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
+        return list.stream().filter(piece -> AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) || Well.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
     }
 
     public static List<StructureVillagePieces.PieceWeight> getPiecesSemi(Random random, int size) {
@@ -81,7 +81,7 @@ public class BWMapGenVillage extends MapGenVillage {
                 iterator.remove();
             }
         }
-        return list.stream().filter(piece -> !AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) && !BWStart.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
+        return list.stream().filter(piece -> !AbandonedVillagePiece.class.isAssignableFrom(piece.villagePieceClass) && !Well.class.isAssignableFrom(piece.villagePieceClass)).collect(Collectors.toList());
     }
 
     public int getSize() {
@@ -91,7 +91,7 @@ public class BWMapGenVillage extends MapGenVillage {
     @Override
     protected StructureStart getStructureStart(int x, int z) {
         VillageStatus status = VillageStatus.getStatus(x, z);
-        if (GlobalConfig.debug)
+        if (GlobalConfig.debug || true)
             System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x, z, x * 16, z * 16);
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
     }
@@ -144,7 +144,7 @@ public class BWMapGenVillage extends MapGenVillage {
                     pieceWeights = getPiecesAbandoned(rand, size);
                     break;
             }
-            BWStart start = new BWStart(status, worldIn.getBiomeProvider(), 0, rand, (x << 4) + 2, (z << 4) + 2, pieceWeights, size);
+            Well start = new Well(status, worldIn.getBiomeProvider(), 0, rand, (x << 4) + 2, (z << 4) + 2, pieceWeights, size);
             this.components.add(start);
             start.buildComponent(start, this.components, rand);
             List<StructureComponent> roads = start.pendingRoads;

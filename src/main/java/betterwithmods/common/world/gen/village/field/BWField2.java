@@ -1,4 +1,4 @@
-package betterwithmods.common.world.gen.village;
+package betterwithmods.common.world.gen.village.field;
 
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
@@ -81,6 +81,6 @@ public class BWField2 extends BWFieldBase {
     @Override
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 7, 4, 9, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWField2(startPiece, p5, random, structureboundingbox, facing) : null;
+        return StructureVillagePieces.Village.canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new BWField2(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 }

@@ -1,5 +1,6 @@
-package betterwithmods.common.world.gen.village;
+package betterwithmods.common.world.gen.village.field;
 
+import betterwithmods.common.world.gen.village.AbandonedVillagePiece;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 
 /**
