@@ -114,7 +114,7 @@ public class BWOreDictionary {
                 new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
                 new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1))
-        );
+        );/*
         List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
         for (ItemStack log : logs) {
             ItemStack plank = RecipeUtils.getRecipeOutput(log);
@@ -123,7 +123,7 @@ public class BWOreDictionary {
                 Wood wood = new Wood(log, plank);
                 woods.add(wood);
             }
-        }
+        }*/
     }
 
     public static void registerWood(ItemStack log, ItemStack plank, ItemStack bark) {
@@ -146,6 +146,27 @@ public class BWOreDictionary {
         ingotNames = getOreNames("ingot");
         cropNames = getOreNames("crop");
         seedNames = getOreNames("seed");
+        List<ItemStack> logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft")).collect(Collectors.toList());
+        for (ItemStack log : logs) {
+            if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
+                for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?
+                    ItemStack plank = RecipeUtils.getRecipeOutput(new ItemStack(log.getItem(), 1, i));
+                    System.out.println(plank);
+                    if (isOre(plank, "plankWood")) {
+                        Wood wood = new Wood(new ItemStack(log.getItem(), 1, i), plank);
+                        woods.add(wood);
+                    }
+                }
+            }
+            else {
+                ItemStack plank = RecipeUtils.getRecipeOutput(log);
+                System.out.println(plank);
+                if (isOre(plank, "plankWood")) {
+                    Wood wood = new Wood(log, plank);
+                    woods.add(wood);
+                }
+            }
+        }
     }
 
     public static String getSuffix(ItemStack stack, String startingPrefix) {
