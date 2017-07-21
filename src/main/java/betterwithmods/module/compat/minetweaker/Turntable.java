@@ -6,6 +6,7 @@ import betterwithmods.module.compat.jei.category.TurntableRecipeCategory;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.ArrayUtils;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import com.google.common.collect.Lists;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -26,11 +27,19 @@ import static betterwithmods.module.compat.minetweaker.Turntable.clazz;
 @ZenClass(clazz)
 public class Turntable {
     public static final String clazz = "mods.betterwithmods.Turntable";
+
     @ZenMethod
     public static void addRecipe(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
-        if(!InputHelper.isABlock(inputBlock))
+        if (!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
-        MineTweakerAPI.apply(new Add(InputHelper.toStack(inputBlock),InputHelper.toStack(outputBlock), ArrayUtils.toArrayList(InputHelper.toStacks(additionalOutput))));
+        MineTweakerAPI.apply(new Add(InputHelper.toStack(inputBlock), InputHelper.toStack(outputBlock), ArrayUtils.toArrayList(InputHelper.toStacks(additionalOutput))));
+    }
+
+    @ZenMethod
+    public static void removeRecipe(IItemStack inputBlock) {
+        if (!InputHelper.isABlock(inputBlock))
+            LogHelper.logError("Input must be a block", new IllegalArgumentException());
+        MineTweakerAPI.apply(new Remove(InputHelper.toStack(inputBlock)));
     }
 
     public static class Add extends BMAdd {
@@ -39,4 +48,14 @@ public class Turntable {
         }
     }
 
+    public static class Remove extends BaseListRemoval<TurntableRecipe> {
+        protected Remove(ItemStack input) {
+            super(TurntableRecipeCategory.UID, TurntableManager.INSTANCE.getRecipes(), TurntableManager.INSTANCE.removeTurntableRecipe(input));
+        }
+
+        @Override
+        protected String getRecipeInfo(TurntableRecipe recipe) {
+            return recipe.getStack().getDisplayName();
+        }
+    }
 }

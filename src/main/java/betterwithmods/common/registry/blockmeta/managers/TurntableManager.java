@@ -7,13 +7,14 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TurntableManager extends BlockMetaManager<TurntableRecipe> {
     public static TurntableManager INSTANCE = new TurntableManager();
 
     @Override
     public TurntableRecipe createRecipe(Block block, int meta, List<ItemStack> outputs) {
-      return null;
+        return null;
     }
 
     public void addTurntableRecipe(ItemStack inputBlock, ItemStack outputBlock, ItemStack... scraps) {
@@ -31,8 +32,10 @@ public class TurntableManager extends BlockMetaManager<TurntableRecipe> {
     }
 
     public void addTurntableRecipe(Block block, int meta, Block result, int resultMeta, ItemStack... scraps) {
-        addRecipe(new TurntableRecipe(block, meta, result,resultMeta, Lists.newArrayList(scraps)));
+        addRecipe(new TurntableRecipe(block, meta, result, resultMeta, Lists.newArrayList(scraps)));
     }
 
-
+    public List<TurntableRecipe> removeTurntableRecipe(ItemStack input) {
+        return INSTANCE.getRecipes().stream().filter(r -> r.getStack().isItemEqual(input)).collect(Collectors.toList());
+    }
 }
