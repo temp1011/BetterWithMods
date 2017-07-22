@@ -36,7 +36,7 @@ dependencies {
     deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.+"
     deobfCompile "slimeknights:TConstruct:1.11.2-2.+"
     deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
-    deobfCompile "com.blamejared:MTLib:2.+"
+    deobfCompile "com.blamejared:MTLib:2.0.2.3"
     deobfCompile "blusunrize:ImmersiveEngineering:0.11-63-147"
     deobfCompile "applecore:AppleCore:1.11.2-2.2.0:api"
     runtime "applecore:AppleCore:1.11.2-2.2.0:deobf"
