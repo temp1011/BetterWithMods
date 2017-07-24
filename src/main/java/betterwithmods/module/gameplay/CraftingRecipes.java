@@ -11,12 +11,10 @@ import betterwithmods.util.RecipeUtils;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by tyler on 5/16/17.
@@ -46,7 +44,6 @@ public class CraftingRecipes extends Feature {
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.AXLE), "X", "R", "X", 'X', "plankWood", 'R', new ItemStack(BWMBlocks.ROPE));
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.HAND_CRANK), "  X", " X ", "SWS", 'X', "stickWood", 'S', "cobblestone", 'W', "gearWood").setMirrored(true);
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.SLATS, 4, 0), "SS", "SS", 'S', "sidingWood");
-        RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.GRATE, 4, 0), "WSW", "WSW", 'S', "stickWood", 'W', "mouldingWood");
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.PANE, 4, 2), "RRR", "RRR", 'R', Items.REEDS);
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.SINGLE_MACHINES, 1, BlockMechMachines.EnumType.PULLEY.getMeta() << 1), "PIP", "GLG", "PIP", 'P', "plankWood", 'I', "ingotIron", 'G', "gearWood", 'L', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
         RecipeUtils.addOreRecipe(new ItemStack(BWMBlocks.ROPE), "XX", "XX", "XX", 'X', "fiberHemp");
