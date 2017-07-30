@@ -12,7 +12,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.14.2-1.10.2"
+version = "0.14.3-1.10.2"
 group = "betterwithmods"
 archivesBaseName = "Better With Mods"
 
@@ -44,7 +44,7 @@ dependencies {
     deobfCompile "com.blamejared:MTLib:1.+"
     runtime "MineTweaker3:MineTweaker3-MC1102-Main:+"
 
-//    deobfCompile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.10-50-+:deobf"
 }
 
 jar {

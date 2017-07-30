@@ -3,7 +3,7 @@ package betterwithmods.integration.minetweaker;
 import betterwithmods.craft.TurntableInteraction;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.ArrayUtils;
+import com.google.common.collect.Lists;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public class Turntable {
     public static void addRecipe(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
         if(!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
-        MineTweakerAPI.apply(new Add(InputHelper.toStack(inputBlock),InputHelper.toStack(outputBlock), ArrayUtils.toArrayList(InputHelper.toStacks(additionalOutput))));
+        MineTweakerAPI.apply(new Add(InputHelper.toStack(inputBlock),InputHelper.toStack(outputBlock), Lists.newArrayList(InputHelper.toStacks(additionalOutput))));
     }
 
     public static class Add extends BMAdd {
