@@ -235,6 +235,8 @@ public class HCBuckets extends Feature {
 
             boolean replaceable = block.isReplaceable(evt.getWorld(), evt.getPos());
             BlockPos pos = replaceable ? evt.getPos() : evt.getPos().offset(evt.getFace());
+            if (!evt.getWorld().getBlockState(pos).getMaterial().isReplaceable())
+                return;
             state = evt.getWorld().getBlockState(pos);
             if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
                 if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), state, evt.getEntityPlayer(), evt.getHand(), evt.getFace(), 0.5F, 0.5F, 0.5F)) {
