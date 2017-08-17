@@ -31,19 +31,14 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return recipe;
     }
 
-    public List<T> findRecipeForRemoval(@Nonnull ItemStack output) {
-        return recipes.stream().filter(recipe -> recipe.matches(output)).collect(Collectors.toList());
-    }
-
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary) {
         return recipes.stream().filter(recipe -> recipe.matches(output, secondary)).collect(Collectors.toList());
     }
 
     public List<T> findRecipeForRemoval(@Nonnull ItemStack output, @Nonnull ItemStack secondary, @Nonnull Object... inputs) {
         List<T> removed = Lists.newArrayList();
+        List<T> found = findRecipeForRemoval(output, secondary);
         if (inputs.length > 0) {
-            List<T> found = findRecipeForRemoval(output, secondary);
-
             for (T recipe : found) {
                 boolean match = true;
                 for (Object input : inputs) {
@@ -54,6 +49,8 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
                 if (match)
                     removed.add(recipe);
             }
+        } else {
+            removed.addAll(found);
         }
         return removed;
     }
