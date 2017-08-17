@@ -141,15 +141,19 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     }
 
     public EnumFacing getOrientation() {
-        EnumFacing.Axis axis = world.getBlockState(pos).getValue(DirUtils.AXIS);
-        switch (axis) {
-            case X:
-                return EnumFacing.EAST;
-            case Z:
-                return EnumFacing.SOUTH;
-            default:
-                return EnumFacing.UP;
+        if (world.getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
+            EnumFacing.Axis axis = world.getBlockState(pos).getValue(DirUtils.AXIS);
+            switch (axis) {
+                case X:
+                    return EnumFacing.EAST;
+                case Z:
+                    return EnumFacing.SOUTH;
+                default:
+                    return EnumFacing.UP;
+            }
         }
+        else
+            return EnumFacing.UP;
     }
 
     @Override
