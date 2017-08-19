@@ -12,17 +12,16 @@ public interface IMultiblock<T extends TileEntityMultiblock> {
 
     IBlockState[][][] getStructure();
 
-
     /*
         Give the position offset of the getStructure()[0][0][0] from the controller block.
      */
     BlockPos getOriginOffet(EnumFacing facing);
 
-    default boolean isValidStructure(World world, BlockPos controller, EnumFacing facing) {
+    default boolean isValidStructure(World world, BlockPos pos, EnumFacing facing) {
         BlockPos offset = getOriginOffet(facing);
         if (offset == null)
             return false;
-        BlockPos origin = controller.add(offset);
+        BlockPos origin = pos.add(offset);
         IBlockState[][][] structure = getStructure();
         for (int i = 0; i < structure.length; i++) {
             int y = structure.length - i - 1;
@@ -37,5 +36,7 @@ public interface IMultiblock<T extends TileEntityMultiblock> {
         return true;
     }
 
-    void destroyMultiblock(World world, BlockPos pos, IBlockState blockState, EnumFacing facing);
+    void createMultiBlock(World world, BlockPos pos, EnumFacing facing);
+
+    void destroyMultiblock(World world, BlockPos pos, EnumFacing facing);
 }

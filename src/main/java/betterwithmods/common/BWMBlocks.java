@@ -1,8 +1,10 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.tile.multiblock.TileEntityProxyBlock;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.*;
+import betterwithmods.common.blocks.mechanical.multiblock.BlockDummy;
 import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.blocks.tile.*;
@@ -101,6 +103,8 @@ public final class BWMBlocks {
     public static final Block BLOOD_LOG = new BlockBloodLog().setRegistryName("blood_log");
     public static final Block BLOOD_LEAVES = new BlockBloodLeaves().setRegistryName("blood_leaves");
     public static final Block BLOOD_SAPLING = new BlockBloodSapling().setRegistryName("blood_sapling");
+    public static final Block DUMMY = new BlockDummy().setRegistryName("multiblock_dummy");
+    public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
 
 
     private static final List<Block> BLOCKS = new ArrayList<>();
@@ -174,7 +178,7 @@ public final class BWMBlocks {
         registerBlock(TEMP_LIQUID_SOURCE, null);
         registerBlock(IRON_WALL);
         registerBlock(STAKE);
-        registerBlock(STAKE_STRING,null);
+        registerBlock(STAKE_STRING, null);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
         registerBlock(BEACON);
 //        registerBlock(GRASS);
@@ -192,6 +196,8 @@ public final class BWMBlocks {
         registerBlock(BLOOD_LOG);
         registerBlock(BLOOD_LEAVES);
         registerBlock(BLOOD_SAPLING);
+        registerBlock(DUMMY, null);
+        registerBlock(LATHE, null);
     }
 
     public static void registerTileEntities() {
@@ -209,32 +215,21 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
         GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
         GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "bwm.creative_generator");
-        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileBellows.class, "bwm.bellows");
-        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
         GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");
         GameRegistry.registerTileEntity(TileSaw.class, "bwm.saw");
         GameRegistry.registerTileEntity(TilePump.class, "bwm.pump");
         GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
         GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
+        GameRegistry.registerTileEntity(TileEntityLathe.class, "bwm.lathe");
+
+        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
+        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
+        GameRegistry.registerTileEntity(TileEntityProxyBlock.class, "bwm.multiblock_dummy");
     }
 
-//    /**
-//     * Substitute vanilla blocks with our custom instances.
-//     * Should be done at the earliest point in preInit. The earlier, the better.
-//     *
-//     * @throws ExistingSubstitutionException
-//     */
-//    public static void substituteBlocks() throws ExistingSubstitutionException {
-//        GameRegistry.addSubstitutionAlias(
-//                "minecraft:grass", GameRegistry.Type.BLOCK,
-//                new BlockGrassCustom().setRegistryName("grass_custom").setUnlocalizedName("grass"));
-//        GameRegistry.addSubstitutionAlias(
-//                "minecraft:mycelium", GameRegistry.Type.BLOCK,
-//                new BlockMyceliumCustom().setRegistryName("mycelium_custom").setUnlocalizedName("mycel"));
-//    }
 
     /**
      * Register a block with its specified linked item. Block's registry name

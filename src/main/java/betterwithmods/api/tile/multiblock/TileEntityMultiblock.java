@@ -21,7 +21,7 @@ public abstract class TileEntityMultiblock extends TileEntity implements IExtern
 
     public void destroyMultiblock() {
         if (multiblock != null) {
-            getMultiblock().destroyMultiblock(world, pos, world.getBlockState(pos), getFacing());
+            getMultiblock().destroyMultiblock(world, pos, getFacing());
         }
     }
 

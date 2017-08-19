@@ -35,7 +35,8 @@ public class Multiblocks extends Feature {
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         if (MULTIBLOCKS.containsKey(state)) {
             MULTIBLOCKS.get(state).stream().findFirst().ifPresent(m -> {
-                System.out.println(m.isValidStructure(event.getWorld(), event.getPos(), event.getFace()));
+                if (m.isValidStructure(event.getWorld(), event.getPos(), event.getFace()))
+                    m.createMultiBlock(event.getWorld(), event.getPos(), event.getFace());
             });
         }
     }

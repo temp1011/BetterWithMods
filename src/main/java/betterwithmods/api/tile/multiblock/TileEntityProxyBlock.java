@@ -1,7 +1,6 @@
 package betterwithmods.api.tile.multiblock;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -24,19 +23,24 @@ public class TileEntityProxyBlock extends TileEntity {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound compound = super.writeToNBT(tag);
-        if (controller != null) compound.setTag("controller", NBTUtil.createPosTag(controller));
+        if (controller != null)
+            compound.setLong("controller", controller.toLong());
         return compound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (tag.hasKey("controller")) controller = NBTUtil.getPosFromTag(tag.getCompoundTag("controller"));
+        if (tag.hasKey("controller"))
+            controller = BlockPos.fromLong(tag.getLong("controller"));
     }
 
     public void notifyControllerOnBreak() {
-        if (controller != null && this.world.getTileEntity(controller) instanceof TileEntityMultiblock) {
-            ((TileEntityMultiblock) this.world.getTileEntity(controller)).destroyMultiblock();
+        if (controller != null) {
+            TileEntity tile = this.world.getTileEntity(getController());
+            if (tile instanceof TileEntityMultiblock) {
+                ((TileEntityMultiblock) this.world.getTileEntity(getController())).destroyMultiblock();
+            }
         }
     }
 
