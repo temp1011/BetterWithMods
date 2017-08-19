@@ -5,6 +5,8 @@ import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.init.Items;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -16,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by tyler on 5/13/17.
  */
-@Mod.EventBusSubscriber(modid = BWMod.MODID,value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid = BWMod.MODID, value = Side.CLIENT)
 @SideOnly(Side.CLIENT)
 public class GuiStatus {
 
@@ -79,13 +81,12 @@ public class GuiStatus {
             f *= 1.1F;
         }
 
-//        IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-//        f = (float)((double)f * ((iattributeinstance.getAttributeValue() / (double)event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
-//
-//        if (event.getEntity().capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f))
-//        {
-//            f = 1.0F;
-//        }
+        IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        f = (float) ((double) f * ((iattributeinstance.getAttributeValue() / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+
+        if (event.getEntity().capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
+            f = 1.0F;
+        }
 
         if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() == Items.BOW) {
             int i = event.getEntity().getItemInUseMaxCount();

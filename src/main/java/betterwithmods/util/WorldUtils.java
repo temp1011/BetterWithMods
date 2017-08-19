@@ -164,4 +164,8 @@ public final class WorldUtils {
     public static BlockPos getMax(AxisAlignedBB box) {
         return new BlockPos(box.maxX, box.maxY, box.maxZ);
     }
+
+    public static boolean matches(IBlockState a, IBlockState b) {
+        return a.equals(b);
+    }
 }

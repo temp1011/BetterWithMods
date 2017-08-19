@@ -3,7 +3,6 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockDirtSlab;
 import betterwithmods.module.Feature;
-import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Maps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -83,9 +82,9 @@ public class HCMovement extends Feature {
                         speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
                     }
                 }
-                PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
+//                PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
             } else {
-                PlayerHelper.changeSpeed(player, "HCMovement", 1, PENALTY_SPEED_UUID);
+//                PlayerHelper.changeSpeed(player, "HCMovement", 1, PENALTY_SPEED_UUID);
             }
         }
     }

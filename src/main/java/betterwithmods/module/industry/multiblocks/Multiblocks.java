@@ -30,11 +30,12 @@ public class Multiblocks extends Feature {
 
     @SubscribeEvent
     public void onPlayerClick(PlayerInteractEvent.RightClickBlock event) {
+        if (!event.getEntityPlayer().isSneaking())
+            return;
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         if (MULTIBLOCKS.containsKey(state)) {
             MULTIBLOCKS.get(state).stream().findFirst().ifPresent(m -> {
-                if (m.isMultiblockStructure(event.getWorld(), event.getPos(), state, event.getFace()))
-                    m.createMultiblockStructure(event.getWorld(), event.getPos(), state, event.getFace());
+                System.out.println(m.isValidStructure(event.getWorld(), event.getPos(), event.getFace()));
             });
         }
     }

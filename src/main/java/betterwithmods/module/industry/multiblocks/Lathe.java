@@ -3,9 +3,8 @@ package betterwithmods.module.industry.multiblocks;
 import betterwithmods.api.tile.multiblock.IMultiblock;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockSteel;
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,38 +16,32 @@ public class Lathe implements IMultiblock {
     }
 
     @Override
-    public ItemStack[][][] getStructureBlocks() {
-        return new ItemStack[][][]{
-                new ItemStack[][]{new ItemStack[]{ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(BWMBlocks.STEEL_BLOCK)}},
-                new ItemStack[][]{new ItemStack[]{new ItemStack(BWMBlocks.STEEL_BLOCK), new ItemStack(BWMBlocks.STEEL_BLOCK), new ItemStack(BWMBlocks.STEEL_BLOCK)}}
+    public IBlockState[][][] getStructure() {
+        return new IBlockState[][][]{
+                new IBlockState[][]{new IBlockState[]{Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), BlockSteel.getBlock(0)}},
+                new IBlockState[][]{new IBlockState[]{BlockSteel.getBlock(0), BlockSteel.getBlock(8), BWMBlocks.STEEL_GEARBOX.getDefaultState()}},
         };
     }
 
     @Override
-    public boolean isController(int x, int y, int z) {
-        return false;
-    }
-
-    @Override
-    public boolean isMultiblockStructure(World world, BlockPos pos, IBlockState state, EnumFacing facing) {
+    public BlockPos getOriginOffet(EnumFacing facing) {
         if (facing.getAxis().isVertical())
-            return false;
-        IBlockState current;
-
-
-        return IMultiblock.isState(world, pos.offset(DirUtils.rotateFacingAroundY(facing, false)), BlockSteel.getBlock(0))
-                && IMultiblock.isState(world, pos.offset(DirUtils.rotateFacingAroundY(facing, true)), BWMBlocks.STEEL_GEARBOX.getDefaultState().withProperty(DirUtils.FACING, DirUtils.rotateFacingAroundY(facing, true)))
-                && IMultiblock.isState(world, pos.offset(DirUtils.rotateFacingAroundY(facing, true)).up(), BlockSteel.getBlock(0));
+            return null;
+        return facing.getAxis() == EnumFacing.Axis.Z ? new BlockPos(-1, 0, 0) : new BlockPos(0, 0, -1);
     }
 
     @Override
-    public void createMultiblockStructure(World world, BlockPos pos, IBlockState state, EnumFacing facing) {
-        System.out.println("VALID");
+    public void destroyMultiblock(World world, BlockPos pos, IBlockState blockState, EnumFacing facing) {
+//        IBlockState[][][] structure = getStructure();
+//        for (int i = 0; i < structure.length; i++) {
+//            int y = structure.length - i - 1;
+//            for (int z = 0; z < structure[i].length; z++)
+//                for (int x = 0; x < structure[i][z].length; x++) {
+//                    BlockPos placement = facing.getAxis() == EnumFacing.Axis.X ? origin.add(z, y, x) : origin.add(x, y, z);
+//                    world.setBlockState(placement, structure[i][z][x]);
+//                }
+//        }
 
     }
 
-    @Override
-    public void destroyMultiblock(World world, BlockPos pos, IBlockState state, EnumFacing facing) {
-
-    }
 }
