@@ -3,6 +3,7 @@ package betterwithmods.common.registry;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileCamo;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -24,16 +25,18 @@ public class KilnStructureManager {
     }
 
     public static boolean isKilnBlock(IBlockState state) {
+        if (state == Blocks.AIR.getDefaultState())
+            return false;
         return KILN_BLOCKS.contains(state);
     }
 
     public static void createKiln(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if (isKilnBlock(state) && isValidKiln(world,pos)) {
+        if (isKilnBlock(state) && isValidKiln(world, pos)) {
             IBlockState kiln = BWMBlocks.KILN.getDefaultState();
-            world.setBlockState(pos,kiln);
+            world.setBlockState(pos, kiln);
             TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof TileCamo) {
+            if (tile instanceof TileCamo) {
                 ((TileCamo) tile).setCamoState(state);
                 world.notifyBlockUpdate(pos, kiln, kiln, 8);
             }
