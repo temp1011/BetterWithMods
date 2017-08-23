@@ -22,8 +22,8 @@ public class Lathe implements IMultiblock {
     @Override
     public IBlockState[][][] getStructure() {
         return new IBlockState[][][]{
-                new IBlockState[][]{new IBlockState[]{Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), BlockSteel.getBlock(0)}},
-                new IBlockState[][]{new IBlockState[]{BlockSteel.getBlock(0), BlockSteel.getBlock(8), BWMBlocks.STEEL_GEARBOX.getDefaultState()}},
+                new IBlockState[][]{new IBlockState[]{BlockSteel.getBlock(0), null, null}},
+                new IBlockState[][]{new IBlockState[]{BWMBlocks.STEEL_GEARBOX.getDefaultState(), BlockSteel.getBlock(8), BlockSteel.getBlock(0)}},
         };
     }
 
@@ -94,7 +94,7 @@ public class Lathe implements IMultiblock {
             for (int z = 0; z < structure[i].length; z++)
                 for (int x = 0; x < structure[i][z].length; x++) {
                     BlockPos placement = facing.getAxis() == EnumFacing.Axis.X ? origin.add(z, y, x) : origin.add(x, y, z);
-                    if (!world.isAirBlock(placement))
+                    if (!world.isAirBlock(placement) && structure[i][z][x] != null)
                         world.setBlockState(placement, structure[i][z][x]);
                 }
         }

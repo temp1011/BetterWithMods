@@ -166,6 +166,8 @@ public final class WorldUtils {
     }
 
     public static boolean matches(IBlockState a, IBlockState b) {
+        if (b == null)
+            return true;
         return a.equals(b);
     }
 }
