@@ -194,7 +194,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     }
 
     public void setSignal(byte signal) {
-        this.signal = signal;
+        this.signal = (byte) Math.min(signal, maxSignal);
     }
 
     public void setPower(int power) {

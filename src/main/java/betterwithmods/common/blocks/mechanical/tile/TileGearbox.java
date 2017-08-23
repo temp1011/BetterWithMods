@@ -25,13 +25,15 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     }
 
     public void onChanged() {
-
+        if (this.getBlockWorld().getTotalWorldTime() % 20L != 0L)
+            return;
         int power = this.getMechanicalInput(getFacing());
         if (MechanicalUtil.isRedstonePowered(world,pos)) {
             setPower(0);
+            markDirty();
             return;
         }
-        if (world.rand.nextInt(10) == 0 && power > getMaximumInput(getFacing())) {
+        if (power > getMaximumInput(getFacing())) {
             getBlock().overpower(world, pos);
         }
         if (power != this.power) {

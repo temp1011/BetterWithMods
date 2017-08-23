@@ -25,7 +25,8 @@ public class MechanicalUtil {
     }
 
     public static boolean isAxle(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        return getAxle(world, pos, facing) != null;
+        IAxle axle = getAxle(world, pos, facing);
+        return axle != null && axle.getAxis() == facing.getAxis();
     }
 
     public static IAxle getAxle(IBlockAccess world, BlockPos pos, EnumFacing facing) {

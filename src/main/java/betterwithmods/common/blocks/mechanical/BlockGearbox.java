@@ -87,7 +87,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         onChange(world, pos);
-        world.scheduleUpdate(pos, this, 5);
+        world.scheduleUpdate(pos, this, 10);
     }
 
     @Override
@@ -99,7 +99,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         if (!world.isRemote) {
             withTile(world, pos).ifPresent(TileGearbox::onChanged);
         }
-//        world.notifyNeighborsOfStateExcept(pos,this,getFacing(world,pos));
     }
 
 
