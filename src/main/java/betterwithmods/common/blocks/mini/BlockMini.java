@@ -227,9 +227,8 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntityMultiType tile = getTile(worldIn, pos);
-        if (tile != null) {
+        if (tile != null)
             return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), tile.getOrientation());
-        }
         return state;
     }
 
@@ -243,10 +242,12 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
         return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
     }
-
-
+    
     public TileEntityMultiType getTile(IBlockAccess world, BlockPos pos) {
-        return (TileEntityMultiType) world.getTileEntity(pos);
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileEntityMultiType)
+            return (TileEntityMultiType) tile;
+        return null;
     }
 
     public enum EnumType {
