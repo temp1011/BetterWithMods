@@ -336,13 +336,16 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                             if (leftover == null) {
                                 inventory.extractItem(stackIndex, ejectStackSize, false);
                                 break;
+                            } else {
+                                inventory.extractItem(stackIndex, ejectStack.stackSize - leftover.stackSize, false);
+                                ejectStack = leftover;
                             }
                         }
 
 
                     } else if (tile != null) {
-                        if (InvUtils.addItemStackToInv(inventory, ejectStack))
-                            inventory.extractItem(stackIndex, ejectStackSize, false);
+                        if (InvUtils.addItemStackToInv(inventory, ejectStack) || ejectStack.stackSize != ejectStackSize)
+                            inventory.extractItem(stackIndex, ejectStackSize - ejectStack.stackSize, false);
                     } else
                         this.outputBlocked = true;
                 }
@@ -354,8 +357,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         if (cart.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
                             IItemHandler items = cart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                             int itemsStored;
-                            if (InvUtils.addItemStackToInv(items, ejectStack))
-                                itemsStored = ejectStackSize;
+                            if (InvUtils.addItemStackToInv(items, ejectStack) || ejectStack.stackSize != ejectStackSize)
+                                itemsStored = ejectStackSize - ejectStack.stackSize;
                             else
                                 itemsStored = ejectStackSize - ejectStack.stackSize;
                             if (itemsStored > 0) {

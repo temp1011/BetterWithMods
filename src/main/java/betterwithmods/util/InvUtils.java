@@ -194,10 +194,15 @@ public class InvUtils {
     }
 
     private static boolean insertingStacks(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
+        ItemStack leftovers = stack.copy();
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            if (inv.insertItem(slot, stack, simulate) == null)
+            leftovers = inv.insertItem(slot, leftovers, simulate);
+            if (leftovers == null) {
+                stack.stackSize = 0;
                 return true;
+            }
         }
+        stack.stackSize = leftovers.stackSize;
         return false;
     }
 

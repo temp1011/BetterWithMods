@@ -145,7 +145,7 @@ public class BucketEvent {
             return;
 
         ItemStack toCheck = evt.getEntityPlayer().getHeldItem(evt.getHand());
-        if (toCheck == null || toCheck.getItem() == Items.WATER_BUCKET || !isNonVanillaBucket(toCheck))
+        if (toCheck == null || !(toCheck.getItem() == Items.WATER_BUCKET || isNonVanillaBucket(toCheck)))
             return;
 
         FluidStack fluid = FluidUtil.getFluidContained(toCheck);
@@ -163,7 +163,7 @@ public class BucketEvent {
             state = evt.getWorld().getBlockState(pos);
             if (evt.getWorld().provider.getDimensionType() == DimensionType.OVERWORLD) {
                 if (!block.onBlockActivated(evt.getWorld(), evt.getPos(), state, evt.getEntityPlayer(), evt.getHand(), toCheck, evt.getFace(), 0.5F, 0.5F, 0.5F)) {
-                    if (state.getBlock().isAir(state, evt.getWorld(), pos) || state.getBlock().isReplaceable(evt.getWorld(), pos)) {
+                    if (state.getBlock().isAir(state, evt.getWorld(), pos) || state.getBlock().isReplaceable(evt.getWorld(), pos) || !state.getMaterial().isSolid()) {
                         Item item = toCheck.getItem();
                         if (item.getItemUseAction(toCheck) == EnumAction.NONE) {
                             if (isWater(state)) {
@@ -172,6 +172,7 @@ public class BucketEvent {
                                 }
                             }
                             else {
+                                state.getBlock().dropBlockAsItem(evt.getWorld(), pos, state, 0);
                                 placeContainerFluid(evt, pos, toCheck);
                             }
                         }
