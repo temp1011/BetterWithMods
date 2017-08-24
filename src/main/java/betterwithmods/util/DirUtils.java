@@ -1,6 +1,7 @@
 package betterwithmods.util;
 
 import betterwithmods.api.block.ITurnable;
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -20,7 +21,7 @@ public class DirUtils {
 
     public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
     public static final PropertyDirection FACING = BlockDirectional.FACING;
-    public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection HORIZONTAL = PropertyDirection.create("facing", Lists.newArrayList(EnumFacing.Plane.HORIZONTAL.facings()));
     public static final PropertyDirection TILTING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
