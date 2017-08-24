@@ -3,19 +3,24 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockGearbox;
+import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
+import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
-public class TileGearbox extends TileEntity implements IMechanicalPower {
-    private int power, prevPower;
+public class TileGearbox extends TileBasic implements IMechanicalPower {
+    private int power;
     private int maxPower;
+
+    private List<Integer> history = Lists.newArrayList(0, 0, 0, 0, 0);
 
     public TileGearbox() {
     }
@@ -34,11 +39,15 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
             return;
         }
         int power = this.getMechanicalInput(getFacing());
-        if (((this.prevPower + this.power) / 2) > getMaximumInput(getFacing())) {
+
+        if (history.size() >= 5)
+            history.remove(0);
+        history.add(power);
+        int average = (int) Math.floor(history.stream().mapToDouble(i -> i).average().orElse(0));
+        if (average > getMaximumInput(getFacing())) {
             getBlock().overpower(world, pos);
         }
         if (power != this.power) {
-            this.prevPower = power;
             setPower(power);
         }
         markDirty();
@@ -88,6 +97,9 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         super.readFromNBT(tag);
         power = tag.getInteger("power");
         maxPower = tag.getInteger("maxPower");
+        history.clear();
+        for (int i : tag.getIntArray("history"))
+            history.add(i);
     }
 
     @Nonnull
@@ -96,6 +108,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         NBTTagCompound t = super.writeToNBT(tag);
         tag.setInteger("power", power);
         tag.setInteger("maxPower", maxPower);
+        tag.setIntArray("history", history.stream().mapToInt(i -> i).toArray());
         return t;
     }
 
@@ -137,4 +150,8 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
         return super.getPos();
     }
 
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
 }
