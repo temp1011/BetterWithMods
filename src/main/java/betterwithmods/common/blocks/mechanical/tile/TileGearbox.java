@@ -14,9 +14,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import javax.annotation.Nonnull;
 
 public class TileGearbox extends TileEntity implements IMechanicalPower {
-    private int power;
+    private int power, prevPower;
     private int maxPower;
-
+    
     public TileGearbox() {
     }
 
@@ -27,16 +27,18 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
     public void onChanged() {
         if (this.getBlockWorld().getTotalWorldTime() % 20L != 0L)
             return;
-        int power = this.getMechanicalInput(getFacing());
-        if (MechanicalUtil.isRedstonePowered(world,pos)) {
+
+        if (MechanicalUtil.isRedstonePowered(world, pos)) {
             setPower(0);
             markDirty();
             return;
         }
-        if (power > getMaximumInput(getFacing())) {
+        int power = this.getMechanicalInput(getFacing());
+        if (((this.prevPower + this.power) / 2) > getMaximumInput(getFacing())) {
             getBlock().overpower(world, pos);
         }
         if (power != this.power) {
+            this.prevPower = power;
             setPower(power);
         }
         markDirty();

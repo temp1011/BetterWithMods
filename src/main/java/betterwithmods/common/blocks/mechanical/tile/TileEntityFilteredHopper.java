@@ -5,6 +5,7 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
@@ -163,19 +164,26 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public void update() {
-        byte power = (byte) calculateInput();
-        if(this.power != power) {
-            this.power = power;
-        }
+
         if (!this.world.isRemote) {
+            byte power = (byte) calculateInput();
+            if (this.power != power) {
+                this.power = power;
+            }
+            getBlock().setActive(world, pos, isActive());
             insert();
             if (isPowered()) {
                 extract();
             }
+            if (this.soulsRetained > 0) {
+                processSouls();
+            }
         }
-        if (this.soulsRetained > 0) {
-            processSouls();
-        }
+
+    }
+
+    public boolean isActive() {
+        return power > 0;
     }
 
     public boolean isUseableByPlayer(EntityPlayer player) {
@@ -377,7 +385,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public Block getBlock() {
-        return getBlockType();
+    public BlockMechMachines getBlock() {
+        return (BlockMechMachines) getBlockType();
     }
 }

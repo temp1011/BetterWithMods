@@ -87,7 +87,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         onChange(world, pos);
-        world.scheduleUpdate(pos, this, 10);
     }
 
     @Override
