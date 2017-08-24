@@ -18,6 +18,13 @@ public class GuiFilteredHopper extends GuiContainer {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         String s = I18n.format(tile.getName());
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
