@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public class TileGearbox extends TileEntity implements IMechanicalPower {
     private int power, prevPower;
     private int maxPower;
-    
+
     public TileGearbox() {
     }
 
@@ -65,7 +65,7 @@ public class TileGearbox extends TileEntity implements IMechanicalPower {
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        if (facing != getFacing())
+        if (facing != getFacing() && MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite()))
             return power;
         return -1;
     }
