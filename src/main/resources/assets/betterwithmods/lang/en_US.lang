@@ -40,7 +40,7 @@ tile.bwm:saw.name=Saw
 tile.bwm:steel_anvil.name=Soulforged Steel Anvil
 tile.bwm:aesthetic.0.name=Chopping Block
 tile.bwm:aesthetic.1.name=Bloodied Chopping Block
-
+tile.bwm:aesthetic.2.name=Hardened Nether Sludge
 tile.bwm:aesthetic.3.name=Concentrated Hellfire Block
 tile.bwm:aesthetic.4.name=Rope Block
 tile.bwm:aesthetic.5.name=Flint Block
@@ -241,9 +241,13 @@ tile.bwm:ie_siding.2.name=Packaged Treated Wood Siding
 tile.bwm:ie_moulding.2.name=Packaged Treated Wood Moulding
 tile.bwm:ie_corner.2.name=Packaged Treated Wood Corner
 
+tile.bwm:steel_saw.name=Soulforged Steel Saw
+
 tile.bwm:blood_log.name=Bloody Wood
 tile.bwm:blood_leaves.name=Bloody Leaves
 tile.bwm:blood_sapling.name=Bloody Sapling
+
+tile.bwm:nether_clay.name=Nether Sludge Block
 
 
 tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
