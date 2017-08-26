@@ -2,13 +2,11 @@ package betterwithmods.client.container.anvil;
 
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
-public class InventorySteelCrafting extends InventoryCrafting implements ISidedInventory {
+public class InventorySteelCrafting extends InventoryCrafting {
 
     public TileEntitySteelAnvil craft;
     public Container container;
@@ -78,18 +76,4 @@ public class InventorySteelCrafting extends InventoryCrafting implements ISidedI
         this.container.onCraftMatrixChanged(this);
     }
 
-    @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return true;
-    }
 }

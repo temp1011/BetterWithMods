@@ -22,4 +22,9 @@ public class ServerProxy implements IProxy {
     public void postInit(FMLPostInitializationEvent event) {
 
     }
+
+    @Override
+    public void addResourceOverride(String space, String dir, String file, String ext) {
+
+    }
 }

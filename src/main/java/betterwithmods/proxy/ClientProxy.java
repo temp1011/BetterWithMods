@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.ColorHandlers;
+import betterwithmods.client.ResourceProxy;
 import betterwithmods.client.model.*;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
@@ -28,6 +29,7 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
@@ -51,13 +53,22 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID, value = Side.CLIENT)
 public class ClientProxy implements IProxy {
+    static ResourceProxy resourceProxy;
+
+    static {
+        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "aD", "field_110449_ao", "defaultResourcePacks");
+        resourceProxy = new ResourceProxy();
+        packs.add(resourceProxy);
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -170,6 +181,12 @@ public class ClientProxy implements IProxy {
         public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
             return location;
         }
+    }
+
+
+    @Override
+    public void addResourceOverride(String space, String dir, String file, String ext) {
+        resourceProxy.addResource(space, dir, file, ext);
     }
 
 }

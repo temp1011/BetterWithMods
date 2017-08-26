@@ -27,6 +27,7 @@ public class Tweaks extends Module {
         registerFeature(new MysteryMeat());
         registerFeature(new GrassPath());
         registerFeature(new PlaceClay());
+        registerFeature(new DarkQuartz());
     }
 
     @Override
