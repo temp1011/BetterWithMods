@@ -76,10 +76,11 @@ public class BWOreDictionary {
         registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
         registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("gemNetherCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
+        registerOre("materialNetherSludge", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
         registerOre("chainmail", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL));
 
-        registerOre("blockSoulforgedSteel", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+        registerOre("blockHardenedNetherClay", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         registerOre("blockConcentratedHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
         //Added bark subtype entries for Roots compatibility
         registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
@@ -127,7 +128,7 @@ public class BWOreDictionary {
         registerOre("treeSapling", new ItemStack(BWMBlocks.BLOOD_SAPLING));
         registerOre("treeLeaves", new ItemStack(BWMBlocks.BLOOD_LEAVES));
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
-
+        registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {

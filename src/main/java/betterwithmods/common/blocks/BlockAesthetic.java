@@ -81,7 +81,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=unused", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock", "blocktype=padding", "blocktype=soap", "blocktype=dung", "blocktype=wicker"};
+        return new String[]{"blocktype=chopping", "blocktype=chopping_blood", "blocktype=nether_clay", "blocktype=hellfire", "blocktype=rope", "blocktype=flint", "blocktype=whitestone", "blocktype=whitecobble", "blocktype=enderblock", "blocktype=padding", "blocktype=soap", "blocktype=dung", "blocktype=wicker"};
     }
 
     @Override
@@ -121,7 +121,7 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
     public enum EnumType implements IStringSerializable {
         CHOPBLOCK(0, "chopping", MapColor.STONE),
         CHOPBLOCKBLOOD(1, "chopping_blood", MapColor.NETHERRACK),
-        UNUSED(2, "unused", MapColor.DIAMOND),
+        NETHERCLAY(2, "nether_clay", MapColor.NETHERRACK),
         HELLFIRE(3, "hellfire", MapColor.ADOBE),
         ROPE(4, "rope", MapColor.DIRT, Material.CLOTH, SoundType.CLOTH, 1F, 5F),
         FLINT(5, "flint", MapColor.STONE),

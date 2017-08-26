@@ -35,6 +35,11 @@
           "side": "betterwithmods:blocks/hellfire_block"
         }
       },
+      "nether_clay": {
+        "textures": {
+          "side": "betterwithmods:blocks/hardened_nether_sludge"
+        }
+      },
       "rope": {
         "textures": {
           "up": "betterwithmods:blocks/rope_top",

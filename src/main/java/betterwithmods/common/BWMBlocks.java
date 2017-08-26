@@ -103,6 +103,7 @@ public final class BWMBlocks {
     public static final Block BLOOD_LOG = new BlockBloodLog().setRegistryName("blood_log");
     public static final Block BLOOD_LEAVES = new BlockBloodLeaves().setRegistryName("blood_leaves");
     public static final Block BLOOD_SAPLING = new BlockBloodSapling().setRegistryName("blood_sapling");
+    public static final Block NETHER_CLAY = new BlockNetherClay().setRegistryName("nether_clay");
     public static final Block DUMMY = new BlockDummy().setRegistryName("multiblock_dummy");
     public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
 
@@ -196,6 +197,7 @@ public final class BWMBlocks {
         registerBlock(BLOOD_LOG);
         registerBlock(BLOOD_LEAVES);
         registerBlock(BLOOD_SAPLING);
+        registerBlock(NETHER_CLAY);
         registerBlock(DUMMY, null);
         registerBlock(LATHE, null);
     }
