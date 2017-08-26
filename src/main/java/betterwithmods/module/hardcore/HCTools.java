@@ -40,7 +40,7 @@ public class HCTools extends Feature {
     private static int diamondDurability;
     private static int goldDurability;
 
-    private static boolean changeAxeRecipe;
+    public static boolean changeAxeRecipe;
 
     /**
      * Edit the values of {@link Item.ToolMaterial}.

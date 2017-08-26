@@ -82,18 +82,22 @@ public class HCHunger extends CompatFeature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
-        if (rawMeatDangerous) {
-            Set<Item> RAW_FOOD = Sets.newHashSet(BWMItems.RAW_SCRAMBLED_EGG, BWMItems.RAW_EGG, BWMItems.RAW_OMELET, BWMItems.RAW_KEBAB, Items.FISH, BWMItems.WOLF_CHOP, Items.BEEF, Items.PORKCHOP, Items.RABBIT, Items.CHICKEN, Items.MUTTON, BWMItems.MYSTERY_MEAT);
-            RAW_FOOD.stream().map(i -> (ItemFood) i).forEach(i -> i.setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F));
-        }
-
+    public void preInit(FMLPreInitializationEvent event) {
         BWMRecipes.removeRecipe(new ItemStack(Items.MUSHROOM_STEW));
         BWMRecipes.removeRecipe(new ItemStack(Items.CAKE));
         BWMRecipes.removeRecipe(new ItemStack(Items.COOKIE));
         BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE));
         BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW));
         BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP));
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        if (rawMeatDangerous) {
+            Set<Item> RAW_FOOD = Sets.newHashSet(BWMItems.RAW_SCRAMBLED_EGG, BWMItems.RAW_EGG, BWMItems.RAW_OMELET, BWMItems.RAW_KEBAB, Items.FISH, BWMItems.WOLF_CHOP, Items.BEEF, Items.PORKCHOP, Items.RABBIT, Items.CHICKEN, Items.MUTTON, BWMItems.MYSTERY_MEAT);
+            RAW_FOOD.stream().map(i -> (ItemFood) i).forEach(i -> i.setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F));
+        }
+
 
         FoodHelper.registerFood(new ItemStack(Items.BEEF), 12);
         FoodHelper.registerFood(new ItemStack(Items.PORKCHOP), 12);

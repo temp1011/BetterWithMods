@@ -23,7 +23,11 @@ public class HCDiamond extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_AXE), "DD", "DS", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "diamond_axe")));
+        if (HCTools.changeAxeRecipe) {
+            addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_AXE), "D ", "DS", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "diamond_axe")));
+        } else {
+            addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_AXE), "DD", "DS", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "diamond_axe")));
+        }
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_HOE), "DD", " S", " S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "diamond_hoe")));
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_PICKAXE), "DDD", " S ", " S ", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setRegistryName(new ResourceLocation("minecraft", "diamond_pickaxe")));
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_SHOVEL), "D", "S", "S", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), 'S', "stickWood").setRegistryName(new ResourceLocation("minecraft", "diamond_shovel")));
@@ -34,7 +38,11 @@ public class HCDiamond extends Feature {
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.DIAMOND_BOOTS), "D D", "D D", 'D', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT)).setRegistryName(new ResourceLocation("minecraft", "diamond_boots")));
 
         if (ModuleLoader.isFeatureEnabled(MetalReclaming.class) && MetalReclaming.reclaimCount > 0) {
-            CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 3),new Object[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});
+            if (HCTools.changeAxeRecipe) {
+                CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 2), new Object[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});
+            } else {
+                CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 3), new Object[]{new ItemStack(Items.DIAMOND_AXE, 1, OreDictionary.WILDCARD_VALUE)});
+            }
             CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 2),new Object[]{new ItemStack(Items.DIAMOND_HOE, 1, OreDictionary.WILDCARD_VALUE)});
             CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 3),new Object[]{new ItemStack(Items.DIAMOND_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
             CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT, 1),new Object[]{new ItemStack(Items.DIAMOND_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});

@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockDirtSlab;
 import betterwithmods.module.Feature;
+import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Maps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashMap;
 import java.util.UUID;
+
 
 public class HCMovement extends Feature {
     public final static UUID PENALTY_SPEED_UUID = UUID.fromString("aece6a05-d163-4871-aaf3-ebab43b0fcfa");
@@ -44,13 +46,11 @@ public class HCMovement extends Feature {
         MATERIAL_MOVEMENT.put(Material.GROUND, 1.0f);
         MATERIAL_MOVEMENT.put(Material.CLAY, 1.0f);
 
-
         MATERIAL_MOVEMENT.put(Material.SAND, 0.75f);
         MATERIAL_MOVEMENT.put(Material.SNOW, 0.75f);
         MATERIAL_MOVEMENT.put(Material.LEAVES, 0.70f);
         MATERIAL_MOVEMENT.put(Material.PLANTS, 0.70f);
         MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
-
 
         BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(),  0.70f);
         BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.1f);
@@ -82,9 +82,7 @@ public class HCMovement extends Feature {
                         speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
                     }
                 }
-//                PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
-            } else {
-//                PlayerHelper.changeSpeed(player, "HCMovement", 1, PENALTY_SPEED_UUID);
+                PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
             }
         }
     }
