@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.module.hardcore.hcbeacons.HCBeacons;
 import betterwithmods.module.hardcore.hcbeacons.IBeaconEffect;
 import betterwithmods.module.hardcore.hcbeacons.SpawnBeaconEffect;
 import betterwithmods.util.ColorUtils;
@@ -82,8 +83,8 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
                     //TRIGGER ADVANCEMENT
                     this.world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos, pos.add(1, -4, 1)).grow(10.0D, 5.0D, 10.0D)).forEach(player -> CriteriaTriggers.CONSTRUCT_BEACON.trigger(player, this));
                 }
-                effect = BEACON_EFFECTS.get(type);
-                if (effect != null) {
+	            effect = HCBeacons.getBeaconEffect(type);
+	            if (effect != null) {
                     effect.effect(world, pos, level);
                     calcSegments();
                 }
@@ -151,8 +152,9 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
         return state == world.getBlockState(pos);
     }
 
+
     private boolean isValidBlock(IBlockState state) {
-        return BEACON_EFFECTS.containsKey(state);
+	    return BEACON_EFFECTS.containsKey(state) || state.getBlock().isBeaconBase(world, pos.down(), pos);
     }
 
     public Pair<Integer, IBlockState> calcLevel() {

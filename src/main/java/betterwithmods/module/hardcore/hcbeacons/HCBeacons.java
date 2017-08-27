@@ -18,6 +18,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.util.HashMap;
 
+import static betterwithmods.common.BWMBlocks.BEACON;
+
 /**
  * Created by primetoxinz on 7/17/17.
  */
@@ -25,9 +27,17 @@ public class HCBeacons extends Feature {
 
     public static final HashMap<IBlockState, IBeaconEffect> BEACON_EFFECTS = Maps.newHashMap();
 
-    @Override
+	public static final IBeaconEffect getBeaconEffect(IBlockState state) {
+		if (BEACON_EFFECTS.containsKey(state))
+			return BEACON_EFFECTS.get(state);
+		return (world, pos, level) -> {
+		};
+	}
+
+	@Override
     public void init(FMLInitializationEvent event) {
-        BEACON_EFFECTS.put(Blocks.GLASS.getDefaultState(), (world, pos, level) -> {
+	    BWMBlocks.registerBlock(BEACON);
+		BEACON_EFFECTS.put(Blocks.GLASS.getDefaultState(), (world, pos, level) -> {
         });
         BEACON_EFFECTS.put(Blocks.IRON_BLOCK.getDefaultState(), (world, pos, level) -> {
             //TODO substitute ItemCompass.
