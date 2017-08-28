@@ -86,9 +86,9 @@ public class HCOres extends Feature {
                     Optional<ItemStack> nugget = BWOreDictionary.nuggetNames.stream().filter(o -> o.getSuffix().equals(ore.getSuffix())).flatMap( o -> o.getOres().stream()).findFirst();
                     if (nugget.isPresent()) {
                         ItemStack n = nugget.get().copy();
-                        n.setCount(dustProductionCount);
-                        //Remove all furnace recipes with dust
-                        ore.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
+	                    n.setCount(oreProductionCount);
+	                    //Remove all furnace recipes with dust
+	                    ore.getOres().forEach(BWMRecipes::removeFurnaceRecipe);
                         //Add dust -> nugget smelting recipe
                         ore.getOres().forEach(s -> BWMRecipes.addFurnaceRecipe(s, n));
                     }
