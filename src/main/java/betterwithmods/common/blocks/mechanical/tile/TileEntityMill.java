@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
@@ -26,7 +27,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower {
+public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
 
     public static final int GRIND_TIME = 200;
 
