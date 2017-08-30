@@ -66,7 +66,8 @@ public class SawRecipes extends Feature {
         addSelfSawRecipe(Blocks.YELLOW_FLOWER, 0);
         addSelfSawRecipe(Blocks.BROWN_MUSHROOM, 0);
         addSelfSawRecipe(Blocks.RED_MUSHROOM, 0);
-        SawManager.WOOD_SAW.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
+	    addSelfSawRecipe(BWMBlocks.ROPE, 0);
+	    SawManager.WOOD_SAW.addRecipe(new SawRecipe(Blocks.MELON_BLOCK, 0, null) {
             @Override
             public NonNullList<ItemStack> getOutputs() {
                 Random random = new Random();
