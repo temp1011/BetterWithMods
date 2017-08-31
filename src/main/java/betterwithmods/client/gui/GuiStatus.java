@@ -83,7 +83,11 @@ public class GuiStatus {
         }
 
         IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-        double value = iattributeinstance.getAttributeValue() / (1 + iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID).getAmount());
+
+        double value = iattributeinstance.getAttributeValue();
+        if (iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID) != null) {
+            value /= (1 + iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID).getAmount());
+        }
         f = (float) ((double) f * ((value / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
 
 

@@ -114,9 +114,8 @@ public final class WorldUtils {
             double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
-            AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition());
+            AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));
             boolean blocked = StreamSupport.stream(BlockPos.MutableBlockPos.getAllInBox(getMin(box), getMax(box)).spliterator(), false).anyMatch(p -> !world.isAirBlock(p));
-            System.out.println(box);
             if (!blocked)
                 return world.spawnEntity(ghast);
         }
