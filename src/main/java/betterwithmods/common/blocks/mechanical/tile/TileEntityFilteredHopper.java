@@ -29,6 +29,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
@@ -36,6 +37,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype, IMechanicalPower {
+
+    public SimpleStackHandler filter;
 
     private final int STACK_SIZE = 8;
     public int filterType;
@@ -51,6 +54,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         this.filterType = 0;
         this.soulsRetained = 0;
         this.occupiedSlots = 0;
+        this.hasCapability = facing -> facing.getAxis().isVertical();
+        this.filter = new SimpleStackHandler(1, this);
     }
 
     @Override
@@ -280,7 +285,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public int getInventorySize() {
-        return 19;
+        return 18;
     }
 
     @Override
@@ -313,7 +318,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     public ItemStack getFilterStack() {
-        return inventory.getStackInSlot(18);
+        return filter.getStackInSlot(0);
     }
 
     private class HopperHandler extends SimpleStackHandler {
@@ -361,6 +366,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+        if (facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return true;
         return super.hasCapability(capability, facing);
@@ -369,6 +376,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+        if (facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(filter);
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
@@ -388,4 +397,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public BlockMechMachines getBlock() {
         return (BlockMechMachines) getBlockType();
     }
+
+
 }

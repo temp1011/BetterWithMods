@@ -28,7 +28,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,10 +51,6 @@ public class HCFishing extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.FISHING_ROD), "  I", " IS", "I N", 'S', "string", 'I', "stickWood", 'N', "nuggetIron").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "fishing_rod")));
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
         addHardcoreRecipe(new BaitingRecipe());
     }
 

@@ -7,11 +7,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.function.Predicate;
+
 /**
  * Created by tyler on 9/4/16.
  */
 public abstract class TileBasicInventory extends TileBasic {
 
+    public Predicate<EnumFacing> hasCapability = facing -> true;
     public SimpleStackHandler inventory = createItemStackHandler();
 
     public abstract int getInventorySize();
@@ -27,7 +30,7 @@ public abstract class TileBasicInventory extends TileBasic {
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (hasCapability.test(facing) && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         return super.getCapability(capability, facing);
     }
@@ -51,10 +54,12 @@ public abstract class TileBasicInventory extends TileBasic {
         super.markDirty();
         writeToNBT(new NBTTagCompound());
     }
+
     @Override
     public void onBreak() {
         IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        if(inv != null)
-            InvUtils.ejectInventoryContents(world, pos,inv);
+        if (inv != null)
+            InvUtils.ejectInventoryContents(world, pos, inv);
     }
+
 }

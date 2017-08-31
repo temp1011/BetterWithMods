@@ -141,17 +141,15 @@ public final class PlayerHelper {
     /**
      * Edit the speed of an entity.
      *
-     * @param entity   The entity whose speed will be changed.
-     * @param name     Unique name for easier debugging
-     * @param modifier The speed will be multiplied by this number
+     * @param entity           The entity whose speed will be changed.
+     * @param name             Unique name for easier debugging
+     * @param modifier         The speed will be multiplied by this number
      * @param penaltySpeedUuid
      */
     public static void changeSpeed(EntityLivingBase entity,
                                    String name, double modifier, UUID penaltySpeedUuid) {
-        AttributeModifier speedModifier = (new AttributeModifier(
-                penaltySpeedUuid, name, modifier - 1, 2));
-        IAttributeInstance iattributeinstance = entity
-                .getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        AttributeModifier speedModifier = (new AttributeModifier(penaltySpeedUuid, name, modifier - 1, 2));
+        IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
         if (iattributeinstance.getModifier(penaltySpeedUuid) != null) {
             iattributeinstance.removeModifier(speedModifier);

@@ -1,6 +1,7 @@
 package betterwithmods.client.gui;
 
 import betterwithmods.BWMod;
+import betterwithmods.module.hardcore.HCMovement;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -82,7 +83,9 @@ public class GuiStatus {
         }
 
         IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-        f = (float) ((double) f * ((iattributeinstance.getAttributeValue() / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+        double value = iattributeinstance.getAttributeValue() / (1 + iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID).getAmount());
+        f = (float) ((double) f * ((value / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+
 
         if (event.getEntity().capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
             f = 1.0F;

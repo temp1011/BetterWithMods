@@ -25,7 +25,7 @@ public class ContainerFilteredHopper extends Container {
             }
         }
 
-        addSlotToContainer(new SlotItemHandler(tile.inventory, 18, 80, 37));
+        addSlotToContainer(new SlotItemHandler(tile.filter, 0, 80, 37));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
