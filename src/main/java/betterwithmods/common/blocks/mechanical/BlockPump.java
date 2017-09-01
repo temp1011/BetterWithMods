@@ -85,7 +85,7 @@ public class BlockPump extends BlockRotate implements IBlockActive, IMultiVarian
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase entity, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
-        return setFacingInBlock(state, entity.getHorizontalFacing());
+        return setFacingInBlock(state, entity.getHorizontalFacing().getOpposite());
     }
 
     @Override

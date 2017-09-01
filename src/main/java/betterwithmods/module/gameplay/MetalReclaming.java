@@ -90,7 +90,6 @@ public class MetalReclaming extends Feature {
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 16), new Object[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 7), new Object[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
             addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 16), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 2)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 1), new Object[]{new ItemStack(Items.SHIELD, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new Object[]{new ItemStack(Items.IRON_DOOR)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new Object[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});

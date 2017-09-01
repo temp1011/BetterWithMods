@@ -82,7 +82,7 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         BlockPos pos = getBlockPos().offset(facing);
-        if (!(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
+        if (MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) != null && !(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
             return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
         return 0;
     }

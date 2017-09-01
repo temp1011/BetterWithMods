@@ -60,8 +60,8 @@ public class BlockGearBoostedRail extends BlockRailPowered {
             case ASCENDING_SOUTH:
             case NORTH_SOUTH:
                 if (planarMotion > 0.01D) {
-                    if ((gearboxFace == EnumFacing.EAST && cart.motionZ > 0.0D) ||
-                            (gearboxFace == EnumFacing.WEST && cart.motionZ < 0.0D)) {
+                    if ((gearboxFace == EnumFacing.EAST && cart.motionZ < 0.0D) ||
+                            (gearboxFace == EnumFacing.WEST && cart.motionZ > 0.0D)) {
                         cart.motionZ -= cart.motionZ / planarMotion * 0.06D;
                         if (!world.isRemote && planarMotion > 0.02D && world.rand.nextDouble() < planarMotion)
                             world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
@@ -69,9 +69,9 @@ public class BlockGearBoostedRail extends BlockRailPowered {
                         cart.motionZ += cart.motionZ / planarMotion * 0.06D;
                 } else {
                     if (gearboxFace == EnumFacing.EAST && !world.getBlockState(pos.west()).isOpaqueCube())
-                        cart.motionZ = -0.02D;
-                    else if (gearboxFace == EnumFacing.WEST && !world.getBlockState(pos.east()).isOpaqueCube())
                         cart.motionZ = 0.02D;
+                    else if (gearboxFace == EnumFacing.WEST && !world.getBlockState(pos.east()).isOpaqueCube())
+                        cart.motionZ = -0.02D;
                     else if (gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.west()).isOpaqueCube())
                         cart.motionZ = 0.02D;
                     else if (gearboxFace == EnumFacing.DOWN && world.getBlockState(pos.east()).isOpaqueCube())

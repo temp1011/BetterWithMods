@@ -332,6 +332,8 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                     if (state != newState)
                         getBlockWorld().setBlockState(pos, newState);
                 }
+            } if (getBlockWorld().getTileEntity(pos) != null) {
+                getBlockWorld().getTileEntity(pos).rotate(rot);
             }
         }
     }
