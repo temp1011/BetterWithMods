@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.Feature;
@@ -38,6 +39,11 @@ public class AnvilRecipes extends Feature {
         return recipe;
     }
 
+    private static IRecipe addAnvilRecipe(IRecipe recipe) {
+        AnvilCraftingManager.ANVIL_CRAFTING.add(recipe);
+        return recipe;
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         addSteelShapedRecipe(new ResourceLocation("block_dispenser"), new ItemStack(BWMBlocks.BLOCK_DISPENSER), "MMMM", "MUUM", "STTS", "SRRS", 'M', Blocks.MOSSY_COBBLESTONE, 'U', new ItemStack(BWMBlocks.URN, 1, 8), 'S', "stone", 'R', "dustRedstone", 'T', Blocks.REDSTONE_TORCH);
@@ -68,10 +74,6 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe(new ResourceLocation("steel_spring"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING), "NNN", "NNN", "NNN", "NNN", 'N', "nuggetSoulforgedSteel");
         addSteelShapedRecipe(new ResourceLocation("iron_wall"), new ItemStack(BWMBlocks.IRON_WALL, 8, 0), "XXXX", "XXXX", "XXXX", "XXXX", 'X', new ItemStack(Blocks.IRON_BARS));
         addSteelShapedRecipe(new ResourceLocation("steel_gearbox"), new ItemStack(BWMBlocks.STEEL_GEARBOX), "SGSS", "SGLG", "GLGS", "SSGS", 'S', "ingotSoulforgedSteel", 'G', "gearSoulforgedSteel", 'L', "latchRedstone");
-        addSteelShapedRecipe(new ResourceLocation("steel_hacksaw"), new ItemStack(BWMItems.STEEL_HACKSAW), "NMM", "N M", "N M", "NMM", 'N', "nuggetSoulforgedSteel", 'M', "mouldingWood"    );
-    }
-
-    private static IRecipe addAnvilRecipe(IRecipe recipe) {
-        return registerHardcoreRecipe("Anvil", recipe);
+        addSteelShapedRecipe(new ResourceLocation("steel_hacksaw"), new ItemStack(BWMItems.STEEL_HACKSAW), "NMM", "N M", "N M", "NMM", 'N', "nuggetSoulforgedSteel", 'M', "mouldingWood");
     }
 }

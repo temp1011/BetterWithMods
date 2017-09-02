@@ -13,9 +13,6 @@ import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.ToolDamageRecipe;
-import betterwithmods.common.registry.anvil.AnvilCraftingManager;
-import betterwithmods.common.registry.anvil.VanillaShapedAnvilRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
@@ -43,8 +40,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -60,15 +55,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
@@ -111,13 +103,6 @@ public class BWRegistry {
 
         for (ItemStack output : BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
             for (Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
-                IRecipe recipe = iter.next();
-                if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
-                    break;
-                }
-            }
-            for (Iterator<IRecipe> iter = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iter.hasNext(); ) {
                 IRecipe recipe = iter.next();
                 if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
                     reg.remove(reg.getKey(recipe));
@@ -257,7 +242,6 @@ public class BWRegistry {
         replaceIRecipe(Quark.class, reg);
         replaceIRecipe(Rustic.class, reg);
 
-        registerAnvilRecipes(reg);
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
@@ -281,18 +265,6 @@ public class BWRegistry {
             }
         }
     }
-
-    private static void registerAnvilRecipes(IForgeRegistry<IRecipe> reg) {
-        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes("Anvil");
-        recipes.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
-        List<IRecipe> shaped = reg.getValues().stream().filter(i -> i instanceof ShapedRecipes || i instanceof ShapedOreRecipe).collect(Collectors.toList());
-        for (IRecipe recipe : shaped) {
-            AnvilCraftingManager.VANILLA_CRAFTING.add(new VanillaShapedAnvilRecipe(recipe).setRegistryName(recipe.getRegistryName()));
-        }
-        List<IRecipe> shapeless = reg.getValues().stream().filter(i -> i instanceof ShapelessRecipes || i instanceof ShapelessOreRecipe || i instanceof ToolDamageRecipe).collect(Collectors.toList());
-        shapeless.forEach(AnvilCraftingManager.VANILLA_CRAFTING::add);
-    }
-
     private static void registerReplacements(IRecipe original, IRecipe from) {
         NonNullList<Ingredient> ing = original.getIngredients();
         for (int i = 0; i < ing.size(); i++) {

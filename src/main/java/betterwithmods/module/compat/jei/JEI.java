@@ -97,7 +97,7 @@ public class JEI implements IModPlugin {
         reg.addRecipes(KilnManager.INSTANCE.getRecipes(), KilnRecipeCategory.UID);
         reg.addRecipes(TurntableManager.INSTANCE.getRecipes(), TurntableRecipeCategory.UID);
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
-        reg.addRecipes(AnvilCraftingManager.VANILLA_CRAFTING, SteelCraftingCategory.UID);
+        reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
 
         reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
