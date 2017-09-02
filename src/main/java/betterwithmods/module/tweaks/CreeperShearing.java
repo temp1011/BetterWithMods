@@ -52,6 +52,6 @@ public class CreeperShearing extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Shearing a Creeper will removes it's ability to explode, making him very sad";
+        return "Shearing a Creeper will removes its ability to explode, making him very sad";
     }
 }
