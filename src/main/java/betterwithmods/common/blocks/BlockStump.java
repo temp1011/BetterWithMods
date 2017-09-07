@@ -40,6 +40,7 @@ public class BlockStump extends Block implements IMultiVariants {
         super(Material.WOOD);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(40F);
+        this.setResistance(10f);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK));
         this.setHarvestLevel("axe", 0);
