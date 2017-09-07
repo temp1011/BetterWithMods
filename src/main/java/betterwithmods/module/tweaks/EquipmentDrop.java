@@ -2,7 +2,7 @@ package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -15,9 +15,9 @@ public class EquipmentDrop extends Feature {
 
     @SubscribeEvent
     public void setDropChance(EntityJoinWorldEvent e) {
-        if(e.getEntity() instanceof EntityLiving) {
+        if (e.getEntity() instanceof EntityLiving) {
             EntityLiving entity = (EntityLiving) e.getEntity();
-            if(entity instanceof EntityZombie || entity instanceof EntitySkeleton) {
+            if (entity instanceof EntityZombie && !(entity instanceof EntityPigZombie)) {
                 entity.setCanPickUpLoot(true);
                 for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
                     entity.setDropChance(slot, 1);
@@ -25,6 +25,7 @@ public class EquipmentDrop extends Feature {
             }
         }
     }
+
     @Override
     public boolean hasSubscriptions() {
         return true;
@@ -32,6 +33,6 @@ public class EquipmentDrop extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Mobs have a 100% chance to drop any equipment";
+        return "Zombies have a 100% chance to drop any equipment";
     }
 }
