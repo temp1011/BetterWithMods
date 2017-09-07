@@ -18,10 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -175,7 +172,7 @@ public class BWOreDictionary {
         oreNames = getOreIngredients("ore");
         ingotNames = getOreIngredients("ingot");
         cropNames = getOreNames("crop");
-        woods.addAll( Lists.newArrayList(
+        woods.addAll(Lists.newArrayList(
                 new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
                 new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
@@ -207,7 +204,7 @@ public class BWOreDictionary {
 
 
     public static List<ItemStack> getOreNames(String prefix) {
-        return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).flatMap(n -> OreDictionary.getOres(n).stream()).collect(Collectors.toList());
+        return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).map(OreDictionary::getOres).filter(o -> !o.isEmpty()).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public static List<ItemStack> getItems(List<Ore> ores) {
