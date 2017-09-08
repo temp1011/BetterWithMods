@@ -3,7 +3,7 @@ package betterwithmods.module.compat;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.hardcore.HCTools;
+import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.module.tweaks.MobSpawning;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

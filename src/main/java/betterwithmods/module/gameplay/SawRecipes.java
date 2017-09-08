@@ -7,7 +7,7 @@ import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCLumber;
+import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;

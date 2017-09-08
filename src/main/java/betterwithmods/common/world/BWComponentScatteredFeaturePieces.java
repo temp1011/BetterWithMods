@@ -3,7 +3,7 @@ package betterwithmods.common.world;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
-import betterwithmods.module.hardcore.HCStructures;
+import betterwithmods.module.hardcore.world.HCStructures;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityWitch;

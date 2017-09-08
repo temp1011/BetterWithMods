@@ -1,6 +1,6 @@
 package betterwithmods.common.entity.item;
 
-import betterwithmods.module.hardcore.HCBuoy;
+import betterwithmods.module.hardcore.world.HCBuoy;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

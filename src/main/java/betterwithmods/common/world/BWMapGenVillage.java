@@ -4,7 +4,7 @@ import betterwithmods.common.world.gen.village.AbandonedVillagePiece;
 import betterwithmods.common.world.gen.village.Well;
 import betterwithmods.common.world.gen.village.field.BWFieldBase;
 import betterwithmods.module.GlobalConfig;
-import betterwithmods.module.hardcore.HCVillages;
+import betterwithmods.module.hardcore.world.HCVillages;
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;

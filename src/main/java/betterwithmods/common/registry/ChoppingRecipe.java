@@ -2,7 +2,7 @@ package betterwithmods.common.registry;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.module.hardcore.HCLumber;
+import betterwithmods.module.hardcore.crafting.HCLumber;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;

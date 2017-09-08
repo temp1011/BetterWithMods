@@ -3,8 +3,12 @@ package betterwithmods.module.hardcore;
 import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.module.CompatModule;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.hcbeacons.HCBeacons;
-import betterwithmods.module.hardcore.hchunger.HCHunger;
+import betterwithmods.module.hardcore.beacons.HCBeacons;
+import betterwithmods.module.hardcore.crafting.*;
+import betterwithmods.module.hardcore.creatures.*;
+import betterwithmods.module.hardcore.needs.*;
+import betterwithmods.module.hardcore.needs.hunger.HCHunger;
+import betterwithmods.module.hardcore.world.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**

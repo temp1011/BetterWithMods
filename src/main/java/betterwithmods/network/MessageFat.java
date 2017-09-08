@@ -1,6 +1,6 @@
 package betterwithmods.network;
 
-import betterwithmods.module.hardcore.hchunger.HCHunger;
+import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 

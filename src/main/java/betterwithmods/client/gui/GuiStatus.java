@@ -1,7 +1,7 @@
 package betterwithmods.client.gui;
 
 import betterwithmods.BWMod;
-import betterwithmods.module.hardcore.HCMovement;
+import betterwithmods.module.hardcore.needs.HCMovement;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

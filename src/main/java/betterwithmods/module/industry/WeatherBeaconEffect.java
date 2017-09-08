@@ -1,7 +1,7 @@
 package betterwithmods.module.industry;
 
 import betterwithmods.common.blocks.BlockUrn;
-import betterwithmods.module.hardcore.hcbeacons.IBeaconEffect;
+import betterwithmods.module.hardcore.beacons.IBeaconEffect;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

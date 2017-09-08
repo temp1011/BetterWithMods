@@ -7,7 +7,7 @@ import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
-import betterwithmods.module.hardcore.hchunger.HCHunger;
+import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;

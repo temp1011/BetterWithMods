@@ -1,6 +1,6 @@
 package betterwithmods.common.entity.ai;
 
-import betterwithmods.module.hardcore.HCChickens;
+import betterwithmods.module.hardcore.creatures.HCChickens;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;

@@ -1,6 +1,6 @@
 package betterwithmods.common.world.gen.village;
 
-import betterwithmods.module.hardcore.HCVillages;
+import betterwithmods.module.hardcore.world.HCVillages;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;

@@ -1,7 +1,7 @@
 package betterwithmods.common.world.gen.village;
 
 import betterwithmods.common.world.BWMapGenVillage;
-import betterwithmods.module.hardcore.HCVillages;
+import betterwithmods.module.hardcore.world.HCVillages;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

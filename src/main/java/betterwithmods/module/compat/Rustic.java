@@ -8,7 +8,7 @@ import betterwithmods.module.CompatFeature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.SawRecipes;
-import betterwithmods.module.hardcore.HCSaw;
+import betterwithmods.module.hardcore.crafting.HCSaw;
 import betterwithmods.module.tweaks.HighEfficiencyRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -2,10 +2,10 @@ package betterwithmods.util.player;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.HCArmor;
-import betterwithmods.module.hardcore.HCGloom;
-import betterwithmods.module.hardcore.HCInjury;
-import betterwithmods.module.hardcore.hchunger.HCHunger;
+import betterwithmods.module.hardcore.needs.HCArmor;
+import betterwithmods.module.hardcore.needs.HCGloom;
+import betterwithmods.module.hardcore.needs.HCInjury;
+import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

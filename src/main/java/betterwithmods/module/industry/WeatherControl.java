@@ -2,7 +2,7 @@ package betterwithmods.module.industry;
 
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.hcbeacons.HCBeacons;
+import betterwithmods.module.hardcore.beacons.HCBeacons;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 

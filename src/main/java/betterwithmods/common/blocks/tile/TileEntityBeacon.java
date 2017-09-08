@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.tile;
 
-import betterwithmods.module.hardcore.hcbeacons.HCBeacons;
-import betterwithmods.module.hardcore.hcbeacons.IBeaconEffect;
-import betterwithmods.module.hardcore.hcbeacons.SpawnBeaconEffect;
+import betterwithmods.module.hardcore.beacons.HCBeacons;
+import betterwithmods.module.hardcore.beacons.IBeaconEffect;
+import betterwithmods.module.hardcore.beacons.SpawnBeaconEffect;
 import betterwithmods.util.ColorUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import static betterwithmods.module.hardcore.hcbeacons.HCBeacons.BEACON_EFFECTS;
+import static betterwithmods.module.hardcore.beacons.HCBeacons.BEACON_EFFECTS;
 
 /**
  * Created by primetoxinz on 7/17/17.

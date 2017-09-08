@@ -1,7 +1,7 @@
 package betterwithmods.module.compat.immersiveengineering;
 
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.hardcore.HCSeeds;
+import betterwithmods.module.hardcore.needs.HCSeeds;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
