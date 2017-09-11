@@ -102,7 +102,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                     return;
                 IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
                 if (behavior != null) {
-                    if(!world.isAirBlock(check) || !block.isReplaceable(world,check)) {
+                    if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
                         NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
                         InvUtils.insert(tile.inventory, stacks, false);
                     }
@@ -110,8 +110,10 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                 List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(check, check.add(1, 1, 1)), entity -> !entity.isDead);
                 if (!entities.isEmpty()) {
                     IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(entities.get(0).getClass());
-                    NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, entities.get(0),tile.getCurrentSlot());
-                    InvUtils.insert(tile.inventory, stacks, false);
+                    if (behaviorEntity != null) {
+                        NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, entities.get(0), tile.getCurrentSlot());
+                        InvUtils.insert(tile.inventory, stacks, false);
+                    }
                 }
             } else {
                 int index = tile.nextIndex;
@@ -119,10 +121,10 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                 if (index == -1 || stack.isEmpty())
                     world.playEvent(1001, pos, 0);
                 else {
-                    IBehaviorDispenseItem item = this.getBehavior(stack);
-                    if (item != IBehaviorDispenseItem.DEFAULT_BEHAVIOR) {
-                        ItemStack stack1 = item.dispense(impl, stack);
-                        tile.inventory.setStackInSlot(index, stack1);
+                    IBehaviorDispenseItem behavior = this.getBehavior(stack);
+                    if (behavior != null) {
+                        ItemStack stacks = behavior.dispense(impl, stack);
+                        InvUtils.insert(tile.inventory, stacks, false);
                     }
                 }
             }

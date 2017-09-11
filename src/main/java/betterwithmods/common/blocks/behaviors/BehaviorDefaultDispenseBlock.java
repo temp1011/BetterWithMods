@@ -28,13 +28,17 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem {
     @Override
     protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
         EnumFacing facing = source.getBlockState().getValue(BlockBDispenser.FACING);
+
         IPosition pos = BlockBDispenser.getDispensePosition(source);
+
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
-        //ItemStack stack1 = stack.splitStack(1);
+
         World world = source.getWorld();
+
         FakePlayer fake = FakePlayerFactory.get((WorldServer) world, Profiles.BWMDISP);
         fake.setHeldItem(EnumHand.MAIN_HAND, stack);
         DirUtils.setEntityOrientationFacing(fake, facing.getOpposite());
+
         if (GlobalConfig.debug)
             BWMod.logger.debug("Better With Mods FakePlayer ID: " + fake.getUniqueID());
         if (stack.getItem() instanceof ItemBlock && (world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check))) {
@@ -47,32 +51,19 @@ public class BehaviorDefaultDispenseBlock extends BehaviorDefaultDispenseItem {
                     stack.shrink(1);
                     return stack.isEmpty() ? ItemStack.EMPTY : stack;
                 }
-            } else {
-                //stack.grow(1);
-                return stack;
             }
-
         } else if (stack.getItem() instanceof ItemBlockSpecial) {
             if (stack.getItem().onItemUse(fake, world, check, EnumHand.MAIN_HAND, facing, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 stack.shrink(1);
                 return stack.isEmpty() ? ItemStack.EMPTY : stack;
-            } else {
-                //stack.grow(1);
-                return stack;
             }
         } else if (stack.getItem() instanceof ItemSeeds) {
             if (stack.getItem().onItemUse(fake, world, check.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.1F, 0.0F, 0.1F) == EnumActionResult.SUCCESS) {
                 stack.shrink(1);
                 return stack.isEmpty() ? ItemStack.EMPTY : stack;
-            } else {
-                //stack.grow(1);
-                return stack;
             }
-        } else {
-            //stack.grow(1);
-            return stack;
         }
-        return stack;
+        return ItemStack.EMPTY;
     }
 
     private float getX(EnumFacing facing, boolean blockAcross) {
