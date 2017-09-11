@@ -8,8 +8,7 @@ import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,6 +24,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlaceClay extends Feature {
+
+
     @Override
     public String getFeatureDescription() {
         return "Clay and Nether Sludge are placeable blocks.";
@@ -32,13 +33,13 @@ public class PlaceClay extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.BRICK))){
+        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.BRICK))) {
             @Override
             public ItemStack getStack() {
                 return new ItemStack(Items.CLAY_BALL);
             }
         });
-        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))){
+        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))) {
             @Override
             public ItemStack getStack() {
                 return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
@@ -47,9 +48,8 @@ public class PlaceClay extends Feature {
     }
 
     @SubscribeEvent
-    public void onPlaceClay(PlayerInteractEvent.RightClickBlock event)
-    {
-        if(event.isCanceled())
+    public void onPlaceClay(PlayerInteractEvent.RightClickBlock event) {
+        if (event.isCanceled())
             return;
 
         World worldIn = event.getWorld();
@@ -61,28 +61,30 @@ public class PlaceClay extends Feature {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
 
-        if (!block.isReplaceable(worldIn, pos))
-        {
+        if (canPlaceAt(player, worldIn, pos)) {
+            event.setCancellationResult(EnumActionResult.FAIL);
+            return;
+        }
+        if (!block.isReplaceable(worldIn, pos)) {
             pos = pos.offset(facing);
         }
+
 
         ItemStack itemstack = player.getHeldItem(hand);
         IBlockState stateToPlace = null;
 
-        if(itemstack.isEmpty())
+        if (itemstack.isEmpty())
             return;
-        if(itemstack.getItem() == Items.CLAY_BALL)
+        if (itemstack.getItem() == Items.CLAY_BALL)
             stateToPlace = BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.BRICK);
-        if(itemstack.getItem() == BWMItems.MATERIAL && itemstack.getMetadata() == ItemMaterial.EnumMaterial.NETHER_SLUDGE.ordinal())
+        if (itemstack.getItem() == BWMItems.MATERIAL && itemstack.getMetadata() == ItemMaterial.EnumMaterial.NETHER_SLUDGE.ordinal())
             stateToPlace = BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.NETHER_BRICK);
 
-        if (stateToPlace != null && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(stateToPlace.getBlock(), pos, false, facing, null))
-        {
-            if (placeBlockAt(itemstack, player, worldIn, pos, stateToPlace))
-            {
+        if (stateToPlace != null && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(stateToPlace.getBlock(), pos, false, facing, null)) {
+            if (placeBlockAt(itemstack, player, worldIn, pos, stateToPlace)) {
                 SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                if(!player.isCreative())
+                if (!player.isCreative())
                     itemstack.shrink(1);
             }
 
@@ -91,18 +93,28 @@ public class PlaceClay extends Feature {
         }
     }
 
-    private boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState newState)
-    {
+    private boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState newState) {
         if (!world.setBlockState(pos, newState, 11)) return false;
 
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == newState.getBlock())
-        {
+        if (state.getBlock() == newState.getBlock()) {
             newState.getBlock().onBlockPlacedBy(world, pos, state, player, stack);
         }
 
         return true;
     }
+
+
+    private boolean canPlaceAt(EntityPlayer player, World world, BlockPos pos) {
+        if (player.isSneaking())
+            return true;
+        if (world.getTileEntity(pos) != null)
+            return false;
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        return !(block instanceof BlockWorkbench || block instanceof BlockDoor || block instanceof BlockTrapDoor || block instanceof BlockFenceGate);
+    }
+
 
     @Override
     public boolean hasSubscriptions() {

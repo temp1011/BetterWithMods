@@ -39,6 +39,8 @@ import java.util.Set;
  */
 public class HCChickens extends Feature {
 
+    public static final Set<ItemStack> SEEDS = Sets.newHashSet(new ItemStack(BWMBlocks.HEMP), new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.BEETROOT_SEEDS));
+
     public static final ResourceLocation EGG_LAYER = new ResourceLocation(BWMod.MODID, "egglayer");
     public static int timeToLayerEgg = 6000;
 
@@ -61,7 +63,7 @@ public class HCChickens extends Feature {
     @SubscribeEvent
     public void onAttachCap(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityChicken) {
-            event.addCapability(EGG_LAYER, new ChickenProvider(new ItemStack(Items.EGG), Sets.newHashSet(new ItemStack(BWMBlocks.HEMP), new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.BEETROOT_SEEDS))));
+            event.addCapability(EGG_LAYER, new ChickenProvider(new ItemStack(Items.EGG), SEEDS));
         }
     }
 
@@ -99,7 +101,7 @@ public class HCChickens extends Feature {
 
     @SubscribeEvent
     public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof EntityLiving && event.getTarget().hasCapability(EGG_LAYER_CAP, EnumFacing.DOWN)) {
+        if (SEEDS.stream().anyMatch(s -> s.isItemEqual(event.getItemStack())) && event.getTarget() instanceof EntityLiving && event.getTarget().hasCapability(EGG_LAYER_CAP, EnumFacing.DOWN)) {
             event.setCanceled(true);
             event.setResult(Event.Result.DENY);
             IEggLayer layer = event.getTarget().getCapability(EGG_LAYER_CAP, EnumFacing.DOWN);

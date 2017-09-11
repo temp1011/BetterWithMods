@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "minecraft:leather_chestplate"
+  },
+  "pattern": [
+    "L L",
+    "LLL",
+    "LLL"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "L": {
+      "ore": "leather",
+      "type": "forge:ore_dict"
+    }
+  }
+}
