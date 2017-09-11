@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -21,21 +22,21 @@ import java.util.stream.Collectors;
 public class MossGeneration extends Feature {
 
     @SubscribeEvent
-    public void generateMossNearSpawner(TickEvent.WorldTickEvent evt) {
-        if (evt.world.isRemote)
+    public void generateMossNearSpawner(TickEvent.WorldTickEvent event) {
+        if (event.world.isRemote || event.phase != TickEvent.Phase.END || event.side != Side.SERVER)
             return;
-        Random rand = evt.world.rand;
-        List<BlockPos> positions = evt.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
+        Random rand = event.world.rand;
+        List<BlockPos> positions = event.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
         try {
             positions.forEach(pos -> {
                 int x = rand.nextInt(9) - 4;
                 int y = rand.nextInt(5) - 1;
                 int z = rand.nextInt(9) - 4;
                 BlockPos check = pos.add(x, y, z);
-                IBlockState state = evt.world.getBlockState(check);
+                IBlockState state = event.world.getBlockState(check);
                 if ((state.getBlock() == Blocks.COBBLESTONE || (state.getBlock() == Blocks.STONEBRICK && state.getBlock().getMetaFromState(state) == 0)) && rand.nextInt(30) == 0) {
                     IBlockState changeState = state.getBlock() == Blocks.COBBLESTONE ? Blocks.MOSSY_COBBLESTONE.getDefaultState() : Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-                    evt.world.setBlockState(check, changeState);
+                    event.world.setBlockState(check, changeState);
                 }
             });
         } catch (ConcurrentModificationException ignored) {
