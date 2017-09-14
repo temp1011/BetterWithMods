@@ -106,6 +106,7 @@ public final class BWMBlocks {
     public static final Block NETHER_CLAY = new BlockNetherClay().setRegistryName("nether_clay");
     public static final Block DUMMY = new BlockDummy().setRegistryName("multiblock_dummy");
     public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
+    public static final Block COBBLE = new BlockCobble().setRegistryName("cobblestone");
 
 
     private static final List<Block> BLOCKS = new ArrayList<>();
@@ -200,6 +201,7 @@ public final class BWMBlocks {
         registerBlock(NETHER_CLAY);
         registerBlock(DUMMY, null);
         registerBlock(LATHE, null);
+        registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
     }
 
     public static void registerTileEntities() {
