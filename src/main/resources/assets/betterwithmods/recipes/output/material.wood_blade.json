@@ -11,7 +11,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "G": {
-      "ore": "slimeball",
+      "ore": "glue",
       "type": "forge:ore_dict"
     },
     "W": {
