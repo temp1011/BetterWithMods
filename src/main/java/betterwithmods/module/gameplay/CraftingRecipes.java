@@ -9,6 +9,7 @@ import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.SawingRecipe;
 import betterwithmods.module.Feature;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -48,6 +49,9 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.COBBLE, 1, 0), new ItemStack(Blocks.STONE, 1, 1), 0.1F);
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.COBBLE, 1, 1), new ItemStack(Blocks.STONE, 1, 3), 0.1F);
+        GameRegistry.addSmelting(new ItemStack(BWMBlocks.COBBLE, 1, 2), new ItemStack(Blocks.STONE, 1, 5), 0.1F);
 
         for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
             addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 2, type.getMetadata()), Ingredient.fromStacks(type.getBlock())).setRegistryName(new ResourceLocation("stone_wall." + type.getMetadata())));

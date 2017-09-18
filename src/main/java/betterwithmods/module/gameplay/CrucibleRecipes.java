@@ -30,6 +30,9 @@ public class CrucibleRecipes extends Feature {
         addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 6), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 7)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
+        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 1), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 0)});
+        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 3), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 1)});
+        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 5), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 2)});
     }
 
     public static void addCrucibleRecipe(ItemStack output, Object[] inputs) {

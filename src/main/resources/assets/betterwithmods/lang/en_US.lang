@@ -251,6 +251,10 @@ tile.bwm:blood_sapling.name=Bloody Sapling
 
 tile.bwm:nether_clay.name=Nether Sludge Block
 
+tile.bwm:cobble.0.name=Granite Cobblestone
+tile.bwm:cobble.1.name=Diorite Cobblestone
+tile.bwm:cobble.2.name=Andesite Cobblestone
+
 
 tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
 tile.bwm:rustic_compat_siding.1.name=Ironwood Siding

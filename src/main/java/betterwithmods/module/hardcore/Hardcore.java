@@ -21,7 +21,7 @@ public class Hardcore extends CompatModule {
 
     @Override
     public void addCompatFeatures() {
-        registerCompatFeature("applecore", "betterwithmods.module.hardcore.hchunger.HCHunger");
+        registerCompatFeature("applecore", "betterwithmods.module.hardcore.needs.hunger.HCHunger");
     }
 
     @Override
@@ -61,6 +61,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCTorches());
         registerFeature(new HCVillages());
         registerFeature(new HCMovement());
+        registerFeature(new HCCobblestone());
         this.load();
     }
 
