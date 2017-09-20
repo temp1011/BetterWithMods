@@ -25,7 +25,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
@@ -49,7 +48,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn", "potterytype=vase"};
+        return new String[]{"potterytype=crucible", "potterytype=planter", "potterytype=urn", "potterytype=vase", "potterytype=brick", "potterytype=nether_brick"};
     }
 
     @Override
@@ -72,7 +71,6 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (EnumType type : EnumType.VALUES)
-            if(type.hasItem)
                 items.add(getStack(type));
     }
 
@@ -160,23 +158,16 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
         PLANTER(1, "planter"),
         URN(2, "urn"),
         VASE(3, "vase"),
-        BRICK(4, "brick", false),
-        NETHER_BRICK(5, "nether_brick", false);
+        BRICK(4, "brick"),
+        NETHER_BRICK(5, "nether_brick");
         private static final EnumType[] VALUES = values();
 
         private String name;
         private int meta;
-        private boolean hasItem;
 
-        EnumType(int meta, String name, boolean hasItem) {
+        EnumType(int meta, String name) {
             this.meta = meta;
             this.name = name;
-            this.hasItem = hasItem;
-        }
-
-        EnumType(int meta, String name)
-        {
-            this(meta,name,true);
         }
 
         public static EnumType byMeta(int meta) {
