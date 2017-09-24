@@ -1,5 +1,7 @@
 package betterwithmods.common.items;
 
+import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.creatures.HCChickens;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +19,8 @@ public class ItemHempSeed extends ItemBlock {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
+        if (ModuleLoader.isFeatureEnabled(HCChickens.class))
+            return false;
         if (target instanceof EntityChicken) {
             EntityChicken chicken = (EntityChicken) target;
             if (chicken.getGrowingAge() == 0 && !chicken.isInLove()) {

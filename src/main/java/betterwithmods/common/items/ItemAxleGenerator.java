@@ -26,7 +26,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
@@ -168,7 +167,7 @@ public class ItemAxleGenerator extends Item implements IMultiLocations {
                 player.sendMessage(new TextComponentTranslation("bwm.message.vertical_windmill.0"));
         } else {
             if (world.isRemote) {
-                player.sendMessage(new TextComponentString("bwm.message.vertical_windmill.1"));
+                player.sendMessage(new TextComponentTranslation("bwm.message.vertical_windmill.1"));
             }
         }
         return valid;
