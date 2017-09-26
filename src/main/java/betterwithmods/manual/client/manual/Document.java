@@ -36,13 +36,13 @@ public final class Document {
             new PatternMapping("^(#+)\\s(.*)", Document::HeaderSegment), // headers: # ...
             new PatternMapping("(`)(.*?)\\1", Document::CodeSegment), // code: `...`
             new PatternMapping("!\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::ImageSegment), // images: ![...](...)
-            new PatternMapping("@\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEISegment), // images: @[...](...)
+            new PatternMapping("@\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEISegment), // jei text: @[...](...)
+            new PatternMapping("#\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEIImageSegment), // jei image: #[...](...)
             new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
             new PatternMapping("(\\*\\*|__)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | __...__
             new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
             new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment), // strikethrough: ~~...~~
             new PatternMapping("\\{([^\\?]+)\\?([^\\[]+):([^\\[]+)\\}", Document::FeatureSegment)
-
     };
 
     private Document() {
@@ -246,6 +246,19 @@ public final class Document {
 
     private static Segment JEISegment(final Segment s, final Matcher m) {
         return new JEISegment(s, m.group(1), m.group(2));
+    }
+
+    private static Segment JEIImageSegment(final Segment s, final Matcher m) {
+        try {
+            final ImageRenderer renderer = ManualAPI.imageFor(m.group(2));
+            if (renderer != null) {
+                return new JEIRenderSegment(s, m.group(1), m.group(2), renderer);
+            } else {
+                return new JEISegment(s, "No renderer found for: " + m.group(2));
+            }
+        } catch (final Throwable t) {
+            return new JEISegment(s, Strings.isNullOrEmpty(t.toString()) ? "Unknown error." : t.toString(), m.group(2));
+        }
     }
 
     private static final class PatternMapping {

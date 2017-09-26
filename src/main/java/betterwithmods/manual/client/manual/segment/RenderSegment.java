@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Optional;
 
-public final class RenderSegment extends AbstractSegment implements InteractiveSegment {
+public class RenderSegment extends AbstractSegment implements InteractiveSegment {
     private final Segment parent;
     private final String title;
     private final ImageRenderer imageRenderer;
@@ -80,7 +80,7 @@ public final class RenderSegment extends AbstractSegment implements InteractiveS
         GlStateManager.enableAlpha();
 
         if (hovered.isPresent()) {
-            GlStateManager.color(1, 1, 1, 0.15f);
+            GlStateManager.color(0.5f, 0.5f, 0.5f, 0.15f);
             GlStateManager.disableTexture2D();
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex2f(0, 0);

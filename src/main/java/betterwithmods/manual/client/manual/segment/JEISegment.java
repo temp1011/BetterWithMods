@@ -19,6 +19,11 @@ public final class JEISegment extends TextSegment implements InteractiveSegment 
     private final String recipeOutput;
     private long lastHovered = System.currentTimeMillis() - FADE_TIME;
 
+    public JEISegment(@Nullable Segment parent, String text) {
+        super(parent, text);
+        this.recipeOutput = null;
+    }
+
     public JEISegment(final Segment parent, final String text, final String recipeOutput) {
         super(parent, text);
         this.recipeOutput = recipeOutput;
@@ -53,21 +58,24 @@ public final class JEISegment extends TextSegment implements InteractiveSegment 
 
     @Override
     public Optional<String> tooltip() {
-        return Optional.of(recipeOutput);
+        return Optional.ofNullable(recipeOutput);
     }
 
     @Override
     public boolean onMouseClick(final int mouseX, final int mouseY) {
-        if (JEI.JEI_RUNTIME != null) {
-            IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, getStack(recipeOutput));
-            JEI.JEI_RUNTIME.getRecipesGui().show(focus);
+        if (JEI.JEI_RUNTIME != null && recipeOutput != null) {
+            ItemStack stack = getStack(recipeOutput);
+            if (!stack.isEmpty()) {
+                IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
+                JEI.JEI_RUNTIME.getRecipesGui().show(focus);
+            }
             return true;
         }
         return false;
     }
 
-    @Nullable
-    public ItemStack getStack(final String data) {
+    public ItemStack getStack(String data) {
+        data = data.substring(data.indexOf(":") + 1);
         final int splitIndex = data.lastIndexOf('@');
         final String name, optMeta;
         if (splitIndex > 0) {
@@ -79,6 +87,8 @@ public final class JEISegment extends TextSegment implements InteractiveSegment 
         }
         final int meta = (Strings.isNullOrEmpty(optMeta)) ? 0 : Integer.parseInt(optMeta.substring(1));
         final Item item = Item.REGISTRY.getObject(new ResourceLocation(name));
+        if (item == null)
+            return ItemStack.EMPTY;
         return new ItemStack(item, 1, meta);
     }
 
