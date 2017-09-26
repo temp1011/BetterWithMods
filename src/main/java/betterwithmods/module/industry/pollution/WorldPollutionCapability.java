@@ -1,6 +1,7 @@
 package betterwithmods.module.industry.pollution;
 
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +41,8 @@ public class WorldPollutionCapability {
         private HashMap<ChunkPos, Byte> leaves = new HashMap<>();
         private World world;
 
-        public Default() {}
+        public Default() {
+        }
 
         public Default(World world) {
             this.world = world;
@@ -81,8 +83,12 @@ public class WorldPollutionCapability {
                             for (int z = 0; z < 16; z++) {
                                 BlockPos p = pos.getBlock(x, 255, z);
                                 p = world.getHeight(p).down();
-                                if (world.getBlockState(p).getBlock() instanceof BlockLeaves && world.getBlockState(p).getValue(BlockLeaves.DECAYABLE))
-                                    leafCount++;
+                                if (world.getBlockState(p).getBlock() instanceof BlockLeaves) {
+                                    IBlockState state = world.getBlockState(p);
+                                    if (state.getProperties().containsKey(BlockLeaves.DECAYABLE) && state.getValue(BlockLeaves.DECAYABLE))
+                                        leafCount++;
+                                }
+
                             }
                         }
                         setLeafCount(pos, leafCount);
@@ -92,7 +98,7 @@ public class WorldPollutionCapability {
         }
 
         private float getPollutionReduction(BiomeDictionary.Type type) {
-            return Pollution.handler.biomeMods.containsKey(type.getName()) ? Pollution.handler.biomeMods.get(type.getName()) : 1.0F;
+            return Pollution.handler.biomeMods.getOrDefault(type.getName(), 1.0F);
         }
 
         @Override
@@ -196,6 +202,7 @@ public class WorldPollutionCapability {
                 }
             }
         }
+
         //TODO: Numbers may need to be adjusted.
         private void calculateNewPollution(ChunkPos fromChunk, ChunkPos toChunk) {
             float from = getPollution(fromChunk);
@@ -204,8 +211,7 @@ public class WorldPollutionCapability {
                 float change = from * 0.2F;
                 from -= change;
                 to += change;
-            }
-            else {
+            } else {
                 float difference = to / from;
                 if (difference == 0) difference = from / 4;
                 else difference /= 3;

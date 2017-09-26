@@ -2,8 +2,7 @@
 
 ![Wooden Axle](block:betterwithmods:wooden_axle@0)
 
-@[Recipe](block:betterwithmods:wooden_axle@0)
-#[Wooden Axle Recipe](block:betterwithmods:wooden_axle@0)
+
 The Wooden Axle is used to transfer continuous mechanical power in conjunction with [Gearbox](gearbox.md).
 
 These wood and rope devices are only able to handle 3 blocks in a row before breaking under the stress.
