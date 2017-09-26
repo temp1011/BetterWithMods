@@ -47,4 +47,6 @@ public class BlockDummy extends Block {
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.INVISIBLE;
     }
+
+
 }

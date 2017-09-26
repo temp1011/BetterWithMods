@@ -11,41 +11,40 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 2/25/17
  */
 public class Stack {
-    private Object data;
+    private Item item;
     private int meta;
     private Type type;
 
     public Stack(ItemStack stack) {
         if (stack.getItem() instanceof ItemBlock) {
-            this.data = ((ItemBlock) stack.getItem()).getBlock();
+            this.item = stack.getItem();
             this.type = Type.BLOCK;
         } else {
-            this.data = stack.getItem();
+            this.item = stack.getItem();
             this.type = Type.ITEM;
         }
         this.meta = stack.getMetadata();
-
     }
 
     public Stack(Item item, int meta) {
-        this.data = item;
+        this.item = item;
         this.meta = meta;
         this.type = Type.ITEM;
     }
 
     public Stack(Block block, int meta) {
-        this.data = block;
+        this.item = Item.getItemFromBlock(block);
         this.meta = meta;
         this.type = Type.BLOCK;
     }
 
 
-    public Object getData() {
-        return this.data;
+    public Item getItem() {
+        return this.item;
     }
 
     public int getMeta() {
@@ -58,16 +57,16 @@ public class Stack {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Stack))
+        if (!(o instanceof Stack))
             return false;
         Stack stack = (Stack) o;
         boolean wild = meta == OreDictionary.WILDCARD_VALUE || stack.meta == OreDictionary.WILDCARD_VALUE;
-        return wild ? stack.data == this.data : (stack.data == this.data && this.meta == stack.meta);
+        return wild ? stack.item.equals(this.item) : (stack.item.equals(this.item) && this.meta == stack.meta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(data) ^ meta;
+        return Objects.hashCode(item);
     }
 
     private enum Type {
@@ -77,6 +76,6 @@ public class Stack {
 
     @Override
     public String toString() {
-        return String.format("%s->%s:%s:%s", getType(), getType() == Type.BLOCK ? ((Block)getData()).getUnlocalizedName() : ((Item)getData()).getUnlocalizedName(new ItemStack((Item) data,0,meta)), getMeta(), hashCode());
+        return String.format("%s->%s:%s:%s", getType(), getItem().getUnlocalizedName(new ItemStack(item, 0, meta)), getMeta(), hashCode());
     }
 }

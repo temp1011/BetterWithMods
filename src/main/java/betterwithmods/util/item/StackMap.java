@@ -95,7 +95,7 @@ public class StackMap<T> implements Map<Stack, T> {
     }
 
     public T put(String oreDictName, T t) {
-        OreDictionary.getOres(oreDictName).stream().forEach(s -> put(new Stack(s), t));
+        OreDictionary.getOres(oreDictName).forEach(s -> put(new Stack(s), t));
         return t;
     }
 
