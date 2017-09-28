@@ -1,6 +1,5 @@
 package betterwithmods.module.hardcore.needs;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
@@ -13,11 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Iterator;
@@ -71,17 +68,7 @@ public class HCSeeds extends Feature {
             }
         }
     }
-
-    @Override
-    public void init(FMLInitializationEvent event) {
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
-    }
-
-    @Override
-    public void disabledInit(FMLInitializationEvent event) {
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
-    }
-
+    
     @SubscribeEvent
     public void mobDrop(LivingDropsEvent e) {
         Iterator<EntityItem> iter = e.getDrops().iterator();
