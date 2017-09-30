@@ -19,6 +19,10 @@ public final class ToolsManager {
     private ToolsManager() {
     }
 
+    public static Item.ToolMaterial getToolMaterial(ItemTool tool) {
+        return Item.ToolMaterial.valueOf(tool.getToolMaterialName());
+    }
+
     public static void setAxesAsEffectiveAgainst(Block... blocks) {
         for (Item item : Item.REGISTRY) {
             if (!(item instanceof ItemAxe)) continue;

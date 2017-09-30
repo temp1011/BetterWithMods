@@ -3,9 +3,11 @@ package betterwithmods.common.registry;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.hardcore.crafting.HCLumber;
+import betterwithmods.util.item.ToolsManager;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -38,6 +40,14 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     @Override
     public ItemStack getExampleStack() {
         return new ItemStack(Items.IRON_AXE);
+    }
+
+    @Override
+    public boolean shouldDamage(ItemStack stack) {
+        if (isAxe(stack) && stack.getItem() instanceof ItemTool) {
+            return ToolsManager.getToolMaterial((ItemTool) stack.getItem()).getHarvestLevel() < 2;
+        }
+        return super.shouldDamage(stack);
     }
 
     private static boolean isAxe(ItemStack stack) {

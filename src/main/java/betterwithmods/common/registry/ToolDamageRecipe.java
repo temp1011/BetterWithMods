@@ -88,6 +88,10 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         return result.copy();
     }
 
+    public boolean shouldDamage(ItemStack stack) {
+        return true;
+    }
+
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         playSound(inv);
@@ -96,7 +100,7 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty() && isTool.test(stack)) {
                 ItemStack copy = stack.copy();
-                if (!copy.attemptDamageItem(1, new Random(), null)) {
+                if (!shouldDamage(copy) || !copy.attemptDamageItem(1, new Random(), null)) {
                     stacks.set(i, copy.copy());
                 }
             }
