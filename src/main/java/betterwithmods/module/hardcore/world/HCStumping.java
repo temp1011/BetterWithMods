@@ -69,7 +69,7 @@ public class HCStumping extends Feature {
 
     @Override
     public void setupConfig() {
-        BLACKLIST_CONFIG = loadPropStringList("Stump Blacklist", "Logs which do not have", new String[0]);
+        BLACKLIST_CONFIG = loadPropStringList("Stump Blacklist", "Logs which do not create stumps", new String[0]);
         for (String block : BLACKLIST_CONFIG) {
             STUMP_BLACKLIST.add(Block.REGISTRY.getObject(new ResourceLocation(block)));
         }

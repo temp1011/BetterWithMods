@@ -8,8 +8,10 @@ import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.tile.TileBellows;
+import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -43,7 +45,7 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         super(Material.WOOD);
         this.setTickRandomly(true);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, false).withProperty(EnumTier.TIER,EnumTier.WOOD));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, false).withProperty(EnumTier.TIER, EnumTier.WOOD));
         this.setSoundType(SoundType.WOOD);
     }
 
@@ -83,7 +85,7 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ,
                                             int meta, EntityLivingBase living, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, living, hand);
-        return setFacingInBlock(state, living.getHorizontalFacing()).withProperty(ACTIVE,false).withProperty(EnumTier.TIER, EnumTier.VALUES[meta]);
+        return setFacingInBlock(state, living.getHorizontalFacing()).withProperty(ACTIVE, false).withProperty(EnumTier.TIER, EnumTier.VALUES[meta]);
     }
 
     @Override
@@ -91,9 +93,9 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         return state.withProperty(DirUtils.HORIZONTAL, facing);
     }
 
-    public EnumTier getTier(World world,BlockPos pos) {
+    public EnumTier getTier(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if(state.getPropertyKeys().contains(EnumTier.TIER)) {
+        if (state.getPropertyKeys().contains(EnumTier.TIER)) {
             return state.getValue(EnumTier.TIER);
         }
         return null;
@@ -164,6 +166,39 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
 
     public void blow(World world, BlockPos pos) {
         stokeFlames(world, pos);
+        blowItems(world, pos);
+    }
+
+    public void blowItems(World world, BlockPos pos) {
+        EnumFacing facing = getFacing(world.getBlockState(pos));
+        BlockPos pos2 = pos.offset(facing, 4);
+        AxisAlignedBB box = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos2.getX() + 1, pos2.getY() + 1, pos2.getZ() + 1);
+
+        List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, box);
+        for (EntityItem item : items) {
+            blowItem(pos, facing, item);
+        }
+    }
+
+    public void blowItem(BlockPos pos, EnumFacing facing, EntityItem item) {
+        double x = 0, z = 0;
+
+        if (WorldUtils.getDistance(pos, item.getPosition()) > BellowsManager.getWeight(item.getItem()))
+            return;
+        switch (facing.getAxis()) {
+            case X:
+                x += facing.getAxisDirection().getOffset();
+                break;
+            case Z:
+                z += facing.getAxisDirection().getOffset();
+                break;
+        }
+        float scale = 1 / 16f;
+        item.addVelocity(x * scale, 0, z * scale);
+    }
+
+    public void playStateChangeSound(World world, BlockPos pos) {
+        liftCollidingEntities(world, pos);
     }
 
     private void stokeFlames(World world, BlockPos pos) {

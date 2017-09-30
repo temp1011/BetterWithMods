@@ -12,6 +12,7 @@ import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
+import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
@@ -121,6 +122,7 @@ public class BWRegistry {
 
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
+        BellowsManager.postInit();
         ColorUtils.initColors();
     }
 

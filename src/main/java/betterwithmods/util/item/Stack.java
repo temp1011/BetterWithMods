@@ -19,6 +19,7 @@ public class Stack {
     private int meta;
     private Type type;
 
+
     public Stack(ItemStack stack) {
         if (stack.getItem() instanceof ItemBlock) {
             this.item = stack.getItem();
