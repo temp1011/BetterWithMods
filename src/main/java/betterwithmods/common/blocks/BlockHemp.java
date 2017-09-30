@@ -33,7 +33,6 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
-
     }
 
     @Override
@@ -61,7 +60,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     public void grow(World worldIn, BlockPos pos, IBlockState state) {
-        if (!state.getValue(TOP) && state.getValue(AGE).equals(7)) {
+        if (!state.getValue(TOP) && state.getValue(AGE) >= 7) {
             worldIn.setBlockState(pos.up(), state.withProperty(TOP, true));
         }
         super.grow(worldIn, pos, state);
@@ -158,7 +157,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        List<ItemStack> ret = new ArrayList<>();//super.getDrops(world, pos, state, fortune);
+        List<ItemStack> ret = new ArrayList<>();
         int age = getAge(state);
         Random rand = world instanceof World ? ((World) world).rand : new Random();
 

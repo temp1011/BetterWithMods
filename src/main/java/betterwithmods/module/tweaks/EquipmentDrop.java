@@ -2,7 +2,6 @@ package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,8 +16,7 @@ public class EquipmentDrop extends Feature {
     public void setDropChance(EntityJoinWorldEvent e) {
         if (e.getEntity() instanceof EntityLiving) {
             EntityLiving entity = (EntityLiving) e.getEntity();
-            if (entity instanceof EntityZombie && !(entity instanceof EntityPigZombie)) {
-                entity.setCanPickUpLoot(true);
+            if (entity instanceof EntityZombie) {
                 for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
                     entity.setDropChance(slot, 1);
                 }
