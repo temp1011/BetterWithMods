@@ -82,7 +82,7 @@ public class HCStumping extends Feature {
             event.setNewSpeed(0.03f * ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()));
         }
         if (isRoots(world.getBlockState(event.getPos())) && isStump(world.getBlockState(event.getPos().up()))) {
-//            event.setNewSpeed(0.01f * ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()));
+            event.setNewSpeed(0.01f * ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()));
         }
     }
 
