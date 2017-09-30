@@ -1,10 +1,7 @@
 package betterwithmods.util.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.Collections;
@@ -46,6 +43,15 @@ public final class ToolsManager {
     public static void setToolAsEffectiveAgainst(ItemTool tool, Block... blocks) {
         Set<Block> effectiveOn = getEffectiveBlocks(tool);
         Collections.addAll(effectiveOn, blocks);
+    }
+
+    public static float getSpeed(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
+            ItemTool tool = (ItemTool) stack.getItem();
+            Item.ToolMaterial material = getToolMaterial(tool);
+            return material.getEfficiencyOnProperMaterial();
+        }
+        return 1;
     }
 
 }

@@ -1,9 +1,9 @@
 package betterwithmods.common.items.tools;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.blocks.BlockStump;
 import betterwithmods.common.items.ItemAltName;
 import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.hardcore.world.HCStumping;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -37,10 +37,12 @@ public class ItemStumpRemover extends ItemAltName {
                 return EnumActionResult.FAIL;
             } else {
                 IBlockState state = worldIn.getBlockState(pos);
-                if (state.getBlock() instanceof BlockStump) {
+                IBlockState below = worldIn.getBlockState(pos.down());
+                if (worldIn.isAirBlock(pos.up()) && HCStumping.isStump(state) && HCStumping.isRoots(below)) {
                     if (!worldIn.isRemote) {
                         worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, 1, 1);
-                        worldIn.destroyBlock(pos, false);
+                        worldIn.setBlockToAir(pos);
+                        state.getBlock().harvestBlock(worldIn, playerIn, pos, state, null, stack);
                     }
 
                     stack.shrink(1);

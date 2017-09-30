@@ -309,8 +309,7 @@ public class BWOreDictionary {
         }
 
         public ItemStack getSawdust(int count) {
-            ItemStack copy = isSoulDust ? ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
-            return copy;
+            return isSoulDust ? ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
         }
 
 

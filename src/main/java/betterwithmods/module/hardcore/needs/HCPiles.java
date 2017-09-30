@@ -12,6 +12,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
@@ -75,8 +77,10 @@ public class HCPiles extends Feature {
 //        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.DIRT_SLAB, 4), "##", '#', Blocks.DIRT);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
+        if (event.getResult().equals(Event.Result.DENY))
+            return;
         IBlockState state = event.getState();
         EntityPlayer player = event.getHarvester();
         if (player != null) {
