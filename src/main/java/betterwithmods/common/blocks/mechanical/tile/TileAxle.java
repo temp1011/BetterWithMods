@@ -198,7 +198,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     }
 
     public void setPower(int power) {
-        this.power = Math.min(power, maxPower);
+        this.power = Math.min(power, maxPower + 1);
     }
 
     @Override
