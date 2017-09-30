@@ -89,6 +89,7 @@ public class HCHunger extends CompatFeature {
         BWMRecipes.removeRecipe(new ItemStack(Items.PUMPKIN_PIE));
         BWMRecipes.removeRecipe(new ItemStack(Items.RABBIT_STEW));
         BWMRecipes.removeRecipe(new ItemStack(Items.BEETROOT_SOUP));
+        BWMRecipes.removeRecipe(new ItemStack(Items.BREAD));
     }
 
     @Override
