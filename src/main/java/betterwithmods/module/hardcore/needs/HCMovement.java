@@ -34,12 +34,12 @@ public class HCMovement extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        MATERIAL_MOVEMENT.put(Material.ROCK, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.WOOD, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.IRON, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.CLOTH, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.CARPET, 1.1f);
-        MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.1f);
+        MATERIAL_MOVEMENT.put(Material.ROCK, 1.5f);
+        MATERIAL_MOVEMENT.put(Material.WOOD, 1.5f);
+        MATERIAL_MOVEMENT.put(Material.IRON, 1.5f);
+        MATERIAL_MOVEMENT.put(Material.CLOTH, 1.5f);
+        MATERIAL_MOVEMENT.put(Material.CARPET, 1.5f);
+        MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.5f);
 
         MATERIAL_MOVEMENT.put(Material.GRASS, 1.0f);
         MATERIAL_MOVEMENT.put(Material.GLASS, 1.0f);
@@ -53,9 +53,9 @@ public class HCMovement extends Feature {
         MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
 
         BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(),  0.70f);
-        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.1f);
-        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.1f);
-        BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.1f);
+        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.5f);
+        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.5f);
+        BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.5f);
     }
 
 
@@ -69,10 +69,8 @@ public class HCMovement extends Feature {
                 float speed;
                 if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
                     speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
-                } else if (MATERIAL_MOVEMENT.containsKey(state.getMaterial())) {
-                    speed = MATERIAL_MOVEMENT.get(state.getMaterial());
                 } else {
-                    speed = DEFAULT_SPEED;
+                    speed = MATERIAL_MOVEMENT.getOrDefault(state.getMaterial(), DEFAULT_SPEED);
                 }
                 if (!player.world.getBlockState(player.getPosition()).getMaterial().isSolid()) {
                     state = player.world.getBlockState(player.getPosition());
