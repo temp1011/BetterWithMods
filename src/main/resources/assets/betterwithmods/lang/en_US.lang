@@ -319,6 +319,9 @@ tile.bwm:bop_compat_corner.13.name=Mahogany Corner
 tile.bwm:bop_compat_corner.14.name=Ebony Wood Corner
 tile.bwm:bop_compat_corner.15.name=Eucalyptus Wood Corner
 
+tile.bwm:deadweight.intact.name=Deadweight
+tile.bwm:deadweight.slightDamaged.name=Slightly Damaged Deadweight
+tile.bwm:deadweight.veryDamaged.name=Very Damaged Deadweight
 
 item.bwm:material.gear.name=Wooden Gear
 item.bwm:material.nethercoal.name=Nethercoal
