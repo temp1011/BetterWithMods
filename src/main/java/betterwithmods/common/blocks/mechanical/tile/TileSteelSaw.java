@@ -9,8 +9,10 @@ import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -59,10 +61,16 @@ public class TileSteelSaw extends TileAxleMachine {
         IBlockState state = world.getBlockState(pos);
         Set<BlockPos> positions = WorldUtils.getPosAround(pos, state.getValue(DirUtils.AXIS));
         if (getPower() > 0 && world.getTotalWorldTime() % 10 == 0) {
-            AxisAlignedBB box = BOXES[state.getValue(DirUtils.AXIS).ordinal()].offset(pos);
+            EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
+            AxisAlignedBB box = BOXES[axis.ordinal()].offset(pos);
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, box.grow(.25));
             if (!entities.isEmpty()) {
                 entities.forEach(this::hitEntity);
+                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
+            }
+            List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, box.grow(0.5));
+            if (!items.isEmpty()) {
+                items.forEach(item -> moveItems(axis, item));
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
             }
 
@@ -72,6 +80,27 @@ public class TileSteelSaw extends TileAxleMachine {
             }
 
         }
+    }
+
+    private void moveItems(EnumFacing.Axis axis, EntityItem item) {
+        BlockPos itemPos = item.getPosition();
+        int x = getPos().getX() - itemPos.getX();
+        int y = getPos().getY() - itemPos.getY();
+        int z = getPos().getZ() - itemPos.getZ();
+        switch (axis) {
+            default:
+                break;
+            case X:
+                if (z == 0)
+                    item.setVelocity(0, 0, y / 2d);
+                break;
+            case Z:
+                if (x == 0)
+                    item.setVelocity(y / 2d, 0, 0);
+                break;
+        }
+
+
     }
 
     private void hitEntity(EntityLivingBase entity) {

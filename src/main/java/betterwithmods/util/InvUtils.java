@@ -160,13 +160,12 @@ public class InvUtils {
     public static ItemStack attemptInsert(IItemHandler inv, ItemStack stack, int minSlot, int maxSlot, boolean simulate) {
         if (isFull(inv))
             return stack;
-        ItemStack leftover = ItemStack.EMPTY;
         for (int slot = minSlot; slot < maxSlot; slot++) {
-            leftover = inv.insertItem(slot, stack, simulate);
-            if (leftover.isEmpty())
+            stack = inv.insertItem(slot, stack, simulate);
+            if (stack.isEmpty())
                 break;
         }
-        return leftover;
+        return stack;
     }
 
     public static boolean insertFromWorld(IItemHandler inv, EntityItem entity, int minSlot, int maxSlot, boolean simulate) {
