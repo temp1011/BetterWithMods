@@ -13,6 +13,9 @@ package betterwithmods.network;
 
 
 import betterwithmods.BWMod;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -33,4 +36,10 @@ public class NetworkHandler {
     public static void sendToAllAround(IMessage message, World world, BlockPos pos) {
         INSTANCE.sendToAllAround(message, new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128));
     }
+
+	public static void sendPacket(Entity player, Packet<?> packet) {
+		if(player instanceof EntityPlayerMP && ((EntityPlayerMP) player).connection != null) {
+			((EntityPlayerMP) player).connection.sendPacket(packet);
+		}
+	}
 }

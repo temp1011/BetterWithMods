@@ -63,6 +63,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCMovement());
         registerFeature(new HCCobblestone());
         registerFeature(new HCDeadweight());
+//        registerFeature(new HCSquid());
         this.load();
     }
 

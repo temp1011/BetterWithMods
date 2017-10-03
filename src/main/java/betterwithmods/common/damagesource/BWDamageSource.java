@@ -18,6 +18,7 @@ public class BWDamageSource extends DamageSource {
     private static MultiFakeSource steel_saw = null;
     private static FakeDamageSource choppingBlock = null;
     public static final BWDamageSource acidRain = new BWDamageSource("acid_rain", true);
+	public static final BWDamageSource squid = new BWDamageSource("squid", false);
 
     protected BWDamageSource(String name, boolean ignoreArmor) {
         super(name);
