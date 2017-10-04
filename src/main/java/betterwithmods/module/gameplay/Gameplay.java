@@ -4,6 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Module;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -41,9 +42,11 @@ public class Gameplay extends Module {
         crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0 );
         kidFriendly = loadPropBool("Kid Friendly","Makes some features more kid friendly", false);
 
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
     }
 
-
+	@Override
+	public void init(FMLInitializationEvent event) {
+		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
+	}
 }
 
