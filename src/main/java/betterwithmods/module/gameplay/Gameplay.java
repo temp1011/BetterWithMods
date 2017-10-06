@@ -46,6 +46,7 @@ public class Gameplay extends Module {
 
 	@Override
 	public void init(FMLInitializationEvent event) {
+    	super.init(event);
 		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
 	}
 }
