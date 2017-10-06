@@ -30,94 +30,103 @@ import java.util.Set;
  */
 public class HCStumping extends Feature {
 
-    public static Set<Block> STUMP_BLACKLIST = Sets.newHashSet(BWMBlocks.BLOOD_LOG);
+	public static boolean SPEED_UP_WITH_TOOLS;
+	public static float STUMP_BREAK_SPEED;
+	public static float ROOT_BREAK_SPEED;
 
-    @Override
-    public String getFeatureDescription() {
-        return "Makes the bottom block of trees into stumps which cannot be removed by hand, making your mark on the world more obvious";
-    }
+	public static Set<Block> STUMP_BLACKLIST = Sets.newHashSet(BWMBlocks.BLOOD_LOG);
 
-    @Override
-    public void init(FMLInitializationEvent event) {
-    }
+	@Override
+	public String getFeatureDescription() {
+		return "Makes the bottom block of trees into stumps which cannot be removed by hand, making your mark on the world more obvious";
+	}
 
-    @Nullable
-    public static BlockPlanks.EnumType getWoodType(IBlockState state) {
-        if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
-            return state.getValue(BlockPlanks.VARIANT);
-        } else if (state.getProperties().containsKey(BlockOldLog.VARIANT)) {
-            return state.getValue(BlockOldLog.VARIANT);
-        } else if (state.getProperties().containsKey(BlockNewLog.VARIANT)) {
-            return state.getValue(BlockNewLog.VARIANT);
-        } else return null;
-    }
+	@Override
+	public void init(FMLInitializationEvent event) {
+	}
 
-    @Override
-    public boolean requiresMinecraftRestartToEnable() {
-        return true;
-    }
+	@Nullable
+	public static BlockPlanks.EnumType getWoodType(IBlockState state) {
+		if (state.getProperties().containsKey(BlockPlanks.VARIANT)) {
+			return state.getValue(BlockPlanks.VARIANT);
+		} else if (state.getProperties().containsKey(BlockOldLog.VARIANT)) {
+			return state.getValue(BlockOldLog.VARIANT);
+		} else if (state.getProperties().containsKey(BlockNewLog.VARIANT)) {
+			return state.getValue(BlockNewLog.VARIANT);
+		} else
+			return null;
+	}
 
-    @Override
-    public boolean hasSubscriptions() {
-        return true;
-    }
+	@Override
+	public boolean requiresMinecraftRestartToEnable() {
+		return true;
+	}
 
-    public static String[] BLACKLIST_CONFIG;
+	@Override
+	public boolean hasSubscriptions() {
+		return true;
+	}
 
-    public static boolean isStump(IBlockState state) {
-        if (!STUMP_BLACKLIST.contains(state.getBlock()) && state.getBlock() instanceof BlockLog) {
-            if (state.getPropertyKeys().contains(BlockLog.LOG_AXIS)) {
-                return state.getValue(BlockLog.LOG_AXIS).equals(BlockLog.EnumAxis.Y);
-            }
-            return true;
-        }
-        return false;
-    }
+	public static String[] BLACKLIST_CONFIG;
 
-    public static boolean isRoots(IBlockState state) {
-        return state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS;
-    }
+	public static boolean isStump(IBlockState state) {
+		if (!STUMP_BLACKLIST.contains(state.getBlock()) && state.getBlock() instanceof BlockLog) {
+			if (state.getPropertyKeys().contains(BlockLog.LOG_AXIS)) {
+				return state.getValue(BlockLog.LOG_AXIS).equals(BlockLog.EnumAxis.Y);
+			}
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public void setupConfig() {
-        BLACKLIST_CONFIG = loadPropStringList("Stump Blacklist", "Logs which do not create stumps", new String[0]);
-        for (String block : BLACKLIST_CONFIG) {
-            STUMP_BLACKLIST.add(Block.REGISTRY.getObject(new ResourceLocation(block)));
-        }
-    }
+	public static boolean isRoots(IBlockState state) {
+		return state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS;
+	}
 
-    @SubscribeEvent
-    public void getHarvest(PlayerEvent.BreakSpeed event) {
-        World world = event.getEntityPlayer().getEntityWorld();
-        if (isStump(world.getBlockState(event.getPos())) && isRoots(world.getBlockState(event.getPos().down()))) {
-            event.setNewSpeed(0.03f * ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()));
-        }
-        if (isRoots(world.getBlockState(event.getPos())) && isStump(world.getBlockState(event.getPos().up()))) {
-            event.setNewSpeed(0.01f * ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()));
-        }
-    }
+	@Override
+	public void setupConfig() {
+		BLACKLIST_CONFIG = loadPropStringList("Stump Blacklist", "Logs which do not create stumps", new String[0]);
+		for (String block : BLACKLIST_CONFIG) {
+			STUMP_BLACKLIST.add(Block.REGISTRY.getObject(new ResourceLocation(block)));
+		}
+		SPEED_UP_WITH_TOOLS = loadPropBool("Speed up with tool", "Speed up Stump mining with tools", true);
+		STUMP_BREAK_SPEED = (float) loadPropDouble("Stump Break speed", "Base break speed of stumps, scaled by tool speed option", 0.03f);
+		ROOT_BREAK_SPEED = (float) loadPropDouble("Root Break speed", "Base break speed of roots, scaled by tool speed option", 0.01f);
+	}
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onHarvest(BlockEvent.HarvestDropsEvent event) {
+	@SubscribeEvent
+	public void getHarvest(PlayerEvent.BreakSpeed event) {
+		World world = event.getEntityPlayer().getEntityWorld();
+		if (isStump(world.getBlockState(event.getPos())) && isRoots(world.getBlockState(event.getPos().down()))) {
+			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()) : 1;
+			event.setNewSpeed(STUMP_BREAK_SPEED * scale);
+		}
+		if (isRoots(world.getBlockState(event.getPos())) && isStump(world.getBlockState(event.getPos().up()))) {
+			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()) : 1;
+			event.setNewSpeed(ROOT_BREAK_SPEED * scale);
+		}
+	}
 
-        if (isStump(event.getState()) && isRoots(event.getWorld().getBlockState(event.getPos().down()))) {
-            ItemStack stack = BWMRecipes.getStackFromState(event.getState());
-            BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
-            if (wood != null) {
-                event.getDrops().clear();
-                event.getDrops().addAll(Lists.newArrayList(wood.getSawdust(1), wood.getBark(1)));
-            }
-        }
-        if (isRoots(event.getState()) && isStump(event.getWorld().getBlockState(event.getPos().up()))) {
-            ItemStack stack = BWMRecipes.getStackFromState(event.getWorld().getBlockState(event.getPos().up()));
-            BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
-            if (wood != null) {
-                event.setResult(Event.Result.DENY);
-                event.getDrops().clear();
-                event.getDrops().addAll(Lists.newArrayList(new ItemStack(BWMItems.DIRT_PILE, 2), wood.getSawdust(1), wood.getBark(1)));
-            }
-        }
-    }
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public void onHarvest(BlockEvent.HarvestDropsEvent event) {
 
+		if (isStump(event.getState()) && isRoots(event.getWorld().getBlockState(event.getPos().down()))) {
+			ItemStack stack = BWMRecipes.getStackFromState(event.getState());
+			BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
+			if (wood != null) {
+				event.getDrops().clear();
+				event.getDrops().addAll(Lists.newArrayList(wood.getSawdust(1), wood.getBark(1)));
+			}
+		}
+		if (isRoots(event.getState()) && isStump(event.getWorld().getBlockState(event.getPos().up()))) {
+			ItemStack stack = BWMRecipes.getStackFromState(event.getWorld().getBlockState(event.getPos().up()));
+			BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
+			if (wood != null) {
+				event.setResult(Event.Result.DENY);
+				event.getDrops().clear();
+				event.getDrops().addAll(Lists.newArrayList(new ItemStack(BWMItems.DIRT_PILE, 2), wood.getSawdust(1), wood.getBark(1)));
+			}
+		}
+	}
 
 }
