@@ -26,8 +26,8 @@ public class MossGeneration extends Feature {
         if (event.world.isRemote || event.phase != TickEvent.Phase.END || event.side != Side.SERVER)
             return;
         Random rand = event.world.rand;
-        List<BlockPos> positions = event.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
         try {
+	        List<BlockPos> positions = event.world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
             positions.forEach(pos -> {
                 int x = rand.nextInt(9) - 4;
                 int y = rand.nextInt(5) - 1;
@@ -40,6 +40,7 @@ public class MossGeneration extends Feature {
                 }
             });
         } catch (ConcurrentModificationException ignored) {
+        	ignored.printStackTrace();
         }
     }
 
