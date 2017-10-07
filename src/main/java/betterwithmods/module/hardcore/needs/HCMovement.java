@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,88 +24,86 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.UUID;
 
-
 public class HCMovement extends Feature {
-    public final static UUID PENALTY_SPEED_UUID = UUID.fromString("aece6a05-d163-4871-aaf3-ebab43b0fcfa");
+	public final static UUID PENALTY_SPEED_UUID = UUID.fromString("aece6a05-d163-4871-aaf3-ebab43b0fcfa");
 
-    public static final HashMap<Material, Float> MATERIAL_MOVEMENT = Maps.newHashMap();
-    public static final HashMap<IBlockState, Float> BLOCK_OVERRIDE_MOVEMENT = Maps.newHashMap();
-    public static final float DEFAULT_SPEED = 0.75f;
+	public static final HashMap<Material, Float> MATERIAL_MOVEMENT = Maps.newHashMap();
+	public static final HashMap<IBlockState, Float> BLOCK_OVERRIDE_MOVEMENT = Maps.newHashMap();
+	public static final float DEFAULT_SPEED = 0.75f;
 
-    @Override
-    public String getFeatureDescription() {
-        return "Change walking speed depending on the block";
-    }
+	@Override
+	public String getFeatureDescription() {
+		return "Change walking speed depending on the block";
+	}
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        MATERIAL_MOVEMENT.put(Material.ROCK, 1.5f);
-        MATERIAL_MOVEMENT.put(Material.WOOD, 1.5f);
-        MATERIAL_MOVEMENT.put(Material.IRON, 1.5f);
-        MATERIAL_MOVEMENT.put(Material.CLOTH, 1.5f);
-        MATERIAL_MOVEMENT.put(Material.CARPET, 1.5f);
-        MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.5f);
+	@Override
+	public void preInit(FMLPreInitializationEvent event) {
+		MATERIAL_MOVEMENT.put(Material.ROCK, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.WOOD, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.IRON, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.CLOTH, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.CARPET, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.5f);
 
-        MATERIAL_MOVEMENT.put(Material.GRASS, 1.0f);
-        MATERIAL_MOVEMENT.put(Material.GLASS, 1.0f);
-        MATERIAL_MOVEMENT.put(Material.GROUND, 1.0f);
-        MATERIAL_MOVEMENT.put(Material.CLAY, 1.0f);
+		MATERIAL_MOVEMENT.put(Material.GRASS, 1.0f);
+		MATERIAL_MOVEMENT.put(Material.GLASS, 1.0f);
+		MATERIAL_MOVEMENT.put(Material.GROUND, 1.0f);
+		MATERIAL_MOVEMENT.put(Material.CLAY, 1.0f);
 
-        MATERIAL_MOVEMENT.put(Material.SAND, 0.75f);
-        MATERIAL_MOVEMENT.put(Material.SNOW, 0.75f);
-        MATERIAL_MOVEMENT.put(Material.LEAVES, 0.70f);
-        MATERIAL_MOVEMENT.put(Material.PLANTS, 0.70f);
-        MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
+		MATERIAL_MOVEMENT.put(Material.SAND, 0.75f);
+		MATERIAL_MOVEMENT.put(Material.SNOW, 0.75f);
+		MATERIAL_MOVEMENT.put(Material.LEAVES, 0.70f);
+		MATERIAL_MOVEMENT.put(Material.PLANTS, 0.70f);
+		MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
 
-        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(),  0.70f);
-        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.5f);
-        BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.5f);
-        BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.5f);
-    }
+		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(), 0.70f);
+		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.5f);
+		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.5f);
+		BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.5f);
+	}
 
+	@SubscribeEvent
+	public void onWalk(TickEvent.PlayerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			EntityPlayer player = event.player;
+			if (player.onGround) {
+				BlockPos blockpos = new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY - 0.2D), MathHelper.floor(player.posZ));
+				IBlockState state = player.world.getBlockState(blockpos);
+				float speed;
+				if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
+					speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
+				} else {
+					speed = MATERIAL_MOVEMENT.getOrDefault(state.getMaterial(), DEFAULT_SPEED);
+				}
+				if (!player.world.getBlockState(player.getPosition()).getMaterial().isSolid()) {
+					state = player.world.getBlockState(player.getPosition());
+					if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
+						speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
+					} else if (MATERIAL_MOVEMENT.containsKey(state.getMaterial())) {
+						speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
+					}
+				}
+				PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public void onWalk(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            EntityPlayer player = event.player;
-            if (player.onGround) {
-                BlockPos blockpos = new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY - 0.2D), MathHelper.floor(player.posZ));
-                IBlockState state = player.world.getBlockState(blockpos);
-                float speed;
-                if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
-                    speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
-                } else {
-                    speed = MATERIAL_MOVEMENT.getOrDefault(state.getMaterial(), DEFAULT_SPEED);
-                }
-                if (!player.world.getBlockState(player.getPosition()).getMaterial().isSolid()) {
-                    state = player.world.getBlockState(player.getPosition());
-                    if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
-                        speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
-                    } else if (MATERIAL_MOVEMENT.containsKey(state.getMaterial())) {
-                        speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
-                    }
-                }
-                PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
-            }
-        }
-    }
-
-    @Override
-    public boolean hasSubscriptions() {
-        return true;
-    }
-
+	@Override
+	public boolean hasSubscriptions() {
+		return true;
+	}
 
 	@SideOnly(Side.CLIENT)
-    @SubscribeEvent
+	@SubscribeEvent
 	public void onFOV(FOVUpdateEvent event) {
 		float f = event.getFov();
 
 		IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
 		double value = iattributeinstance.getAttributeValue();
-		if (iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID) != null) {
-			value /= (1 + iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID).getAmount());
+		AttributeModifier mod = iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID);
+		if (mod != null) {
+			value /= (1 + mod.getAmount());
 		}
 		f = (float) ((double) f * ((value / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
 

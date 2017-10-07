@@ -42,9 +42,6 @@ public final class PlayerHelper {
         return !player.isCreative() && !player.isSpectator() && !player.isSpectator();
     }
 
-    public static float getSpeedModifier(EntityPlayer player) {
-        return Math.min(getHealthPenalty(player).getModifier(), Math.min(getFatPenalty(player).getModifier(), getHungerPenalty(player).getModifier()));
-    }
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
         if (!ModuleLoader.isFeatureEnabled(HCGloom.class))

@@ -239,7 +239,7 @@ public class HCHunger extends CompatFeature {
     public void givePenalties(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getSpeedModifier(player), PlayerHelper.PENALTY_SPEED_UUID);
+            PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getHungerPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
         }
     }
 
