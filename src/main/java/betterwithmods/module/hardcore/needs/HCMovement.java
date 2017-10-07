@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -30,6 +31,7 @@ public class HCMovement extends Feature {
 	public static final HashMap<Material, Float> MATERIAL_MOVEMENT = Maps.newHashMap();
 	public static final HashMap<IBlockState, Float> BLOCK_OVERRIDE_MOVEMENT = Maps.newHashMap();
 	public static final float DEFAULT_SPEED = 0.75f;
+	public static final float FAST = 1.2f;
 
 	@Override
 	public String getFeatureDescription() {
@@ -38,12 +40,12 @@ public class HCMovement extends Feature {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		MATERIAL_MOVEMENT.put(Material.ROCK, 1.5f);
-		MATERIAL_MOVEMENT.put(Material.WOOD, 1.5f);
-		MATERIAL_MOVEMENT.put(Material.IRON, 1.5f);
-		MATERIAL_MOVEMENT.put(Material.CLOTH, 1.5f);
-		MATERIAL_MOVEMENT.put(Material.CARPET, 1.5f);
-		MATERIAL_MOVEMENT.put(Material.CIRCUITS, 1.5f);
+		MATERIAL_MOVEMENT.put(Material.ROCK, FAST);
+		MATERIAL_MOVEMENT.put(Material.WOOD, FAST);
+		MATERIAL_MOVEMENT.put(Material.IRON, FAST);
+		MATERIAL_MOVEMENT.put(Material.CLOTH, FAST);
+		MATERIAL_MOVEMENT.put(Material.CARPET, FAST);
+		MATERIAL_MOVEMENT.put(Material.CIRCUITS, FAST);
 
 		MATERIAL_MOVEMENT.put(Material.GRASS, 1.0f);
 		MATERIAL_MOVEMENT.put(Material.GLASS, 1.0f);
@@ -57,10 +59,11 @@ public class HCMovement extends Feature {
 		MATERIAL_MOVEMENT.put(Material.VINE, 0.70f);
 
 		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.SOUL_SAND.getDefaultState(), 0.70f);
-		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), 1.5f);
-		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), 1.5f);
-		BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), 1.5f);
+		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRAVEL.getDefaultState(), FAST);
+		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), FAST);
+		BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), FAST);
 	}
+	public static HashMap<UUID, Float> PREVIOUS_SPEED = Maps.newHashMap();
 
 	@SubscribeEvent
 	public void onWalk(TickEvent.PlayerTickEvent event) {
@@ -83,7 +86,11 @@ public class HCMovement extends Feature {
 						speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
 					}
 				}
-				PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
+				float prev = PREVIOUS_SPEED.getOrDefault(player.getUniqueID(), DEFAULT_SPEED);
+				if(prev != speed) {
+					PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
+				}
+				PREVIOUS_SPEED.put(player.getGameProfile().getId(), speed);
 			}
 		}
 	}
@@ -96,17 +103,6 @@ public class HCMovement extends Feature {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onFOV(FOVUpdateEvent event) {
-		float f = event.getFov();
 
-		IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-
-		double value = iattributeinstance.getAttributeValue();
-		AttributeModifier mod = iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID);
-		if (mod != null) {
-			value /= (1 + mod.getAmount());
-		}
-		f = (float) ((double) f * ((value / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
-
-		event.setNewfov(f);
 	}
 }

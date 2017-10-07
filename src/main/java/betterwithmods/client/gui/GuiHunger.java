@@ -38,6 +38,7 @@ public class GuiHunger {
         drawFoodOverlay(left, top);
     }
 
+    @SuppressWarnings("Duplicates")
     @SideOnly(Side.CLIENT)
     private void drawFoodOverlay(int left, int top) {
         EntityPlayer player = this.mc.player;
@@ -55,13 +56,12 @@ public class GuiHunger {
             --this.shakeCounter;
         }
 
-        GlStateManager.enableBlend();
+	    GlStateManager.enableBlend();
         for (int i = 0; i < 10; ++i) {
             int y = top;
             int icon = 16;
             byte background = 0;
-
-            if (player.isPotionActive(MobEffects.HUNGER)) {
+	        if (player.isPotionActive(MobEffects.HUNGER)) {
                 icon += 36;
                 background = 13;
             } else if (i < roll) {
@@ -78,25 +78,19 @@ public class GuiHunger {
 
             mc.ingameGUI.drawTexturedModalRect(x, y, 16 + background * 9, 27, 9, 9);
 
-            int remainder;
-            if (!player.isPotionActive(MobEffects.HUNGER)) {
-                if (i < roll) {
-                    mc.ingameGUI.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
-                } else if (i == roll) {
-                    remainder = food % 6;
-
-                    if (remainder != 0) {
-                        mc.ingameGUI.drawTexturedModalRect(x + 7 - remainder, y, icon + 36 + 7
-                                - remainder, 27, 3 + remainder, 9);
-                    }
-                }
-            }
+	        int remainder;
+	        if (i == roll && !player.isPotionActive(MobEffects.HUNGER)) {
+		        remainder = fat % 6;
+		        if (remainder != 0) {
+			        mc.ingameGUI.drawTexturedModalRect(x + 8 - remainder, y, 33 - remainder,
+				        27, 1 + remainder, 9);
+		        }
+	        }
 
             if (i < shank) {
                 mc.ingameGUI.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
             } else if (i == shank) {
                 remainder = food % 6;
-
                 if (remainder != 0) {
                     mc.ingameGUI.drawTexturedModalRect(x + 7 - remainder, y, icon + 36 + 7
                             - remainder, 27, 3 + remainder, 9);
