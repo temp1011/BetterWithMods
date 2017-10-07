@@ -63,16 +63,18 @@ public class HCMovement extends Feature {
 		BLOCK_OVERRIDE_MOVEMENT.put(Blocks.GRASS_PATH.getDefaultState(), FAST);
 		BLOCK_OVERRIDE_MOVEMENT.put(BWMBlocks.DIRT_SLAB.getDefaultState().withProperty(BlockDirtSlab.VARIANT, BlockDirtSlab.DirtSlabType.PATH), FAST);
 	}
+
 	public static HashMap<UUID, Float> PREVIOUS_SPEED = Maps.newHashMap();
 
 	@SubscribeEvent
 	public void onWalk(TickEvent.PlayerTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
 			EntityPlayer player = event.player;
+			float speed = 0;
 			if (player.onGround) {
 				BlockPos blockpos = new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY - 0.2D), MathHelper.floor(player.posZ));
 				IBlockState state = player.world.getBlockState(blockpos);
-				float speed;
+
 				if (BLOCK_OVERRIDE_MOVEMENT.containsKey(state)) {
 					speed = BLOCK_OVERRIDE_MOVEMENT.get(state);
 				} else {
@@ -86,12 +88,11 @@ public class HCMovement extends Feature {
 						speed *= MATERIAL_MOVEMENT.get(state.getMaterial());
 					}
 				}
-				float prev = PREVIOUS_SPEED.getOrDefault(player.getUniqueID(), DEFAULT_SPEED);
-				if(prev != speed) {
-					PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
-				}
 				PREVIOUS_SPEED.put(player.getGameProfile().getId(), speed);
 			}
+			if (speed == 0)
+				speed = PREVIOUS_SPEED.getOrDefault(player.getGameProfile().getId(), DEFAULT_SPEED);
+			PlayerHelper.changeSpeed(player, "HCMovement", speed, PENALTY_SPEED_UUID);
 		}
 	}
 
@@ -100,9 +101,42 @@ public class HCMovement extends Feature {
 		return true;
 	}
 
+
+	//Should cancel out the FOV change from HCMovement entirely
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onFOV(FOVUpdateEvent event) {
+		EntityPlayer player = event.getEntity();
+		float f = 1.0F;
 
+		if (player.capabilities.isFlying) {
+			f *= 1.1F;
+		}
+
+		IAttributeInstance iattributeinstance = player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+
+		double value = iattributeinstance.getAttributeValue();
+		AttributeModifier mod = iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID);
+		if (mod != null)
+			value /= (1 + mod.getAmount());
+		f = (float) ((double) f * ((value / (double) player.capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+
+		if (player.capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
+			f = 1.0F;
+		}
+		if (player.isHandActive() && player.getActiveItemStack().getItem() == Items.BOW) {
+			int i = player.getItemInUseMaxCount();
+			float f1 = (float) i / 20.0F;
+
+			if (f1 > 1.0F) {
+				f1 = 1.0F;
+			} else {
+				f1 = f1 * f1;
+			}
+
+			f *= 1.0F - f1 * 0.15F;
+		}
+
+		event.setNewfov(f);
 	}
 }
