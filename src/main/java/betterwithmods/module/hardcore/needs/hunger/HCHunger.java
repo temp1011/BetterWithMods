@@ -142,7 +142,7 @@ public class HCHunger extends CompatFeature {
 		FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 3, true);
 		FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 12, 15, true);
 		FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 1, true);
-		FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 12, 15, true);
+		FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 8, 12, true);
 		FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
 	}
 
@@ -183,14 +183,13 @@ public class HCHunger extends CompatFeature {
 		FoodStats stats = event.player.getFoodStats();
 		int playerFoodLevel = stats.getFoodLevel();
 		int foodLevel = event.foodValues.hunger;
-		float fat = (foodLevel + playerFoodLevel) - AppleCoreAPI.accessor.getMaxHunger(event.player);
-		if (!FoodHelper.isDessert(event.food)) {
-			if (fat < 0) {
-				event.foodValues = new FoodValues(foodLevel, 0);
-			} else {
-				//TODO doesn't add fat currently.
-				event.foodValues = new FoodValues(foodLevel, fat / 60f);
-			}
+		int max = AppleCoreAPI.accessor.getMaxHunger(event.player);
+		int newFood = (foodLevel + playerFoodLevel);
+		float fat = newFood - max;
+		if (!FoodHelper.isDessert(event.food) && fat < 0) {
+			event.foodValues = new FoodValues(foodLevel, 0);
+		} else {
+			event.foodValues = new FoodValues(foodLevel, 0.25f);
 		}
 	}
 
@@ -198,9 +197,8 @@ public class HCHunger extends CompatFeature {
 	@SubscribeEvent
 	public void exhaust(ExhaustionEvent.Exhausted event) {
 		FoodStats stats = event.player.getFoodStats();
-		int saturation = (int) ( (stats.getSaturationLevel()-1)/6);
-		int hunger = stats.getFoodLevel()/6;
-		System.out.println(hunger + "," + saturation);
+		int saturation = (int) ((stats.getSaturationLevel() - 1) / 6);
+		int hunger = stats.getFoodLevel() / 6;
 		if (hunger >= saturation) {
 			event.deltaSaturation = 0;
 			event.deltaHunger = -1;
