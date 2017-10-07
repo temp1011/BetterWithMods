@@ -126,7 +126,7 @@ public class Feature {
     }
 
     public boolean requiresMinecraftRestartToEnable() {
-        return false;
+        return hasSubscriptions() || hasOreGenSubscriptions() || hasTerrainSubscriptions();
     }
 
     public static void registerTile(Class<? extends TileEntity> clazz, String key) {

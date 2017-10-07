@@ -7,14 +7,18 @@ import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Maps;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -61,7 +65,7 @@ public class HCMovement extends Feature {
 
     @SubscribeEvent
     public void onWalk(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.side == Side.SERVER) {
+        if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
             if (player.onGround) {
                 BlockPos blockpos = new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY - 0.2D), MathHelper.floor(player.posZ));
@@ -89,4 +93,21 @@ public class HCMovement extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
+
+	@SideOnly(Side.CLIENT)
+    @SubscribeEvent
+	public void onFOV(FOVUpdateEvent event) {
+		float f = event.getFov();
+
+		IAttributeInstance iattributeinstance = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+
+		double value = iattributeinstance.getAttributeValue();
+		if (iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID) != null) {
+			value /= (1 + iattributeinstance.getModifier(HCMovement.PENALTY_SPEED_UUID).getAmount());
+		}
+		f = (float) ((double) f * ((value / (double) event.getEntity().capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+
+		event.setNewfov(f);
+	}
 }

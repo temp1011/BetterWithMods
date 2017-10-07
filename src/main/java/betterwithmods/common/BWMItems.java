@@ -78,7 +78,7 @@ public final class BWMItems {
     public static final Item WOLF_CHOP = new ItemFood(3,0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("wolf_chop");
     public static final Item COOKED_WOLF_CHOP = new ItemFood(8, 0.3F, true).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("cooked_wolf_chop");
     public static final Item KIBBLE = new ItemFood(5, 0, true).setPotionEffect(new PotionEffect(MobEffects.HUNGER, 600, 0), 0.3F).setCreativeTab(BWCreativeTabs.BWTAB).setRegistryName("kibble");
-    public static final Item APPLE_PIE = new ItemFood(15, 6, false).setRegistryName("apple_pie").setCreativeTab(BWCreativeTabs.BWTAB);
+    public static final Item APPLE_PIE = new ItemFood(8, 0.3F, false).setRegistryName("apple_pie").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Item MANUAL = new ItemBookManual().setRegistryName("manual").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Item MYSTERY_MEAT = new ItemFood(2,0.3f,true).setRegistryName("mystery_meat");
     public static final Item COOKED_MYSTERY_MEAT = new ItemFood(6, 0.8F, true).setRegistryName("cooked_mystery_meat");
