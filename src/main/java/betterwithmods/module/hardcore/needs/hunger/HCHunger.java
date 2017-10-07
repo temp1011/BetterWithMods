@@ -71,7 +71,7 @@ public class HCHunger extends CompatFeature {
 	public static float passiveExhaustion;
 	public static int passiveExhaustionTick;
 	public static boolean rawMeatDangerous;
-	public static boolean fat;
+//	public static boolean fat;
 
 	@Override
 	public void setupConfig() {
@@ -79,7 +79,7 @@ public class HCHunger extends CompatFeature {
 		passiveExhaustion = (float) loadPropDouble("Passive Exhaustion", "Passive Exhaustion value", 4f);
 		passiveExhaustionTick = loadPropInt("Passive Exhaustion Tick", "Passive exhaustion tick time", 900);
 		rawMeatDangerous = loadPropBool("Raw Meat is Unhealthy", "Gives food poisoning", true);
-		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
+//		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
 	}
 
 	@Override
