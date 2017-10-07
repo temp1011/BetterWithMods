@@ -32,6 +32,13 @@ public class EntitySpiderWeb extends EntityThrowable {
         IBlockState state = world.getBlockState(pos);
         if(state.getMaterial().isReplaceable()) {
             world.setBlockState(pos, Blocks.WEB.getDefaultState());
+	        setDead();
+        } else {
+        	BlockPos offset = pos.offset(result.sideHit);
+        	if(world.getBlockState(offset).getMaterial().isReplaceable()) {
+		        world.setBlockState(offset, Blocks.WEB.getDefaultState());
+		        setDead();
+	        }
         }
     }
 }

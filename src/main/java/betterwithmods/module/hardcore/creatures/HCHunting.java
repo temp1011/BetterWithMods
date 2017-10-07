@@ -49,6 +49,7 @@ public class HCHunting extends Feature {
         }).collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent evt) {
         if (evt.getEntity() instanceof EntityCreature) {
@@ -61,7 +62,7 @@ public class HCHunting extends Feature {
             }
             if (entity instanceof EntitySpider) {
                 for (Class clazz : spiderAttack) {
-                    ((EntitySpider) entity).targetTasks.addTask(3, new EntityAINearestAttackableTarget(entity, clazz, true));
+                    ((EntitySpider) entity).targetTasks.addTask(3, new EntityAINearestAttackableTarget(entity, clazz, false));
                 }
                 ((EntitySpider) entity).tasks.addTask(0, new EntityAIEatFood(entity, itemStack -> itemStack.getItem() == Items.CHICKEN || itemStack.getItem() == Items.COOKED_CHICKEN));
                 if (spidersShootWebs) {
