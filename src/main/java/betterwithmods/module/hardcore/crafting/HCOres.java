@@ -61,7 +61,11 @@ public class HCOres extends Feature {
 			addHardcoreRecipe(new ShapedOreRecipe(null, Items.BUCKET, "N N", "N N", "NNN", 'N', "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "bucket")));
 			addHardcoreRecipe(new ShapelessOreRecipe(null, Items.FLINT_AND_STEEL, Items.FLINT, "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "flint_and_steel")));
 		}
-		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 3), new Object[] { new ItemStack(Items.BUCKET) });
+		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[] { new ItemStack(Items.BUCKET) });
+		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[] { new ItemStack(Items.WATER_BUCKET) });
+		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[] { new ItemStack(Items.MILK_BUCKET) });
+
+		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[] { new ItemStack(Items.MAP) });
 		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[] { new ItemStack(Items.COMPASS) });
 		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_NUGGET, 4), new Object[] { new ItemStack(Items.CLOCK) });
 		CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[] { new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0) });
