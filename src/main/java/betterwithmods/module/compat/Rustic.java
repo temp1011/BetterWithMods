@@ -1,6 +1,7 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
@@ -13,6 +14,7 @@ import betterwithmods.module.tweaks.HighEfficiencyRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -149,6 +151,9 @@ public class Rustic extends CompatFeature {
         registerOre("sidingWood", new ItemStack(SIDING, 1, 0), new ItemStack(SIDING, 1, 1));
         registerOre("mouldingWood", new ItemStack(MOULDING, 1, 0), new ItemStack(MOULDING, 1, 1));
         registerOre("cornerWood", new ItemStack(CORNER, 1, 0), new ItemStack(CORNER, 1, 1));
+
+	    BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_BUTTON));
+	    BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE));
     }
 }
 
