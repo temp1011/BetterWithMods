@@ -49,6 +49,8 @@ A Beacon base must consist of all same block and depending on the block the effe
     
   4       :   Unlimited across dimensions  
   
+  
+
 * Ender Block - This Beacon changes how Ender Chests work. Any Ender Chest not placed on this beacon acts as a normal chest.
   Ender Chests placed on specific levels of the beacon have differet inventories
   Tier    :   Access  

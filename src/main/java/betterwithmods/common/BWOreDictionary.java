@@ -134,6 +134,7 @@ public class BWOreDictionary {
 
         registerOre("slats", new ItemStack(BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE));
         registerOre("grates", new ItemStack(BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE));
+        registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
