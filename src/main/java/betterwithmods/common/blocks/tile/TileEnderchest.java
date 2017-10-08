@@ -61,9 +61,13 @@ public class TileEnderchest extends TileEntityEnderChest {
     public void setType(Type type) {
         this.type = type;
     }
+
     @Nonnull
     public Type getType() {
         return type;
     }
+
+
+
 }
 
