@@ -26,6 +26,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,7 +40,7 @@ import java.util.Set;
  */
 public class HCChickens extends Feature {
 
-    public static final Set<ItemStack> SEEDS = Sets.newHashSet(new ItemStack(BWMBlocks.HEMP), new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.BEETROOT_SEEDS));
+    public static Set<ItemStack> SEEDS;
 
     public static final ResourceLocation EGG_LAYER = new ResourceLocation(BWMod.MODID, "egglayer");
     public static int timeToLayerEgg = 6000;
@@ -59,8 +60,12 @@ public class HCChickens extends Feature {
         CapabilityManager.INSTANCE.register(HCChickens.IEggLayer.class, new HCChickens.CapabilityEggLayer(), EggLayer.class);
     }
 
+	@Override
+	public void postInit(FMLPostInitializationEvent event) {
+		SEEDS = Sets.newHashSet(new ItemStack(BWMBlocks.HEMP), new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.MELON_SEEDS), new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Items.BEETROOT_SEEDS));
+	}
 
-    @SubscribeEvent
+	@SubscribeEvent
     public void onAttachCap(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityChicken) {
             event.addCapability(EGG_LAYER, new ChickenProvider(new ItemStack(Items.EGG), SEEDS));
