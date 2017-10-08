@@ -131,6 +131,9 @@ public class BWOreDictionary {
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
         registerOre("cobblestone", new ItemStack(BWMBlocks.COBBLE, 1, OreDictionary.WILDCARD_VALUE));
+
+        registerOre("slats", new ItemStack(BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE));
+        registerOre("grates", new ItemStack(BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
