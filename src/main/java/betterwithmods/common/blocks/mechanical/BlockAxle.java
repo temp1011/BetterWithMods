@@ -28,6 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -181,7 +182,7 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
     public EnumFacing[] getAxisDirections(IBlockState state) {
-        if(state.getBlock() instanceof BlockAxle)
+        if (state.getBlock() instanceof BlockAxle)
             return DirUtils.getAxisDirection(state.getValue(AXIS));
         return new EnumFacing[0];
     }
@@ -208,7 +209,13 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
     private void emitAxleParticles(World world, BlockPos pos, Random rand) {
-        int pow = withTile(world, pos).map(t -> t.getPower()).orElse(0);
+        int pow;
+        if (Loader.isModLoaded("optifine")) {
+            IBlockState state = getActualState(world.getBlockState(pos), world, pos);
+            pow = state.getValue(ACTIVE) ? 3 : 0;
+        } else {
+            pow = withTile(world, pos).map(TileAxle::getPower).orElse(0);
+        }
         for (int i = 0; i < pow; i++) {
             float flX = pos.getX() + rand.nextFloat();
             float flY = pos.getY() + rand.nextFloat() * 0.5F + 0.625F;

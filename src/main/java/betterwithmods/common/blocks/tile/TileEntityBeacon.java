@@ -44,10 +44,9 @@ import static betterwithmods.module.hardcore.beacons.HCBeacons.BEACON_EFFECTS;
  */
 public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon implements ITickable {
 
-    private int level;
-    private int prevLevel;
+    private int level, prevLevel;
     private IBlockState type = Blocks.AIR.getDefaultState();
-    private IBeaconEffect effect;
+    private IBeaconEffect effect, prevEffect;
     private int tick;
     private List<BeamSegment> segments = Lists.newArrayList();
 
@@ -61,11 +60,28 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public boolean canSeeSky() {
+
+        if (world.provider.isSurfaceWorld()) {
+            return world.canBlockSeeSky(pos);
+        } else if (world.provider.isNether()) {
+            BlockPos.MutableBlockPos pos;
+            for (pos = new BlockPos.MutableBlockPos(getPos().up()); pos.getY() < 128; pos.setY(pos.getY() + 1)) {
+                IBlockState state = world.getBlockState(pos);
+                if (state.getBlock() == Blocks.BEDROCK)
+                    return true;
+                if (state.getBlock().getLightOpacity(state, world, pos) > 0)
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void update() {
-
         if (tick <= 0) {
-            if (!world.canBlockSeeSky(pos)) {
+            if (!canSeeSky()) {
                 if (level != 0) {
                     this.level = 0;
                     this.prevLevel = 0;
@@ -77,21 +93,28 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
             level = current.getKey();
             type = current.getValue();
             if (level > 0) {
-
+                effect = HCBeacons.getBeaconEffect(type);
                 if (level != prevLevel) {
                     this.world.playBroadcastSound(1023, getPos(), 0);
+                    if (effect != null)
+                        effect.breakBlock(world, pos, prevLevel);
                     //TRIGGER ADVANCEMENT
                     this.world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos, pos.add(1, -4, 1)).grow(10.0D, 5.0D, 10.0D)).forEach(player -> CriteriaTriggers.CONSTRUCT_BEACON.trigger(player, this));
                 }
-	            effect = HCBeacons.getBeaconEffect(type);
-	            if (effect != null) {
+                if (effect != null) {
                     effect.effect(world, pos, level);
                     calcSegments();
                 }
+                prevEffect = effect;
             } else {
                 this.segments.clear();
+                this.effect = null;
+            }
+            if (prevEffect != null && effect != prevEffect) {
+                prevEffect.breakBlock(world, pos, prevLevel);
             }
             if (level != prevLevel) {
+
                 prevLevel = level;
             }
             tick = effect != null ? effect.getTickSpeed() : 120;
@@ -154,7 +177,7 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
 
 
     private boolean isValidBlock(IBlockState state) {
-	    return BEACON_EFFECTS.containsKey(state) || state.getBlock().isBeaconBase(world, pos.down(), pos);
+        return BEACON_EFFECTS.containsKey(state) || state.getBlock().isBeaconBase(world, pos.down(), pos);
     }
 
     public Pair<Integer, IBlockState> calcLevel() {
@@ -233,10 +256,12 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
         }
 
         if (!world.isRemote) {
-            boolean interacted = this.effect.processInteractions(world, getPos(), getLevels() - 1, player, stack);
-            if (interacted)
-                this.world.playBroadcastSound(1023, getPos(), 0);
-            return interacted;
+            if (this.effect != null) {
+                boolean interacted = this.effect.processInteractions(world, getPos(), getLevels() - 1, player, stack);
+                if (interacted)
+                    this.world.playBroadcastSound(1023, getPos(), 0);
+                return interacted;
+            }
         }
         return false;
     }
@@ -252,6 +277,7 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
 
 
     public void onRemoved() {
+        breakBlock();
         MinecraftForge.EVENT_BUS.unregister(this);
         SpawnBeaconEffect.removeAll(getPos());
     }
@@ -276,6 +302,12 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
         @Override
         protected void incrementHeight() {
             super.incrementHeight();
+        }
+    }
+
+    public void breakBlock() {
+        if (effect != null) {
+            this.effect.breakBlock(world, pos, level);
         }
     }
 }

@@ -34,6 +34,10 @@ public interface IBeaconEffect {
         return false;
     }
 
+    default void breakBlock(World world, BlockPos pos, int level) {
+        
+    }
+
     default int getTickSpeed() {
         return 120;
     }

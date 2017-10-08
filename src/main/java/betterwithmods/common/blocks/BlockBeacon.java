@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.tile.TileEntityBeacon;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -21,7 +21,7 @@ public class BlockBeacon extends net.minecraft.block.BlockBeacon {
     public BlockBeacon() {
         super();
         setRegistryName("minecraft:beacon");
-        setCreativeTab(BWCreativeTabs.BWTAB);
+        setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
         setUnlocalizedName("beacon");
         setLightLevel(1.0f);
     }

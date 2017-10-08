@@ -2,6 +2,8 @@ package betterwithmods.manual.client.manual.provider;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockEnderchest;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.mini.BlockMini;
@@ -28,8 +30,6 @@ public class DefinitionPathProvider implements PathProvider {
 
     BiFunction<World, IBlockState, String> customPath = (world, state) -> {
         Block block = state.getBlock();
-
-
         return null;
     };
 
@@ -70,6 +70,9 @@ public class DefinitionPathProvider implements PathProvider {
             if (mat == WOOD || mat == BlockMini.MINI) {
                 return "%LANGUAGE%/blocks/minimized_wood.md";
             }
+        }
+        if( block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
+            return "%LANGUAGE%/hardcore/beacons.md";
         }
         String path = stack.getUnlocalizedName().replace("tile.bwm:", "");
         return "%LANGUAGE%/blocks/" + path + ".md";
