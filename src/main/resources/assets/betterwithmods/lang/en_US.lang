@@ -55,6 +55,7 @@ tile.bwm:advanced_bellows.name=Spring-Action Bellows
 
 tile.bwm:steel_block.name=Soulforged Steel Block
 tile.bwm:cut_steel_block.name=Cut Soulforged Steel Block
+tile.bwm:steel_pressure_plate.name=Steel Pressure Plate
 
 tile.bwm:windmill.windmill.name=Windmill
 tile.bwm:windmill.waterwheel.name=Waterwheel
@@ -319,6 +320,7 @@ tile.bwm:bop_compat_corner.13.name=Mahogany Corner
 tile.bwm:bop_compat_corner.14.name=Ebony Wood Corner
 tile.bwm:bop_compat_corner.15.name=Eucalyptus Wood Corner
 
+tile.bwm:deadweight.name=Deadweight
 tile.bwm:deadweight.intact.name=Deadweight
 tile.bwm:deadweight.slightDamaged.name=Slightly Damaged Deadweight
 tile.bwm:deadweight.veryDamaged.name=Very Damaged Deadweight
