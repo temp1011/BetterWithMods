@@ -28,8 +28,10 @@ import betterwithmods.module.compat.jei.wrapper.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import mezz.jei.api.*;
+import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
+import mezz.jei.gui.Focus;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -42,7 +44,9 @@ import java.util.List;
 
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
+import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.HOPPER;
+import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.MILL;
+import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.TURNTABLE;
 
 @mezz.jei.api.JEIPlugin
 public class JEI implements IModPlugin {
@@ -133,5 +137,12 @@ public class JEI implements IModPlugin {
             reg.addAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam2));
             reg.addAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam3));
         }
+    }
+
+    public static void showRecipe(ItemStack stack) {
+	    if (!stack.isEmpty()) {
+	    	IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
+		    JEI.JEI_RUNTIME.getRecipesGui().show(focus);
+	    }
     }
 }

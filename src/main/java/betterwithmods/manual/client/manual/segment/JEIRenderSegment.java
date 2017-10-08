@@ -3,8 +3,6 @@ package betterwithmods.manual.client.manual.segment;
 import betterwithmods.manual.api.manual.ImageRenderer;
 import betterwithmods.module.compat.jei.JEI;
 import com.google.common.base.Strings;
-import mezz.jei.api.recipe.IFocus;
-import mezz.jei.gui.Focus;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -23,10 +21,7 @@ public class JEIRenderSegment extends RenderSegment {
     public boolean onMouseClick(final int mouseX, final int mouseY) {
         if (JEI.JEI_RUNTIME != null && recipeOutput != null) {
             ItemStack stack = getStack(recipeOutput);
-            if (!stack.isEmpty()) {
-                IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
-                JEI.JEI_RUNTIME.getRecipesGui().show(focus);
-            }
+            JEI.showRecipe(stack);
             return true;
         }
         return false;
