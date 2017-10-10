@@ -1,7 +1,6 @@
 package betterwithmods.event;
 
 import betterwithmods.common.BWMItems;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
+
+import static betterwithmods.util.WorldUtils.addDrop;
 
 /**
  * Created by tyler on 4/21/17.
@@ -42,10 +43,5 @@ public class FeedWolfchopEvent {
         }
     }
 
-    public void addDrop(LivingDropsEvent evt, ItemStack drop) {
-        EntityItem item = new EntityItem(evt.getEntityLiving().getEntityWorld(), evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
-        item.setDefaultPickupDelay();
-        evt.getDrops().add(item);
-    }
 
 }

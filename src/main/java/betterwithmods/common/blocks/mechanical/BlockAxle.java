@@ -28,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -207,10 +207,9 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
                 world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.15F, rand.nextFloat() * 0.1F + 0.5F, false);
         }
     }
-
     private void emitAxleParticles(World world, BlockPos pos, Random rand) {
         int pow;
-        if (Loader.isModLoaded("optifine")) {
+        if (FMLClientHandler.instance().hasOptifine()) {
             IBlockState state = getActualState(world.getBlockState(pos), world, pos);
             pow = state.getValue(ACTIVE) ? 3 : 0;
         } else {

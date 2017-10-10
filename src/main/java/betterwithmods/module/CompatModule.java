@@ -35,7 +35,7 @@ public class CompatModule extends Module {
         registerCompatFeature("immersiveengineering", "betterwithmods.module.compat.immersiveengineering.ImmersiveEngineering");
         registerCompatFeature("rustic", "betterwithmods.module.compat.Rustic");
         registerCompatFeature("tconstruct", "betterwithmods.module.compat.tcon.TConstruct");
-
+        registerCompatFeature("thermalexpansion","betterwithmods.module.compat.ThermalExpansion");
     }
 
     @Override

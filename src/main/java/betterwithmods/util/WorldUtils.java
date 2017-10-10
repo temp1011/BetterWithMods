@@ -3,8 +3,10 @@ package betterwithmods.util;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +14,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -169,4 +172,11 @@ public final class WorldUtils {
             return true;
         return a.equals(b);
     }
+
+    public static void addDrop(LivingDropsEvent evt, ItemStack drop) {
+        EntityItem item = new EntityItem(evt.getEntityLiving().getEntityWorld(), evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ, drop);
+        item.setDefaultPickupDelay();
+        evt.getDrops().add(item);
+    }
+
 }
