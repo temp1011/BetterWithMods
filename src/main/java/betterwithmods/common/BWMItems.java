@@ -85,6 +85,7 @@ public final class BWMItems {
     public static final Item COOKED_MYSTERY_MEAT = new ItemFood(6, 0.8F, true).setRegistryName("cooked_mystery_meat");
     public static final Item STEEL_HACKSAW = new ItemHacksaw().setRegistryName("steel_hacksaw");
     public static final Item BAT_WING = new ItemFood(3,0.3F,false).setRegistryName("bat_wing").setCreativeTab(CreativeTabs.FOOD);
+    public static final Item COOKED_BAT_WING = new ItemFood(6,0.6F,false).setRegistryName("cooked_bat_wing").setCreativeTab(CreativeTabs.FOOD);
     
     private static final List<Item> ITEMS = new ArrayList<>();
 
@@ -146,6 +147,7 @@ public final class BWMItems {
         registerItem(MYSTERY_MEAT);
         registerItem(COOKED_MYSTERY_MEAT);
         registerItem(BAT_WING);
+        registerItem(COOKED_BAT_WING);
     }
 
     /**
