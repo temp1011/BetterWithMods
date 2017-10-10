@@ -71,6 +71,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         if (tag.hasKey("Souls"))
             this.soulsRetained = tag.getInteger("Souls");
         this.power = tag.getByte("power");
+        if (tag.hasKey("Item"))
+            this.filter.setStackInSlot(0, new ItemStack(tag.getCompoundTag("Item")));
         validateInventory();
     }
 
@@ -82,6 +84,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         t.setShort("FilterType", (short) this.filterType);
         t.setInteger("Souls", this.soulsRetained);
         t.setByte("power", power);
+        if (!filter.getStackInSlot(0).isEmpty()) {
+            NBTTagCompound itemTag = new NBTTagCompound();
+            filter.getStackInSlot(0).writeToNBT(itemTag);
+            t.setTag("Item", itemTag);
+        }
         return t;
     }
 
