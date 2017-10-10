@@ -11,6 +11,8 @@ import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
+
 /**
  * Created by tyler on 9/11/16.
  */
@@ -31,7 +33,7 @@ public class GuiInfernalEnchanter extends GuiContainer {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-        if(fontGalactic == null)
+        if (fontGalactic == null)
             fontGalactic = this.mc.standardGalacticFontRenderer;
         this.renderHoveredToolTip(mouseX, mouseY);
     }
@@ -50,41 +52,32 @@ public class GuiInfernalEnchanter extends GuiContainer {
             drawTexturedModalRect(xPos + 17, yPos + 75, 192, 0, 16, 16);
         EnchantmentNameParts.getInstance().reseedRandomGenerator((long) this.container.xpSeed);
 
-        int y;
+        int x, y;
         for (int i = 0; i < container.enchantLevels.length; i++) {
             this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/infernal_enchanter.png"));
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             int val = container.enchantLevels[i];
-
             if (val != 0) {
-                int color = 0x407F10;
+
                 String s = String.valueOf(val);
-                if (player.capabilities.isCreativeMode || player.experienceLevel >= val) {
+                if (container.hasLevels(player,val)) {
                     y = yPos + 17 + (19 * i);
-                    drawTexturedModalRect(xPos + 60, y, 0, 211, 108, 19);
-                    color = 0x80FF20;
+                    x = xPos + 60;
+                    if (mouseX >= x && mouseX <= x + 108 && mouseY >= y && mouseY <= y + 19) {
+                        drawTexturedModalRect(x, y, 108, 211, 108, 19);
+                    } else {
+                        drawTexturedModalRect(x, y, 0, 211, 108, 19);
+                    }
+
                     String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, 86 - this.fontRenderer.getStringWidth(s));
+
                     fontGalactic.drawSplitString(s1, xPos + 62, yPos + 19 + 19 * i, 108, (6839882 & 16711422) >> 1);
+                    fontRenderer.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRenderer.getStringWidth(s), yPos + 8 + 19 * (i + 1), 0x80FF20);
                 }
-                fontRenderer.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRenderer.getStringWidth(s), yPos + 8 + 19 * (i + 1), color);
+
             }
         }
-//        for (int i = 0; i < container.enchantLevels.length; i++) {
-//            int val = container.enchantLevels[i];
-//            if (val != 0) {
-//                int color = 0x407F10;
-//                if (mc.player.capabilities.isCreativeMode || mc.player.experienceLevel >= val) {
-//                    int y = yPos + 17 + (19 * i);
-//                    drawTexturedModalRect(xPos + 60, y, 0, 211, 108, 19);
-//                    color = 0x80FF20;
-//                }
-//                String s = String.valueOf(val);
-//                this.fontRenderer.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRenderer.getStringWidth(s), yPos + 8 + 19 * (i + 1), color);
-//                FontRenderer fontrenderer = this.mc.standardGalacticFontRenderer;
-//                String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, 86 - this.fontRenderer.getStringWidth(s));
-//                fontrenderer.drawSplitString(s1, xPos + 62, yPos + 19 + 19 * i, 108, (6839882 & 16711422) >> 1);
-//            }
-//        }
+
     }
 
 
@@ -102,8 +95,28 @@ public class GuiInfernalEnchanter extends GuiContainer {
         this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 79, 0x404040);
         s = "V";
         this.fontRenderer.drawString(s, 50 - this.fontRenderer.getStringWidth(s) / 2, 98, 0x404040);
+    }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        int xPos = (this.width - this.xSize) / 2;
+        int yPos = (this.height - this.ySize) / 2;
 
+        int x,y;
+        for(int i = 0; i < container.enchantLevels.length;i++) {
+            if(container.enchantLevels[i] > 0) {
+                y = yPos + 17 + (19 * i);
+                x = xPos + 60;
+                if (mouseX >= x && mouseX <= x + 108 && mouseY >= y && mouseY <= y + 19) {
+                    System.out.println("clicked " + container.enchantLevels[i]);
+                    //TODO enchantment packet
+                    if(container.enchantItem(player,i)) {
+                        this.mc.playerController.sendEnchantPacket(this.container.windowId, i);
+                    }
+                }
+            }
+        }
     }
 }
 

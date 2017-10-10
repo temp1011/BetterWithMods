@@ -3,10 +3,9 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityVase;
+import betterwithmods.util.ColorUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -34,14 +33,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
  * Created by Christian on 24.09.2016.
  */
 public class BlockVase extends BWMBlock implements IMultiVariants {
-    public static final PropertyEnum<EnumDyeColor> Color = BlockColored.COLOR;
+
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockVase() {
         super(BWMBlocks.POTTERY);
         this.setHardness(2.0F);
         this.setHarvestLevel("pickaxe", -1);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(Color, EnumDyeColor.WHITE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ColorUtils.COLOR, EnumDyeColor.WHITE));
     }
 
     public static ItemStack getStack(EnumDyeColor type) {
@@ -123,7 +122,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(Color).getMetadata());
+        ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(ColorUtils.COLOR).getMetadata());
         TileEntity tile = world.getTileEntity(pos);
         if (!world.isRemote && tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             InvUtils.writeToStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack);
@@ -138,7 +137,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
 
     @Override
     public int damageDropped(IBlockState state) {
-        return (state.getValue(Color)).getMetadata();
+        return (state.getValue(ColorUtils.COLOR)).getMetadata();
     }
 
     @Override
@@ -150,17 +149,17 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(Color, EnumDyeColor.byMetadata(meta));
+        return this.getDefaultState().withProperty(ColorUtils.COLOR, EnumDyeColor.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(Color).getMetadata();
+        return state.getValue(ColorUtils.COLOR).getMetadata();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, Color);
+        return new BlockStateContainer(this, ColorUtils.COLOR);
     }
 
     public boolean hasComparatorInputOverride(IBlockState state) {

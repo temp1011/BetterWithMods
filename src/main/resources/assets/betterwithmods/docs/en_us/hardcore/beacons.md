@@ -16,7 +16,7 @@ A Beacon base must consist of all same block and depending on the block the effe
 * **Block** - **Effect**
 * Glass or any unused modded beacon base - Activates the beacon with no effect, used for decoration
   
-* Emerald Block -  Causes all death in the area to have the same effect as a Looting enchant, goes up to Looting 4
+.* Emerald Block -  Causes all death in the area to have the same effect as a Looting enchant, goes up to Looting 4
   
 * Lapis Block - Gives True Sight, a potion effect that spawns particles on blocks with light levels lower than 8; Useful for lighting up an area.
    

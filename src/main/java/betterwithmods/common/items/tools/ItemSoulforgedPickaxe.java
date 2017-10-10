@@ -3,8 +3,10 @@ package betterwithmods.common.items.tools;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.module.hardcore.creatures.HCEnchanting;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
@@ -36,5 +38,10 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
         return ImmutableSet.of("pickaxe");
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return HCEnchanting.canEnchantSteel();
     }
 }

@@ -366,7 +366,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
-        if (facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (facing == EnumFacing.NORTH && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return true;
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return true;
@@ -376,7 +376,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
-        if (facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (facing == EnumFacing.NORTH && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(filter);
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);

@@ -2,6 +2,7 @@ package betterwithmods.common;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.tile.multiblock.TileEntityProxyBlock;
+import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.*;
 import betterwithmods.common.blocks.mechanical.multiblock.BlockDummy;
@@ -10,6 +11,7 @@ import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
+import betterwithmods.common.items.tools.ItemSteelSaw;
 import betterwithmods.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -106,8 +108,9 @@ public final class BWMBlocks {
 	public static final Block DUMMY = new BlockDummy().setRegistryName("multiblock_dummy");
 	public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
 	public static final Block COBBLE = new BlockCobble().setRegistryName("cobblestone");
-	public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate");
-	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter");
+	public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate").setCreativeTab(BWCreativeTabs.BWTAB);
+	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter").setCreativeTab(BWCreativeTabs.BWTAB);
+	public static final Block CANDLE = new BlockCandle().setRegistryName("candle").setCreativeTab(BWCreativeTabs.BWTAB);
 
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -204,6 +207,7 @@ public final class BWMBlocks {
 		registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
 		registerBlock(STEEL_PRESSURE_PLATE);
 		registerBlock(INFERNAL_ENCHANTER);
+		registerBlock(CANDLE);
 	}
 
 	public static void registerTileEntities() {
@@ -295,5 +299,6 @@ public final class BWMBlocks {
 			ModelLoader.setCustomStateMapper(block, mapper);
 		}
 	}
+
 	///CLIENT END
 }

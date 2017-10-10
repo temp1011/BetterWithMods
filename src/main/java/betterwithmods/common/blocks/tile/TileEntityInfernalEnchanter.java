@@ -26,7 +26,7 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
                     }
                 }
             }
-
+            System.out.println(bookcaseCount);
             //required
 
             // bookcase * item.enchants + 1

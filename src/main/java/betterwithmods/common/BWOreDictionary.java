@@ -132,9 +132,11 @@ public class BWOreDictionary {
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
         registerOre("cobblestone", new ItemStack(BWMBlocks.COBBLE, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("slats", new ItemStack(BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE));
-        registerOre("grates", new ItemStack(BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE));
+        registerOre("slats", new ItemStack(BWMBlocks.SLATS, 1,OreDictionary.WILDCARD_VALUE));
+        registerOre("grates", new ItemStack(BWMBlocks.GRATE,1, OreDictionary.WILDCARD_VALUE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
+
+        registerOre("candle", new ItemStack(BWMBlocks.CANDLE,1,OreDictionary.WILDCARD_VALUE));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {

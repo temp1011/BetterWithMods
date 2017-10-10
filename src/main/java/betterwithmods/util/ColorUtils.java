@@ -1,9 +1,12 @@
 package betterwithmods.util;
 
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.BlockStainedGlassPane;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +16,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.Hashtable;
 
 public class ColorUtils {
+    public static final PropertyEnum<EnumDyeColor> COLOR = BlockColored.COLOR;
+
     public static final String[] dyes = {"dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack"};
     private static final Hashtable<String, Integer> colors = new Hashtable<>();
     public static int[] reverseMeta = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};

@@ -2,14 +2,17 @@ package betterwithmods.client.container.other;
 
 import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
 import betterwithmods.common.items.ItemArcaneScroll;
+import betterwithmods.module.hardcore.creatures.HCEnchanting;
 import betterwithmods.util.InvUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -43,8 +46,6 @@ public class ContainerInfernalEnchanter extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new SlotItemHandler(playerInv, i, 8 + i * 18, 187));
         }
-
-
     }
 
 
@@ -82,7 +83,9 @@ public class ContainerInfernalEnchanter extends Container {
     public boolean areValidItems(ItemStack scroll, ItemStack item) {
         if (!scroll.isEmpty() && !item.isEmpty()) {
             Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
-            if (enchantment != null && enchantment.canApply(item)) {
+            if (EnchantmentHelper.getEnchantments(item).containsKey(enchantment))
+                return false;
+            if (enchantment != null && HCEnchanting.InfernalEnchantmentType.fromEnchantment(enchantment).canEnchantItem(item.getItem())) {
                 return true;
             }
         }
@@ -124,16 +127,16 @@ public class ContainerInfernalEnchanter extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if(index > INV_LAST) {
-                if(itemstack1.getItem() instanceof ItemArcaneScroll) {
-                    if(!mergeItemStack(itemstack1, 0,1,true))
+            if (index > INV_LAST) {
+                if (itemstack1.getItem() instanceof ItemArcaneScroll) {
+                    if (!mergeItemStack(itemstack1, 0, 1, true))
                         return ItemStack.EMPTY;
                 } else {
-                    if(!mergeItemStack(itemstack1, 1,2,true))
+                    if (!mergeItemStack(itemstack1, 1, 2, true))
                         return ItemStack.EMPTY;
                 }
             } else {
-                if(!mergeItemStack(itemstack1, 2, 37,true))
+                if (!mergeItemStack(itemstack1, 2, 37, true))
                     return ItemStack.EMPTY;
             }
 
@@ -179,5 +182,27 @@ public class ContainerInfernalEnchanter extends Container {
             super.onContentsChanged(slot);
             onContextChanged(this);
         }
+    }
+
+    public boolean hasLevels(EntityPlayer player, int level) {
+        return player.capabilities.isCreativeMode || player.experienceLevel > level;
+    }
+
+    @Override
+    public boolean enchantItem(EntityPlayer player, int level) {
+        if (this.enchantLevels[level] > 0 && hasLevels(player, level)) {
+            if (!player.world.isRemote) {
+                ItemStack item = this.handler.getStackInSlot(1);
+                ItemStack scroll = this.handler.getStackInSlot(0);
+                Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
+                if (enchantment != null) {
+                    scroll.shrink(1);
+                    item.addEnchantment(enchantment, level + 1);
+                    tile.getWorld().playSound(null, tile.getPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1.0F, tile.getWorld().rand.nextFloat() * 0.1F + 0.9F);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
