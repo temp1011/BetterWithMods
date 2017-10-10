@@ -107,6 +107,7 @@ public final class BWMBlocks {
 	public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
 	public static final Block COBBLE = new BlockCobble().setRegistryName("cobblestone");
 	public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate");
+	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter");
 
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -202,6 +203,7 @@ public final class BWMBlocks {
 		registerBlock(LATHE, null);
 		registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
 		registerBlock(STEEL_PRESSURE_PLATE);
+//		registerBlock(INFERNAL_ENCHANTER);
 	}
 
 	public static void registerTileEntities() {
@@ -229,10 +231,12 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
 		GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
 		GameRegistry.registerTileEntity(TileEntityLathe.class, "bwm.lathe");
+		GameRegistry.registerTileEntity(TileEntityInfernalEnchanter.class, "bwm.infernal_enchanter");
 
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
 		GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
 		GameRegistry.registerTileEntity(TileEntityProxyBlock.class, "bwm.multiblock_dummy");
+
 	}
 
 	/**

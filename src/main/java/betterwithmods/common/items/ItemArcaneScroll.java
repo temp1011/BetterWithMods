@@ -1,5 +1,6 @@
 package betterwithmods.common.items;
 
+import betterwithmods.common.BWMItems;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -18,6 +19,14 @@ import java.util.List;
  */
 public class ItemArcaneScroll extends Item {
 
+    public static ItemStack getScrollWithEnchant(Enchantment enchantment) {
+        ItemStack stack = new ItemStack(BWMItems.ARCANE_SCROLL);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("enchant", Enchantment.getEnchantmentID(enchantment));
+        stack.setTagCompound(tag);
+        return stack;
+    }
+
     public ItemArcaneScroll() {
         super();
         setHasSubtypes(true);
@@ -26,11 +35,7 @@ public class ItemArcaneScroll extends Item {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         for (Enchantment enchantment : Enchantment.REGISTRY) {
-            ItemStack stack = new ItemStack(this);
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("enchant", Enchantment.getEnchantmentID(enchantment));
-            stack.setTagCompound(tag);
-            items.add(stack);
+            items.add(getScrollWithEnchant(enchantment));
         }
     }
 

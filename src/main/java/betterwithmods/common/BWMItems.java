@@ -86,7 +86,8 @@ public final class BWMItems {
     public static final Item STEEL_HACKSAW = new ItemHacksaw().setRegistryName("steel_hacksaw");
     public static final Item BAT_WING = new ItemFood(3,0.3F,false).setRegistryName("bat_wing").setCreativeTab(CreativeTabs.FOOD);
     public static final Item COOKED_BAT_WING = new ItemFood(6,0.6F,false).setRegistryName("cooked_bat_wing").setCreativeTab(CreativeTabs.FOOD);
-    
+    public static final Item ARCANE_SCROLL = new ItemArcaneScroll().setRegistryName("arcane_scroll").setCreativeTab(BWCreativeTabs.BWTAB);
+
     private static final List<Item> ITEMS = new ArrayList<>();
 
     public static List<Item> getItems() {
@@ -148,6 +149,7 @@ public final class BWMItems {
         registerItem(COOKED_MYSTERY_MEAT);
         registerItem(BAT_WING);
         registerItem(COOKED_BAT_WING);
+        registerItem(ARCANE_SCROLL);
     }
 
     /**

@@ -3,13 +3,11 @@ package betterwithmods.client;
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.client.container.anvil.GuiSteelAnvil;
 import betterwithmods.client.container.bulk.*;
-import betterwithmods.client.container.other.ContainerBlockDispenser;
-import betterwithmods.client.container.other.ContainerPulley;
-import betterwithmods.client.container.other.GuiBlockDispenser;
-import betterwithmods.client.container.other.GuiPulley;
+import betterwithmods.client.container.other.*;
 import betterwithmods.client.gui.GuiManual;
 import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -39,6 +37,9 @@ public class BWGuiHandler implements IGuiHandler {
                     return new ContainerFilteredHopper(player, (TileEntityFilteredHopper) tile);
                 if (tile instanceof TileEntitySteelAnvil)
                     return new ContainerSteelAnvil(player.inventory, (TileEntitySteelAnvil) tile);
+                if(tile instanceof TileEntityInfernalEnchanter)
+                    return new ContainerInfernalEnchanter(player, (TileEntityInfernalEnchanter) tile);
+                return null;
             default:
                 return null;
         }
@@ -65,6 +66,9 @@ public class BWGuiHandler implements IGuiHandler {
                     return new GuiFilteredHopper(player, (TileEntityFilteredHopper) tile);
                 if (tile instanceof TileEntitySteelAnvil)
                     return new GuiSteelAnvil((TileEntitySteelAnvil) tile, new ContainerSteelAnvil(player.inventory, (TileEntitySteelAnvil) tile));
+                if(tile instanceof TileEntityInfernalEnchanter)
+                    return new GuiInfernalEnchanter(player, (TileEntityInfernalEnchanter) tile);
+                return null;
             case MANUAL:
                 return new GuiManual();
             default:
