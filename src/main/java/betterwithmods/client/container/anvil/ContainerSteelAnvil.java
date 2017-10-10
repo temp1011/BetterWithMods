@@ -11,8 +11,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
-
 public class ContainerSteelAnvil extends Container {
     private final int INV_FIRST = 17;
     private final int INV_LAST = 44;
@@ -74,7 +72,6 @@ public class ContainerSteelAnvil extends Container {
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
 
-    @Nullable
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -84,11 +81,10 @@ public class ContainerSteelAnvil extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index == 16) {
+            if (index == 0) {
                 if (!this.mergeItemStack(itemstack1, INV_FIRST, HOT_LAST, true)) {
                     return ItemStack.EMPTY;
                 }
-
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index >= INV_FIRST && index < INV_LAST) {
                 if (!this.mergeItemStack(itemstack1, INV_LAST, HOT_LAST, false)) {

@@ -27,6 +27,15 @@ public class ItemArcaneScroll extends Item {
         return stack;
     }
 
+    public static Enchantment getEnchantment(ItemStack scroll) {
+        NBTTagCompound tag = scroll.getTagCompound();
+        if(tag.hasKey("enchant")) {
+            int e = tag.getInteger("enchant");
+            return Enchantment.getEnchantmentByID(e);
+        }
+        return null;
+    }
+
     public ItemArcaneScroll() {
         super();
         setHasSubtypes(true);

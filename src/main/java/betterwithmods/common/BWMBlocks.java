@@ -203,7 +203,7 @@ public final class BWMBlocks {
 		registerBlock(LATHE, null);
 		registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
 		registerBlock(STEEL_PRESSURE_PLATE);
-//		registerBlock(INFERNAL_ENCHANTER);
+		registerBlock(INFERNAL_ENCHANTER);
 	}
 
 	public static void registerTileEntities() {

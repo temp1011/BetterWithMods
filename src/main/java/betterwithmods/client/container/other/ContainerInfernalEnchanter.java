@@ -17,7 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
  * Created by tyler on 9/11/16.
@@ -47,7 +47,6 @@ public class ContainerInfernalEnchanter extends Container {
                 addSlotToContainer(new SlotItemHandler(playerInv, j + i * 9 + 9, 8 + j * 18, 129 + i * 18));
             }
         }
-
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new SlotItemHandler(playerInv, i, 8 + i * 18, 187));
         }
@@ -80,29 +79,37 @@ public class ContainerInfernalEnchanter extends Container {
     }
 
     public void broadcastData(IContainerListener listener) {
-        listener.sendWindowProperty(this, 0, this.enchantLevels[0]);
-        listener.sendWindowProperty(this, 1, this.enchantLevels[1]);
-        listener.sendWindowProperty(this, 2, this.enchantLevels[2]);
+        for (int i = 0; i < this.enchantLevels.length; i++) {
+            listener.sendWindowProperty(this, 0, this.enchantLevels[i]);
+        }
         listener.sendWindowProperty(this, 3, this.xpSeed & -16);
+    }
+
+    public boolean areValidItems(ItemStack scroll, ItemStack item) {
+        if (!scroll.isEmpty() && !item.isEmpty()) {
+            Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
+            if (enchantment != null && enchantment.canApply(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onContextChanged(IItemHandler handler) {
 
         ItemStack scroll = handler.getStackInSlot(0);
-        ItemStack toEnchant = handler.getStackInSlot(1);
+        ItemStack item = handler.getStackInSlot(1);
 
         Enchantment enchantment = null;
+        Arrays.fill(enchantLevels, 0);
         int enchantCount = 1;
         int maxBookcase = tile.getBookcaseCount();
-        if (!scroll.isEmpty() && !toEnchant.isEmpty()) {
-            enchantment = scroll.getTagCompound() != null ? Enchantment.getEnchantmentByID(scroll.getTagCompound().getInteger("enchant")) : null;
-            enchantCount = EnchantmentHelper.getEnchantments(toEnchant).size() + 1;
-
-
+        if (areValidItems(scroll, item)) {
+            enchantment = ItemArcaneScroll.getEnchantment(scroll);
+            enchantCount = EnchantmentHelper.getEnchantments(item).size() + 1;
             //1,2,3,4
             //8,15,23,30
 //            System.out.println(enchantment.getTranslatedName(-1) + "," + enchantCount + "," + maxBookcase + "," + enchantment.getMaxLevel());
-
         }
         for (int i = 1; i <= enchantLevels.length; i++) {
             if (enchantment == null || i > enchantment.getMaxLevel())
@@ -113,42 +120,42 @@ public class ContainerInfernalEnchanter extends Container {
         detectAndSendChanges();
     }
 
+    public static final int INV_FIRST = 0, INV_LAST = 1, HOT_LAST = 37;
+
     @Override
-    @Nullable
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        ItemStack previous = ItemStack.EMPTY;
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
-            previous = current.copy();
-
-            // [...] Custom behaviour
-            try {
-                if (index > 1) {
-                    if (current.getItem() instanceof ItemArcaneScroll) {
-                        if (!this.mergeItemStack(current, 0, 1, true))
-                            return ItemStack.EMPTY;
-                    } else if (!this.mergeItemStack(current, 1, 2, true))
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if(index > INV_LAST) {
+                if(itemstack1.getItem() instanceof ItemArcaneScroll) {
+                    if(!mergeItemStack(itemstack1, 0,1,true))
                         return ItemStack.EMPTY;
                 } else {
-                    if (!this.mergeItemStack(current, 2, inventorySlots.size() - 2, false))
+                    if(!mergeItemStack(itemstack1, 1,2,true))
                         return ItemStack.EMPTY;
                 }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+            } else {
+                if(!mergeItemStack(itemstack1, 2, 37,true))
+                    return ItemStack.EMPTY;
             }
 
-            if (current.getCount() == 0)
+            if (itemstack1.getCount() == 0) {
                 slot.putStack(ItemStack.EMPTY);
-            else
+            } else {
                 slot.onSlotChanged();
+            }
 
-            if (current.getCount() == previous.getCount())
+            if (itemstack1.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
-            slot.onTake(playerIn, current);
+            }
+
+            slot.onTake(player, itemstack1);
         }
-        return previous;
+        return itemstack;
     }
 
     @Override

@@ -6,6 +6,7 @@ import betterwithmods.util.WorldUtils;
 import com.google.common.collect.Maps;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityBat;
@@ -37,7 +38,7 @@ public class ArcaneScrolls extends Feature {
     private static final HashMap<Class<? extends EntityLivingBase>, ScrollDrop> SCROLL_DROPS = Maps.newHashMap();
 
     public static void addScrollDrop(Class<? extends EntityLivingBase> clazz, Enchantment enchantment) {
-        SCROLL_DROPS.put(clazz, (entity) -> ItemArcaneScroll.getScrollWithEnchant(enchantment));
+        addScrollDrop(clazz, (entity) -> ItemArcaneScroll.getScrollWithEnchant(enchantment));
     }
 
     public static void addScrollDrop(Class<? extends EntityLivingBase> clazz, ItemStack scroll) {
@@ -55,7 +56,7 @@ public class ArcaneScrolls extends Feature {
         addScrollDrop(EntityPigZombie.class, Enchantments.FIRE_PROTECTION);
         addScrollDrop(EntityBat.class, Enchantments.FEATHER_FALLING);
         addScrollDrop(EntityCreeper.class, Enchantments.BLAST_PROTECTION);
-        addScrollDrop(EntitySkeleton.class, (entity) -> {
+        addScrollDrop(AbstractSkeleton.class, (entity) -> {
             if (entity.world.provider.getDimensionType() == DimensionType.NETHER)
                 return ItemArcaneScroll.getScrollWithEnchant(Enchantments.INFINITY);
             else
@@ -69,6 +70,29 @@ public class ArcaneScrolls extends Feature {
         addScrollDrop(EntityEnderman.class, Enchantments.SILK_TOUCH);
         addScrollDrop(EntityGhast.class, Enchantments.PUNCH);
         addScrollDrop(EntityBlaze.class, Enchantments.FLAME);
+        addScrollDrop(EntityShulker.class, new ScrollDrop() {
+            @Override
+            public ItemStack getScroll(EntityLivingBase entity) {
+                return ItemArcaneScroll.getScrollWithEnchant(Enchantments.MENDING);
+            }
+
+            @Override
+            public double getChance() {
+                return 0.001;
+            }
+        });
+        addScrollDrop(EntityDragon.class, new ScrollDrop() {
+            @Override
+            public ItemStack getScroll(EntityLivingBase entity) {
+                return ItemArcaneScroll.getScrollWithEnchant(Enchantments.SWEEPING);
+            }
+
+            //Always drops
+            @Override
+            public double getChance() {
+                return 1;
+            }
+        });
         addScrollDrop(EntityWither.class, new ScrollDrop() {
             @Override
             public ItemStack getScroll(EntityLivingBase entity) {
@@ -94,8 +118,16 @@ public class ArcaneScrolls extends Feature {
         // UNBREAKING -> Blacksmith Trade
         // FORTUNE ->  Priest Trade
         // POWER   -> Librarian Trade
-
-
+        // LUCK_OF_THE_SEA, LURE -> Fisherman Trade
+        //TODO new things
+        /*
+        DEPTH_STRIDER Guardian
+        FROST_WALKER Polar Bear
+        BINDING_CURSE illager
+        SWEEPING Wither Skeleton?
+        MENDING REMOVE
+        VANISHING_CURSE illager
+         */
     }
 
     @Override
