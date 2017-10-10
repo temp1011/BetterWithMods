@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import java.util.Arrays;
@@ -31,13 +30,7 @@ public class ContainerInfernalEnchanter extends Container {
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
-        handler = new ItemStackHandler(2) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                super.onContentsChanged(slot);
-                onContextChanged(this);
-            }
-        };
+        handler = new ItemStackHandler(2);
         this.xpSeed = player.getXPSeed();
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         addSlotToContainer(new SlotItemHandler(handler, 0, 17, 37));
@@ -50,6 +43,7 @@ public class ContainerInfernalEnchanter extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new SlotItemHandler(playerInv, i, 8 + i * 18, 187));
         }
+
 
     }
 
@@ -155,6 +149,7 @@ public class ContainerInfernalEnchanter extends Container {
 
             slot.onTake(player, itemstack1);
         }
+        handler.onContentsChanged(index);
         return itemstack;
     }
 
@@ -173,4 +168,16 @@ public class ContainerInfernalEnchanter extends Container {
         }
     }
 
+
+    private class ItemStackHandler extends net.minecraftforge.items.ItemStackHandler {
+        public ItemStackHandler(int size) {
+            super(size);
+        }
+
+        @Override
+        public void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            onContextChanged(this);
+        }
+    }
 }
