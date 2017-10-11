@@ -18,7 +18,7 @@ public class CauldronManager extends CraftingManagerBulk<CauldronRecipe> {
     }
 
     public CauldronRecipe addRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-    	if(output.getItem() instanceof ItemFood || !output.isItemEqual(new ItemStack(BWMItems.KIBBLE)))
+    	if(output.getItem() instanceof ItemFood && !output.isItemEqual(new ItemStack(BWMItems.KIBBLE)))
 		    return addRecipe(new CauldronFoodRecipe(output, secondary, inputs));
         return addRecipe(new CauldronRecipe(output, secondary, inputs));
     }
