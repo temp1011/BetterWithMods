@@ -1,12 +1,14 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
+import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -17,7 +19,19 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static betterwithmods.module.hardcore.needs.HCMovement.dirtpathQuality;
+
 public class GrassPath extends Feature {
+
+    public static boolean isQualityShovel(ItemStack stack) {
+        if (stack.getItem() instanceof ItemTool) {
+            ItemTool tool = (ItemTool) stack.getItem();
+
+            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(tool).ordinal() > 1;
+            return tool.getToolClasses(stack).contains("shovel") && hard;
+        }
+        return false;
+    }
 
     @Override
     public String getFeatureDescription() {
@@ -34,9 +48,8 @@ public class GrassPath extends Feature {
         return true;
     }
 
-    protected boolean isBlockDirt(IBlockState iBlockStateIn) {
-        if (iBlockStateIn.getBlock() == Blocks.DIRT) return true;
-        return false;
+    protected boolean isBlockDirt(IBlockState state) {
+        return state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.GRASS;
     }
 
     protected void setPathOrDirt(World world, IBlockState blockState, BlockPos blockPos, SoundEvent soundEvent, EntityPlayer player, ItemStack itemStack, EnumHand hand) {
@@ -62,11 +75,10 @@ public class GrassPath extends Feature {
         if (stack.isEmpty())
             return;
 
-        if (!stack.canHarvestBlock(Blocks.SNOW.getDefaultState()))
+        if (!isQualityShovel(stack))
             return;
 
         IBlockState iBlockState = world.getBlockState(blockPos);
-
         if (world.getBlockState(blockPos.up()).getMaterial() == Material.AIR) {
             if (isBlockDirt(iBlockState)) {
                 IBlockState pathState = Blocks.GRASS_PATH.getDefaultState();
