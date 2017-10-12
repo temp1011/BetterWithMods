@@ -16,17 +16,29 @@
       {
         "submodel": {
           "candle1": {
+            "textures": {
+              "all": "blocks/concrete_gray"
+            },
             "model": "betterwithmods:infernal_candle"
           },
           "candle2": {
+            "textures": {
+              "all": "blocks/concrete_gray"
+            },
             "model": "betterwithmods:infernal_candle",
             "y": 90
           },
           "candle3": {
+            "textures": {
+              "all": "blocks/concrete_gray"
+            },
             "model": "betterwithmods:infernal_candle",
             "y": 180
           },
           "candle4": {
+            "textures": {
+              "all": "blocks/concrete_gray"
+            },
             "model": "betterwithmods:infernal_candle",
             "y": 270
           }

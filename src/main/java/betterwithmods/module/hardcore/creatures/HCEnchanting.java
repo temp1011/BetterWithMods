@@ -151,6 +151,7 @@ public class HCEnchanting extends Feature {
 
     @SubscribeEvent
     public void onDeath(LivingDropsEvent event) {
+        //TODO stage support?
         for (Class<? extends EntityLivingBase> entity : SCROLL_DROPS.keySet()) {
             if (entity.isAssignableFrom(event.getEntityLiving().getClass())) {
                 ScrollDrop drop = SCROLL_DROPS.get(entity);

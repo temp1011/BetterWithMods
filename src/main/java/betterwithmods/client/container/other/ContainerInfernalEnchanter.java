@@ -20,6 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Created by tyler on 9/11/16.
@@ -83,9 +84,16 @@ public class ContainerInfernalEnchanter extends Container {
     public boolean areValidItems(ItemStack scroll, ItemStack item) {
         if (!scroll.isEmpty() && !item.isEmpty()) {
             Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
-            if (EnchantmentHelper.getEnchantments(item).containsKey(enchantment))
+            if (enchantment == null)
                 return false;
-            if (enchantment != null && HCEnchanting.InfernalEnchantmentType.fromEnchantment(enchantment).canEnchantItem(item.getItem())) {
+            Set<Enchantment> enchantments = EnchantmentHelper.getEnchantments(item).keySet();
+            if (enchantments.contains(enchantment))
+                return false;
+            for (Enchantment e : enchantments) {
+                if (!e.isCompatibleWith(enchantment))
+                    return false;
+            }
+            if (HCEnchanting.InfernalEnchantmentType.fromEnchantment(enchantment).canEnchantItem(item.getItem())) {
                 return true;
             }
         }
@@ -103,16 +111,19 @@ public class ContainerInfernalEnchanter extends Container {
         int maxBookcase = tile.getBookcaseCount();
         if (areValidItems(scroll, item)) {
             enchantment = ItemArcaneScroll.getEnchantment(scroll);
-            enchantCount = EnchantmentHelper.getEnchantments(item).size() + 1;
+            enchantCount = EnchantmentHelper.getEnchantments(item).size() ;
             //1,2,3,4
             //8,15,23,30
 //            System.out.println(enchantment.getTranslatedName(-1) + "," + enchantCount + "," + maxBookcase + "," + enchantment.getMaxLevel());
         }
         for (int i = 1; i <= enchantLevels.length; i++) {
-            if (enchantment == null || i > enchantment.getMaxLevel())
+            if (enchantment == null || i > enchantment.getMaxLevel()) {
                 enchantLevels[i - 1] = 0;
-            else
-                enchantLevels[i - 1] = (int) Math.ceil(30 / Math.min(enchantLevels.length, enchantment.getMaxLevel())) * i * enchantCount;
+            } else {
+                double max = Math.min(enchantment.getMaxLevel(), enchantLevels.length);
+                double j = i/max;
+                enchantLevels[i - 1] = (int) Math.ceil(30.0 * j) + (30 * enchantCount);
+            }
         }
         detectAndSendChanges();
     }
@@ -185,7 +196,8 @@ public class ContainerInfernalEnchanter extends Container {
     }
 
     public boolean hasLevels(EntityPlayer player, int level) {
-        return player.capabilities.isCreativeMode || player.experienceLevel > level;
+
+        return player.capabilities.isCreativeMode || (player.experienceLevel >= level && tile.getBookcaseCount() >= level);
     }
 
     @Override
@@ -198,7 +210,8 @@ public class ContainerInfernalEnchanter extends Container {
                 if (enchantment != null) {
                     scroll.shrink(1);
                     item.addEnchantment(enchantment, level + 1);
-                    tile.getWorld().playSound(null, tile.getPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 1.0F, tile.getWorld().rand.nextFloat() * 0.1F + 0.9F);
+                    tile.getWorld().playSound(null, tile.getPos(), SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.BLOCKS, 1.0F, tile.getWorld().rand.nextFloat() * 0.1F + 0.9F);
+
                 }
             }
             return true;

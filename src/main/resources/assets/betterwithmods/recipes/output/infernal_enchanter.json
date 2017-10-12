@@ -10,8 +10,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "C": {
-      "ore": "candle",
-      "type": "forge:ore_dict"
+      "item": "betterwithmods:candle",
+      "data": 15
     },
     "B": {
       "ore": "bone",

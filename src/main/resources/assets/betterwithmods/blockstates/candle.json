@@ -2,11 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "blocks/hardened_clay",
-      "top": "betterwithmods:blocks/vase_inside",
+      "side": "blocks/concrete_white",
       "particle": "#side"
     },
-    "model": "cube",
+    "model": "betterwithmods:candle",
     "uvlock": false
   },
   "variants": {
@@ -21,82 +20,82 @@
     "color": {
       "white": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_white"
+          "side": "minecraft:blocks/concrete_white"
         }
       },
       "orange": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_orange"
+          "side": "minecraft:blocks/concrete_orange"
         }
       },
       "magenta": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_magenta"
+          "side": "minecraft:blocks/concrete_magenta"
         }
       },
       "light_blue": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_light_blue"
+          "side": "minecraft:blocks/concrete_light_blue"
         }
       },
       "yellow": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_yellow"
+          "side": "minecraft:blocks/concrete_yellow"
         }
       },
       "lime": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_lime"
+          "side": "minecraft:blocks/concrete_lime"
         }
       },
       "pink": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_pink"
+          "side": "minecraft:blocks/concrete_pink"
         }
       },
       "gray": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_gray"
+          "side": "minecraft:blocks/concrete_gray"
         }
       },
       "silver": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_silver"
+          "side": "minecraft:blocks/concrete_silver"
         }
       },
       "cyan": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_cyan"
+          "side": "minecraft:blocks/concrete_cyan"
         }
       },
       "purple": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_purple"
+          "side": "minecraft:blocks/concrete_purple"
         }
       },
       "blue": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_blue"
+          "side": "minecraft:blocks/concrete_blue"
         }
       },
       "brown": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_brown"
+          "side": "minecraft:blocks/concrete_brown"
         }
       },
       "green": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_green"
+          "side": "minecraft:blocks/concrete_green"
         }
       },
       "red": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_red"
+          "side": "minecraft:blocks/concrete_red"
         }
       },
       "black": {
         "textures": {
-          "side": "minecraft:blocks/hardened_clay_stained_black"
+          "side": "minecraft:blocks/concrete_black"
         }
       }
     }

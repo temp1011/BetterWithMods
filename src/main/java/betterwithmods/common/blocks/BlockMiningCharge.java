@@ -43,6 +43,7 @@ public class BlockMiningCharge extends BWMBlock {
         setSoundType(SoundType.PLANT);
     }
 
+
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
@@ -97,6 +98,11 @@ public class BlockMiningCharge extends BWMBlock {
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return getDefaultState().withProperty(DirUtils.FACING, facing);
+    }
+
+    @Override
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+        return worldIn.isSideSolid(pos,side);
     }
 
     @Override

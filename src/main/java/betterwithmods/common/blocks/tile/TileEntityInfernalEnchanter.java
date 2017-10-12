@@ -1,9 +1,15 @@
 package betterwithmods.common.blocks.tile;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 /**
@@ -12,6 +18,18 @@ import net.minecraftforge.common.ForgeHooks;
 public class TileEntityInfernalEnchanter extends TileBasic implements ITickable {
     private final static int RADIUS = 8;
     private int bookcaseCount;
+    private boolean active;
+
+    private static float getPower(World world, BlockPos pos) {
+        float power = ForgeHooks.getEnchantPower(world, pos);
+        if (power > 0) {
+            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                if (!world.getBlockState(pos.offset(facing)).getMaterial().isSolid())
+                    return power;
+            }
+        }
+        return 0;
+    }
 
     @Override
     public void update() {
@@ -21,44 +39,49 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
             for (int x = -RADIUS; x <= RADIUS; x++) {
                 for (int y = -RADIUS; y <= RADIUS; y++) {
                     for (int z = -RADIUS; z <= RADIUS; z++) {
-                        BlockPos pos = getPos().add(x, y, z);
-                        bookcaseCount += (ForgeHooks.getEnchantPower(getWorld(), pos) > 0) ? 1 : 0;
+                        BlockPos current = pos.add(x, y, z);
+                        float power = getPower(world, current);
+                        if (power > 0) {
+                            bookcaseCount += power;
+                        }
                     }
                 }
             }
-            System.out.println(bookcaseCount);
-            //required
-
-            // bookcase * item.enchants + 1
-
         }
+
         if (getWorld().getTotalWorldTime() % 5 == 0) {
-            int x = pos.getX(), y = pos.getY(), z = pos.getZ();
-            getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .125, 0, 0, 0);
-            getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .125, 0, 0, 0);
-            getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .875, 0, 0, 0);
-            getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .875, 0, 0, 0);
+            boolean players = !world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(5)).isEmpty();
+            if (active != players) {
+                active = players;
+                if(active)
+                    world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1, 1);
+            }
+            if (active) {
+                int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+                getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .125, 0, 0, 0);
+                getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .125, 0, 0, 0);
+                getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .875, 0, 0, 0);
+                getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .875, 0, 0, 0);
+            }
         }
-
     }
 
     public int getBookcaseCount() {
         return bookcaseCount;
     }
 
-    public void setBookcaseCount(int bookcaseCount) {
-        this.bookcaseCount = bookcaseCount;
-    }
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setInteger("bookcaseCount", bookcaseCount);
+        compound.setBoolean("active", active);
         return super.writeToNBT(compound);
+
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         bookcaseCount = compound.getInteger("bookcaseCount");
+        active = compound.getBoolean("active");
         super.readFromNBT(compound);
     }
 
