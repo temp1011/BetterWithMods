@@ -111,6 +111,7 @@ public final class BWMBlocks {
 	public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block CANDLE = new BlockCandle().setRegistryName("candle").setCreativeTab(BWCreativeTabs.BWTAB);
+	public static final Block CANDLE_HOLDER = new BlockCandleHolder().setRegistryName("candle_holder").setCreativeTab(BWCreativeTabs.BWTAB);
 
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -208,6 +209,7 @@ public final class BWMBlocks {
 		registerBlock(STEEL_PRESSURE_PLATE);
 		registerBlock(INFERNAL_ENCHANTER);
 		registerBlock(CANDLE, new ItemBlockMeta(CANDLE));
+		registerBlock(CANDLE_HOLDER);
 	}
 
 	public static void registerTileEntities() {

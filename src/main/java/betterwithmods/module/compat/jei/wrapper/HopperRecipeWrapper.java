@@ -4,7 +4,7 @@ import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * @author Tyler Marshall
  * @version 11/20/16
  */
-public class HopperRecipeWrapper extends BlankRecipeWrapper {
+public class HopperRecipeWrapper implements IRecipeWrapper {
 
     private final List<ItemStack> input;
     private final List<ItemStack> filter;
@@ -42,5 +42,6 @@ public class HopperRecipeWrapper extends BlankRecipeWrapper {
         public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
             super(recipe);
         }
+
     }
 }

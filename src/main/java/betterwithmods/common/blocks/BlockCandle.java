@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.ColorUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,7 +28,7 @@ import java.util.Random;
 
 import static net.minecraft.util.EnumFacing.UP;
 
-public class BlockCandle extends BWMBlock implements IMultiVariants  {
+public class BlockCandle extends BWMBlock implements IMultiVariants {
 
 
     public static ItemStack getStack(EnumDyeColor type) {
@@ -48,7 +49,7 @@ public class BlockCandle extends BWMBlock implements IMultiVariants  {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         double d0 = (double) pos.getX() + 0.5D;
-        double d1 = (double) pos.getY() + 0.6D;
+        double d1 = (double) pos.getY() + 5d/16;
         double d2 = (double) pos.getZ() + 0.5D;
         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.27D * (double) UP.getFrontOffsetX(), d1 + 0.22D, d2 + 0.27D * (double) UP.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D);
         worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.27D * (double) UP.getFrontOffsetX(), d1 + 0.22D, d2 + 0.27D * (double) UP.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D);
@@ -72,10 +73,25 @@ public class BlockCandle extends BWMBlock implements IMultiVariants  {
         return state.getValue(ColorUtils.COLOR).getMetadata();
     }
 
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(ColorUtils.COLOR).getMetadata();
+    }
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.isSideSolid(pos.down(), UP);
+        BlockPos down = pos.down();
+        BlockFaceShape blockfaceshape = worldIn.getBlockState(down).getBlockFaceShape(worldIn, pos, UP);
+        return blockfaceshape != BlockFaceShape.BOWL && blockfaceshape != BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if(!canPlaceBlockAt(worldIn,pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
@@ -94,13 +110,10 @@ public class BlockCandle extends BWMBlock implements IMultiVariants  {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(6d/16d, 0, 6d/16d, 10d/16d, 10d/16d, 10d/16d);
+        return new AxisAlignedBB(7d / 16d, 0, 7d / 16d, 9d / 16d, 6d / 16d, 9d / 16d);
 
     }
 
-    /**
-     * Used to determine ambient occlusion and culling when rebuilding chunks for render
-     */
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }

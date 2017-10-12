@@ -58,17 +58,18 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID, value = Side.CLIENT)
-public class ClientProxy implements IProxy {
-    static ResourceProxy resourceProxy;
 
-    static {
-        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "aD", "field_110449_ao", "defaultResourcePacks");
-        resourceProxy = new ResourceProxy();
-        packs.add(resourceProxy);
-    }
+public class ClientProxy implements IProxy {
+    // Minecraft
+    public static final String[] DEFAULT_RESOURCE_PACKS = new String[]{"field_110449_ao", "defaultResourcePacks"};
+    private static ResourceProxy resourceProxy;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
+        resourceProxy = new ResourceProxy();
+        packs.add(resourceProxy);
+
         ModuleLoader.preInitClient(event);
         registerRenderInformation();
         initRenderers();
@@ -96,7 +97,6 @@ public class ClientProxy implements IProxy {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
-//        BWMBlocks.getBlocks().forEach(BWMBlocks::setInventoryModel);
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
@@ -105,10 +105,6 @@ public class ClientProxy implements IProxy {
 
     private void registerRenderInformation() {
         RenderUtils.registerFilters();
-        //ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
-        //ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL_BLOCK, new BWStateMapper(BWMBlocks.WINDMILL_BLOCK.getRegistryName().toString()));
-        //ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
-//        ModelLoaderRegistry;
         OBJLoader.INSTANCE.addDomain(BWMod.MODID);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());

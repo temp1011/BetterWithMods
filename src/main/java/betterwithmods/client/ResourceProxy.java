@@ -31,6 +31,7 @@ public class ResourceProxy extends AbstractResourcePack {
         String bare = String.format(BARE_FORMAT, MINECRAFT, space, dir, file, ext);
         String override = String.format(OVERRIDE_FORMAT, BWMod.MODID, space, dir, file, ext);
         overrides.put(bare, override);
+        BWMod.logger.info("Override texture: {} to {}", bare, override);
     }
 
     @Override
@@ -50,14 +51,10 @@ public class ResourceProxy extends AbstractResourcePack {
         return overrides.containsKey(name);
     }
 
-    @Override
-    protected void logNameNotLowercase(String name) {
-        // NO-OP
-    }
 
     @Override
     public String getPackName() {
-        return "quark-texture-proxy";
+        return "bwm-texture-proxy";
     }
 
 }

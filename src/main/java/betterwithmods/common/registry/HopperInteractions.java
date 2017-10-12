@@ -67,6 +67,19 @@ public class HopperInteractions {
         public boolean canCraft(World world, BlockPos pos) {
             return true;
         }
+
+        public ItemStack getInput() {
+            ItemStack i = input.copy();
+            i.setCount(8);
+            return i;
+        }
+
+        public ItemStack getOutput() {
+            ItemStack o = output.copy();
+            o.setCount(8);
+            return o;
+        }
+
     }
 
     public static abstract class HopperRecipe {
