@@ -98,11 +98,11 @@ public class HCStumping extends Feature {
 	public void getHarvest(PlayerEvent.BreakSpeed event) {
 		World world = event.getEntityPlayer().getEntityWorld();
 		if (isStump(world.getBlockState(event.getPos())) && isRoots(world.getBlockState(event.getPos().down()))) {
-			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()) : 1;
+			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand(), event.getState()) : 1;
 			event.setNewSpeed(STUMP_BREAK_SPEED * scale);
 		}
 		if (isRoots(world.getBlockState(event.getPos())) && isStump(world.getBlockState(event.getPos().up()))) {
-			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand()) : 1;
+			float scale = SPEED_UP_WITH_TOOLS ? ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand(), event.getState()) : 1;
 			event.setNewSpeed(ROOT_BREAK_SPEED * scale);
 		}
 	}

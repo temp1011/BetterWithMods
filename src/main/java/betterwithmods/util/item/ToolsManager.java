@@ -1,10 +1,13 @@
 package betterwithmods.util.item;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,11 +48,20 @@ public final class ToolsManager {
         Collections.addAll(effectiveOn, blocks);
     }
 
+    //Potential to crash if tool material is improperly assigned?
     public static float getSpeed(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool) stack.getItem();
             Item.ToolMaterial material = getToolMaterial(tool);
             return material.getEfficiencyOnProperMaterial();
+        }
+        return 1;
+    }
+
+    public static float getSpeed(ItemStack stack, IBlockState state) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
+            ItemTool tool = (ItemTool)stack.getItem();
+            return tool.getStrVsBlock(stack, state);
         }
         return 1;
     }
