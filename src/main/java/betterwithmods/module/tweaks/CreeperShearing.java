@@ -7,6 +7,7 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -18,13 +19,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by tyler on 4/20/17.
  */
 public class CreeperShearing extends Feature {
+
     @SubscribeEvent
     public void shearCreeper(PlayerInteractEvent.EntityInteractSpecific e) {
         if (e.getTarget() instanceof EntityLivingBase) {
             EntityLivingBase creeper = (EntityLivingBase) e.getTarget();
             if (creeper instanceof EntityCreeper) {
                 if (e.getSide().isServer() && creeper.isEntityAlive() && !e.getItemStack().isEmpty()) {
-                    if (e.getItemStack().getItem() instanceof ItemShears) {
+                    Item item = e.getItemStack().getItem();
+                    if (item instanceof ItemShears) {
+                        e.getEntityPlayer().getCooldownTracker().setCooldown(item, 20);
                         InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
                         EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
                         creeper.attackEntityFrom(new DamageSource(""), 0);

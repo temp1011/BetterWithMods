@@ -534,6 +534,7 @@ modifier.mending.desc=??oKillsteal!??r\nAbsorbs experience to repair the tool.
 
 entity.entity_sheared_creeper.name=Sheared Creeper
 entity.bwm_jungle_spider.name=Jungle Spider
+entity.extending_rope.name=Moving Platform
 tile.bwm:single_machine=Mechanical Machine
 
 subtitles.bwm.wood.creak=Wood creaks
