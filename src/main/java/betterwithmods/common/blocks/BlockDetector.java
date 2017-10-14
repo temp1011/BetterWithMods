@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -183,7 +182,7 @@ public class BlockDetector extends BlockRotate {
             BlockLens lens = (BlockLens) target;
             if (lens.getFacing(world.getBlockState(offset)) == DirUtils.getOpposite(getFacing(world.getBlockState(pos))) && lens.isLit(world, offset))
                 return true;
-        } else if (world.getBlockState(offset).isOpaqueCube() || world.getBlockState(offset).getBlock() == BWMBlocks.PLATFORM || world.getBlockState(offset).getBlock() instanceof BlockMini)
+        } else if (world.getBlockState(offset).getMaterial().isSolid())
             return true;
         else if (!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset)) {
             int x = offset.getX();
@@ -259,6 +258,6 @@ public class BlockDetector extends BlockRotate {
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
-        world.setBlockState(pos, state.withProperty(ACTIVE,false).cycleProperty(DirUtils.FACING));
+        world.setBlockState(pos, state.withProperty(ACTIVE, false).cycleProperty(DirUtils.FACING));
     }
 }
