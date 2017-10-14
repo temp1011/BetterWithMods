@@ -118,11 +118,12 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                 } else if (stack.getItem() instanceof ItemBlock) {
                     Block block = ((ItemBlock) stack.getItem()).getBlock();
                     if (this.isValidBlockStack(stack)) {
-                        if (!player.capabilities.isCreativeMode)
-                            stack.shrink(1);
                         for (EnumType type : EnumType.values()) {
-                            if (valid)
+                            if (valid) {
+                                if (!player.capabilities.isCreativeMode)
+                                    stack.shrink(1);
                                 break;
+                            }
                             if (BWMRecipes.getStackFromState(type.getState()).isItemEqual(stack)) {
                                 world.setBlockState(pos, state.withProperty(TYPE, type));
                                 valid = true;
