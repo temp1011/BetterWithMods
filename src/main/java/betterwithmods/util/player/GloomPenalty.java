@@ -31,6 +31,14 @@ public enum GloomPenalty implements IPlayerPenalty {
         return modifier;
     }
 
+    public int getTimeLower() {
+        return timeLower;
+    }
+
+    public int getTimeUpper() {
+        return timeUpper;
+    }
+
     @Override
     public String getDescription() {
         return description;

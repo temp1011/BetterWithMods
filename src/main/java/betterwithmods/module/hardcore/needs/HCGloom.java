@@ -33,6 +33,8 @@ public class HCGloom extends Feature {
     private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
     private static Set<Integer> dimensionWhitelist;
 
+    private static boolean dangers;
+
     public static int getGloomTime(EntityPlayer player) {
         try {
             return player.getDataManager().get(GLOOM_TICK);
@@ -42,7 +44,18 @@ public class HCGloom extends Feature {
     }
 
     public static void incrementGloomTime(EntityPlayer player) {
-        setGloomTick(player, getGloomTime(player) + 1);
+        int time = getGloomTime(player);
+        if(dangers) {
+            if (time >= GloomPenalty.TERROR.getTimeUpper())
+                setGloomTick(player, GloomPenalty.TERROR.getTimeUpper());
+            else
+                setGloomTick(player,  time+ 1);
+        } else {
+            if (time >= GloomPenalty.DREAD.getTimeUpper())
+                setGloomTick(player, GloomPenalty.DREAD.getTimeUpper());
+            else
+                setGloomTick(player,  time+ 1);
+        }
     }
 
     public static void setGloomTick(EntityPlayer player, int value) {
@@ -52,6 +65,7 @@ public class HCGloom extends Feature {
     @Override
     public void setupConfig() {
         dimensionWhitelist = Sets.newHashSet(ArrayUtils.toObject(loadPropIntList("Gloom Dimension Whitelist", "Gloom is only available in these dimensions", new int[]{0})));
+        dangers = loadPropBool("Deathly Gloom", "Gloom is deadly to the player", true);
     }
 
     @SubscribeEvent
@@ -95,7 +109,6 @@ public class HCGloom extends Feature {
                     if (world.rand.nextInt(2) == 0) {
                         if (world.isRemote)
                             player.playSound(SoundEvents.ENTITY_ENDERMEN_STARE, 0.7F, 0.8F + world.rand.nextFloat() * 0.2F);
-
                         player.attackEntityFrom(BWDamageSource.gloom, 1);
                     }
                 }
