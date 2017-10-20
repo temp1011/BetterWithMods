@@ -34,7 +34,7 @@ public class HCLumber extends Feature {
                 return stack.getItem().getHarvestLevel(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND), "axe", player, event.getState()) >= 0 || stack.getItem().getToolClasses(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)).contains("axe");
             }
         }
-        return false;
+        return event.isSilkTouching();
     }
 
     @Override

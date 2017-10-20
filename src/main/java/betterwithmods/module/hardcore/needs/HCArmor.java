@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -64,7 +65,7 @@ public class HCArmor extends Feature {
     public static void setSkeletonEquipment(AbstractSkeleton entity) {
         entity.setCombatTask();
         entity.setCanPickUpLoot(entity.getRNG().nextFloat() <= 0.25);
-        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entity instanceof EntityWitherSkeleton ? ItemStack.EMPTY : new ItemStack(Items.BOW));
         halloween(entity);
     }
 

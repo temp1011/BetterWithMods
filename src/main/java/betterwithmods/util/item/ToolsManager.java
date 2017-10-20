@@ -1,13 +1,11 @@
 package betterwithmods.util.item;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -239,6 +239,7 @@ public class HCHunger extends CompatFeature {
 	//Max Health only regen when above Peckish
 	@SubscribeEvent
 	public void allowHealthRegen(HealthRegenEvent.AllowRegen event) {
+		if (!event.player.world.getGameRules().getBoolean("naturalRegeneration")) return;
 		event.setResult(PlayerHelper.getHungerPenalty(event.player) == HungerPenalty.NO_PENALTY ? Event.Result.ALLOW : Event.Result.DENY);
 	}
 
