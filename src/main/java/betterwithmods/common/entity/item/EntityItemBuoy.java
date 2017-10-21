@@ -28,7 +28,7 @@ public class EntityItemBuoy extends EntityItem {
      * Wrapper around EntityItem.
      */
     public EntityItemBuoy(EntityItem orig) {
-        super(orig.getEntityWorld(), orig.posX, orig.posY, orig.posZ, orig.getItem());
+        super(orig.getEntityWorld(), orig.posX, orig.posY, orig.posZ, orig.getItem().copy());
         NBTTagCompound originalData = new NBTTagCompound();
         orig.writeEntityToNBT(originalData);
         this.readEntityFromNBT(originalData);
