@@ -110,7 +110,7 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         if (recipe != null) {
             if (recipe.matches(inv)) {
                 ItemStack[] ret = new ItemStack[1];
-                if (recipe.getSecondary() != null) {
+                if (!recipe.getSecondary().isEmpty()) {
                     ret = new ItemStack[2];
                     ret[1] = recipe.getSecondary();
                 }

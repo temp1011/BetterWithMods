@@ -109,7 +109,7 @@ public class Dung extends Feature {
         {
             EnumFacing checkFacing = EnumFacing.getHorizontal((dir + i) % 4);
             BlockPos checkPos = pos.offset(checkFacing);
-            if(world.isAirBlock(checkPos) || world.getBlockState(checkPos).getBlock().isReplaceable(world,pos))
+            if(world.isAirBlock(checkPos) || world.getBlockState(checkPos).getBlock().isReplaceable(world,checkPos))
                 return checkFacing;
         }
         return null;
