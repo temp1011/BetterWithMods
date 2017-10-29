@@ -21,6 +21,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -48,7 +50,7 @@ public class BlockPump extends BlockRotate implements IBlockActive, IMultiVarian
         IBlockState sourceState = world.getBlockState(source);
         Block block = sourceState.getBlock();
         Material mat = block.getMaterial(state);
-        return block instanceof BlockLiquid && mat == Material.WATER;
+        return (block instanceof BlockFluidBase && ((BlockFluidBase)block).getFluid() == FluidRegistry.WATER) || (block instanceof BlockLiquid && mat == Material.WATER);
     }
 
     @Override
