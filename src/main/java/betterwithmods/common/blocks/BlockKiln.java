@@ -155,20 +155,6 @@ public class BlockKiln extends BWMBlock {
         world.scheduleBlockUpdate(pos, this, 20, 5);
     }
 
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
 
     public int getCookCounterFromMeta(int meta) {
         return meta & 0x7;

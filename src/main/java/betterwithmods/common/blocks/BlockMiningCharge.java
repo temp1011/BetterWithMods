@@ -90,7 +90,6 @@ public class BlockMiningCharge extends BWMBlock {
         }
     }
 
-    @Override
     public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }

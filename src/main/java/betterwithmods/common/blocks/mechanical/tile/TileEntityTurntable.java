@@ -1,12 +1,12 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.api.block.ITurnable;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.common.registry.TurntableRotationManager;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.util.DirUtils;
@@ -130,20 +130,20 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     public void rotateTurntable() {
-        boolean reverse = MechanicalUtil.isRedstonePowered(world,pos);
+        boolean reverse = MechanicalUtil.isRedstonePowered(world, pos);
 
         this.potteryRotated = false;
-
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
         for (int tempY = 1; tempY < 3; tempY++) {
-            BlockPos searchPos = pos.add(0, tempY, 0);
-            boolean canTransmitHorizontally = canBlockTransmitRotationHorizontally(searchPos);
-            boolean canTransmitVertically = canBlockTransmitRotationVertically(searchPos);
-            rotateBlock(searchPos, reverse);
+            pos.setY(pos.getY() + 1);
+            TurntableRotationManager.IRotation handler = rotateBlock(pos, reverse);
+            if (handler == null)
+                break;
 
-            if (canTransmitHorizontally)
-                rotateBlocksAttached(searchPos, reverse);
+            if (handler.canTransmitHorizontally(world,pos))
+                rotateBlocksAttached(pos, reverse);
 
-            if (!canTransmitVertically)
+            if (!handler.canTransmitVertically(world,pos))
                 break;
         }
 
@@ -167,42 +167,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
             timerPos = 0;
         IBlockState state = getBlockWorld().getBlockState(pos);
         getBlockWorld().notifyBlockUpdate(pos, state, state, 3);
-    }
-
-    private boolean canBlockTransmitRotationHorizontally(BlockPos pos) {
-        Block target = getBlockWorld().getBlockState(pos).getBlock();
-
-        if (target instanceof ITurnable) {
-            return ((ITurnable) target).canRotateHorizontally(getBlockWorld(), pos);
-        }
-        if (target == Blocks.GLASS || target == Blocks.STAINED_GLASS)
-            return true;
-        if (target instanceof BlockPistonBase) {
-            IBlockState state = getBlockWorld().getBlockState(pos);
-
-            return !state.getValue(BlockPistonBase.EXTENDED);
-        }
-        return !(target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD) && this.getBlockWorld().isBlockNormalCube(pos, false);
-
-    }
-
-    private boolean canBlockTransmitRotationVertically(BlockPos pos) {
-        Block target = getBlockWorld().getBlockState(pos).getBlock();
-
-        if (target instanceof ITurnable) {
-            return ((ITurnable) target).canRotateVertically(getBlockWorld(), pos);
-        }
-        if (target == Blocks.GLASS)
-            return true;
-        if (target == Blocks.CLAY)
-            return false;
-        if (target instanceof BlockPistonBase) {
-            IBlockState state = getBlockWorld().getBlockState(pos);
-
-            return !state.getValue(BlockPistonBase.EXTENDED);
-        }
-        return !(target == Blocks.PISTON_EXTENSION || target == Blocks.PISTON_HEAD) && this.getBlockWorld().isBlockNormalCube(pos, false);
-
     }
 
     private void rotateBlocksAttached(BlockPos pos, boolean reverse) {
@@ -243,9 +207,11 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                 }
             } else if (block == Blocks.LEVER) {
                 BlockLever.EnumOrientation facing = state.getValue(BlockLever.FACING);
-                if (facing.getFacing() == EnumFacing.getFront(i)) {
-                    block.dropBlockAsItem(getBlockWorld(), offset, state, 0);
-                    this.getBlockWorld().setBlockToAir(offset);
+                if (facing.getFacing().getAxis().isVertical()) {
+                    if (facing.getFacing() == EnumFacing.getFront(i)) {
+                        block.dropBlockAsItem(getBlockWorld(), offset, state, 0);
+                        this.getBlockWorld().setBlockToAir(offset);
+                    }
                 }
             }
 
@@ -294,52 +260,21 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         }
     }
 
-    private void rotateBlock(BlockPos pos, boolean reverse) {
+    private TurntableRotationManager.IRotation rotateBlock(BlockPos pos, boolean reverse) {
         if (getBlockWorld().isAirBlock(pos))
-            return;
-
+            return null;
         IBlockState state = getBlockWorld().getBlockState(pos);
         ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
-        Block target = state.getBlock();
         Rotation rot = reverse ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
-
         if (TurntableManager.INSTANCE.contains(stack) && TurntableManager.INSTANCE.getRecipe(stack) != null) {
-            if (target instanceof ITurnable) {
-                ITurnable block = (ITurnable) target;
-                if (block.canRotateOnTurntable(getBlockWorld(), pos))
-                    block.rotateAroundYAxis(getBlockWorld(), pos, reverse);
-            } else if (state != state.withRotation(rot))
-                getBlockWorld().setBlockState(pos, state.withRotation(rot));
             rotateCraftable(state, TurntableManager.INSTANCE.getRecipe(stack), pos, reverse);
             this.potteryRotated = true;
-        } else if (target instanceof ITurnable) {
-            ITurnable block = (ITurnable) target;
-
-            if (block.canRotateOnTurntable(getBlockWorld(), pos))
-                block.rotateAroundYAxis(getBlockWorld(), pos, reverse);
-        } else {
-            IBlockState newState = state.withRotation(rot);
-            if (!(target instanceof BlockRailBase) && !(target instanceof BlockPistonExtension) && !(target instanceof BlockPistonMoving) && state != newState) {
-                if (target instanceof BlockPistonBase) {
-                    if (!state.getValue(BlockPistonBase.EXTENDED))
-                        getBlockWorld().setBlockState(pos, newState);
-                } else
-                    getBlockWorld().setBlockState(pos, newState);
-            } else if (target instanceof BlockRailBase) {
-                BlockRailBase rail = (BlockRailBase) target;
-                BlockRailBase.EnumRailDirection dir = state.getValue(rail.getShapeProperty());
-                if (dir != BlockRailBase.EnumRailDirection.ASCENDING_NORTH && dir != BlockRailBase.EnumRailDirection.ASCENDING_EAST && dir != BlockRailBase.EnumRailDirection.ASCENDING_SOUTH && dir != BlockRailBase.EnumRailDirection.ASCENDING_WEST) {
-                    if (state != newState)
-                        getBlockWorld().setBlockState(pos, newState);
-                }
-            } if (getBlockWorld().getTileEntity(pos) != null) {
-                getBlockWorld().getTileEntity(pos).rotate(rot);
-            }
         }
+        return TurntableRotationManager.rotate(world, pos, rot);
     }
 
     private void spawnParticles(IBlockState state) {
-        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5,30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
     }
 
     private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos, boolean reverse) {
