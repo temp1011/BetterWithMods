@@ -42,8 +42,16 @@ public class HCSaw extends Feature {
                 new ItemStack(Items.BIRCH_DOOR),
                 new ItemStack(Items.SPRUCE_DOOR),
                 new ItemStack(Items.DARK_OAK_DOOR),
-                new ItemStack(Items.JUNGLE_DOOR)
-
+                new ItemStack(Items.JUNGLE_DOOR),
+                new ItemStack(Items.BOAT),
+                new ItemStack(Items.ACACIA_BOAT),
+                new ItemStack(Items.BIRCH_BOAT),
+                new ItemStack(Items.SPRUCE_BOAT),
+                new ItemStack(Items.DARK_OAK_BOAT),
+                new ItemStack(Items.JUNGLE_BOAT),
+                new ItemStack(Items.ITEM_FRAME),
+                new ItemStack(Blocks.NOTEBLOCK),
+                new ItemStack(Items.SIGN)
         );
         blocks.forEach(BWMRecipes::removeRecipe);
     }
