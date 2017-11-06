@@ -240,14 +240,8 @@ public class HCBuoy extends Feature {
         if (entityItem.getItem().getCount() > 0) {
             event.setResult(Event.Result.DENY);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
-            if (entityItem.delayBeforeCanPickup == 40) {
-                newEntity.setWatchItem(entityItem);
-                event.setCanceled(true);
-            }
-            else {
-                entityItem.setDead();
-                entityItem.setInfinitePickupDelay();
-            }
+            newEntity.setWatchItem(entityItem);
+
             world.spawnEntity(newEntity);
         }
     }
