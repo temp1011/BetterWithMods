@@ -280,6 +280,8 @@ public class EntityItemBuoy extends EntityItem {
     public void setWatchItem(EntityItem item) {
         this.watchItem = item;
         appendAntiMergeTag(item.getItem());
+        if (this.watchItem.delayBeforeCanPickup == 0)
+            this.watchItem.makeFakeItem();
     }
 
     private void appendAntiMergeTag(ItemStack stack) {
