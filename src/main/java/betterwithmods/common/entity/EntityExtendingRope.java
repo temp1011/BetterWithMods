@@ -369,11 +369,11 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         });
         return !blocked.isEmpty();
     }
-
+/*
     @Override
     public boolean writeToNBTOptional(NBTTagCompound compound) {
         return false;
-    }
+    }*/
 
     public BlockPos getPulleyPosition() {
         return this.pulley;
