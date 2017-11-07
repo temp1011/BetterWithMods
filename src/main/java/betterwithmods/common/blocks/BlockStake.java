@@ -82,13 +82,19 @@ public class BlockStake extends BWMBlock {
                 build = i;
                 break;
             }
+            else if (!world.isAirBlock(pos.offset(facing, i)) && !stake.getBlock().isReplaceable(world, pos.offset(facing, i)) && stake.getBlock() != BWMBlocks.STAKE_STRING)
+                return false;
         }
         if (build > -1 && count >= (build - 1)) {
-            stack.shrink(build);
+            int remove = 0;
+            //stack.shrink(build - 1);
             for (int i = 1; i < build; i++) {
-                if (world.getBlockState(pos.offset(facing, i)).getBlock() != BWMBlocks.STAKE_STRING)
+                if (world.getBlockState(pos.offset(facing, i)).getBlock() != BWMBlocks.STAKE_STRING) {
                     world.setBlockState(pos.offset(facing, i), BWMBlocks.STAKE_STRING.getDefaultState());
+                    remove++;
+                }
             }
+            stack.shrink(remove);
             return true;
         }
         return false;

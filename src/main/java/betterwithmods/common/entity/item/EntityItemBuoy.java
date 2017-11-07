@@ -40,7 +40,6 @@ public class EntityItemBuoy extends EntityItem {
         this.motionX = orig.motionX * tossSpeed;
         this.motionY = orig.motionY * tossSpeed;
         this.motionZ = orig.motionZ * tossSpeed;
-        this.setInvisible(true);
     }
 
     /**
@@ -79,7 +78,6 @@ public class EntityItemBuoy extends EntityItem {
                 } else if (this.watchItem.age > 2) {
                     watchItem.setDead();
                     watchItem.setInfinitePickupDelay();
-                    this.setInvisible(false);
                 }
             }
         }
@@ -280,6 +278,7 @@ public class EntityItemBuoy extends EntityItem {
     public void setWatchItem(EntityItem item) {
         this.watchItem = item;
         appendAntiMergeTag(item.getItem());
+        this.watchItem.setInvisible(true);
         if (this.watchItem.delayBeforeCanPickup == 0)
             this.watchItem.makeFakeItem();
     }

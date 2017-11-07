@@ -31,7 +31,9 @@ public class HCPiles extends Feature {
     }
 
     public static void registerPile(Block block, ItemStack stack) {
-        registerPile(block.getDefaultState(), stack);
+        for (IBlockState state : block.getBlockState().getValidStates())
+            registerPile(state, stack);
+        //registerPile(block.getDefaultState(), stack);
     }
 
     public static void registerPile(IBlockState block, ItemStack stack) {
