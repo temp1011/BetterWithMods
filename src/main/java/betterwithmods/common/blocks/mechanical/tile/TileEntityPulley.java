@@ -356,9 +356,9 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     }
 
     @Override
-    public void setWorld(World worldIn) {
-        super.setWorld(worldIn);
-        if (rope == null && !worldIn.isRemote && ropeTag != null && !ropeTag.hasNoTags()) {
+    public void onLoad() {
+        super.onLoad();
+        if (rope == null && !getWorld().isRemote && ropeTag != null && !ropeTag.hasNoTags()) {
             NBTTagList pos = (NBTTagList) ropeTag.getTag("Pos");
             if (pos != null) {
                 rope = (EntityExtendingRope) AnvilChunkLoader.readWorldEntityPos(ropeTag, getBlockWorld(), pos.getDoubleAt(0),

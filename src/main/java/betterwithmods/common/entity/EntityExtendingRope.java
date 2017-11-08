@@ -169,9 +169,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             this.blockBB = null;
         } else {
             List<AxisAlignedBB> bbs = new ArrayList<>();
-            bbs.add(new AxisAlignedBB(0.45, 0, 0.45, 0.55, 1, 0.55)); // rope
-            // bounding
-            // box
+            bbs.add(new AxisAlignedBB(0.45, 0, 0.45, 0.55, 1, 0.55)); // rope bounding box
             for (Vec3i vec : blocks.keySet()) {
                 bbs.add(new AxisAlignedBB(vec.getX(), vec.getY(), vec.getZ(), vec.getX() + 1,
                         vec.getY() + getBlockStateHeight(blocks.get(vec)), vec.getZ() + 1));
@@ -200,7 +198,6 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 
         this.setPosition(pulley.getX() + 0.5, this.posY + (up ? 0.1 : -0.1),
                 pulley.getZ() + 0.5);
-
     }
 
     public void updatePassengers(double posY, double newPosY, boolean b) {
@@ -239,7 +236,6 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         entitiesInBlocks.forEach(e -> e.isAirBorne = false);
         entitiesInBlocks.forEach(e -> e.onGround = true);
         entitiesInBlocks.forEach(e -> e.motionY = Math.max(up ? 0 : -0.1, e.motionY));
-
     }
 
     private double getBlockStateHeight(IBlockState blockState) {
@@ -369,11 +365,11 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         });
         return !blocked.isEmpty();
     }
-/*
+
     @Override
     public boolean writeToNBTOptional(NBTTagCompound compound) {
         return false;
-    }*/
+    }
 
     public BlockPos getPulleyPosition() {
         return this.pulley;
