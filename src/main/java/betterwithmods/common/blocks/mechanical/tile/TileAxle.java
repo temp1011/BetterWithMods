@@ -62,7 +62,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
                     }
                 }
                 int power = mech.getMechanicalOutput(facing.getOpposite());
-                if (power >= 0) {
+                if (power > 0) {
                     if (power > findPower) {
                         sources++;
                         if (axle != null) {
