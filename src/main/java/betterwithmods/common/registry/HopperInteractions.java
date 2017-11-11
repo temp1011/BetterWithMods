@@ -1,6 +1,5 @@
 package betterwithmods.common.registry;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
@@ -27,6 +26,7 @@ public class HopperInteractions {
     public static void addHopperRecipe(HopperRecipe recipe) {
         RECIPES.add(recipe);
     }
+
     static {
 
     }
@@ -44,8 +44,8 @@ public class HopperInteractions {
     }
 
     public static class SoulUrnRecipe extends HopperRecipe {
-        public SoulUrnRecipe(ItemStack input, ItemStack output) {
-            super(6, input, output, new ItemStack(BWMBlocks.URN, 1, 8));
+        public SoulUrnRecipe(ItemStack input, ItemStack output, ItemStack... created) {
+            super(6, input, output, created);
         }
 
         @Override
@@ -70,13 +70,11 @@ public class HopperInteractions {
 
         public ItemStack getInput() {
             ItemStack i = input.copy();
-            i.setCount(8);
             return i;
         }
 
         public ItemStack getOutput() {
             ItemStack o = output.copy();
-            o.setCount(8);
             return o;
         }
 
@@ -85,21 +83,22 @@ public class HopperInteractions {
     public static abstract class HopperRecipe {
         public final ItemStack input;
         public final ItemStack output;
-        public final List<ItemStack> secondaryOutput;
+        public List<ItemStack> secondaryOutput = Lists.newArrayList();
         private final int filterType;
 
         public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
             this.filterType = filterType;
             this.input = input;
             this.output = output;
-            this.secondaryOutput = Lists.newArrayList(secondaryOutput);
+            if (secondaryOutput != null)
+                this.secondaryOutput = Lists.newArrayList(secondaryOutput);
         }
 
         public boolean isRecipe(int filterType, EntityItem inputStack) {
             if (filterType == this.filterType) {
                 if (inputStack != null) {
                     ItemStack i = inputStack.getItem();
-                    return InvUtils.matches(i,input);
+                    return InvUtils.matches(i, input);
                 }
                 return false;
             }

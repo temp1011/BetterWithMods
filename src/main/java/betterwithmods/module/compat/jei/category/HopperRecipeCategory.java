@@ -85,9 +85,11 @@ public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper
         guiItemStacks.init(2, false, x + 28, y); //main output
         guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
         guiItemStacks.init(4, false, x, y + 27); //hopper
-        if(wrapper instanceof HopperRecipeWrapper.SoulUrn) {
-            guiItemStacks.init(5, false, x, y + 45); //urn
-            guiItemStacks.set(5, new ItemStack(BWMBlocks.URN, 1, 0));
+        if (wrapper instanceof HopperRecipeWrapper.SoulUrn) {
+            if (!wrapper.recipe.secondaryOutput.isEmpty()) {
+                guiItemStacks.init(5, false, x, y + 45); //urn
+                guiItemStacks.set(5, new ItemStack(BWMBlocks.URN, 1, 0));
+            }
         }
         guiItemStacks.set(ingredients);
         guiItemStacks.set(4, BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER));

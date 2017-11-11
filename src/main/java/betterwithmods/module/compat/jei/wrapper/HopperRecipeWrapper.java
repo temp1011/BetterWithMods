@@ -19,13 +19,14 @@ import java.util.stream.Stream;
  */
 public class HopperRecipeWrapper implements IRecipeWrapper {
 
+    public final HopperInteractions.HopperRecipe recipe;
     private final List<ItemStack> input;
     private final List<ItemStack> filter;
     private final List<ItemStack> outputs;
 
     public HopperRecipeWrapper(HopperInteractions.HopperRecipe recipe) {
+        this.recipe = recipe;
         this.input = Lists.newArrayList(recipe.getInput());
-
         this.outputs = Lists.newArrayList(recipe.getOutput());
         if (!recipe.getSecondaryOutput().isEmpty())
             this.outputs.addAll(recipe.getSecondaryOutput());
