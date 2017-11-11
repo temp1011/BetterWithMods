@@ -81,7 +81,7 @@ public class HCPiles extends Feature {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
-        if (event.getResult().equals(Event.Result.DENY))
+        if (event.isSilkTouching() || event.getResult().equals(Event.Result.DENY))
             return;
         IBlockState state = event.getState();
         EntityPlayer player = event.getHarvester();
