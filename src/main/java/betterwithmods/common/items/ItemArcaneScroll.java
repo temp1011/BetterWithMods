@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class ItemArcaneScroll extends Item {
 
+
+
     public static ItemStack getScrollWithEnchant(Enchantment enchantment) {
         ItemStack stack = new ItemStack(BWMItems.ARCANE_SCROLL);
         NBTTagCompound tag = new NBTTagCompound();
@@ -43,8 +45,10 @@ public class ItemArcaneScroll extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (Enchantment enchantment : Enchantment.REGISTRY) {
-            items.add(getScrollWithEnchant(enchantment));
+        if (this.isInCreativeTab(tab)) {
+            for (Enchantment enchantment : Enchantment.REGISTRY) {
+                items.add(getScrollWithEnchant(enchantment));
+            }
         }
     }
 
