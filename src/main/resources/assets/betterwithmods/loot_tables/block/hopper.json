@@ -26,11 +26,11 @@
     },
     {
       "rolls": 1,
-      "name": "slab",
+      "name": "siding",
       "entries": [
         {
           "type": "item",
-          "name": "minecraft:wooden_slab",
+          "name": "betterwithmods:wooden_siding",
           "weight": 1,
           "functions": [
             {

@@ -16,16 +16,15 @@ import betterwithmods.util.MechanicalUtil;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -33,7 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype, IMechanicalPower {
@@ -96,22 +95,22 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return power > 0;
     }
 
-    private List<EntityItem> getCollidingItems(World world, BlockPos pos) {
-        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1D, pos.getY() + 1.0001D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
-    }
+//    private List<EntityItem> getCollidingItems(World world, BlockPos pos) {
+//        return world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1D, pos.getY() + 1.0001D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
+//    }
 
-    private List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
-        return world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D));
-    }
+//    private List<EntityXPOrb> getCollidingXPOrbs(World world, BlockPos pos) {
+//        return world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D));
+//    }
 
 
     public boolean isXPFull() {
         return experienceCount >= maxExperienceCount;
     }
 
-    private void insert() {
-        if (!InvUtils.isFull(inventory)) {
-            EntityItem item = getCollidingItems(world, pos).stream().findFirst().orElse(null);
+    public void insert(Entity entity) {
+        if (!InvUtils.isFull(inventory) && entity instanceof EntityItem) {
+            EntityItem item = (EntityItem) entity;
             if (item != null) {
                 if (HopperInteractions.attemptToCraft(filterType, getBlockWorld(), getBlockPos(), item)) {
                     this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -123,20 +122,18 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
 
-        if (!isXPFull() && filterType == 6) {
-            List<EntityXPOrb> orbs = getCollidingXPOrbs(world, pos);
-            for (EntityXPOrb orb : orbs) {
-                int remaining = maxExperienceCount - experienceCount;
-                int value = orb.getXpValue();
-                if (remaining > 0) {
-                    if (value <= remaining) {
-                        this.experienceCount += value;
-                        orb.setDead();
-                        continue;
-                    }
-                    orb.xpValue -= remaining;
-                    this.experienceCount = maxExperienceCount;
+        if (entity instanceof EntityXPOrb && !isXPFull() && filterType == 6) {
+            EntityXPOrb orb = (EntityXPOrb) entity;
+            int remaining = maxExperienceCount - experienceCount;
+            int value = orb.getXpValue();
+            if (remaining > 0) {
+                if (value <= remaining) {
+                    this.experienceCount += value;
+                    orb.setDead();
+                    return;
                 }
+                orb.xpValue -= remaining;
+                this.experienceCount = maxExperienceCount;
             }
         }
     }
@@ -183,12 +180,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                 this.power = power;
             }
             getBlock().setActive(world, pos, isActive());
-            insert();
+
             if (isPowered()) {
                 extract();
-            }
-            if (this.soulsRetained > 0) {
-                processSouls();
             }
         }
 
@@ -268,26 +262,33 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         this.getBlockWorld().spawnEntity(orb);
     }
 
-    private void processSouls() {
-        BlockPos down = pos.down();
-        if (this.filterType == 6) {
-            Block blockBelow = this.getBlockWorld().getBlockState(down).getBlock();
-            if (soulsRetained > 0 && blockBelow instanceof ISoulSensitive && ((ISoulSensitive) blockBelow).isSoulSensitive(getBlockWorld(), down)) {
-                int soulsConsumed = ((ISoulSensitive) blockBelow).processSouls(this.getBlockWorld(), down, this.soulsRetained);
-                if (((ISoulSensitive) blockBelow).consumeSouls(this.getBlockWorld(), down, soulsConsumed))
-                    this.soulsRetained -= soulsConsumed;
-            } else if (soulsRetained > 7 && !isPowered()) {
+    @Nullable
+    public ISoulSensitive getSoulContainer() {
+        Block block = world.getBlockState(pos.down()).getBlock();
+        if(block instanceof ISoulSensitive && ((ISoulSensitive) block).isSoulSensitive(world,pos.down())) {
+            return (ISoulSensitive) block;
+        }
+        return null;
+    }
+    private ISoulSensitive prevContainer;
+    public void increaseSoulCount(int numSouls) {
+        this.soulsRetained += numSouls;
+        ISoulSensitive container = getSoulContainer();
+        if(container != null) {
+            if(prevContainer != container)
+                soulsRetained = numSouls;
+            int soulsConsumed = container.processSouls(this.getBlockWorld(), pos.down(), this.soulsRetained);
+            if (container.consumeSouls(this.getBlockWorld(), pos.down(), soulsConsumed))
+                this.soulsRetained -= soulsConsumed;
+
+        } else {
+            if(this.soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
                 overpower();
             }
-        } else {
-            this.soulsRetained = 0;
         }
-    }
-
-    public void increaseSoulCount(int numSouls) {
-        this.soulsRetained += numSouls;
+        prevContainer = container;
     }
 
     @Override
@@ -383,11 +384,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
-        if (facing == EnumFacing.NORTH && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (facing.getAxis().isHorizontal() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(filter);
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
-        return super.getCapability(capability, facing);
+        return super.getCapability(capability,facing);
     }
 
     @Override
@@ -405,5 +406,10 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return (BlockMechMachines) getBlockType();
     }
 
-
+    @Override
+    public void onBreak() {
+        super.onBreak();
+        IItemHandler inv = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+        InvUtils.ejectInventoryContents(world, pos, inv);
+    }
 }

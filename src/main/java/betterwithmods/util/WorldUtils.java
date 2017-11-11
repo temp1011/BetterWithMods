@@ -110,17 +110,20 @@ public final class WorldUtils {
 
     public static boolean spawnGhast(World world, BlockPos pos) {
         EntityGhast ghast = new EntityGhast(world);
-
+        double failures = 1;
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
-            double yPos = pos.getY() + world.rand.nextInt(21) - 10;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 30.0D;
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.min(failures,30);
+            double yPos = pos.getY() + failures;
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.min(failures,30);
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
             AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));
             boolean blocked = StreamSupport.stream(BlockPos.MutableBlockPos.getAllInBox(getMin(box), getMax(box)).spliterator(), false).anyMatch(p -> !world.isAirBlock(p));
-            if (!blocked)
+            if (!blocked) {
                 return world.spawnEntity(ghast);
+            } else {
+                failures++;
+            }
         }
         return false;
     }

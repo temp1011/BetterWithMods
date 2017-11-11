@@ -54,7 +54,7 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         switch (state.getValue(TYPE)) {
             case HOPPER:
-                return new AxisAlignedBB(0, 4 / 16d, 0, 1, 1, 1);
+                return new AxisAlignedBB(0, 4 / 16d, 0, 1,  0.99d, 1);
             default:
                 return super.getBoundingBox(state, source, pos);
         }
@@ -198,6 +198,16 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
         }
     }
 
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        if(!worldIn.isRemote) {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile instanceof TileEntityFilteredHopper) {
+                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) tile;
+                hopper.insert(entityIn);
+            }
+        }
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
