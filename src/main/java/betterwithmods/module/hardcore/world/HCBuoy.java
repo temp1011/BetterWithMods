@@ -245,7 +245,7 @@ public class HCBuoy extends Feature {
         if (!(event.getEntity().getClass() == EntityItem.class)) return;
         EntityItem entityItem = (EntityItem) event.getEntity();
 
-        if (entityItem.getItem().getCount() > 0) {
+        if (entityItem.getItem().getCount() > 0 && getBuoyancy(entityItem.getItem()) > -1.0F) {
             event.setResult(Event.Result.DENY);
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
             newEntity.setWatchItem(entityItem);
