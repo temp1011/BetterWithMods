@@ -193,7 +193,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         if (!InvUtils.isFull(inventory)) {
             List<EntityItem> items = this.getCaptureItems(getBlockWorld(), getPos());
             for (EntityItem item : items)
-                insert &= InvUtils.insertFromWorld(inventory, item, 0, 18, false);
+                insert &= InvUtils.insertFromWorld(inventory, item, 0, 27, false);
         }
         if (insert) {
             this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
