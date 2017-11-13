@@ -277,8 +277,6 @@ public class EntityItemBuoy extends EntityItem {
 
     public void setWatchItem(EntityItem item) {
         this.watchItem = item;
-        if (this.watchItem.delayBeforeCanPickup == 0)
-            this.watchItem.makeFakeItem();
     }
 
     public void killWatchItem() {
