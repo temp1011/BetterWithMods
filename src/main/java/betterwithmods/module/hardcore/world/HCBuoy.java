@@ -17,7 +17,11 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Koward
@@ -226,6 +230,10 @@ public class HCBuoy extends Feature {
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }
+
+    private List<EntityItemBuoy> immediateSpawn = new ArrayList<>();
+    private List<EntityItemBuoy> nextSpawn = new ArrayList<>();
+
     /**
      * Substitute the original {@link EntityItem} by our new {@link EntityItemBuoy}.
      */
@@ -242,7 +250,27 @@ public class HCBuoy extends Feature {
             EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
             newEntity.setWatchItem(entityItem);
 
-            world.spawnEntity(newEntity);
+            nextSpawn.add(newEntity);
+            //world.spawnEntity(newEntity);
+        }
+    }
+
+    @SubscribeEvent
+    public void replaceOnWorldTick(TickEvent.WorldTickEvent evt) {
+        if (!evt.world.isRemote && evt.phase == TickEvent.Phase.START) {
+            if (!immediateSpawn.isEmpty()) {
+                for (EntityItemBuoy buoy : immediateSpawn) {
+                    if (buoy.isWatchItemDead()) {
+                        buoy.killWatchItem();
+                        evt.world.spawnEntity(buoy);
+                    }
+                }
+                immediateSpawn = new ArrayList<>();
+            }
+            if (!nextSpawn.isEmpty()) {
+                immediateSpawn = nextSpawn;
+                nextSpawn = new ArrayList<>();
+            }
         }
     }
 

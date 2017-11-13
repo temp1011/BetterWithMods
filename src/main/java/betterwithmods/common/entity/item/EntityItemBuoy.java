@@ -277,17 +277,16 @@ public class EntityItemBuoy extends EntityItem {
 
     public void setWatchItem(EntityItem item) {
         this.watchItem = item;
-        appendAntiMergeTag(item.getItem());
-        this.watchItem.setInvisible(true);
         if (this.watchItem.delayBeforeCanPickup == 0)
             this.watchItem.makeFakeItem();
     }
 
-    private void appendAntiMergeTag(ItemStack stack) {
-        NBTTagCompound tag = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-        if (tag == null) tag = new NBTTagCompound();
-        tag.setBoolean("NoPickup", true);
-        stack.setTagCompound(tag);
+    public void killWatchItem() {
+        this.watchItem.setDead();
+    }
+
+    public boolean isWatchItemDead() {
+        return this.watchItem.isDead;
     }
 
     private boolean isEntityItemFake(EntityItem item) {
