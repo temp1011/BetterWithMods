@@ -70,11 +70,15 @@ public class HopperInteractions {
 
         public ItemStack getInput() {
             ItemStack i = input.copy();
+            if(!secondaryOutput.isEmpty())
+                i.setCount(8);
             return i;
         }
 
         public ItemStack getOutput() {
             ItemStack o = output.copy();
+            if(!secondaryOutput.isEmpty())
+                o.setCount(8);
             return o;
         }
 
