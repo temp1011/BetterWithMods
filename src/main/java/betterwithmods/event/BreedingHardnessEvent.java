@@ -47,14 +47,14 @@ public class BreedingHardnessEvent {
             return COW_DATA;
         else if (e instanceof EntityPig)
             return PIG_DATA;
-        else if (e instanceof EntitySheep)
+        else if (e.getClass() == EntitySheep.class)
             return SHEEP_DATA;
         else
             return null;
     }
 
     public static boolean isValidAnimal(Entity animal) {
-        return animal instanceof EntityCow || animal instanceof EntityPig || animal instanceof EntitySheep;
+        return animal instanceof EntityCow || animal instanceof EntityPig || animal.getClass() == EntitySheep.class;
     }
 
     public static ItemStack getHarness(EntityLivingBase living) {
@@ -118,7 +118,7 @@ public class BreedingHardnessEvent {
                 copyStack.writeToNBT(cmp);
                 animal.getDataManager().set(getHarnessData(animal), copyStack);
                 animal.getEntityData().setTag(TAG_HARNESS, cmp);
-                if (animal instanceof EntitySheep)
+                if (animal.getClass() == EntitySheep.class)
                     ((EntitySheep) animal).setSheared(true);
                 world.playSound(null, animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, SoundCategory.NEUTRAL, 1, 1);
                 world.playSound(null, animal.getPosition(), SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundCategory.NEUTRAL, 1, 1f);
