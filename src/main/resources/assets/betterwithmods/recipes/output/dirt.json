@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "minecraft:dirt",
-    "data": 1
+    "item": "minecraft:dirt"
   },
   "pattern": [
     "D",
