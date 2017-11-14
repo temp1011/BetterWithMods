@@ -40,7 +40,7 @@ public final class Document {
 		new PatternMapping("@\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEISegment), // jei text: @[...](...)
 		new PatternMapping("#\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEIImageSegment), // jei image: #[...](...)
 		new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
-		new PatternMapping("(\\*\\*|__)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | __...__
+		new PatternMapping("(\\*\\*|_)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | _..._
 		new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
 		new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment), // strikethrough: ~~...~~
 		new PatternMapping("\\{([^\\?]+)\\?([^\\[]+):([^\\[]+)\\}", Document::FeatureSegment), // {feature?enable-text:disable-text}

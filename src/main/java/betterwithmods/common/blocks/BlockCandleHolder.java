@@ -1,6 +1,8 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.IMultiVariants;
+import betterwithmods.common.BWOreDictionary;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -8,6 +10,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -50,18 +53,22 @@ public class BlockCandleHolder extends BWMBlock implements IMultiVariants {
         if (worldIn.getBlockState(pos.down()).isBlockNormalCube()) {
             newState = newState.withProperty(GROUND, true);
         }
-        if (worldIn.getBlockState(pos.up()).getBlock() == this) {
+        IBlockState above = worldIn.getBlockState(pos.up());
+        Block block = above.getBlock();
+        ItemStack stack = new ItemStack(block, 1, block.getMetaFromState(above));
+
+        if (block == this) {
             newState = newState.withProperty(CONNECTION, Connection.CONNECTED);
-        } else if (worldIn.getBlockState(pos.up()).getBlock() instanceof BlockCandle) {
+        } else if (BWOreDictionary.isOre(stack, "blockCandle")) {
             newState = newState.withProperty(CONNECTION, Connection.CANDLE);
-        } else if (worldIn.getBlockState(pos.up()).getBlock() instanceof BlockSkull) {
+        } else if (block instanceof BlockSkull) {
             newState = newState.withProperty(CONNECTION, Connection.SKULL);
         }
         return newState;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing face) {
-        if(face == EnumFacing.UP)
+        if (face == EnumFacing.UP)
             return BlockFaceShape.SOLID;
         return BlockFaceShape.CENTER_SMALL;
     }

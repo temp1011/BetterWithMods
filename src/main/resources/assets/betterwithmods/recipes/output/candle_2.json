@@ -5,7 +5,7 @@
   },
   "ingredients": [
     {
-      "ore": "candle",
+      "ore": "blockCandle",
       "type": "forge:ore_dict"
     },
     {

@@ -102,7 +102,7 @@ public class BlockMiningCharge extends BWMBlock {
 
     @Override
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-        return worldIn.isSideSolid(pos,side);
+        return worldIn.isSideSolid(pos.offset(side.getOpposite()),side);
     }
 
     @Override
