@@ -124,7 +124,7 @@ public class BlockBDispenser extends BlockDispenser implements ITurnable, IMulti
                     IBehaviorDispenseItem behavior = this.getBehavior(stack);
                     if (behavior != null) {
                         ItemStack stacks = behavior.dispense(impl, stack);
-                        InvUtils.insert(tile.inventory, stacks, false);
+                        //InvUtils.insert(tile.inventory, stacks, false);
                     }
                 }
             }
