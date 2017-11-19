@@ -17,8 +17,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileGearbox extends TileBasic implements IMechanicalPower {
-    private int power;
-    private int maxPower;
+    protected int power;
+    protected int maxPower;
 
     private List<Integer> history = Lists.newArrayList(0, 0, 0, 0, 0);
 

@@ -40,9 +40,9 @@ public final class BWMBlocks {
 	public static final Block ROPE = new BlockRope().setRegistryName("rope");
 	public static final Block SINGLE_MACHINES = new BlockMechMachines().setRegistryName("single_machine");
 	public static final Block WOODEN_AXLE = new BlockAxle(EnumTier.WOOD, 1, 1, 3).setRegistryName("wooden_axle");
-	public static final Block STEEL_AXLE = new BlockAxle(EnumTier.STEEL, 1, 3, 5).setRegistryName("steel_axle");
+	public static final Block STEEL_AXLE = new BlockAxle(EnumTier.STEEL, 1, 50, 5).setRegistryName("steel_axle");
 	public static final Block WOODEN_GEARBOX = new BlockGearbox(1, EnumTier.WOOD).setRegistryName("wooden_gearbox");
-	public static final Block STEEL_GEARBOX = new BlockGearbox(3, EnumTier.STEEL).setRegistryName("steel_gearbox");
+	public static final Block STEEL_GEARBOX = new BlockGearbox(50, EnumTier.STEEL).setRegistryName("steel_gearbox");
 	public static final Block WOODEN_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.WOOD).setRegistryName("wooden_broken_gearbox");
 	public static final Block STEEL_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.STEEL).setRegistryName("steel_broken_gearbox");
 	public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");
@@ -110,7 +110,7 @@ public final class BWMBlocks {
 	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block CANDLE = new BlockCandle().setRegistryName("candle").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block CANDLE_HOLDER = new BlockCandleHolder().setRegistryName("candle_holder").setCreativeTab(BWCreativeTabs.BWTAB);
-
+	public static final Block MERGER = new BlockMerger().setRegistryName("steel_merger");
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
 	public static List<Block> getBlocks() {
@@ -206,6 +206,7 @@ public final class BWMBlocks {
 		registerBlock(INFERNAL_ENCHANTER);
 		registerBlock(CANDLE, new ItemBlockMeta(CANDLE));
 		registerBlock(CANDLE_HOLDER);
+		registerBlock(MERGER);
 	}
 
 	public static void registerTileEntities() {
@@ -238,6 +239,7 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
 		GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
 		GameRegistry.registerTileEntity(TileEntityProxyBlock.class, "bwm.multiblock_dummy");
+		GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
 
 	}
 

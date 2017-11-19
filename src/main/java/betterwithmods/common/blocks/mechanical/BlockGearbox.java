@@ -49,7 +49,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     }
 
 
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add(I18n.format("tooltip.gearbox.name"));
@@ -58,7 +57,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, hand);
-        return setFacingInBlock(state, side.getOpposite());
+        return setFacingInBlock(state, placer.isSneaking() ? side : side.getOpposite());
     }
 
     @Override
@@ -237,7 +236,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public void overpower(World world, BlockPos pos) {
-        overpowerSound(world,pos);
+        overpowerSound(world, pos);
         EnumFacing facing = world.getBlockState(pos).getValue(DirUtils.FACING);
         Block block = this == BWMBlocks.WOODEN_GEARBOX ? BWMBlocks.WOODEN_BROKEN_GEARBOX : BWMBlocks.STEEL_BROKEN_GEARBOX;
         world.setBlockState(pos, block.getDefaultState().withProperty(DirUtils.FACING, facing));

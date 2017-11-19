@@ -5,6 +5,7 @@ import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.util.MechanicalUtil;
@@ -30,9 +31,6 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
 
     public TileAxle() {
-        this.maxSignal = 3;
-        this.maxPower = 1;
-        this.minPower = 0;
     }
 
     public TileAxle(int maxPower, int minPower, byte maxSignal) {
@@ -61,7 +59,9 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
                         }
                     }
                 }
+
                 int power = mech.getMechanicalOutput(facing.getOpposite());
+
                 if (power > 0) {
                     if (power > findPower) {
                         sources++;
@@ -70,6 +70,9 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
                                 findPower = power;
                         } else {
                             findPower = power;
+                            if (getBlock() == BWMBlocks.STEEL_AXLE && mech.getClass()== TileGearbox.class) {
+                                findPower = Math.max(1, findPower / 2);
+                            }
                         }
                     }
                     if (axle == null) {
