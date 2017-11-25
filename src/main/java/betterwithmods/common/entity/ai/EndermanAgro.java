@@ -86,11 +86,11 @@ public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> 
         } else {
             if (this.targetEntity != null) {
                 if (shouldEndermanAttackPlayer(enderman, targetEntity)) {
-                    if (this.targetEntity.getDistanceSqToEntity(this.enderman) < 16.0D) {
+                    if (this.targetEntity.getDistanceSq(this.enderman) < 16.0D) {
                         this.enderman.teleportRandomly();
                     }
                     this.teleportTime = 0;
-                } else if (this.targetEntity.getDistanceSqToEntity(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity)) {
+                } else if (this.targetEntity.getDistanceSq(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity)) {
                     this.teleportTime = 0;
                 }
             }

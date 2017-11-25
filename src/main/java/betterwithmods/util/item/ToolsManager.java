@@ -51,7 +51,7 @@ public final class ToolsManager {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool) stack.getItem();
             Item.ToolMaterial material = getToolMaterial(tool);
-            return material.getEfficiencyOnProperMaterial();
+            return material.getEfficiency();
         }
         return 1;
     }
@@ -59,7 +59,7 @@ public final class ToolsManager {
     public static float getSpeed(ItemStack stack, IBlockState state) {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool)stack.getItem();
-            return tool.getStrVsBlock(stack, state);
+            return tool.getDestroySpeed(stack, state);
         }
         return 1;
     }

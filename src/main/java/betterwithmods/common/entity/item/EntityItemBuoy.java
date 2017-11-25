@@ -63,7 +63,7 @@ public class EntityItemBuoy extends EntityItem {
     }
 
     private int getPickupDelay() {
-        return this.delayBeforeCanPickup;
+        return this.pickupDelay;
     }
 
     /**
@@ -288,6 +288,6 @@ public class EntityItemBuoy extends EntityItem {
     }
 
     private boolean isEntityItemFake(EntityItem item) {
-        return item.delayBeforeCanPickup == 32767 && item.age == item.getItem().getItem().getEntityLifespan(item.getItem(), item.getEntityWorld()) - 1;
+        return item.pickupDelay == 32767 && item.age == item.getItem().getItem().getEntityLifespan(item.getItem(), item.getEntityWorld()) - 1;
     }
 }

@@ -223,8 +223,9 @@ public class HCFishing extends Feature {
             return group.toString();
         }
 
+
         @Override
-        public boolean isHidden() {
+        public boolean isDynamic() {
             return true;
         }
     }
