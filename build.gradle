@@ -28,7 +28,7 @@ if (System.getenv().BUILD_NUMBER != null) {//adds the build number to the end of
 minecraft {
     version = "1.12-14.21.1.2426"
     runDir = "run"
-    mappings = "snapshot_20170627"
+    mappings = "snapshot_20171125"
     replace "%VERSION%": "${project.version}"
     useDepAts = true
 }

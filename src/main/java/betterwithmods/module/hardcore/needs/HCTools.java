@@ -52,7 +52,7 @@ public class HCTools extends Feature {
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(material.name());
             if (newValues == null) continue;
             ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getMaxUses(), "field_78002_g", "maxUses");
-            ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEfficiencyOnProperMaterial(), "field_78010_h", "efficiencyOnProperMaterial");
+            ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEfficiencyOnProperMaterial(), "field_78010_h", "efficiency");
             ReflectionHelper.setPrivateValue(Item.ToolMaterial.class, material, newValues.getEnchantability(), "field_78008_j", "enchantability");
         }
         // Change values already taken from material at that time
@@ -63,7 +63,7 @@ public class HCTools extends Feature {
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(tool.getToolMaterialName());
             if (newValues == null) continue;
             tool.setMaxDamage(newValues.getMaxUses());
-            ReflectionHelper.setPrivateValue(ItemTool.class, tool, newValues.getEfficiencyOnProperMaterial(), "field_77864_a", "efficiencyOnProperMaterial");
+            ReflectionHelper.setPrivateValue(ItemTool.class, tool, newValues.getEfficiencyOnProperMaterial(), "field_77864_a", "efficiency");
         }
     }
 
