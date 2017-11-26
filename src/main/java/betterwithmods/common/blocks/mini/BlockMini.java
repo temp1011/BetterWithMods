@@ -38,9 +38,9 @@ import java.util.List;
 public abstract class BlockMini extends BlockRotate implements IMultiVariants, IAdvancedRotationPlacement, IDamageDropped {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
-    public static final PropertyOrientation SIDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 5);
-    public static final PropertyOrientation MOULDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 11);
-    public static final PropertyOrientation CORNER_ORIENTATION = PropertyOrientation.create("orientation", 0, 7);
+    public static final PropertyOrientation SIDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 6);
+    public static final PropertyOrientation MOULDING_ORIENTATION = PropertyOrientation.create("orientation", 0, 12);
+    public static final PropertyOrientation CORNER_ORIENTATION = PropertyOrientation.create("orientation", 0, 8);
 
     public BlockMini(Material material) {
         super(material);
@@ -50,6 +50,8 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
+
+
         world.setBlockState(pos, state.cycleProperty(getOrientationProperty()));
     }
 

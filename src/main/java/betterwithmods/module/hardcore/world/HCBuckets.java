@@ -163,12 +163,14 @@ public class HCBuckets extends Feature {
                         if (!player.capabilities.isCreativeMode) {
                             if (evt.getEmptyBucket().getItem() == Items.BUCKET) {
                                 evt.setFilledBucket(new ItemStack(Items.WATER_BUCKET));
+                                return;
                             } else if (isFluidContainer(evt.getEmptyBucket()) && hardcoreFluidContainer) {
                                 ItemStack fill = evt.getEmptyBucket().copy();
                                 IFluidHandler cap = fill.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
                                 if (cap != null)
                                     cap.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
                                 evt.setFilledBucket(fill);
+                                return;
                             }
                             evt.setResult(Event.Result.DENY);
                         }
