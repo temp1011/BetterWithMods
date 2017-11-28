@@ -88,7 +88,7 @@ public class HCStrata extends Feature {
     public void onBreak(BlockEvent.HarvestDropsEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        if (shouldStratify(world, pos)) {
+        if (shouldStratify(world, pos) && event.getHarvester() != null) {
             Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getHarvester().getHeldItemMainhand());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (material != null) {
