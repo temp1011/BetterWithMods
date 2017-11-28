@@ -27,7 +27,7 @@ public class GrassPath extends Feature {
         if (stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool) stack.getItem();
 
-            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(tool).ordinal() > 1;
+            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(stack).ordinal() > 1;
             return tool.getToolClasses(stack).contains("shovel") && hard;
         }
         return false;

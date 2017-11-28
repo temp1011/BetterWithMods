@@ -58,7 +58,7 @@ public class EntityMiningCharge extends Entity {
         this.prevPosY = y;
         this.prevPosZ = z;
         this.igniter = igniter;
-        setNoGravity(true);
+
     }
 
     @Override
@@ -81,7 +81,7 @@ public class EntityMiningCharge extends Entity {
      */
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return false;
     }
 
     /**

@@ -157,11 +157,11 @@ public class BWRegistry {
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE),
                 (source, stack) -> {
                     World worldIn = source.getWorld();
-                    EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
+                    EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING).getOpposite();
                     BlockPos pos = source.getBlockPos().offset(facing);
                     EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
                             pos.getZ() + 0.5F, null, facing);
-                    miningCharge.setNoGravity(facing != EnumFacing.DOWN);
+                    miningCharge.setNoGravity(false);
                     worldIn.spawnEntity(miningCharge);
                     worldIn.playSound(null, miningCharge.posX, miningCharge.posY, miningCharge.posZ,
                             SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);

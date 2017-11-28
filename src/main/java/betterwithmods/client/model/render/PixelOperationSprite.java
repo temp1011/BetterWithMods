@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
 public abstract class PixelOperationSprite extends TextureAtlasSprite {
+
     public static class Multiply extends PixelOperationSprite {
         private final int color;
 

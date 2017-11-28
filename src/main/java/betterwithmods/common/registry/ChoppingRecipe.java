@@ -45,7 +45,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     @Override
     public boolean shouldDamage(ItemStack stack) {
         if (isAxe(stack) && stack.getItem() instanceof ItemTool) {
-            return ToolsManager.getToolMaterial((ItemTool) stack.getItem()).getHarvestLevel() < 2;
+            return ToolsManager.getToolMaterial(stack).getHarvestLevel() < 2;
         }
         return super.shouldDamage(stack);
     }

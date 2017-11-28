@@ -8,7 +8,6 @@ import team.chisel.ctm.api.texture.ITextureContext;
 import team.chisel.ctm.api.texture.ITextureType;
 import team.chisel.ctm.api.texture.TextureType;
 import team.chisel.ctm.api.util.TextureInfo;
-import team.chisel.ctm.client.texture.ctx.TextureContextPosition;
 
 
 @TextureType("bwm_strata")
@@ -21,12 +20,12 @@ public class TextureTypeStrata implements ITextureType {
 
     @Override
     public ITextureContext getBlockRenderContext(IBlockState state, IBlockAccess world, BlockPos pos, ICTMTexture<?> tex) {
-        return new TextureContextPosition(pos);
+        return new TextureContextStrata(pos);
     }
 
     @Override
     public ITextureContext getContextFromData(long data) {
-        return new TextureContextPosition(BlockPos.fromLong(data));
+        return new TextureContextStrata(BlockPos.fromLong(data));
     }
 
     @Override
