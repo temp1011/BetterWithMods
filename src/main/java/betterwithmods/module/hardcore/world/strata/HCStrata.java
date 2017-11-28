@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +45,7 @@ public class HCStrata extends Feature {
     }
 
     @Override
-    public void preInit(FMLPreInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event) {
         for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
             for (ItemStack stack : ore.getOres()) {
                 if (stack.getItem() instanceof ItemBlock) {
@@ -53,6 +54,11 @@ public class HCStrata extends Feature {
             }
         }
         addBlock(Blocks.STONE);
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+
     }
 
     public static Set<IBlockState> STATES = Sets.newHashSet();
