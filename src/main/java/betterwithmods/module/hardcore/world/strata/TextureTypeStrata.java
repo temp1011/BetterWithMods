@@ -28,4 +28,9 @@ public class TextureTypeStrata implements ITextureType {
     public ITextureContext getContextFromData(long data) {
         return new TextureContextPosition(BlockPos.fromLong(data));
     }
+
+    @Override
+    public int requiredTextures() {
+        return 3;
+    }
 }
