@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -57,7 +58,9 @@ public class HCStrata extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-
+        if(Loader.isModLoaded("ctm")) {
+            team.chisel.ctm.client.texture.type.TextureTypeRegistry.register("bwm_strata", new TextureTypeStrata());
+        }
     }
 
     public static Set<IBlockState> STATES = Sets.newHashSet();
