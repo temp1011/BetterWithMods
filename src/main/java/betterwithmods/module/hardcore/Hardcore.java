@@ -9,6 +9,7 @@ import betterwithmods.module.hardcore.creatures.*;
 import betterwithmods.module.hardcore.needs.*;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import betterwithmods.module.hardcore.world.*;
+import betterwithmods.module.hardcore.world.strata.HCStrata;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
@@ -66,6 +67,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCDeadweight());
 //        registerFeature(new HCSquid());
         registerFeature(new HCEnchanting());
+        registerFeature(new HCStrata());
         this.load();
     }
 

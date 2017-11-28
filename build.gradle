@@ -38,12 +38,14 @@ repositories {
     maven { url 'http://dvs1.progwml6.com/files/maven' }
     maven { url "http://maven.amadornes.com/" }
     maven { url "http://www.ryanliptak.com/maven/" }
+    maven { url "http://maven.tterrag.com" }
     mavenCentral()
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:4.8.3.128"
     deobfCompile "applecore:AppleCore:1.12.2-2.2.2:api"
+    deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.9"
 }
 
 jar {

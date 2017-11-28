@@ -5,21 +5,28 @@ import betterwithmods.client.model.filters.*;
 import betterwithmods.common.BWMBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoader;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class RenderUtils {
     protected static final Minecraft minecraft = Minecraft.getMinecraft();
-
+    public static final Function<ResourceLocation, TextureAtlasSprite> textureGetter = ModelLoader.defaultTextureGetter();
     private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
 
@@ -207,4 +214,34 @@ public class RenderUtils {
         String domain = iconLoc.substring(0, iconLoc.indexOf(':')), resource = iconLoc.substring(iconLoc.indexOf(':') + 1, iconLoc.length());
         return new ResourceLocation(domain, "textures/" + resource + ".png");
     }
+
+    public static int multiplyColor(int src, int dst) {
+        int out = 0;
+        for (int i = 0; i < 32; i += 8) {
+            out |= ((((src >> i) & 0xFF) * ((dst >> i) & 0xFF) / 0xFF) & 0xFF) << i;
+        }
+        return out;
+    }
+
+    public static BakedQuad recolorQuad(BakedQuad quad, int color) {
+        int c = DefaultVertexFormats.BLOCK.getColorOffset() / 4;
+        int v = DefaultVertexFormats.BLOCK.getIntegerSize() / 4;
+        int[] vertexData = quad.getVertexData();
+        for (int i = 0; i < 4; i++) {
+            vertexData[v * i + c] = RenderUtils.multiplyColor(vertexData[v * i + c], color);
+        }
+        return quad;
+    }
+
+    public static BufferedImage getTextureImage(ResourceLocation location) {
+        try {
+            ResourceLocation pngLocation = new ResourceLocation(location.getResourceDomain(), String.format("%s/%s%s", "textures", location.getResourcePath(), ".png"));
+            IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(pngLocation);
+            return TextureUtil.readBufferedImage(resource.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
