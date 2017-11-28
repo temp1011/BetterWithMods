@@ -5,7 +5,6 @@ import betterwithmods.module.Feature;
 import betterwithmods.util.item.ToolsManager;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -32,9 +31,9 @@ public class HCStrata extends Feature {
 
     @Override
     public void setupConfig() {
-        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 1),
-                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 0.5f),
-                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.25f)
+        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 0.75),
+                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 0.23f),
+                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.10f)
         };
     }
 
@@ -72,8 +71,11 @@ public class HCStrata extends Feature {
     }
 
     public static boolean shouldStratify(World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        return state.getMaterial() == Material.ROCK;
+        return shouldStratify(world.getBlockState(pos));
+    }
+
+    public static boolean shouldStratify(IBlockState state) {
+        return STATES.contains(state);
     }
 
     public static int getStratification(int y, int topY) {
@@ -88,10 +90,11 @@ public class HCStrata extends Feature {
     public void onBreak(BlockEvent.HarvestDropsEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        if (shouldStratify(world, pos) && event.getHarvester() != null) {
+        if (shouldStratify(event.getState()) && event.getHarvester() != null) {
             Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getHarvester().getHeldItemMainhand());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (material != null) {
+
                 int level = Math.max(1, material.getHarvestLevel()) - 1;
                 if (level < (strata)) {
                     event.getDrops().clear();
@@ -114,7 +117,7 @@ public class HCStrata extends Feature {
             if (material != null) {
                 int level = Math.max(1, material.getHarvestLevel()) - 1;
                 if (level < (strata)) {
-                    scale /= 2;
+                    scale /= 6;
                 }
             }
             event.setNewSpeed(scale * STRATA_SPEEDS[strata]);
