@@ -58,7 +58,7 @@ public class EntityMiningCharge extends Entity {
         this.prevPosY = y;
         this.prevPosZ = z;
         this.igniter = igniter;
-
+        setNoGravity(facing != UP);
     }
 
     @Override

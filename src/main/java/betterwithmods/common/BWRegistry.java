@@ -157,7 +157,7 @@ public class BWRegistry {
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Item.getItemFromBlock(BWMBlocks.MINING_CHARGE),
                 (source, stack) -> {
                     World worldIn = source.getWorld();
-                    EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING).getOpposite();
+                    EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
                     BlockPos pos = source.getBlockPos().offset(facing);
                     EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, pos.getX() + 0.5F, pos.getY(),
                             pos.getZ() + 0.5F, null, facing);
