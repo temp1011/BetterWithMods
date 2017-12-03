@@ -24,11 +24,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import vazkii.quark.api.IFuseIgnitable;
 
 /**
  * Created by tyler on 9/5/16.
  */
-public class BlockMiningCharge extends BWMBlock {
+public class BlockMiningCharge extends BWMBlock implements IFuseIgnitable {
     public static final PropertyBool EXPLODE = PropertyBool.create("explode");
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0, .5, 0, 1, 1, 1);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0, 0, 0, 1, .5, 1);
@@ -82,7 +83,6 @@ public class BlockMiningCharge extends BWMBlock {
     }
 
     public void explode(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase igniter) {
-
         if (!worldIn.isRemote && state.getValue(EXPLODE)) {
             EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), igniter, getFacing(state));
             worldIn.spawnEntity(miningCharge);
@@ -189,5 +189,13 @@ public class BlockMiningCharge extends BWMBlock {
         int facing = state.getValue(DirUtils.FACING).getIndex() << 1;
         int explode = state.getValue(EXPLODE) ? 1 : 0;
         return explode | facing;
+    }
+
+    @Override
+    public void onIngitedByFuse(IBlockAccess world, BlockPos pos, IBlockState state) {
+        if(world instanceof World) {
+            this.onBlockDestroyedByPlayer((World) world, pos, state.withProperty(EXPLODE, Boolean.TRUE));
+            ((World)world).setBlockToAir(pos);
+        }
     }
 }
