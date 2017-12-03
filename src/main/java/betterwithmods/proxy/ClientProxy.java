@@ -64,11 +64,15 @@ public class ClientProxy implements IProxy {
     public static final String[] DEFAULT_RESOURCE_PACKS = new String[]{"field_110449_ao", "defaultResourcePacks"};
     private static ResourceProxy resourceProxy;
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
+    static {
         List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
         resourceProxy = new ResourceProxy();
         packs.add(resourceProxy);
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+
 
         ModuleLoader.preInitClient(event);
         registerRenderInformation();
@@ -78,6 +82,9 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
+        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
+        System.out.println(packs.stream().map(IResourcePack::getPackName).toString());
+
         ModuleLoader.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());
@@ -176,6 +183,11 @@ public class ClientProxy implements IProxy {
     @Override
     public void addResourceOverride(String space, String dir, String file, String ext) {
         resourceProxy.addResource(space, dir, file, ext);
+    }
+
+    @Override
+    public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
+        resourceProxy.addResource(space, domain, dir, file, ext);
     }
 
 }

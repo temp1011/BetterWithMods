@@ -11,18 +11,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 public class HCStrata extends Feature {
@@ -59,9 +58,23 @@ public class HCStrata extends Feature {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         if(Loader.isModLoaded("ctm")) {
-            team.chisel.ctm.client.texture.type.TextureTypeRegistry.register("bwm_strata", new TextureTypeStrata());
+            try {
+                Class type = Class.forName("team.chisel.ctm.api.texture.ITextureType");
+                Method method = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry").getDeclaredMethod("register",String.class, type);
+                try {
+                    method.invoke(null, "bwm_strata", new TextureTypeStrata());
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+
+
         }
     }
+
 
     public static Set<IBlockState> STATES = Sets.newHashSet();
 
@@ -74,11 +87,11 @@ public class HCStrata extends Feature {
     }
 
     public static boolean shouldStratify(World world, BlockPos pos) {
-        return shouldStratify(world.getBlockState(pos));
+        return shouldStratify(world, world.getBlockState(pos));
     }
 
-    public static boolean shouldStratify(IBlockState state) {
-        return STATES.contains(state);
+    public static boolean shouldStratify(World world, IBlockState state) {
+        return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.contains(state);
     }
 
     public static int getStratification(int y, int topY) {
@@ -93,7 +106,7 @@ public class HCStrata extends Feature {
     public void onBreak(BlockEvent.HarvestDropsEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        if (shouldStratify(event.getState()) && event.getHarvester() != null) {
+        if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
             Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getHarvester().getHeldItemMainhand());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (material != null) {
@@ -124,7 +137,6 @@ public class HCStrata extends Feature {
                 }
             }
             event.setNewSpeed(scale * STRATA_SPEEDS[strata]);
-            System.out.println(event.getNewSpeed());
         }
 
     }
@@ -134,9 +146,4 @@ public class HCStrata extends Feature {
         return true;
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    @SideOnly(Side.CLIENT)
-    public static void addModels(ModelBakeEvent event) {
-
-    }
 }

@@ -27,4 +27,9 @@ public class ServerProxy implements IProxy {
     public void addResourceOverride(String space, String dir, String file, String ext) {
 
     }
+
+    @Override
+    public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
+
+    }
 }

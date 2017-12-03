@@ -12,4 +12,6 @@ public interface IProxy {
     void postInit(FMLPostInitializationEvent event);
 
     void addResourceOverride(String space, String dir, String file, String ext);
+
+    void addResourceOverride(String space, String domain, String dir, String file, String ext);
 }
