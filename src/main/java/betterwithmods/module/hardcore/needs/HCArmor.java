@@ -15,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -113,9 +112,9 @@ public class HCArmor extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if (shieldRebalance) {
-            addHardcoreRecipe(new ShapedOreRecipe(new ResourceLocation("minecraft:shield"), new ItemStack(Items.SHIELD),
+            addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.SHIELD),
                     "SWS", "WIW", " W ", 'S', "strapLeather", 'W', "sidingWood", 'I', "ingotIron"
-            ));
+            ).setRegistryName("minecraft:shield"));
         }
         initWeights();
     }

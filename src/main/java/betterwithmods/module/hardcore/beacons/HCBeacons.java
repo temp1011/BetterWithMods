@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockBeacon;
 import betterwithmods.common.blocks.BlockEnderchest;
 import betterwithmods.common.blocks.BlockSteel;
 import betterwithmods.common.blocks.tile.TileEnderchest;
@@ -42,7 +43,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
-import static betterwithmods.common.BWMBlocks.BEACON;
 
 /**
  * Created by primetoxinz on 7/17/17.
@@ -66,6 +66,7 @@ public class HCBeacons extends Feature {
     }
 
     public static final Block ENDERCHEST = new BlockEnderchest().setRegistryName("minecraft:ender_chest");
+    public static final Block BEACON = new BlockBeacon().setRegistryName("minecraft:beacon");
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {

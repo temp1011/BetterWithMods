@@ -92,7 +92,7 @@ public final class BWMBlocks {
 	public static final Block STAKE = new BlockStake().setRegistryName("stake");
 	public static final Block STAKE_STRING = new BlockStakeString().setRegistryName("stake_string");
 	public static final Block NETHER_GROWTH = new BlockNetherGrowth().setRegistryName("nether_growth");
-	public static final Block BEACON = new BlockBeacon();
+
 	public static final Block STEEL_BLOCK = new BlockSteel().setRegistryName("steel_block");
 	public static final Block STEEL_SAW = new BlockSteelSaw().setRegistryName("steel_saw");
 	public static final Block BLOOD_LOG = new BlockBloodLog().setRegistryName("blood_log");
