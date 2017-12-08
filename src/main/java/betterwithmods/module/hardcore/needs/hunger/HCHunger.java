@@ -2,11 +2,7 @@ package betterwithmods.module.hardcore.needs.hunger;
 
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.gameplay.CauldronRecipes;
-import betterwithmods.module.gameplay.KilnRecipes;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.player.FatPenalty;
@@ -21,7 +17,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -46,7 +41,6 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import squeek.applecore.api.AppleCoreAPI;
@@ -282,7 +276,7 @@ public class HCHunger extends CompatFeature {
 				player.setSprinting(false);
 			int tick = getExhaustionTick(player);
 			if (tick > passiveExhaustionTick) {
-				player.getFoodStats().addExhaustion(passiveExhaustion);
+				player.addExhaustion(passiveExhaustion);
 				setExhaustionTick(player, 0);
 			} else {
 				setExhaustionTick(player, getExhaustionTick(player) + 1);
