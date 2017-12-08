@@ -45,6 +45,8 @@ public class EntityAIEatFood extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
+        if(entity.isChild())
+            return false;
         BlockPos entityPos = entity.getPosition();
         if (targetItem == null) {
             List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
@@ -64,13 +66,13 @@ public class EntityAIEatFood extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (targetItem.isDead || targetItem.getItem().getCount() < 1) {
+        if (targetItem == null || targetItem.isDead)
+            return false;
+        if (targetItem.getItem().getCount() < 1) {
             BlockPos entityPos = entity.getPosition();
             List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
             targetItem = getTargetItem(entityItems);
         }
-        if (targetItem == null || targetItem.isDead)
-            return false;
         if (timeoutCounter > 1200)
             return false;
         if (!this.entity.getNavigator().noPath()) {
