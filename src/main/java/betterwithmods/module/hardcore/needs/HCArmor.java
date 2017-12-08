@@ -15,11 +15,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.Calendar;
 
@@ -33,6 +35,8 @@ public class HCArmor extends Feature {
     public static final ItemStack[] IRON_ARMOR = new ItemStack[]{new ItemStack(Items.IRON_HELMET), new ItemStack(Items.IRON_CHESTPLATE), new ItemStack(Items.IRON_LEGGINGS), new ItemStack(Items.IRON_BOOTS)};
 
     public static boolean changeArmorSpawns;
+
+    public static boolean shieldRebalance;
 
     public static float getWeight(ItemStack stack) {
         if (!ModuleLoader.isFeatureEnabled(HCArmor.class))
@@ -108,6 +112,11 @@ public class HCArmor extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+        if (shieldRebalance) {
+            addHardcoreRecipe(new ShapedOreRecipe(new ResourceLocation("minecraft:shield"), new ItemStack(Items.SHIELD),
+                    "SWS", "WIW", " W ", 'S', "strapLeather", 'W', "sidingWood", 'I', "ingotIron"
+            ));
+        }
         initWeights();
     }
 
@@ -139,6 +148,8 @@ public class HCArmor extends Feature {
     @Override
     public void setupConfig() {
         changeArmorSpawns = loadPropBool("Change Armor Spawns", "Changes Entity armor spawning: Zombies only spawn with Iron armor, Skeletons never wear armor.", true);
+
+        shieldRebalance = loadPropBool("Shield Rebalance", "Experimental recipes for rebalacing shields", false);
     }
 
     @Override
