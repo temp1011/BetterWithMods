@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -68,7 +69,7 @@ public class HCFishing extends Feature {
 
     @SubscribeEvent
     public void onFished(ItemFishedEvent event) {
-        ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+        ItemStack stack = getMostRelevantFishingRod(event.getEntityPlayer());
         if (isFishingRod(stack)) {
             FishingBait cap = stack.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
             if (cap.hasBait()) {
@@ -87,7 +88,7 @@ public class HCFishing extends Feature {
             FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
             if (!cap.hasBait()) {
                 event.setCanceled(true);
-                if (!event.getWorld().isRemote && event.getHand() == EnumHand.MAIN_HAND)
+                if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND))
                     event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
             }
         }
@@ -118,6 +119,30 @@ public class HCFishing extends Feature {
 
     public static boolean isFishingRod(ItemStack stack) {
         return stack.getItem() instanceof ItemFishingRod && stack.hasCapability(FISHING_ROD_CAP, EnumFacing.UP);
+    }
+
+    public static ItemStack getMostRelevantFishingRod(EntityPlayer player) {
+        ItemStack itemMain = player.getHeldItemMainhand();
+        ItemStack itemOffhand = player.getHeldItemOffhand();
+        if (isFishingRod(itemMain) && !isFishingRod(itemOffhand)) {
+            return itemMain;
+        }
+        else if (!isFishingRod(itemMain) && isFishingRod(itemOffhand)) {
+            return itemOffhand;
+        }
+        else if (!isFishingRod(itemMain) && !isFishingRod(itemOffhand)) {
+            return null;
+        }
+        else {
+            //got a dual-wielding fisher here. Use main if baited, offhand otherwise.
+            FishingBait capMain = itemMain.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
+            if (capMain.hasBait()) {
+                return itemMain;
+            }
+            else {
+                return itemOffhand;
+            }
+        }
     }
 
     public static boolean isBaited(ItemStack stack, boolean baited) {
