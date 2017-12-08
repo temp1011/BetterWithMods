@@ -63,7 +63,7 @@ public class HCLumber extends Feature {
         if (!Loader.isModLoaded("primal")) {
             for (IRecipe recipe : BWOreDictionary.logRecipes) {
                 ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.woods.stream().filter(w -> w.getPlank(plankAmount).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
+                BWOreDictionary.woods.stream().filter(w -> w.getPlank(axePlankAmount).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
                     if (wood != null) {
                         addHardcoreRecipe(new ChoppingRecipe(wood, axePlankAmount).setRegistryName(recipe.getRegistryName()));
                     }
