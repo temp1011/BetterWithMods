@@ -12,18 +12,14 @@ import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
 import betterwithmods.common.items.tools.ItemSteelSaw;
-import betterwithmods.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -281,24 +277,7 @@ public final class BWMBlocks {
 		BWMItems.setInventoryModel(Item.getItemFromBlock(block));
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static void registerFluidModels(Fluid fluid) {
-		if (fluid == null) {
-			return;
-		}
-		Block block = fluid.getBlock();
-		if (block != null) {
-			Item item = Item.getItemFromBlock(block);
-			ClientProxy.FluidStateMapper mapper = new ClientProxy.FluidStateMapper(fluid);
-			// item-model
-			if (item != Items.AIR) {
-				ModelLoader.registerItemVariants(item);
-				ModelLoader.setCustomMeshDefinition(item, mapper);
-			}
-			// block-model
-			ModelLoader.setCustomStateMapper(block, mapper);
-		}
-	}
+
 
 	///CLIENT END
 }
