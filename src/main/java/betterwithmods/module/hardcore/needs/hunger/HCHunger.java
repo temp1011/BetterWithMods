@@ -86,9 +86,9 @@ public class HCHunger extends CompatFeature {
 //		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
     }
 
-    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds");
-    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 2, 0, false).setRegistryName("minecraft:brown_mushroom");
-    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 2, 0, false)
+    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
+    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
+    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false)
             .setPotionEffect(new PotionEffect(MobEffects.POISON, 80, 0), 1).setRegistryName("minecraft:red_mushroom");
 
     @Override
