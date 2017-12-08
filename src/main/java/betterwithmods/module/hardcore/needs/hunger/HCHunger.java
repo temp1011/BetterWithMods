@@ -205,8 +205,7 @@ public class HCHunger extends CompatFeature {
         int foodLevel = event.foodValues.hunger;
         int max = AppleCoreAPI.accessor.getMaxHunger(event.player);
         int newFood = (foodLevel + playerFoodLevel);
-        float fat = newFood - max;
-        if (!FoodHelper.isDessert(event.food) && fat < 0) {
+        if (newFood < max) {
             event.foodValues = new FoodValues(foodLevel, 0);
         } else {
             event.foodValues = new FoodValues(foodLevel, 0.25f);
