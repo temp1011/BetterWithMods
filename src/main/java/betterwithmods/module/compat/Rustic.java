@@ -10,7 +10,6 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.crafting.HCSaw;
-import betterwithmods.module.tweaks.HighEfficiencyRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -118,30 +117,28 @@ public class Rustic extends CompatFeature {
 //            BWMRecipes.removeRecipes(wooden_stake);
         }//TODO
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(wooden_stake, 3), "M", "M", "M", 'M', "mouldingWood").setRegistryName(new ResourceLocation("betterwithmods", "rustic_stake")));
-        if (ModuleLoader.isFeatureEnabled(HighEfficiencyRecipes.class)) {
-            for (int i = 0; i < woods.length; i++) {
-                ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
-                ItemStack siding = i >= 6 ? new ItemStack(SIDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_SIDING, 1, i);
-                ItemStack chair = new ItemStack(getBlock("rustic:chair_" + woods[i]), 4);
-                ItemStack table = new ItemStack(getBlock("rustic:table_" + woods[i]), 2);
-                if (isHCSawEnabled) {
-                    //TODO
+        for (int i = 0; i < woods.length; i++) {
+            ItemStack moulding = i >= 6 ? new ItemStack(MOULDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_MOULDING, 1, i);
+            ItemStack siding = i >= 6 ? new ItemStack(SIDING, 1, i - 6) : new ItemStack(BWMBlocks.WOOD_SIDING, 1, i);
+            ItemStack chair = new ItemStack(getBlock("rustic:chair_" + woods[i]), 4);
+            ItemStack table = new ItemStack(getBlock("rustic:table_" + woods[i]), 2);
+            if (isHCSawEnabled) {
+                //TODO
 //                    BWMRecipes.removeRecipes(chair);
 //                    BWMRecipes.removeRecipes(table);
-                }
-                addHardcoreRecipe(new ShapedOreRecipe(null, chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_chair")));
-                addHardcoreRecipe(new ShapedOreRecipe(null, table, "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_table")));
-                if (i >= 6) {
-                    ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
-                    ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
-                    if (isHCSawEnabled) {
-                        //TODO
+            }
+            addHardcoreRecipe(new ShapedOreRecipe(null, chair, "S  ", "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_chair")));
+            addHardcoreRecipe(new ShapedOreRecipe(null, table, "SSS", "M M", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_table")));
+            if (i >= 6) {
+                ItemStack fencegate = new ItemStack(getBlock("rustic:fence_gate_" + woods[i]));
+                ItemStack fence = new ItemStack(getBlock("rustic:fence_" + woods[i]), 3);
+                if (isHCSawEnabled) {
+                    //TODO
 //                        BWMRecipes.removeRecipes(fencegate);
 //                        BWMRecipes.removeRecipes(fence);
-                    }
-                    addHardcoreRecipe(new ShapedOreRecipe(null, fencegate, "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence_gate")));
-                    addHardcoreRecipe(new ShapedOreRecipe(null, fence, "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence")));
                 }
+                addHardcoreRecipe(new ShapedOreRecipe(null, fencegate, "MSM", 'S', siding, 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence_gate")));
+                addHardcoreRecipe(new ShapedOreRecipe(null, fence, "MMM", 'M', moulding).setRegistryName(new ResourceLocation("betterwithmods", "rustic_" + woods[i] + "_fence")));
             }
         }
         AnvilRecipes.addSteelShapedRecipe(new ResourceLocation("rustic_siding"), new ItemStack(SIDING, 8, 2), "SSSS", 'S', getBlock("rustic:slate"));
@@ -152,8 +149,8 @@ public class Rustic extends CompatFeature {
         registerOre("mouldingWood", new ItemStack(MOULDING, 1, 0), new ItemStack(MOULDING, 1, 1));
         registerOre("cornerWood", new ItemStack(CORNER, 1, 0), new ItemStack(CORNER, 1, 1));
 
-	    BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_BUTTON));
-	    BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE));
+        BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_BUTTON));
+        BWMRecipes.removeRecipe(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE));
     }
 }
 
