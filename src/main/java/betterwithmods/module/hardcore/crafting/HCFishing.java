@@ -5,6 +5,8 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -18,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -45,8 +48,20 @@ import java.util.function.Predicate;
  * Created by primetoxinz on 7/23/17.
  */
 public class HCFishing extends Feature {
+
+    public static boolean requireBait, restrictToOpenWater;
+    public static int minimumWaterDepth;
+
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
     private static final Ingredient BAIT = Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.SPIDER_EYE), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Items.FISH, 1, 2), new ItemStack(Items.FISH, 1, 3));
+
+
+    @Override
+    public void setupConfig() {
+        requireBait = loadPropBool("Require Bait", "Change Fishing Rods to require being Baited with certain items to entice fish, they won't nibble without it!", true);
+        restrictToOpenWater = loadPropBool("Restrict to Open Water", "Fishing on underground locations won't work, hook must be placed on a water block with line of sight to the sky.", true);
+        minimumWaterDepth = loadPropInt("Minimum Water Depth", "If higher than 1, requires bodies of water to have a minimum depth for fishing to be successful.", 3);
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -57,7 +72,7 @@ public class HCFishing extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Change Fishing Rods to require being Baited with certain items to entice fish, they won't nibble without it!";
+        return "Change Fishing Rods to require bait and a large enough water source exposed to the sky.";
     }
 
     @SubscribeEvent
@@ -69,14 +84,33 @@ public class HCFishing extends Feature {
 
     @SubscribeEvent
     public void onFished(ItemFishedEvent event) {
-        ItemStack stack = getMostRelevantFishingRod(event.getEntityPlayer());
-        if (isFishingRod(stack)) {
-            FishingBait cap = stack.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            if (cap.hasBait()) {
-                cap.setBait(false);
-                NBTTagCompound tag = stack.getTagCompound();
-                if (tag != null && tag.hasKey("bait")) {
-                    tag.setBoolean("bait", false);
+        BlockPos hookPos = getHookSurfacePos(event.getHookEntity());
+        if (restrictToOpenWater) {
+            if (event.getHookEntity().getEntityWorld().getHeight(hookPos.getX(), hookPos.getZ()) > hookPos.getY() || !isAirBlock(event.getHookEntity().getEntityWorld(), hookPos)) {
+                event.setCanceled(true);
+                event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_open_sky"));
+                return;
+            }
+        }
+        if (minimumWaterDepth > 1) {
+            for (int i=1; i<=minimumWaterDepth; i++) {
+                if (!isWaterBlock(event.getHookEntity().getEntityWorld(), hookPos.add(0, (i*-1), 0))) {
+                    event.setCanceled(true);
+                    event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_deep_water"));
+                    return;
+                }
+            }
+        }
+        if (requireBait) {
+            ItemStack stack = getMostRelevantFishingRod(event.getEntityPlayer());
+            if (isFishingRod(stack)) {
+                FishingBait cap = stack.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
+                if (cap.hasBait()) {
+                    cap.setBait(false);
+                    NBTTagCompound tag = stack.getTagCompound();
+                    if (tag != null && tag.hasKey("bait")) {
+                        tag.setBoolean("bait", false);
+                    }
                 }
             }
         }
@@ -84,12 +118,14 @@ public class HCFishing extends Feature {
 
     @SubscribeEvent
     public void useFishingRod(PlayerInteractEvent.RightClickItem event) {
-        if (isFishingRod(event.getItemStack())) {
-            FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            if (!cap.hasBait()) {
-                event.setCanceled(true);
-                if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND))
-                    event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
+        if (requireBait) {
+            if (isFishingRod(event.getItemStack())) {
+                FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
+                if (!cap.hasBait()) {
+                    event.setCanceled(true);
+                    if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND))
+                        event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
+                }
             }
         }
     }
@@ -97,18 +133,20 @@ public class HCFishing extends Feature {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-        if (isFishingRod(stack)) {
-            FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            boolean bait = cap.hasBait();
-            String tooltip = bait ? "Baited" : "Unbaited";
-            if (!bait) {
-                NBTTagCompound tag = stack.getTagCompound();
-                if (tag != null && tag.hasKey("bait")) {
-                    tooltip = tag.getBoolean("bait") ? "Baited" : "Unbaited";
+        if (requireBait) {
+            ItemStack stack = event.getItemStack();
+            if (isFishingRod(stack)) {
+                FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
+                boolean bait = cap.hasBait();
+                String tooltip = bait ? "Baited" : "Unbaited";
+                if (!bait) {
+                    NBTTagCompound tag = stack.getTagCompound();
+                    if (tag != null && tag.hasKey("bait")) {
+                        tooltip = tag.getBoolean("bait") ? "Baited" : "Unbaited";
+                    }
                 }
+                event.getToolTip().add(tooltip);
             }
-            event.getToolTip().add(tooltip);
         }
     }
 
@@ -123,25 +161,11 @@ public class HCFishing extends Feature {
 
     public static ItemStack getMostRelevantFishingRod(EntityPlayer player) {
         ItemStack itemMain = player.getHeldItemMainhand();
-        ItemStack itemOffhand = player.getHeldItemOffhand();
-        if (isFishingRod(itemMain) && !isFishingRod(itemOffhand)) {
+        if (isFishingRod(itemMain) && itemMain.getCapability(FISHING_ROD_CAP, EnumFacing.UP).hasBait()) {
             return itemMain;
         }
-        else if (!isFishingRod(itemMain) && isFishingRod(itemOffhand)) {
-            return itemOffhand;
-        }
-        else if (!isFishingRod(itemMain) && !isFishingRod(itemOffhand)) {
-            return null;
-        }
         else {
-            //got a dual-wielding fisher here. Use main if baited, offhand otherwise.
-            FishingBait capMain = itemMain.getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-            if (capMain.hasBait()) {
-                return itemMain;
-            }
-            else {
-                return itemOffhand;
-            }
+            return player.getHeldItemOffhand();
         }
     }
 
@@ -160,6 +184,24 @@ public class HCFishing extends Feature {
         NBTTagCompound tag = rod.getTagCompound();
         tag.setBoolean("bait", baited);
         return new ItemStack(rod.serializeNBT());
+    }
+
+    public static BlockPos getHookSurfacePos(EntityFishHook hookEntity) {
+        World world = hookEntity.getEntityWorld();
+        BlockPos hookPos = hookEntity.getPosition();
+        int heightOffset = 0;
+        while (isWaterBlock(world, hookPos.add(0,heightOffset,0)) && (hookPos.getY() + heightOffset < 255)) {
+            heightOffset++;
+        }
+        return hookPos.add(0,heightOffset,0);
+    }
+
+    public static boolean isWaterBlock(World world, BlockPos pos) {
+        return (world.getBlockState(pos).getBlock() == Blocks.WATER || world.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER);
+    }
+
+    public static boolean isAirBlock(World world, BlockPos pos) {
+        return (world.getBlockState(pos).getBlock() == Blocks.AIR);
     }
 
     public class BaitingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {

@@ -558,6 +558,8 @@ bwm.message.immersive.1=and Immersive Engineering Kinetic Dynamos
 bwm.message.exhaustion=You are too exhausted to turn it.
 
 bwm.message.needs_bait=The fish probably won't nibble, needs some bait.
+bwm.message.needs_open_sky=Didn't catch anything, should try a topside water source.
+bwm.message.needs_deep_water=Didn't catch anything, this water source is too shallow.
 
 bwm.message.waterwheel.0=Not enough room to place the waterwheel. Need a 5x5 area to work.
 bwm.message.windmill.0=Not enough room to place the windmill. Need a 13x13 area to work.
