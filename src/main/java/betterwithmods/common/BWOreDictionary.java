@@ -72,6 +72,8 @@ public class BWOreDictionary {
         registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
         registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
+        registerOre("dustCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST));
+        registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("gemNetherCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
         registerOre("materialNetherSludge", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
