@@ -138,33 +138,11 @@ public class BlockBUD extends BWMBlock {
         return side.getOpposite() == getFacing(world.getBlockState(pos)) && isRedstoneOn(world, pos) ? 15 : 0;
     }
 
-    @Override
     public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
-    @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.FACING, facing);
-    }
-
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        world.setBlockState(pos, setFacingInBlock(world.getBlockState(pos), DirUtils.rotateFacingAroundY(getFacing(world.getBlockState(pos)), reverse)));
     }
 }

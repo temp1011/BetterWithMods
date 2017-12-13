@@ -144,12 +144,10 @@ public class BlockLens extends BlockRotate {
         return getFacing(world.getBlockState(pos));
     }
 
-    @Override
     public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
-    @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.FACING, facing);
     }

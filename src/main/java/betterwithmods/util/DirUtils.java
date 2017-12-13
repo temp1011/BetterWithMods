@@ -1,6 +1,5 @@
 package betterwithmods.util;
 
-import betterwithmods.api.block.ITurnable;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyBool;
@@ -110,24 +109,6 @@ public class DirUtils {
         }
 
         return facing;
-    }
-
-    public static boolean rotateAroundY(ITurnable block, World world, BlockPos pos, boolean reverse) {
-        IBlockState state = world.getBlockState(pos);
-        IBlockState newState = rotateStateAroundY(block, state, reverse);
-        if (newState != state) {
-            world.setBlockState(pos, newState);
-            world.markBlockRangeForRenderUpdate(pos, pos);
-            return true;
-        }
-        return false;
-    }
-
-    public static IBlockState rotateStateAroundY(ITurnable block, IBlockState state, boolean reverse) {
-        EnumFacing facing = block.getFacing(state);
-        EnumFacing newFacing = rotateFacingAroundY(facing, reverse);
-        state = block.setFacingInBlock(state, newFacing);
-        return state;
     }
 
     public static EnumFacing.Axis getAxis(int axis) {

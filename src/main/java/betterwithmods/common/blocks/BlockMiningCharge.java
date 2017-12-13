@@ -93,7 +93,6 @@ public class BlockMiningCharge extends BWMBlock implements IFuseIgnitable {
         }
     }
 
-    @Override
     public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }

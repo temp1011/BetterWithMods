@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.ITurnable;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.blocks.tile.TileBasic;
@@ -14,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BWMBlock extends Block implements ITurnable {
+public abstract class BWMBlock extends Block {
     public BWMBlock(Material material) {
         super(material);
         setCreativeTab(BWCreativeTabs.BWTAB);
@@ -27,35 +26,6 @@ public abstract class BWMBlock extends Block implements ITurnable {
             setHarvestLevel("pickaxe", 1);
             ToolsManager.setPickaxesAsEffectiveAgainst(this);
         }
-    }
-
-    @Override
-    public EnumFacing getFacing(IBlockState state) {
-        return null;
-    }
-
-    @Override
-    public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
-        return null;
-    }
-
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
     }
 
     @Override

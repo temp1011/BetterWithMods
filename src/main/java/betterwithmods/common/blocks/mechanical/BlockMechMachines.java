@@ -259,33 +259,6 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     }
 
     @Override
-    public EnumFacing getFacing(IBlockState state) {
-        return null;
-    }
-
-    @Override
-    public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
-        return state;
-    }
-
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-
-
-    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, ACTIVE, TYPE);
     }

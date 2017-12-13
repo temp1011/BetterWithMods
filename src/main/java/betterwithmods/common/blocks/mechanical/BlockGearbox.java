@@ -20,10 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -108,44 +105,9 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         return state.getValue(DirUtils.FACING);
     }
 
-    @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.FACING, facing);
     }
-
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-//    @Override
-//    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-//        EnumFacing facing = getFacing(world, pos);
-//        EnumFacing newFacing = DirUtils.rotateFacingAroundY(facing, reverse);
-//        if (newFacing != facing) {
-//            if (isGearboxOn(world, pos)) {
-//                setGearboxState(world, pos, false);
-//            }
-//
-//            world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, newFacing));
-//
-//            world.markBlockRangeForRenderUpdate(pos, pos);
-//
-//            world.scheduleBlockUpdate(pos, this, 10, 5);
-//
-//            MechanicalUtil.destoryHorizontalAxles(world, pos);
-//        }
-//    }
 
 
     private void emitGearboxParticles(World world, BlockPos pos, Random rand) {
@@ -283,5 +245,11 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         }
     }
 
-
+    @Override
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
+        EnumFacing facing = getFacingFromState(state);
+        if (facing.getAxis().isHorizontal())
+            return state.withProperty(DirUtils.FACING, rot.rotate(facing));
+        return state;
+    }
 }

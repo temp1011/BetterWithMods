@@ -120,35 +120,12 @@ public class BlockDetector extends BlockRotate {
         return 0;
     }
 
-    @Override
     public EnumFacing getFacing(IBlockState state) {
         return state.getValue(DirUtils.FACING);
     }
 
-    @Override
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.FACING, facing);
-    }
-
-    @Override
-    public boolean canRotateOnTurntable(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateHorizontally(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public boolean canRotateVertically(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
-
-    @Override
-    public void rotateAroundYAxis(World world, BlockPos pos, boolean reverse) {
-        if (DirUtils.rotateAroundY(this, world, pos, reverse))
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
     public boolean isBlockOn(IBlockAccess world, BlockPos pos) {
