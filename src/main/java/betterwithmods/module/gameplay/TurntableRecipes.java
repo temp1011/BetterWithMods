@@ -2,18 +2,14 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockUnfiredPottery;
-import betterwithmods.common.blocks.mechanical.BlockSaw;
 import betterwithmods.common.registry.TurntableRotationManager;
 import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.module.Feature;
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,6 +33,13 @@ public class TurntableRecipes extends Feature {
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
         addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), null, 0, new ItemStack(Items.CLAY_BALL));
+
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockTorch);
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockLever);
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockLadder);
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockButton);
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockWallSign);
+        TurntableRotationManager.addAttachment(b -> b instanceof BlockTripWireHook);
 
         TurntableRotationManager.addRotationHandler(block -> block instanceof BlockTorch, (world, pos) -> {
             IBlockState state = world.getBlockState(pos);
