@@ -6,15 +6,19 @@ import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -218,60 +222,27 @@ public class HCBuoy extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Makes it so items float or not depending on their material properties";
+        return "Add values for BWM items to the Hardcore Buoy mod.";
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event) {
+
         initBuoyancy();
+        
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound s;
+        for(Stack stack: buoyancy.keySet()) {
+            s = stack.getItemStack().serializeNBT();
+            tag.setTag("stack",s);
+            tag.setFloat("value",buoyancy.get(stack));
+            FMLInterModComms.sendMessage("hardcorebuoy","buoy", tag);
+        }
     }
 
     @Override
     public boolean requiresMinecraftRestartToEnable() {
         return true;
-    }
-
-    private List<EntityItemBuoy> immediateSpawn = new ArrayList<>();
-    private List<EntityItemBuoy> nextSpawn = new ArrayList<>();
-
-    /**
-     * Substitute the original {@link EntityItem} by our new {@link EntityItemBuoy}.
-     */
-    @SubscribeEvent
-    public void replaceServerEntityItem(EntityJoinWorldEvent event) {
-        World world = event.getWorld();
-        if (world.isRemote) return;
-
-        if (!(event.getEntity().getClass() == EntityItem.class)) return;
-        EntityItem entityItem = (EntityItem) event.getEntity();
-
-        if (entityItem.getItem().getCount() > 0 && getBuoyancy(entityItem.getItem()) > -1.0F) {
-            event.setResult(Event.Result.DENY);
-            EntityItemBuoy newEntity = new EntityItemBuoy(entityItem);
-            newEntity.setWatchItem(entityItem);
-
-            nextSpawn.add(newEntity);
-            //world.spawnEntity(newEntity);
-        }
-    }
-
-    @SubscribeEvent
-    public void replaceOnWorldTick(TickEvent.WorldTickEvent evt) {
-        if (!evt.world.isRemote && evt.phase == TickEvent.Phase.START) {
-            if (!immediateSpawn.isEmpty()) {
-                for (EntityItemBuoy buoy : immediateSpawn) {
-                    if (buoy.isWatchItemDead()) {
-                        buoy.killWatchItem();
-                        evt.world.spawnEntity(buoy);
-                    }
-                }
-                immediateSpawn = new ArrayList<>();
-            }
-            if (!nextSpawn.isEmpty()) {
-                immediateSpawn = nextSpawn;
-                nextSpawn = new ArrayList<>();
-            }
-        }
     }
 
     @Override
