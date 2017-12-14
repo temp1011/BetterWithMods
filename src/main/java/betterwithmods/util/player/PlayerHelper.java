@@ -40,6 +40,7 @@ public final class PlayerHelper {
     }
 
     public static boolean isHolding(EntityPlayer player, List<ItemStack> stacks) {
+
         ItemStack held = player.getHeldItem(player.getActiveHand());
         for (ItemStack stack : stacks) {
             if (held.isItemEqual(stack))

@@ -146,7 +146,7 @@ public class HCArmor extends Feature {
 
     @Override
     public void setupConfig() {
-        changeArmorSpawns = loadPropBool("Change Armor Spawns", "Changes Entity armor spawning: Zombies only spawn with Iron armor, Skeletons never wear armor.", true);
+        changeArmorSpawns = loadPropBool("Change Armor Spawns", "Changes Entity armor spawning: Zombies only spawn with Iron armor, Skeletons never wear armor.", false);
 
         shieldRebalance = loadPropBool("Shield Rebalance", "Experimental recipes for rebalacing shields", false);
     }
