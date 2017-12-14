@@ -26,8 +26,6 @@ public class ConfigHelper {
     public static boolean allNeedRestart = false;
 
 
-
-
     public static int[] loadPropIntList(String propName, String category, String comment, int[] default_) {
         Property prop = ModuleLoader.config.get(category, propName, default_, comment);
         setNeedsRestart(prop);
@@ -92,24 +90,24 @@ public class ConfigHelper {
 
     private static ItemStack fromString(String name) {
         String[] split = name.split(":");
-        if(split.length > 1) {
+        if (split.length > 1) {
             int meta = 0;
             if (split.length > 2) {
                 meta = Integer.parseInt(split[2]);
             }
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
             if(item != null) {
-                return new ItemStack(item, meta);
+                return new ItemStack(item, 1, meta);
             }
         }
         return ItemStack.EMPTY;
     }
 
     private static String fromStack(ItemStack stack) {
-        if(stack.getMetadata() == 0) {
+        if (stack.getMetadata() == 0) {
             return stack.getItem().getRegistryName().toString();
         } else {
-            return String.format("%s:%s", stack.getItem().getRegistryName(),stack.getMetadata());
+            return String.format("%s:%s", stack.getItem().getRegistryName(), stack.getMetadata());
         }
 
     }

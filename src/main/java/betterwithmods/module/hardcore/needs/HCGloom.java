@@ -18,6 +18,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -68,6 +69,10 @@ public class HCGloom extends Feature {
     public void setupConfig() {
         dimensionWhitelist = Sets.newHashSet(ArrayUtils.toObject(loadPropIntList("Gloom Dimension Whitelist", "Gloom is only available in these dimensions", new int[]{0})));
         dangers = loadPropBool("Deathly Gloom", "Gloom is deadly to the player", true);
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
         gloomOverrideItems = loadItemStackList("Gloom Override Items", "Items in this list will override the gloom effect while held in your hand, this allows support for Dynamic Lightning and similar. Add one item per line  (ex minecraft:torch:0)", new ItemStack[0]);
     }
 
@@ -99,7 +104,9 @@ public class HCGloom extends Feature {
             int tick = getGloomTime(player);
             if (PlayerHelper.isHolding(player, gloomOverrideItems))
                 light = 15;
-            if (light <= 0 && !player.isPotionActive(MobEffects.NIGHT_VISION)) {
+            if(player.isPotionActive(MobEffects.NIGHT_VISION))
+                light = 15;
+            if (light <= 0) {
                 incrementGloomTime(player);
             } else if (tick != 0) {
                 setGloomTick(player, 0);
