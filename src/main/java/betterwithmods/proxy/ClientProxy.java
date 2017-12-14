@@ -99,6 +99,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         ModuleLoader.postInitClient(event);
+        RenderUtils.registerFilters();
     }
 
     @SubscribeEvent
@@ -111,7 +112,7 @@ public class ClientProxy implements IProxy {
     }
 
     private void registerRenderInformation() {
-        RenderUtils.registerFilters();
+
         OBJLoader.INSTANCE.addDomain(BWMod.MODID);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());

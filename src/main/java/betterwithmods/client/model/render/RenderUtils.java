@@ -30,19 +30,22 @@ public class RenderUtils {
     private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
 
+    public static String fromStack(ItemStack stack) {
+        return stack.getItem().getRegistryName().toString() + ":" + stack.getMetadata();
+    }
+
     public static boolean filterContains(ItemStack stack) {
-        return !stack.isEmpty() && filterLocations.containsKey(stack.getItem().toString() + stack.getMetadata());
+        return !stack.isEmpty() && filterLocations.containsKey(fromStack(stack));
     }
 
     public static ModelWithResource getModelFromStack(ItemStack stack) {
         if (filterContains(stack))
-            return filterLocations.get(stack.getItem().toString() + stack.getMetadata());
+            return filterLocations.get(fromStack(stack));
         return null;
     }
 
     public static void addFilter(ItemStack stack, ModelWithResource resource) {
-        String stackString = stack.getItem().toString() + stack.getMetadata();
-        filterLocations.put(stackString, resource);
+        filterLocations.put(fromStack(stack), resource);
     }
 
     public static void registerFilters() {
