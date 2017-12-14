@@ -27,7 +27,12 @@ import java.util.Set;
 public class HCStrata extends Feature {
 
 
+
     public static float[] STRATA_SPEEDS;
+
+    public HCStrata() {
+        enabledByDefault = false;
+    }
 
     @Override
     public void setupConfig() {
