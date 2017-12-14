@@ -27,7 +27,7 @@ public class GrassPath extends Feature {
         if (stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool) stack.getItem();
 
-            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(stack).ordinal() > 1;
+            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(stack).getHarvestLevel() > 1;
             return tool.getToolClasses(stack).contains("shovel") && hard;
         }
         return false;
@@ -75,8 +75,10 @@ public class GrassPath extends Feature {
         if (stack.isEmpty())
             return;
 
-        if (!isQualityShovel(stack))
+        if (!isQualityShovel(stack)) {
+            event.setCanceled(true);
             return;
+        }
 
         IBlockState iBlockState = world.getBlockState(blockPos);
         if (world.getBlockState(blockPos.up()).getMaterial() == Material.AIR) {
