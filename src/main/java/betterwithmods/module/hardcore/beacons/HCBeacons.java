@@ -20,28 +20,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.InventoryEnderChest;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
+
+import static betterwithmods.module.hardcore.beacons.EnderchestCap.ENDERCHEST_CAPABILITY;
 
 
 /**
@@ -73,13 +66,15 @@ public class HCBeacons extends Feature {
         BWMBlocks.registerBlock(BEACON);
         if (enderchestBeacon) {
             BWMBlocks.registerBlock(ENDERCHEST);
-            CapabilityManager.INSTANCE.register(Enderchest.class, new Storage(), Enderchest::new);
+            CapabilityManager.INSTANCE.register(EnderchestCap.class, new EnderchestCap.Storage(), EnderchestCap::new);
         }
+        CapabilityManager.INSTANCE.register(CapabilityBeacon.class, new CapabilityBeacon.Storage(), CapabilityBeacon::new);
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
 
+//        Items.COMPASS.addPropertyOverride(new ResourceLocation("angle"), new CompassProperty());
         BEACON_EFFECTS.put(Blocks.GLASS.getDefaultState(), (world, pos, level) -> {
         });
         BEACON_EFFECTS.put(Blocks.IRON_BLOCK.getDefaultState(), (world, pos, level) -> {
@@ -113,6 +108,9 @@ public class HCBeacons extends Feature {
         }));
         BEACON_EFFECTS.put(BWMBlocks.STEEL_BLOCK.getDefaultState().withProperty(BlockSteel.HEIGHT, 15), new SpawnBeaconEffect());
 
+        BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.PADDING), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> {
+            player.addPotionEffect(new PotionEffect(BWRegistry.POTION_SLOWFALL, 120, level));
+        }));
         if (enderchestBeacon) {
             BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK), new EnderBeaconEffect());
         }
@@ -137,97 +135,30 @@ public class HCBeacons extends Feature {
     @SubscribeEvent
     public void attachTileCapability(AttachCapabilitiesEvent<TileEntity> event) {
         if (event.getObject() instanceof TileEnderchest && !event.getObject().hasCapability(ENDERCHEST_CAPABILITY, EnumFacing.UP)) {
-            event.addCapability(new ResourceLocation(BWMod.MODID, "enderchest"), new Enderchest(EnumFacing.UP));
+            event.addCapability(new ResourceLocation(BWMod.MODID, "enderchest"), new EnderchestCap(EnumFacing.UP));
         }
     }
 
     @SubscribeEvent
     public void attachWorldCapability(AttachCapabilitiesEvent<World> event) {
         World world = event.getObject();
+
+        //Capability for tracking beacon ranges
+        if (!world.hasCapability(CapabilityBeacon.BEACON_CAPABILITY, EnumFacing.UP)) {
+            event.addCapability(new ResourceLocation(BWMod.MODID, "beacons"), new CapabilityBeacon());
+        }
         if (world.provider.getDimensionType() == DimensionType.OVERWORLD) {
             if (!world.hasCapability(ENDERCHEST_CAPABILITY, EnumFacing.DOWN)) {
-                event.addCapability(GLOBAL, new Enderchest(EnumFacing.DOWN));
+                event.addCapability(GLOBAL, new EnderchestCap(EnumFacing.DOWN));
             }
         }
         if (!world.hasCapability(ENDERCHEST_CAPABILITY, EnumFacing.SOUTH)) {
-            event.addCapability(WORLD1, new Enderchest(EnumFacing.SOUTH));
+            event.addCapability(WORLD1, new EnderchestCap(EnumFacing.SOUTH));
         }
         if (!world.hasCapability(ENDERCHEST_CAPABILITY, EnumFacing.NORTH)) {
-            event.addCapability(WORLD2, new Enderchest(EnumFacing.NORTH));
+            event.addCapability(WORLD2, new EnderchestCap(EnumFacing.NORTH));
         }
     }
 
-    @CapabilityInject(Enderchest.class)
-    public static Capability<Enderchest> ENDERCHEST_CAPABILITY = null;
 
-
-    public class Enderchest implements ICapabilitySerializable<NBTTagCompound> {
-
-        private EnumFacing facing;
-        private InventoryEnderChest inventory;
-
-        public Enderchest(EnumFacing facing, InventoryEnderChest inventory) {
-            this.facing = facing;
-            this.inventory = inventory;
-        }
-
-        public Enderchest(EnumFacing facing) {
-            this(facing, new InventoryEnderChest());
-        }
-
-        public Enderchest() {
-            this(EnumFacing.NORTH, new InventoryEnderChest());
-        }
-
-        @Override
-        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-            return facing == this.facing && capability.equals(ENDERCHEST_CAPABILITY);
-        }
-
-        @Nullable
-        @Override
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-            if (hasCapability(capability, facing))
-                return ENDERCHEST_CAPABILITY.cast(this);
-            return null;
-        }
-
-        @Override
-        public NBTTagCompound serializeNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("facing", facing.getIndex());
-            if (inventory != null) {
-                tag.setTag("inventory", inventory.saveInventoryToNBT());
-            }
-            return tag;
-        }
-
-        @Override
-        public void deserializeNBT(NBTTagCompound nbt) {
-            if (nbt.hasKey("inventory")) {
-                NBTTagList list = nbt.getTagList("inventory", 10);
-                inventory = new InventoryEnderChest();
-                inventory.loadInventoryFromNBT(list);
-            }
-            facing = EnumFacing.getFront(nbt.getInteger("facing"));
-        }
-
-        public InventoryEnderChest getInventory() {
-            return inventory;
-        }
-    }
-
-    public class Storage implements Capability.IStorage<Enderchest> {
-
-        @Nullable
-        @Override
-        public NBTBase writeNBT(Capability<Enderchest> capability, Enderchest instance, EnumFacing side) {
-            return instance.serializeNBT();
-        }
-
-        @Override
-        public void readNBT(Capability<Enderchest> capability, Enderchest instance, EnumFacing side, NBTBase nbt) {
-            instance.deserializeNBT((NBTTagCompound) nbt);
-        }
-    }
 }

@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -124,11 +123,10 @@ public class HCStrata extends Feature {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
-            Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getHarvester().getHeldItemMainhand());
+            ItemStack stack = event.getHarvester().getHeldItemMainhand();
             int strata = getStratification(pos.getY(), world.getSeaLevel());
-
-            if (material != null && STATES.getOrDefault(event.getState(),BlockType.STONE) == BlockType.STONE) {
-                int level = Math.max(1, material.getHarvestLevel());
+            if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
+                int level = Math.min(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
                 if (level < (strata)) {
                     event.getDrops().clear();
                 }
@@ -141,14 +139,11 @@ public class HCStrata extends Feature {
         World world = event.getEntityPlayer().getEntityWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, pos)) {
-
-            float scale = ToolsManager.getSpeed(event.getEntityPlayer().getHeldItemMainhand(), event.getState());
+            ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+            float scale = ToolsManager.getSpeed(stack, event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
-
-            Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getEntityPlayer().getHeldItemMainhand());
-
-            if (material != null && STATES.getOrDefault(event.getState(),BlockType.STONE) == BlockType.STONE) {
-                int level = Math.max(1, material.getHarvestLevel()) - 1;
+            if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
+                int level = Math.min(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getEntityPlayer(), event.getState()));
                 if (level < (strata)) {
                     scale /= 6;
                 }

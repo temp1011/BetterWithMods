@@ -12,6 +12,8 @@ import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
 import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
+import betterwithmods.common.potion.PotionSlowfall;
+import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -74,6 +76,8 @@ public class BWRegistry {
     public static final Potion POTION_FORTUNE = null;
     @GameRegistry.ObjectHolder("betterwithmods:looting")
     public static final Potion POTION_LOOTING = null;
+    @GameRegistry.ObjectHolder("betterwithmods:slow_fall")
+    public static final Potion POTION_SLOWFALL = null;
 
     private static int availableEntityId = 0;
 
@@ -219,9 +223,10 @@ public class BWRegistry {
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 4, 1).setRegistryName("true_sight")));
-        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 5, 2).setRegistryName("fortune")));
-        event.getRegistry().register(registerPotion(new BWPotion(false, 14270531, 6, 2).setRegistryName("looting")));
+        event.getRegistry().register(registerPotion(new PotionTruesight("true_sight", true, 14270531).setIconIndex( 4, 1)));
+        event.getRegistry().register(registerPotion(new BWPotion("fortune", true, 14270531).setIconIndex( 5, 2)));
+        event.getRegistry().register(registerPotion(new BWPotion("looting", true, 14270531).setIconIndex( 6, 2)));
+        event.getRegistry().register(registerPotion(new PotionSlowfall("slow_fall",true, 0xF46F20).setIconIndex( 4, 1)));
     }
 
     private static Potion registerPotion(Potion potion) {
