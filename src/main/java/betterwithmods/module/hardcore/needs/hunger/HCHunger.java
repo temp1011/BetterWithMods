@@ -42,13 +42,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodEvent;
 import squeek.applecore.api.food.FoodValues;
+import squeek.applecore.api.food.IEdibleBlock;
 import squeek.applecore.api.hunger.ExhaustionEvent;
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import squeek.applecore.api.hunger.HungerEvent;
@@ -159,11 +159,14 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(BWMItems.MYSTERY_MEAT), 9);
         FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_MYSTERY_MEAT), 12);
 
-        FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 3, true);
-        FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 12, 15, true);
-        FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 1, true);
-        FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 8, 12, true);
+        FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 0.5f, true);
+        FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 9, 1.6f, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
+        FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 1, true);
+        FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 9, 1.6f, true);
+        FoodHelper.registerFood(new ItemStack(Items.CAKE), 4, 3, true);
+
+        ((IEdibleBlock) Blocks.CAKE).setEdibleAtMaxHunger(true);
     }
 
     @Override
@@ -172,15 +175,15 @@ public class HCHunger extends CompatFeature {
         super.preInitClient(event);
     }
 
-    @SubscribeEvent
-    public void respawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (event.isEndConquered())
-            return;
-        if (event.player != null) {
-            AppleCoreAPI.mutator.setSaturation(event.player, 0);
-            AppleCoreAPI.mutator.setHunger(event.player, AppleCoreAPI.accessor.getMaxHunger(event.player));
-        }
-    }
+//    @SubscribeEvent
+//    public void respawn(PlayerEvent.PlayerRespawnEvent event) {
+////        if (event.isEndConquered())
+////            return;
+////        if (event.player != null) {
+////            AppleCoreAPI.mutator.setSaturation(event.player, 0);
+////            AppleCoreAPI.mutator.setHunger(event.player, AppleCoreAPI.accessor.getMaxHunger(event.player));
+////        }
+//    }
 
     //Changes food to correct value.
     @SubscribeEvent
@@ -208,7 +211,9 @@ public class HCHunger extends CompatFeature {
         if (newFood <= max) {
             event.foodValues = new FoodValues(foodLevel, 0);
         } else {
-            event.foodValues = new FoodValues(foodLevel, ((float)(newFood-max))/4/((float)foodLevel));
+            float modifier = event.foodValues.saturationModifier == 0 ? 0.5f : event.foodValues.saturationModifier;
+            float fat = modifier/2f;
+            event.foodValues = new FoodValues(foodLevel, fat);
         }
     }
 
@@ -395,6 +400,9 @@ public class HCHunger extends CompatFeature {
 
     }
 
+
 }
+
+
 
 
