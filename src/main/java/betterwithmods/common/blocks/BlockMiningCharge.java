@@ -24,15 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional;
-import vazkii.quark.api.IFuseIgnitable;
 
 /**
  * Created by tyler on 9/5/16.
  */
 
-@Optional.Interface(iface = "vazkii.quark.api.IFuseIgnitable",modid = "quark",striprefs = true)
-public class BlockMiningCharge extends BWMBlock implements IFuseIgnitable {
+//@Optional.Interface(iface = "vazkii.quark.api.IFuseIgnitable",modid = "quark",striprefs = true)
+//implements IFuseIgnitable
+public class BlockMiningCharge extends BWMBlock  {
     public static final PropertyBool EXPLODE = PropertyBool.create("explode");
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0, .5, 0, 1, 1, 1);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0, 0, 0, 1, .5, 1);
@@ -193,11 +192,11 @@ public class BlockMiningCharge extends BWMBlock implements IFuseIgnitable {
         return explode | facing;
     }
 
-    @Override
-    public void onIngitedByFuse(IBlockAccess world, BlockPos pos, IBlockState state) {
-        if(world instanceof World) {
-            this.onBlockDestroyedByPlayer((World) world, pos, state.withProperty(EXPLODE, Boolean.TRUE));
-            ((World)world).setBlockToAir(pos);
-        }
-    }
+//    @Override
+//    public void onIngitedByFuse(IBlockAccess world, BlockPos pos, IBlockState state) {
+//        if(world instanceof World) {
+//            this.onBlockDestroyedByPlayer((World) world, pos, state.withProperty(EXPLODE, Boolean.TRUE));
+//            ((World)world).setBlockToAir(pos);
+//        }
+//    }
 }
