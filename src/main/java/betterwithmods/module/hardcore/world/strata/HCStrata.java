@@ -3,7 +3,7 @@ package betterwithmods.module.hardcore.world.strata;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.util.item.ToolsManager;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -22,10 +22,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Set;
+import java.util.HashMap;
 
 public class HCStrata extends Feature {
-
 
 
     public static float[] STRATA_SPEEDS;
@@ -53,19 +52,19 @@ public class HCStrata extends Feature {
         for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
             for (ItemStack stack : ore.getOres()) {
                 if (stack.getItem() instanceof ItemBlock) {
-                    addBlock(((ItemBlock) stack.getItem()).getBlock());
+                    addOre(((ItemBlock) stack.getItem()).getBlock());
                 }
             }
         }
-        addBlock(Blocks.STONE);
+        addStone(Blocks.STONE);
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        if(Loader.isModLoaded("ctm")) {
+        if (Loader.isModLoaded("ctm")) {
             try {
                 Class type = Class.forName("team.chisel.ctm.api.texture.ITextureType");
-                Method method = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry").getDeclaredMethod("register",String.class, type);
+                Method method = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry").getDeclaredMethod("register", String.class, type);
                 try {
                     method.invoke(null, "bwm_strata", new TextureTypeStrata());
                 } catch (IllegalAccessException | InvocationTargetException e) {
@@ -78,14 +77,30 @@ public class HCStrata extends Feature {
     }
 
 
-    public static Set<IBlockState> STATES = Sets.newHashSet();
+    private enum BlockType {
+        STONE(0),
+        ORE(1);
+        private int level;
 
-    public static void addBlock(Block block) {
-        STATES.addAll(block.getBlockState().getValidStates());
+        BlockType(int level) {
+            this.level = level;
+        }
+
+        public int getLevel() {
+            return level;
+        }
     }
 
-    public static void addState(IBlockState state) {
-        STATES.add(state);
+    public static HashMap<IBlockState, BlockType> STATES = Maps.newHashMap();
+
+    public static void addStone(Block block) {
+        for (IBlockState state : block.getBlockState().getValidStates())
+            STATES.put(state, BlockType.STONE);
+    }
+
+    public static void addOre(Block block) {
+        for (IBlockState state : block.getBlockState().getValidStates())
+            STATES.put(state, BlockType.ORE);
     }
 
     public static boolean shouldStratify(World world, BlockPos pos) {
@@ -93,7 +108,7 @@ public class HCStrata extends Feature {
     }
 
     public static boolean shouldStratify(World world, IBlockState state) {
-        return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.contains(state);
+        return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.containsKey(state);
     }
 
     public static int getStratification(int y, int topY) {
@@ -111,9 +126,9 @@ public class HCStrata extends Feature {
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
             Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getHarvester().getHeldItemMainhand());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
-            if (material != null) {
 
-                int level = Math.max(1, material.getHarvestLevel()) - 1;
+            if (material != null && STATES.getOrDefault(event.getState(),BlockType.STONE) == BlockType.STONE) {
+                int level = Math.max(1, material.getHarvestLevel());
                 if (level < (strata)) {
                     event.getDrops().clear();
                 }
@@ -132,7 +147,7 @@ public class HCStrata extends Feature {
 
             Item.ToolMaterial material = ToolsManager.getToolMaterial(event.getEntityPlayer().getHeldItemMainhand());
 
-            if (material != null) {
+            if (material != null && STATES.getOrDefault(event.getState(),BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, material.getHarvestLevel()) - 1;
                 if (level < (strata)) {
                     scale /= 6;
