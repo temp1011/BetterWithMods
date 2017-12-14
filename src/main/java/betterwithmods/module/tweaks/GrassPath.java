@@ -23,14 +23,17 @@ import static betterwithmods.module.hardcore.needs.HCMovement.dirtpathQuality;
 
 public class GrassPath extends Feature {
 
-    public static boolean isQualityShovel(ItemStack stack) {
+    public static int getShovelQuality(ItemStack stack) {
         if (stack.getItem() instanceof ItemTool) {
             ItemTool tool = (ItemTool) stack.getItem();
+            if (!dirtpathQuality) {
+                return 3;
+            } else if (tool.getToolClasses(stack).contains("shovel")) {
+                return ToolsManager.getToolMaterial(stack).getHarvestLevel();
+            }
 
-            boolean hard = !dirtpathQuality || ToolsManager.getToolMaterial(stack).getHarvestLevel() > 1;
-            return tool.getToolClasses(stack).contains("shovel") && hard;
         }
-        return false;
+        return -1;
     }
 
     @Override
@@ -75,7 +78,10 @@ public class GrassPath extends Feature {
         if (stack.isEmpty())
             return;
 
-        if (!isQualityShovel(stack)) {
+        int quality = getShovelQuality(stack);
+        if (quality == -1)
+            return;
+        if (quality < 2) {
             event.setCanceled(true);
             return;
         }

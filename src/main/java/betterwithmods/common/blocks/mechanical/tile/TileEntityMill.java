@@ -36,6 +36,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private int grindType = 0;
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
+    public boolean blocked;
 
     public TileEntityMill() {
         this.grindCounter = 0;
@@ -55,17 +56,35 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         return (BlockMechMachines) this.getBlockType();
     }
 
+    private boolean findIfBlocked() {
+        int count = 0;
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (!world.getBlockState(getBlockPos().offset(facing)).getMaterial().isReplaceable()) {
+                count++;
+            }
+        }
+        return count > 1;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
     @Override
     public void update() {
         if (this.getBlockWorld().isRemote)
             return;
 
         this.power = calculateInput();
-
+        this.blocked = findIfBlocked();
         getBlock().setActive(world, pos, isActive());
 
         if (this.validateContents)
             validateContents();
+
+        if (isBlocked()) {
+            return;
+        }
 
         if (isActive())
             if (getBlockWorld().rand.nextInt(20) == 0)
@@ -94,6 +113,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+        if (tag.hasKey("blocked"))
+            this.blocked = tag.getBoolean("blocked");
         if (tag.hasKey("GrindCounter"))
             this.grindCounter = tag.getInteger("GrindCounter");
         this.power = tag.getInteger("power");
@@ -104,6 +125,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         super.writeToNBT(tag);
         tag.setInteger("GrindCounter", this.grindCounter);
         tag.setInteger("power", power);
+        tag.setBoolean("blocked", blocked);
         return tag;
     }
 
