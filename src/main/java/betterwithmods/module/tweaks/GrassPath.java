@@ -1,14 +1,13 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
-import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -24,14 +23,12 @@ import static betterwithmods.module.hardcore.needs.HCMovement.dirtpathQuality;
 public class GrassPath extends Feature {
 
     public static int getShovelQuality(ItemStack stack) {
-        if (stack.getItem() instanceof ItemTool) {
-            ItemTool tool = (ItemTool) stack.getItem();
-            if (!dirtpathQuality) {
-                return 3;
-            } else if (tool.getToolClasses(stack).contains("shovel")) {
-                return ToolsManager.getToolMaterial(stack).getHarvestLevel();
-            }
+        Item item = stack.getItem();
 
+        if (!dirtpathQuality) {
+            return 3;
+        } else if (item.getToolClasses(stack).contains("shovel")) {
+            return item.getHarvestLevel(stack, "shovel", null, null);
         }
         return -1;
     }
