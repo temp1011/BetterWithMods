@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -32,6 +33,7 @@ public class HCGloom extends Feature {
     private static final DataParameter<Integer> GLOOM_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
     private static Set<Integer> dimensionWhitelist;
+    private static List<ItemStack> gloomOverrideItems;
 
     private static boolean dangers;
 
@@ -45,16 +47,16 @@ public class HCGloom extends Feature {
 
     public static void incrementGloomTime(EntityPlayer player) {
         int time = getGloomTime(player);
-        if(dangers) {
+        if (dangers) {
             if (time >= GloomPenalty.TERROR.getTimeUpper())
                 setGloomTick(player, GloomPenalty.TERROR.getTimeUpper());
             else
-                setGloomTick(player,  time+ 1);
+                setGloomTick(player, time + 1);
         } else {
             if (time >= GloomPenalty.DREAD.getTimeUpper())
                 setGloomTick(player, GloomPenalty.DREAD.getTimeUpper());
             else
-                setGloomTick(player,  time+ 1);
+                setGloomTick(player, time + 1);
         }
     }
 
@@ -66,6 +68,7 @@ public class HCGloom extends Feature {
     public void setupConfig() {
         dimensionWhitelist = Sets.newHashSet(ArrayUtils.toObject(loadPropIntList("Gloom Dimension Whitelist", "Gloom is only available in these dimensions", new int[]{0})));
         dangers = loadPropBool("Deathly Gloom", "Gloom is deadly to the player", true);
+        gloomOverrideItems = loadItemStackList("Gloom Override Items", "Items in this list will override the gloom effect while held in your hand, this allows support for Dynamic Lightning and similar. Add one item per line  (ex minecraft:torch:0)", new ItemStack[0]);
     }
 
     @SubscribeEvent
@@ -78,7 +81,7 @@ public class HCGloom extends Feature {
     @SubscribeEvent
     public void onRespawn(PlayerEvent.PlayerRespawnEvent e) {
         //FIXME hopefully fixes permanent gloom after dying???
-        setGloomTick(e.player,0);
+        setGloomTick(e.player, 0);
     }
 
     @SubscribeEvent
@@ -89,9 +92,13 @@ public class HCGloom extends Feature {
 
         if (!PlayerHelper.isSurvival(player) || !dimensionWhitelist.contains(world.provider.getDimension()))
             return;
+
         if (!world.isRemote) {
+
             int light = world.getLight(player.getPosition().up());
             int tick = getGloomTime(player);
+            if (PlayerHelper.isHolding(player, gloomOverrideItems))
+                light = 15;
             if (light <= 0 && !player.isPotionActive(MobEffects.NIGHT_VISION)) {
                 incrementGloomTime(player);
             } else if (tick != 0) {

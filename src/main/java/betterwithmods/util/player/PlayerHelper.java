@@ -25,6 +25,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,6 +37,15 @@ public final class PlayerHelper {
     public final static UUID PENALTY_SPEED_UUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
 
     private PlayerHelper() {
+    }
+
+    public static boolean isHolding(EntityPlayer player, List<ItemStack> stacks) {
+        ItemStack held = player.getActiveItemStack();
+        for (ItemStack stack : stacks) {
+            if (held.isItemEqual(stack))
+                return true;
+        }
+        return false;
     }
 
     public static boolean isSurvival(EntityPlayer player) {

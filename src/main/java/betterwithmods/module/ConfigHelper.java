@@ -10,12 +10,22 @@
  */
 package betterwithmods.module;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigHelper {
 
     public static boolean needsRestart;
     public static boolean allNeedRestart = false;
+
+
 
 
     public static int[] loadPropIntList(String propName, String category, String comment, int[] default_) {
@@ -78,6 +88,36 @@ public class ConfigHelper {
         setNeedsRestart(prop);
 
         return prop.getStringList();
+    }
+
+    private static ItemStack fromString(String name) {
+        String[] split = name.split(":");
+        if(split.length > 1) {
+            int meta = 0;
+            if (split.length > 2) {
+                meta = Integer.parseInt(split[2]);
+            }
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
+            if(item != null) {
+                return new ItemStack(item, meta);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private static String fromStack(ItemStack stack) {
+        if(stack.getMetadata() == 0) {
+            return stack.getItem().getRegistryName().toString();
+        } else {
+            return String.format("%s:%s", stack.getItem().getRegistryName(),stack.getMetadata());
+        }
+
+    }
+
+    public static List<ItemStack> loadItemStackList(String propName, String category, String desc, ItemStack[] default_) {
+        String[] strings_ = new String[default_.length];
+        Arrays.stream(default_).map(ConfigHelper::fromStack).collect(Collectors.toList()).toArray(strings_);
+        return Arrays.stream(loadPropStringList(propName,category,desc, strings_)).map(ConfigHelper::fromString).collect(Collectors.toList());
     }
 
     private static void setNeedsRestart(Property prop) {

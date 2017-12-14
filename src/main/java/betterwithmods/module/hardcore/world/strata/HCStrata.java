@@ -74,9 +74,6 @@ public class HCStrata extends Feature {
             } catch (ClassNotFoundException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
-
-
-
         }
     }
 
