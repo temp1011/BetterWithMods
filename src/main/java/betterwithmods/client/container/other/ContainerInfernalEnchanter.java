@@ -1,5 +1,7 @@
 package betterwithmods.client.container.other;
 
+import betterwithmods.common.blocks.tile.FilteredStackHandler;
+import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
 import betterwithmods.common.items.ItemArcaneScroll;
 import betterwithmods.module.hardcore.creatures.HCEnchanting;
@@ -29,12 +31,12 @@ public class ContainerInfernalEnchanter extends Container {
     public int[] enchantLevels;
     public int xpSeed;
     private TileEntityInfernalEnchanter tile;
-    private ItemStackHandler handler;
+    private SimpleStackHandler handler;
 
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
-        handler = new ItemStackHandler(2);
+        handler = new FilteredStackHandler(2,tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true);
         this.xpSeed = player.getXPSeed();
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         addSlotToContainer(new SlotItemHandler(handler, 0, 17, 37));
