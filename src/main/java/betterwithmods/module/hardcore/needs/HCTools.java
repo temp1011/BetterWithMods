@@ -130,8 +130,8 @@ public class HCTools extends Feature {
         if (!earlyPickaxesRebalance) return;
         EntityPlayer player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack.isEmpty() || stack.getItem() == null) return;
-        if (stack.getMaxDamage() == 1) { //There's literally no way this compiles lol
+        if (stack.isEmpty()) return;
+        if (stack.getMaxDamage() == 1) {
             destroyItem(stack, player);
         }
     }
