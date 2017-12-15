@@ -53,7 +53,14 @@ public class HCFishing extends Feature {
     public static int minimumWaterDepth;
 
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
-    private static final Ingredient BAIT = Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.SPIDER_EYE), new ItemStack(BWMItems.CREEPER_OYSTER), new ItemStack(Items.FISH, 1, 2), new ItemStack(Items.FISH, 1, 3));
+    private static final Ingredient BAIT = Ingredient.fromStacks(
+            new ItemStack(Items.ROTTEN_FLESH),
+            new ItemStack(Items.SPIDER_EYE),
+            new ItemStack(BWMItems.CREEPER_OYSTER),
+            new ItemStack(Items.FISH, 1, 2),
+            new ItemStack(Items.FISH, 1, 3),
+            new ItemStack(BWMItems.BAT_WING, 1),
+            new ItemStack(BWMItems.COOKED_BAT_WING, 1));
 
 
     @Override
