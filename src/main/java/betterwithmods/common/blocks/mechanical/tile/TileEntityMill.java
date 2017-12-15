@@ -59,7 +59,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private boolean findIfBlocked() {
         int count = 0;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            if (!world.getBlockState(getBlockPos().offset(facing)).getMaterial().isReplaceable()) {
+            if (!world.isSideSolid(pos.offset(facing), facing.getOpposite())) {
                 count++;
             }
         }
@@ -153,14 +153,12 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         List<EnumFacing> validDirections = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             IBlockState check = getBlockWorld().getBlockState(pos.offset(facing));
-            if (check.getBlock().isReplaceable(getBlockWorld(), pos.offset(facing)) || getBlockWorld().isAirBlock(pos.offset(facing)))
+            if (world.isSideSolid(pos.offset(facing), facing.getOpposite()) || getBlockWorld().isAirBlock(pos.offset(facing)))
                 validDirections.add(facing);
         }
 
         if (validDirections.isEmpty()) {
-            IBlockState down = getBlockWorld().getBlockState(pos.offset(EnumFacing.DOWN));
-            if (down.getBlock().isReplaceable(getBlockWorld(), pos.offset(EnumFacing.DOWN)) || getBlockWorld().isAirBlock(pos.offset(EnumFacing.DOWN)))
-                validDirections.add(EnumFacing.DOWN);
+            blocked = true;
         }
 
         BlockPos offset;

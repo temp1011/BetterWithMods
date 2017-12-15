@@ -24,13 +24,13 @@ public class GrassPath extends Feature {
 
     public static int getShovelQuality(ItemStack stack) {
         Item item = stack.getItem();
-
+        if (!item.getToolClasses(stack).contains("shovel"))
+            return -1;
         if (!dirtpathQuality) {
             return 3;
-        } else if (item.getToolClasses(stack).contains("shovel")) {
+        } else {
             return item.getHarvestLevel(stack, "shovel", null, null);
         }
-        return -1;
     }
 
     @Override

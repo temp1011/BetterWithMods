@@ -26,6 +26,7 @@ import java.util.function.Predicate;
 public class HCEnchanting extends Feature {
     private static boolean steelRequiresInfernal;
 
+
     public static boolean canEnchantSteel() {
         return !steelRequiresInfernal;
     }
