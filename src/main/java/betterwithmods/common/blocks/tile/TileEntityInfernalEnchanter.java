@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 /**
- * Created by tyler on 9/11/16.
+ * Created by primetoxinz on 9/11/16.
  */
 public class TileEntityInfernalEnchanter extends TileBasic implements ITickable {
     private final static int RADIUS = 8;
@@ -50,7 +50,7 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
         }
 
         if (getWorld().getTotalWorldTime() % 5 == 0) {
-            boolean players = !world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(5)).isEmpty();
+            boolean players = !world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(3)).isEmpty();
             if (active != players) {
                 active = players;
                 if(active)
@@ -88,4 +88,5 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
     public String getName() {
         return "bwm.infernalenchanter";
     }
+
 }

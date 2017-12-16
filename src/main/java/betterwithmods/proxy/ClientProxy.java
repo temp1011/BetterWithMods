@@ -18,6 +18,7 @@ import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
 import betterwithmods.manual.api.prefab.manual.TextureTabIconRenderer;
 import betterwithmods.manual.client.manual.provider.*;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -153,6 +154,7 @@ public class ClientProxy implements IProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBroadheadArrow.class, RenderBroadheadArrow::new);
         RenderingRegistry.registerEntityRenderingHandler(EntitySpiderWeb.class, manager -> new RenderSnowball<>(manager, Item.getItemFromBlock(Blocks.WEB), Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityJungleSpider.class, RenderJungleSpider::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityTentacle.class, RenderTentacle::new);
     }
 
 
@@ -190,5 +192,6 @@ public class ClientProxy implements IProxy {
     public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
         resourceProxy.addResource(space, domain, dir, file, ext);
     }
+
 
 }

@@ -14,4 +14,5 @@ public interface IProxy {
     void addResourceOverride(String space, String dir, String file, String ext);
 
     void addResourceOverride(String space, String domain, String dir, String file, String ext);
+
 }

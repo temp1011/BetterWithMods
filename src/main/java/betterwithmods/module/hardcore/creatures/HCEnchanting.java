@@ -32,10 +32,12 @@ public class HCEnchanting extends Feature {
     }
 
     public static double dropChance;
+    public static boolean fuckMending;
     @Override
     public void setupConfig() {
         steelRequiresInfernal = loadPropBool("Steel Requires Infernal Enchanter", "Soulforged Steel tools can only be enchanted with the Infernal Enchanter", true);
         dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.01);
+        fuckMending = loadPropBool("Disable Mending", "Mending is a bad unbalanced pile of poo", true);
     }
 
     @Override
@@ -87,17 +89,21 @@ public class HCEnchanting extends Feature {
         addScrollDrop(EntityEnderman.class, Enchantments.SILK_TOUCH);
         addScrollDrop(EntityGhast.class, Enchantments.PUNCH);
         addScrollDrop(EntityBlaze.class, Enchantments.FLAME);
-        addScrollDrop(EntityShulker.class, new ScrollDrop() {
-            @Override
-            public ItemStack getScroll(EntityLivingBase entity) {
-                return ItemArcaneScroll.getScrollWithEnchant(Enchantments.MENDING);
-            }
+        addScrollDrop(EntityPolarBear.class, Enchantments.FROST_WALKER);
+        addScrollDrop(EntityGuardian.class, Enchantments.DEPTH_STRIDER);
+        if(!fuckMending) {
+            addScrollDrop(EntityShulker.class, new ScrollDrop() {
+                @Override
+                public ItemStack getScroll(EntityLivingBase entity) {
+                    return ItemArcaneScroll.getScrollWithEnchant(Enchantments.MENDING);
+                }
 
-            @Override
-            public double getChance() {
-                return 0.001;
-            }
-        });
+                @Override
+                public double getChance() {
+                    return 0.001;
+                }
+            });
+        }
         addScrollDrop(EntityDragon.class, new ScrollDrop() {
             @Override
             public ItemStack getScroll(EntityLivingBase entity) {
@@ -138,10 +144,7 @@ public class HCEnchanting extends Feature {
         // LUCK_OF_THE_SEA, LURE -> Fisherman Trade
         //TODO new things
         /*
-        DEPTH_STRIDER Guardian
-        FROST_WALKER Polar Bear
         BINDING_CURSE illager
-        SWEEPING Wither Skeleton?
         MENDING REMOVE
         VANISHING_CURSE illager
          */

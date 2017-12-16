@@ -1,6 +1,6 @@
 # Wooden Axle
 
-![Wooden Axle](block:betterwithmods:wooden_axle@0)
+%[Wooden Axle](block:betterwithmods:wooden_axle@0)
 
 
 The Wooden Axle is used to transfer continuous mechanical power in conjunction with [Gearbox](gearbox.md).

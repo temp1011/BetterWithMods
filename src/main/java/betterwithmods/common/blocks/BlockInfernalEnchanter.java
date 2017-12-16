@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvider {
     public BlockInfernalEnchanter() {
         super(Material.IRON);
+        setHardness(5.0F);
+        setResistance(2000.0F);
     }
 
     @Override
@@ -74,4 +76,6 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
     public boolean isFullBlock(IBlockState state) {
         return false;
     }
+
+
 }

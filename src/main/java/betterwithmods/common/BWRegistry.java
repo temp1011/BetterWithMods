@@ -26,11 +26,13 @@ import betterwithmods.module.compat.Rustic;
 import betterwithmods.module.compat.bop.BiomesOPlenty;
 import betterwithmods.module.gameplay.CraftingRecipes;
 import betterwithmods.module.hardcore.crafting.*;
+import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.module.hardcore.world.HCTorches;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
+import betterwithmods.util.VillagerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.Entity;
@@ -122,6 +124,7 @@ public class BWRegistry {
     public static void init() {
         BWRegistry.registerHeatSources();
         BWOreDictionary.registerOres();
+        VillagerUtils.initVillagerInfo();
     }
 
     public static void postInit() {
@@ -150,8 +153,10 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntitySpiderWeb.class, "bwm_spider_web", 64, 20, true);
         BWRegistry.registerEntity(EntityHCFishHook.class, "bwm_fishing_hook", 64, 20, true);
         BWRegistry.registerEntity(EntityJungleSpider.class, "bwm_jungle_spider", 64, 1, true);
+        BWRegistry.registerEntity(EntityTentacle.class, "bwm_tentacle", 64, 1, true);
 
-        EntityRegistry.registerEgg(new ResourceLocation(BWMod.MODID,"bwm_jungle_spider"),new Color(60,100,50).getRGB(),new Color(100,140,80).getRGB());
+
+        EntityRegistry.registerEgg(new ResourceLocation(BWMod.MODID, "bwm_jungle_spider"), new Color(60, 100, 50).getRGB(), new Color(100, 140, 80).getRGB());
     }
 
     public static void registerBlockDispenserBehavior() {
@@ -223,10 +228,10 @@ public class BWRegistry {
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().register(registerPotion(new PotionTruesight("true_sight", true, 14270531).setIconIndex( 4, 1)));
-        event.getRegistry().register(registerPotion(new BWPotion("fortune", true, 14270531).setIconIndex( 5, 2)));
-        event.getRegistry().register(registerPotion(new BWPotion("looting", true, 14270531).setIconIndex( 6, 2)));
-        event.getRegistry().register(registerPotion(new PotionSlowfall("slow_fall",true, 0xF46F20).setIconIndex( 4, 1)));
+        event.getRegistry().register(registerPotion(new PotionTruesight("true_sight", true, 14270531).setIconIndex(4, 1)));
+        event.getRegistry().register(registerPotion(new BWPotion("fortune", true, 14270531).setIconIndex(5, 2)));
+        event.getRegistry().register(registerPotion(new BWPotion("looting", true, 14270531).setIconIndex(6, 2)));
+        event.getRegistry().register(registerPotion(new PotionSlowfall("slow_fall", true, 0xF46F20).setIconIndex(4, 1)));
     }
 
     private static Potion registerPotion(Potion potion) {
@@ -274,6 +279,7 @@ public class BWRegistry {
             }
         }
     }
+
     private static void registerReplacements(IRecipe original, IRecipe from) {
         NonNullList<Ingredient> ing = original.getIngredients();
         for (int i = 0; i < ing.size(); i++) {

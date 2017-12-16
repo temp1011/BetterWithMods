@@ -36,7 +36,13 @@ public class ContainerInfernalEnchanter extends Container {
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
-        handler = new FilteredStackHandler(2,tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true);
+        handler = new FilteredStackHandler(2,tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true) {
+            @Override
+            public void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                onContextChanged(this);
+            }
+        };
         this.xpSeed = player.getXPSeed();
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         addSlotToContainer(new SlotItemHandler(handler, 0, 17, 37));
@@ -110,13 +116,9 @@ public class ContainerInfernalEnchanter extends Container {
         Enchantment enchantment = null;
         Arrays.fill(enchantLevels, 0);
         int enchantCount = 1;
-        int maxBookcase = tile.getBookcaseCount();
         if (areValidItems(scroll, item)) {
             enchantment = ItemArcaneScroll.getEnchantment(scroll);
             enchantCount = EnchantmentHelper.getEnchantments(item).size() ;
-            //1,2,3,4
-            //8,15,23,30
-//            System.out.println(enchantment.getTranslatedName(-1) + "," + enchantCount + "," + maxBookcase + "," + enchantment.getMaxLevel());
         }
         for (int i = 1; i <= enchantLevels.length; i++) {
             if (enchantment == null || i > enchantment.getMaxLevel()) {
@@ -130,7 +132,7 @@ public class ContainerInfernalEnchanter extends Container {
         detectAndSendChanges();
     }
 
-    public static final int INV_FIRST = 0, INV_LAST = 1, HOT_LAST = 37;
+    public static final int INV_LAST = 1;
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
@@ -184,21 +186,7 @@ public class ContainerInfernalEnchanter extends Container {
         }
     }
 
-
-    private class ItemStackHandler extends net.minecraftforge.items.ItemStackHandler {
-        public ItemStackHandler(int size) {
-            super(size);
-        }
-
-        @Override
-        public void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            onContextChanged(this);
-        }
-    }
-
     public boolean hasLevels(EntityPlayer player, int level) {
-
         return player.capabilities.isCreativeMode || (player.experienceLevel >= level && tile.getBookcaseCount() >= level);
     }
 
@@ -213,7 +201,6 @@ public class ContainerInfernalEnchanter extends Container {
                     scroll.shrink(1);
                     item.addEnchantment(enchantment, level + 1);
                     tile.getWorld().playSound(null, tile.getPos(), SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.BLOCKS, 1.0F, tile.getWorld().rand.nextFloat() * 0.1F + 0.9F);
-
                 }
             }
             return true;

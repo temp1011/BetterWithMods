@@ -9,6 +9,10 @@
  * [Wooden Axle](axle.md)
  * [Millstone](mill.md)
  * [Saw](saw.md)
+ 
+ 
+## Other
+ * [Infernal Enchanter](infernal_enchanter.md)
 
 
 
