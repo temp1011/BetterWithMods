@@ -87,10 +87,6 @@ public class ClientEventHandler {
         double dx = (player.lastTickPosX + (player.posX - player.lastTickPosX) * partial);
         double dy = (player.lastTickPosY + (player.posY - player.lastTickPosY) * partial);
         double dz = (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partial);
-        float x = (float) target.hitVec.x - pos.getX();
-        float y = (float) target.hitVec.y - pos.getY();
-        float z = (float) target.hitVec.z - pos.getZ();
-        BlockPos renderPos = pos.offset(side);
 
         GlStateManager.pushMatrix();
 
