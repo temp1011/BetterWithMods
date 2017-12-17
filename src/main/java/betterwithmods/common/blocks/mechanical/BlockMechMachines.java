@@ -163,15 +163,13 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(player.isSneaking())
-            return false;
         if (world.isRemote) {
             return true;
         } else {
 
             boolean isInventory = Arrays.stream(EnumFacing.VALUES).anyMatch( f -> world.getTileEntity(pos).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, f));
 
-            if (world.getTileEntity(pos) != null && isInventory) {
+            if (!player.isSneaking() && world.getTileEntity(pos) != null && isInventory) {
                 player.openGui(BWMod.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             } else {
                 if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityTurntable && hand == EnumHand.MAIN_HAND) {

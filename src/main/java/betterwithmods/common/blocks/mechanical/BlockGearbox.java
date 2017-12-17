@@ -1,6 +1,9 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.api.block.IOverpower;
+import betterwithmods.api.block.IRenderRotationPlacement;
+import betterwithmods.client.ClientEventHandler;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
@@ -33,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower {
+public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower, IAdvancedRotationPlacement, IRenderRotationPlacement {
     private final int maxPower;
     private EnumTier type;
 
@@ -53,15 +56,9 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, placer, hand);
-        return setFacingInBlock(state, placer.isSneaking() ? side : side.getOpposite());
+        return getStateForAdvancedRotationPlacement(getDefaultState(), placer.isSneaking() ? side : side.getOpposite(), flX, flY, flZ);
     }
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-        EnumFacing facing = DirUtils.convertEntityOrientationToFacing(entity, EnumFacing.NORTH);
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(DirUtils.FACING, facing));
-    }
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
@@ -70,7 +67,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) withTile(world, pos).ifPresent(t -> System.out.println(t));
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
@@ -105,9 +101,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         return state.getValue(DirUtils.FACING);
     }
 
-    public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
-        return state.withProperty(DirUtils.FACING, facing);
-    }
 
 
     private void emitGearboxParticles(World world, BlockPos pos, Random rand) {
@@ -251,5 +244,59 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         if (facing.getAxis().isHorizontal())
             return state.withProperty(DirUtils.FACING, rot.rotate(facing));
         return state;
+    }
+
+    @Override
+    public IBlockState getStateForAdvancedRotationPlacement(IBlockState defaultState, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        IBlockState state = defaultState;
+        float hitXFromCenter = hitX - 0.5F;
+        float hitYFromCenter = hitY - 0.5F;
+        float hitZFromCenter = hitZ - 0.5F;
+        EnumFacing newFacing;
+        switch (facing.getAxis()) {
+            case Y:
+                if (inCenter(hitXFromCenter, hitZFromCenter, 1 / 16f)) {
+                    newFacing = facing;
+                } else if (isMax(hitXFromCenter, hitZFromCenter)) {
+                    newFacing = ((hitXFromCenter > 0) ? EnumFacing.EAST : EnumFacing.WEST);
+                } else {
+                    newFacing = ((hitZFromCenter > 0) ? EnumFacing.SOUTH : EnumFacing.NORTH);
+                }
+                break;
+            case X:
+                if (inCenter(hitYFromCenter, hitZFromCenter, 1 / 16f)) {
+                    newFacing = facing.getOpposite();
+                } else if (isMax(hitYFromCenter, hitZFromCenter)) {
+                    newFacing = ((hitYFromCenter > 0) ? EnumFacing.UP : EnumFacing.DOWN);
+                } else {
+                    newFacing = ((hitZFromCenter > 0) ? EnumFacing.SOUTH : EnumFacing.NORTH);
+                }
+                break;
+            case Z:
+                if (inCenter(hitYFromCenter, hitXFromCenter, 1 / 16f)) {
+                    newFacing = facing;
+                } else if (isMax(hitYFromCenter, hitXFromCenter)) {
+                    newFacing = ((hitYFromCenter > 0) ? EnumFacing.UP : EnumFacing.DOWN);
+                } else {
+                    newFacing = ((hitXFromCenter > 0) ? EnumFacing.EAST : EnumFacing.WEST);
+                }
+                break;
+            default:
+                newFacing = facing;
+                break;
+        }
+
+        return state.withProperty(DirUtils.FACING, newFacing);
+
+    }
+
+    @Override
+    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
+        return getStateForAdvancedRotationPlacement(getDefaultState(),facing,flX,flY,flZ);
+    }
+
+    @Override
+    public RenderFunction getRenderFunction() {
+        return ClientEventHandler::renderBasicGrid;
     }
 }

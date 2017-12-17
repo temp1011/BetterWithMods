@@ -31,6 +31,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -300,7 +301,7 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
-            if (!PlayerHelper.isSurvival(player))
+            if (player.isCreative() || player.world.getDifficulty() == EnumDifficulty.PEACEFUL)
                 return;
             if (!PlayerHelper.getHungerPenalty(player).canSprint())
                 player.setSprinting(false);
