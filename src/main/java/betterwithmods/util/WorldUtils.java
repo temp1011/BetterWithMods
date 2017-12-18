@@ -217,7 +217,7 @@ public final class WorldUtils {
         }
 
         public boolean isBetween(int time) {
-            return time >= start || time <= end;
+            return time >= start && time <= end;
         }
     }
 

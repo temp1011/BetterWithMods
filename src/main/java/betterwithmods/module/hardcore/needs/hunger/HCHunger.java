@@ -177,7 +177,7 @@ public class HCHunger extends CompatFeature {
         MinecraftForge.EVENT_BUS.register(ClientSide.class);
         super.preInitClient(event);
     }
-    
+
     //Changes food to correct value.
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
@@ -390,7 +390,6 @@ public class HCHunger extends CompatFeature {
             if (player != null && player instanceof AbstractClientPlayer)
                 putFat((AbstractClientPlayer) player, fat);
         }
-
     }
 
 

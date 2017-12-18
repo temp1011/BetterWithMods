@@ -1,7 +1,9 @@
 package betterwithmods.common.entity;
 
 import betterwithmods.util.WorldUtils;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
@@ -11,26 +13,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 /**
  * Created by primetoxinz on 7/23/17.
  */
-public class EntityHCFishHook extends EntityFishHook {
+public class EntityHCFishHook extends EntityFishHook implements IEntityAdditionalSpawnData {
 
     public EntityHCFishHook(World world) {
         super(world, null);
     }
 
-    public EntityHCFishHook(EntityFishHook orig) {
-        this(orig.getEntityWorld(), orig.getAngler());
-    }
-
-    public EntityHCFishHook(World worldIn, EntityPlayer p_i47290_2_, double x, double y, double z) {
-        super(worldIn, p_i47290_2_, x, y, z);
-    }
-
     public EntityHCFishHook(World worldIn, EntityPlayer fishingPlayer) {
         super(worldIn, fishingPlayer);
+    }
+
+    @Override
+    public void setDead() {
+        super.setDead();
+    }
+
+    @Override
+    public void shoot() {
+        if(angler == null)
+            return;
+        super.shoot();
+    }
+
+    @Override
+    public void init(EntityPlayer angler) {
+        this.setSize(0.25F, 0.25F);
+        this.ignoreFrustumCheck = true;
+        this.angler = angler;
+        if (this.angler != null)
+            this.angler.fishEntity = this;
     }
 
     @Override
@@ -40,7 +56,7 @@ public class EntityHCFishHook extends EntityFishHook {
         //minutes
         double min = 1;
         if (WorldUtils.isTimeFrame(world, WorldUtils.TimeFrame.NIGHT)) {
-            min*=2; //2
+            min *= 2; //2
         }
 
         if (worldserver.isRainingAt(pos.up())) {
@@ -125,9 +141,22 @@ public class EntityHCFishHook extends EntityFishHook {
                 this.ticksCatchableDelay = MathHelper.getInt(this.rand, 20, 80);
             }
         } else {
-            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (20 * 60)), (int) ( (min+2) * (20 * 60)));
+            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (20 * 60)), (int) ((min + 2) * (20 * 60)));
             this.ticksCaughtDelay = Math.max(1200, this.ticksCaughtDelay - (this.lureSpeed * 1200));
         }
+    }
+
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+        if (angler != null)
+            buffer.writeInt(angler.getEntityId());
+        else
+            buffer.writeInt(0);
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf additionalData) {
+        angler = (EntityPlayer) Minecraft.getMinecraft().world.getEntityByID(additionalData.readInt());
     }
 }
 

@@ -2,24 +2,26 @@ package betterwithmods.module.hardcore.crafting;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.entity.EntityHCFishHook;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -33,6 +35,7 @@ import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,6 +45,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Random;
 import java.util.function.Predicate;
 
 /**
@@ -100,8 +104,8 @@ public class HCFishing extends Feature {
             }
         }
         if (minimumWaterDepth > 1) {
-            for (int i=1; i<=minimumWaterDepth; i++) {
-                if (!isWaterBlock(event.getHookEntity().getEntityWorld(), hookPos.add(0, (i*-1), 0))) {
+            for (int i = 1; i <= minimumWaterDepth; i++) {
+                if (!isWaterBlock(event.getHookEntity().getEntityWorld(), hookPos.add(0, (i * -1), 0))) {
                     event.setCanceled(true);
                     event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_deep_water"));
                     return;
@@ -123,15 +127,52 @@ public class HCFishing extends Feature {
         }
     }
 
+    private static ActionResult<ItemStack> throwLine(Item item, EntityPlayer player, EnumHand hand, World world, Random rand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+
+        if (player.fishEntity != null) {
+            int i = player.fishEntity.handleHookRetraction();
+            itemstack.damageItem(i, player);
+            player.swingArm(hand);
+            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_BOBBER_RETRIEVE, SoundCategory.NEUTRAL, 1.0F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
+        } else {
+            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (rand.nextFloat() * 0.4F + 0.8F));
+
+            if (!world.isRemote) {
+                EntityHCFishHook entityfishhook = new EntityHCFishHook(world, player);
+                int j = EnchantmentHelper.getFishingSpeedBonus(itemstack);
+
+                if (j > 0) {
+                    entityfishhook.setLureSpeed(j);
+                }
+
+                int k = EnchantmentHelper.getFishingLuckBonus(itemstack);
+
+                if (k > 0) {
+                    entityfishhook.setLuck(k);
+                }
+
+                world.spawnEntity(entityfishhook);
+            }
+
+            player.swingArm(hand);
+            player.addStat(StatList.getObjectUseStats(item));
+        }
+
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+    }
+
     @SubscribeEvent
     public void useFishingRod(PlayerInteractEvent.RightClickItem event) {
         if (requireBait) {
             if (isFishingRod(event.getItemStack())) {
                 FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
-                if (!cap.hasBait()) {
-                    event.setCanceled(true);
-                    if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND))
-                        event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
+                event.setCanceled(true);
+                event.setResult(Event.Result.ALLOW);
+                if (cap.hasBait() || event.getEntityPlayer().isCreative()) {
+                    throwLine(event.getItemStack().getItem(), event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getWorld().rand).getType();
+                } else if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND)) {
+                    event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
                 }
             }
         }
@@ -170,8 +211,7 @@ public class HCFishing extends Feature {
         ItemStack itemMain = player.getHeldItemMainhand();
         if (isFishingRod(itemMain) && itemMain.getCapability(FISHING_ROD_CAP, EnumFacing.UP).hasBait()) {
             return itemMain;
-        }
-        else {
+        } else {
             return player.getHeldItemOffhand();
         }
     }
@@ -197,10 +237,10 @@ public class HCFishing extends Feature {
         World world = hookEntity.getEntityWorld();
         BlockPos hookPos = hookEntity.getPosition();
         int heightOffset = 0;
-        while (isWaterBlock(world, hookPos.add(0,heightOffset,0)) && (hookPos.getY() + heightOffset < 255)) {
+        while (isWaterBlock(world, hookPos.add(0, heightOffset, 0)) && (hookPos.getY() + heightOffset < 255)) {
             heightOffset++;
         }
-        return hookPos.add(0,heightOffset,0);
+        return hookPos.add(0, heightOffset, 0);
     }
 
     public static boolean isWaterBlock(World world, BlockPos pos) {
@@ -267,9 +307,8 @@ public class HCFishing extends Feature {
 
         public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
             NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-            for (int i = 0; i < ret.size(); i++)
-            {
-                ret.set(i,ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
+            for (int i = 0; i < ret.size(); i++) {
+                ret.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
             }
             return ret;
         }
