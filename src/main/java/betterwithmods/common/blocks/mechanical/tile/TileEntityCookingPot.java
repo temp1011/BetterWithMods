@@ -6,7 +6,6 @@ import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
-import betterwithmods.common.registry.heat.BWMHeatSource;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -271,23 +270,17 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     public int getCurrentFireIntensity() {
         int fireFactor = 0;
-
         if (this.fireIntensity > 0) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     int yPos = -1;
                     BlockPos target = pos.add(x, yPos, z);
-                    Block block = this.getBlockWorld().getBlockState(target).getBlock();
-                    int meta = this.getBlockWorld().getBlockState(target).getBlock().damageDropped(this.getBlockWorld().getBlockState(target));
-                    if (BWMHeatRegistry.get(block, meta) != null)
-                        fireFactor += BWMHeatRegistry.get(block, meta).value;
+                    fireFactor += BWMHeatRegistry.getHeat(getBlockWorld().getBlockState(target));
                 }
             }
-            if (fireFactor < 5)
-                fireFactor = 5;
+            return Math.max(5,fireFactor/4);
         }
-
-        return fireFactor;
+        return Math.max(0,fireFactor);
     }
 
     private void performNormalFireUpdate(int fireIntensity) {
@@ -374,24 +367,11 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     public int getFireIntensity() {
-        BlockPos down = pos.down();
-        Block block = this.getBlockWorld().getBlockState(down).getBlock();
-        int meta = block.damageDropped(this.getBlockWorld().getBlockState(down));
-        BWMHeatSource source = BWMHeatRegistry.get(block, meta);
-        if (source != null)
-            return source.value;
-        return -1;
+        return BWMHeatRegistry.getHeat(world.getBlockState(pos.down()));
     }
 
     private void validateFireIntensity() {
-        BlockPos down = pos.down();
-        Block block = this.getBlockWorld().getBlockState(down).getBlock();
-        int meta = block.damageDropped(this.getBlockWorld().getBlockState(down));
-        BWMHeatSource source = BWMHeatRegistry.get(block, meta);
-        if (source != null)
-            fireIntensity = source.value;
-        else
-            fireIntensity = -1;
+        fireIntensity = BWMHeatRegistry.getHeat(world.getBlockState(pos.down()));
     }
 
     @Override

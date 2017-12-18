@@ -222,8 +222,8 @@ public class BWRegistry {
 
 
     public static void registerHeatSources() {
-        BWMHeatRegistry.setBlockHeatRegistry(Blocks.FIRE, 3);
-        BWMHeatRegistry.setBlockHeatRegistry(BWMBlocks.STOKED_FLAME, 8);
+        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 3);
+        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 8);
     }
 
     @SubscribeEvent
