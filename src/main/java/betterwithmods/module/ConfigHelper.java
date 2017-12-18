@@ -10,13 +10,17 @@
  */
 package betterwithmods.module;
 
+import com.google.common.collect.Maps;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreIngredient;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,7 +92,7 @@ public class ConfigHelper {
         return prop.getStringList();
     }
 
-    private static ItemStack fromString(String name) {
+    private static ItemStack stackFromString(String name) {
         String[] split = name.split(":");
         if (split.length > 1) {
             int meta = 0;
@@ -96,11 +100,28 @@ public class ConfigHelper {
                 meta = Integer.parseInt(split[2]);
             }
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
-            if(item != null) {
+            if (item != null) {
                 return new ItemStack(item, 1, meta);
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    private static Ingredient ingredientfromString(String name) {
+        if(name.startsWith("ore:"))
+            return new OreIngredient(name.substring(4));
+        String[] split = name.split(":");
+        if (split.length > 1) {
+            int meta = 0;
+            if (split.length > 2) {
+                meta = Integer.parseInt(split[2]);
+            }
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
+            if (item != null) {
+                return Ingredient.fromStacks(new ItemStack(item, 1, meta));
+            }
+        }
+        return Ingredient.EMPTY;
     }
 
     private static String fromStack(ItemStack stack) {
@@ -109,13 +130,24 @@ public class ConfigHelper {
         } else {
             return String.format("%s:%s", stack.getItem().getRegistryName(), stack.getMetadata());
         }
-
     }
 
     public static List<ItemStack> loadItemStackList(String propName, String category, String desc, ItemStack[] default_) {
         String[] strings_ = new String[default_.length];
         Arrays.stream(default_).map(ConfigHelper::fromStack).collect(Collectors.toList()).toArray(strings_);
-        return Arrays.stream(loadPropStringList(propName,category,desc, strings_)).map(ConfigHelper::fromString).collect(Collectors.toList());
+        return Arrays.stream(loadPropStringList(propName, category, desc, strings_)).map(ConfigHelper::stackFromString).collect(Collectors.toList());
+    }
+
+
+    public static HashMap<Ingredient, Integer> loadItemStackIntMap(String propName, String category, String desc,String[] _default) {
+        HashMap<Ingredient, Integer> map = Maps.newHashMap();
+        for(String s: loadPropStringList(propName, category, desc, _default)) {
+            String[] a = s.split("=");
+            if (a.length == 2) {
+                map.put(ConfigHelper.ingredientfromString(a[0]), Integer.parseInt(a[1]));
+            }
+        }
+        return map;
     }
 
     private static void setNeedsRestart(Property prop) {

@@ -73,7 +73,6 @@ public class TileEntityWindmillHorizontal extends TileAxleGenerator implements I
     public void calculatePower() {
         byte power;
         if (isValid() && isOverworld() || isNether()) {
-
             if (world.isRaining()) {
                 power = 2;
             } else if (world.isThundering()) {

@@ -14,6 +14,7 @@ import betterwithmods.BWMod;
 import betterwithmods.common.BWMRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Feature {
@@ -177,6 +179,9 @@ public class Feature {
         return ConfigHelper.loadItemStackList(propName,configCategory,comment,default_);
     }
 
+    public final HashMap<Ingredient,Integer> loadItemStackIntMap(String propName, String comment, String[] _default) {
+        return ConfigHelper.loadItemStackIntMap(propName,configCategory,comment,_default);
+    }
 
     public IRecipe addHardcoreRecipe(IRecipe recipe) {
         return registerHardcoreRecipe(getClass().getSimpleName(), recipe);
