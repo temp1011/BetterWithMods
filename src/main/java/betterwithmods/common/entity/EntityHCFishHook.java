@@ -35,7 +35,7 @@ public class EntityHCFishHook extends EntityFishHook implements IEntityAdditiona
 
     @Override
     public void shoot() {
-        if(angler == null)
+        if (angler == null)
             return;
         super.shoot();
     }
@@ -141,8 +141,9 @@ public class EntityHCFishHook extends EntityFishHook implements IEntityAdditiona
                 this.ticksCatchableDelay = MathHelper.getInt(this.rand, 20, 80);
             }
         } else {
-            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (20 * 60)), (int) ((min + 2) * (20 * 60)));
-            this.ticksCaughtDelay = Math.max(1200, this.ticksCaughtDelay - (this.lureSpeed * 1200));
+            int modifer = angler.isCreative() ? 40 : 20 * 60;
+            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (modifer)), (int) ((min + 2) * (modifer)));
+            this.ticksCaughtDelay = Math.max(1200/modifer, this.ticksCaughtDelay - (this.lureSpeed * 1200));
         }
     }
 

@@ -83,15 +83,15 @@ uploadArchives {
                     name project.archivesBaseName
                     packaging 'jar'
                     description 'BetterWithMods'
-                    url 'https://github.com/BeetoGuy/BetterWithMods'
+                    url 'https://github.com/BetterWithMods/BetterWithMods'
                     scm {
-                        url 'https://github.com/BeetoGuy/BetterWithMods.git'
-                        connection 'scm:git:git@github.com:BeetoGuy/BetterWithMods.git'
-                        developerConnection 'scm:git:git@github.com:BeetoGuy/BetterWithMods.git'
+                        url 'https://github.com/BetterWithMods/BetterWithMods.git'
+                        connection 'scm:git:git@github.com:BetterWithMods/BetterWithMods.git'
+                        developerConnection 'scm:git:git@github.com:BetterWithMods/BetterWithMods.git'
                     }
                     issueManagement {
                         system 'github'
-                        url 'https://github.com/BeetoGuy/BetterWithMods/issues'
+                        url 'https://github.com/BetterWithMods/BetterWithMods/issues'
                     }
                     developers {
                         developer {
