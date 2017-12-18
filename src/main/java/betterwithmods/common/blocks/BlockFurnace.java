@@ -11,8 +11,6 @@ public class BlockFurnace extends net.minecraft.block.BlockFurnace {
         super(isBurning);
         if(isBurning) {
             setLightLevel(0.875F);
-
-
         }
         setUnlocalizedName("furnace");
 

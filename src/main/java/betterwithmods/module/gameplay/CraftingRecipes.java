@@ -60,7 +60,7 @@ public class CraftingRecipes extends Feature {
             addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_CORNER, 2, type.getMetadata()), Ingredient.fromStacks(new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()))).setRegistryName(new ResourceLocation("stone_corner." + type.getMetadata())));
         }
 
-        BWMRecipes.removeFurnaceRecipe(new ItemStack(Items.NETHERBRICK));
+        BWMRecipes.removeFurnaceRecipe(new ItemStack(Blocks.NETHERRACK));
     }
 
     @Override

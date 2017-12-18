@@ -206,8 +206,8 @@ public final class WorldUtils {
         NOON(5000, 7000),
         DUSK(10200, 12700),
         MIDNIGHT(17000, 19000),
-        NIGHT(13000, 24000),
-        DAY(0, 12516);
+        NIGHT(13001, 24000),
+        DAY(0, 13000);
 
         private int start, end;
 

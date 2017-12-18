@@ -38,25 +38,21 @@ public class EntityHCFishHook extends EntityFishHook {
         WorldServer worldserver = (WorldServer) this.world;
 
         //minutes
-        double min = 4, max = 6;
-        if (WorldUtils.isTimeFrame(world, WorldUtils.TimeFrame.DAY)) {
-            min -= 1;
-            max -= 1;
+        double min = 1;
+        if (WorldUtils.isTimeFrame(world, WorldUtils.TimeFrame.NIGHT)) {
+            min*=2; //2
         }
 
         if (worldserver.isRainingAt(pos.up())) {
-            min -= 0.5;
-            max -= 0.5;
+            min *= 0.75; //1.5
         }
 
         if (WorldUtils.isMoonPhase(world, WorldUtils.MoonPhase.Full)) {
-            min -= 0.5;
-            max -= 0.5;
+            min /= 2; //.75
         }
 
         if (WorldUtils.isTimeFrame(worldserver, WorldUtils.TimeFrame.DAWN) || WorldUtils.isTimeFrame(worldserver, WorldUtils.TimeFrame.DUSK)) {
             min /= 2;
-            max /= 2;
         }
 
         if (this.ticksCatchable > 0) {
@@ -129,7 +125,7 @@ public class EntityHCFishHook extends EntityFishHook {
                 this.ticksCatchableDelay = MathHelper.getInt(this.rand, 20, 80);
             }
         } else {
-            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (20 * 60)), (int) (max * (20 * 60)));
+            this.ticksCaughtDelay = MathHelper.getInt(this.rand, (int) (min * (20 * 60)), (int) ( (min+2) * (20 * 60)));
             this.ticksCaughtDelay = Math.max(1200, this.ticksCaughtDelay - (this.lureSpeed * 1200));
         }
     }

@@ -74,6 +74,10 @@ public final class BWMRecipes {
         FurnaceRecipes.instance().getSmeltingList().put(input,output);
     }
 
+    public static void removeFurnaceRecipe(Item input) {
+        removeFurnaceRecipe(new ItemStack(input));
+    }
+
     public static void removeFurnaceRecipe(ItemStack input) {
         //for some reason mojang put fucking wildcard for their ore meta
         FurnaceRecipes.instance().getSmeltingList().entrySet().removeIf(next -> next.getKey().isItemEqual(input) || (next.getKey().getItem() == input.getItem() && next.getKey().getMetadata() == OreDictionary.WILDCARD_VALUE));

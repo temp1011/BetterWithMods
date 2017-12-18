@@ -27,27 +27,27 @@ public class TileFurnace extends TileEntityFurnace {
 
         if (!this.world.isRemote)
         {
-            ItemStack itemstack = this.furnaceItemStacks.get(1);
-
-            if (this.isBurning() || !itemstack.isEmpty() && !this.furnaceItemStacks.get(0).isEmpty())
+            ItemStack fuel = this.furnaceItemStacks.get(1);
+            ItemStack smelt = this.furnaceItemStacks.get(0);
+            if (this.isBurning() || !fuel.isEmpty())
             {
-                if (!this.isBurning() && this.canSmelt())
+                if (!this.isBurning())
                 {
-                    this.furnaceBurnTime = getItemBurnTime(itemstack);
+                    this.furnaceBurnTime = getItemBurnTime(fuel);
                     this.currentItemBurnTime = this.furnaceBurnTime;
 
                     if (this.isBurning())
                     {
                         flag1 = true;
 
-                        if (!itemstack.isEmpty())
+                        if (!fuel.isEmpty())
                         {
-                            Item item = itemstack.getItem();
-                            itemstack.shrink(1);
+                            Item item = fuel.getItem();
+                            fuel.shrink(1);
 
-                            if (itemstack.isEmpty())
+                            if (fuel.isEmpty())
                             {
-                                ItemStack item1 = item.getContainerItem(itemstack);
+                                ItemStack item1 = item.getContainerItem(fuel);
                                 this.furnaceItemStacks.set(1, item1);
                             }
                         }
@@ -61,7 +61,7 @@ public class TileFurnace extends TileEntityFurnace {
                     if (this.cookTime == this.totalCookTime)
                     {
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime(this.furnaceItemStacks.get(0));
+                        this.totalCookTime = this.getCookTime(smelt);
                         this.smeltItem();
                         flag1 = true;
                     }
