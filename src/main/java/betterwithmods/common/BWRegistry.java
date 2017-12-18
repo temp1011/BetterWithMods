@@ -10,7 +10,6 @@ import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
-import betterwithmods.common.entity.item.EntityItemBuoy;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
@@ -145,7 +144,6 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntityDynamite.class, "bwm_dynamite", 10, 50, true);
         BWRegistry.registerEntity(EntityUrn.class, "bwm_urn", 10, 50, true);
         BWRegistry.registerEntity(EntityMiningCharge.class, "bwm_mining_charge", 10, 50, true);
-        BWRegistry.registerEntity(EntityItemBuoy.class, "entity_item_buoy", 64, 20, true);
         BWRegistry.registerEntity(EntityShearedCreeper.class, "entity_sheared_creeper", 64, 1, true);
         BWRegistry.registerEntity(EntityBroadheadArrow.class, "entity_broadhead_arrow", 64, 1, true);
         BWRegistry.registerEntity(EntityFallingGourd.class, "entity_falling_gourd", 64, 1, true);
