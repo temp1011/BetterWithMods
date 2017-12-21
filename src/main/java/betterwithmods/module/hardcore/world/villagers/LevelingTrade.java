@@ -7,12 +7,13 @@ import net.minecraft.village.MerchantRecipe;
 
 public class LevelingTrade extends MerchantRecipe {
     public boolean levels;
+
     public LevelingTrade(NBTTagCompound tagCompound) {
         super(tagCompound);
     }
 
     public LevelingTrade(ItemStack buy1, ItemStack buy2, ItemStack sell) {
-        super(buy1, buy2, sell);
+        this(buy1, buy2, sell, 0, 1);
     }
 
     public LevelingTrade(ItemStack buy1, ItemStack buy2, ItemStack sell, int toolUsesIn, int maxTradeUsesIn) {
@@ -20,18 +21,19 @@ public class LevelingTrade extends MerchantRecipe {
     }
 
     public LevelingTrade(ItemStack buy1, ItemStack sell) {
-        super(buy1, sell);
+        this(buy1, ItemStack.EMPTY, sell);
     }
 
     public LevelingTrade(ItemStack buy1, Item sellItem) {
         super(buy1, sellItem);
     }
 
-    public boolean levels() {
+    public boolean shouldLevel() {
         return levels;
     }
 
-    public void setLevels(boolean levels) {
-        this.levels = levels;
+    public LevelingTrade leveling() {
+        this.levels = true;
+        return this;
     }
 }

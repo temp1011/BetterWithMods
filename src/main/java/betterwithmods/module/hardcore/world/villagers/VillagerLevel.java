@@ -16,14 +16,15 @@ public class VillagerLevel implements ICapabilitySerializable<NBTTagCompound> {
     public static Capability<VillagerLevel> CAPABILITY_LEVEL;
 
     private int level;
-
+    private int experience;
 
     public VillagerLevel() {
-        this(0);
+        this(0, 0);
     }
 
-    public VillagerLevel(int level) {
+    public VillagerLevel(int level, int experience) {
         this.level = level;
+        this.experience = experience;
     }
 
     @Override
@@ -43,12 +44,30 @@ public class VillagerLevel implements ICapabilitySerializable<NBTTagCompound> {
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("level", level);
+        tag.setInteger("experience", experience);
         return tag;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         level = nbt.getInteger("level");
+        experience = nbt.getInteger("experience");
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public static class Storage implements Capability.IStorage<VillagerLevel> {

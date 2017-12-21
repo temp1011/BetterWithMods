@@ -30,7 +30,7 @@ public class HCFurnace extends Feature {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         BWMBlocks.registerBlock(FURNACE);
-        BWMBlocks.registerBlock(LIT_FURNACE);
+        BWMBlocks.registerBlock(LIT_FURNACE, null);
     }
 
 
