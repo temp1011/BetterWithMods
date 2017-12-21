@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import java.util.Set;
 
 /**
- * Created by tyler on 4/20/17.
+ * Created by primetoxinz on 4/20/17.
  */
 public class HCTools extends Feature {
 

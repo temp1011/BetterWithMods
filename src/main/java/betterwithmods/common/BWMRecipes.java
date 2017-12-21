@@ -98,7 +98,7 @@ public final class BWMRecipes {
 
     private static void setupDir() {
         if (RECIPE_DIR == null) {
-            RECIPE_DIR = new File("/home/tyler/Programming/BetterWithMods-1.12/src/main/resources/assets/betterwithmods/recipes/output");
+            RECIPE_DIR = new File("/home/primetoxinz/Programming/BetterWithMods-1.12/src/main/resources/assets/betterwithmods/recipes/output");
         }
 
         if (!RECIPE_DIR.exists()) {

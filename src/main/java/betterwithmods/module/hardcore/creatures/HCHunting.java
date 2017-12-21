@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Created by tyler on 4/22/17.
+ * Created by primetoxinz on 4/22/17.
  */
 public class HCHunting extends Feature {
 

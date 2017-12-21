@@ -26,7 +26,7 @@ import static betterwithmods.common.BWMBlocks.setInventoryModel;
 import static betterwithmods.common.BWOreDictionary.registerOre;
 
 /**
- * Created by tyler on 5/27/17.
+ * Created by primetoxinz on 5/27/17.
  */
 @SuppressWarnings("unused")
 public class Rustic extends CompatFeature {

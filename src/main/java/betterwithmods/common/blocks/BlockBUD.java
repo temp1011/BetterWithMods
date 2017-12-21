@@ -25,7 +25,7 @@ import java.util.Set;
 import static net.minecraft.util.EnumFacing.UP;
 
 /**
- * Created by tyler on 9/4/16.
+ * Created by primetoxinz on 9/4/16.
  */
 public class BlockBUD extends BWMBlock {
     private static final PropertyBool REDSTONE = PropertyBool.create("redstone");

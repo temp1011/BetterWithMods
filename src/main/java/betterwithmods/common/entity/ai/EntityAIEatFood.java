@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * Created by tyler on 4/22/17.
+ * Created by primetoxinz on 4/22/17.
  */
 public class EntityAIEatFood extends EntityAIBase {
     private EntityCreature entity;

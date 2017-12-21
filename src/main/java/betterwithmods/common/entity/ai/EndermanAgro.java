@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/20/16
  */
 public class EndermanAgro extends EntityAINearestAttackableTarget<EntityPlayer> {

@@ -26,7 +26,7 @@ import java.util.List;
 import static net.minecraft.util.EnumFacing.*;
 
 /**
- * Created by tyler on 9/5/16.
+ * Created by primetoxinz on 9/5/16.
  */
 public class EntityMiningCharge extends Entity {
     private static final DataParameter<Integer> FUSE = EntityDataManager.createKey(EntityMiningCharge.class, DataSerializers.VARINT);

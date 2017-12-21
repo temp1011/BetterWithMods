@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
- * Created by tyler on 5/16/17.
+ * Created by primetoxinz on 5/16/17.
  */
 public class TurntableRecipes extends Feature {
     public TurntableRecipes() {

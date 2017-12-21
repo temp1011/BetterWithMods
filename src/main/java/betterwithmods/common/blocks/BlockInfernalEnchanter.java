@@ -20,7 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * Created by tyler on 9/11/16.
+ * Created by primetoxinz on 9/11/16.
  */
 public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvider {
     public BlockInfernalEnchanter() {

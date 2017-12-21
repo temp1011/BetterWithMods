@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import java.util.Set;
 
 /**
- * Created by tyler on 5/25/17.v
+ * Created by primetoxinz on 5/25/17.v
  */
 public class HCSaw extends Feature {
     @Override

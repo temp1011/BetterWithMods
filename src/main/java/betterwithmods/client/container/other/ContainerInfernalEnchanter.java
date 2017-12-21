@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 /**
- * Created by tyler on 9/11/16.
+ * Created by primetoxinz on 9/11/16.
  */
 public class ContainerInfernalEnchanter extends Container {
     public int[] enchantLevels;

@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
- * Created by tyler on 4/20/17.
+ * Created by primetoxinz on 4/20/17.
  */
 public class HCStumping extends Feature {
 

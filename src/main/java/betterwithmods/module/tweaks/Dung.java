@@ -6,9 +6,7 @@ import betterwithmods.module.Feature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -26,11 +24,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.Random;
 
 /**
- * Created by tyler on 4/20/17.
+ * Created by primetoxinz on 4/20/17.
  */
 public class Dung extends Feature {
     private boolean wolvesOnly;

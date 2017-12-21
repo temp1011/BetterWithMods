@@ -31,7 +31,7 @@ import static net.minecraft.network.datasync.DataSerializers.ITEM_STACK;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/27/16
  */
 public class BreedingHardnessEvent {

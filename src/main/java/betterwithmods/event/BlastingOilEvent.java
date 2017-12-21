@@ -12,7 +12,7 @@ import net.minecraftforge.items.IItemHandler;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/26/16
  */
 public class BlastingOilEvent {

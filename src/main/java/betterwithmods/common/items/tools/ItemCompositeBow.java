@@ -22,7 +22,7 @@ import net.minecraftforge.items.IItemHandler;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/18/16
  */
 public class ItemCompositeBow extends ItemBow {

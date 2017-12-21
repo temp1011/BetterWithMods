@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 3/3/17
  */
 public class BlockCookingPot extends BWMBlock implements IMultiVariants {

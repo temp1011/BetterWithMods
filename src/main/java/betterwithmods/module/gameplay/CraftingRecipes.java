@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
- * Created by tyler on 5/16/17.
+ * Created by primetoxinz on 5/16/17.
  */
 public class CraftingRecipes extends Feature {
     public CraftingRecipes() {

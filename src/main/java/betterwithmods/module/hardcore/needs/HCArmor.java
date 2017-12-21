@@ -25,7 +25,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import java.util.Calendar;
 
 /**
- * Created by tyler on 5/10/17.
+ * Created by primetoxinz on 5/10/17.
  */
 public class HCArmor extends Feature {
     public static final StackMap<Integer> weights = new StackMap<>(0);

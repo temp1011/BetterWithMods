@@ -8,7 +8,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * Created by tyler on 4/22/17.
+ * Created by primetoxinz on 4/22/17.
  */
 public class ShooterSpiderWeb extends EntityAIBase {
     private EntitySpider spider;

@@ -14,7 +14,7 @@ import java.util.Random;
 import static betterwithmods.util.WorldUtils.addDrop;
 
 /**
- * Created by tyler on 4/21/17.
+ * Created by primetoxinz on 4/21/17.
  */
 public class FeedWolfchopEvent {
     @SubscribeEvent

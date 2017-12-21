@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by tyler on 5/13/17.
+ * Created by primetoxinz on 5/13/17.
  */
 public class HCGloom extends Feature {
     private static final DataParameter<Integer> GLOOM_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);

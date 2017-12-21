@@ -26,7 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * Created by tyler on 9/5/16.
+ * Created by primetoxinz on 9/5/16.
  */
 
 //@Optional.Interface(iface = "vazkii.quark.api.IFuseIgnitable",modid = "quark",striprefs = true)

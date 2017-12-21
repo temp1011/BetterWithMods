@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/15/16
  */
 public class RenderPigHarness extends RenderPig {

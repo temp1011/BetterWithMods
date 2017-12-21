@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 /**
- * Created by tyler on 8/5/16.
+ * Created by primetoxinz on 8/5/16.
  */
 public class TileEntityCreativeGen extends TileEntity implements IMechanicalPower {
     @Override

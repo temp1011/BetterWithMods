@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 /**
  * Purpose:
  *
- * @author Tyler Marshall
+ * @author primetoxinz
  * @version 11/20/16
  */
 public class HopperRecipeWrapper implements IRecipeWrapper {

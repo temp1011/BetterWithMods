@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 
 /**
- * Created by tyler on 9/11/16.
+ * Created by primetoxinz on 9/11/16.
  */
 public class GuiInfernalEnchanter extends GuiContainer {
     private FontRenderer fontGalactic;
