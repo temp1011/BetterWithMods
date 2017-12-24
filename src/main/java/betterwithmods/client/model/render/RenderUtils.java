@@ -16,7 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
@@ -247,4 +249,13 @@ public class RenderUtils {
         }
     }
 
+    public static IModel getModel(ResourceLocation location) {
+        try {
+            return ModelLoaderRegistry.getModel(location);
+        } catch (Exception e) {
+            BWMod.logger.error("Model " + location.toString() + " is missing! THIS WILL CAUSE A CRASH!");
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

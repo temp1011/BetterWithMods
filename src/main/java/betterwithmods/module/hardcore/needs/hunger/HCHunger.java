@@ -116,14 +116,14 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.CHICKEN), 9);
         FoodHelper.registerFood(new ItemStack(Items.MUTTON), 9);
         FoodHelper.registerFood(new ItemStack(Items.FISH), 9);
-        FoodHelper.registerFood(new ItemStack(Items.FISH,1,1), 9);
+        FoodHelper.registerFood(new ItemStack(Items.FISH, 1, 1), 9);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_BEEF), 15);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_PORKCHOP), 15);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_RABBIT), 15);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_CHICKEN), 12);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_MUTTON), 12);
         FoodHelper.registerFood(new ItemStack(Items.COOKED_FISH), 12);
-        FoodHelper.registerFood(new ItemStack(Items.COOKED_FISH,1,1), 12);
+        FoodHelper.registerFood(new ItemStack(Items.COOKED_FISH, 1, 1), 12);
         FoodHelper.registerFood(new ItemStack(Items.SPIDER_EYE), 6);
         FoodHelper.registerFood(new ItemStack(Items.ROTTEN_FLESH), 9);
         FoodHelper.registerFood(new ItemStack(Items.MUSHROOM_STEW), 9);
@@ -205,7 +205,7 @@ public class HCHunger extends CompatFeature {
             event.foodValues = new FoodValues(foodLevel, 0);
         } else {
             float modifier = event.foodValues.saturationModifier == 0 ? 0.5f : event.foodValues.saturationModifier;
-            float fat = modifier/2f;
+            float fat = modifier / 2f;
             event.foodValues = new FoodValues(foodLevel, fat);
         }
     }
@@ -311,7 +311,10 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent
     public void onExhaustAdd(ExhaustionEvent.ExhaustionAddition event) {
         if (event.player.world.getTotalWorldTime() % 20 == 0 && event.deltaExhaustion > 0.05) {
-            NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+            if (event.player instanceof EntityPlayerMP)
+                NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+            else
+                GuiHunger.INSTANCE.shake();
         }
     }
 
