@@ -1,6 +1,5 @@
 package betterwithmods.client.model;
 
-import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.BlockFurnace;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -15,6 +14,8 @@ public class TESRFurnaceContent extends TileEntitySpecialRenderer<TileEntityFurn
     public void render(TileEntityFurnace te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te.getStackInSlot(0).isEmpty())
             return;
+
+
         EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockFurnace.FACING);
 
         double x1 = x, z1 = z;
@@ -23,7 +24,6 @@ public class TESRFurnaceContent extends TileEntitySpecialRenderer<TileEntityFurn
         } else {
             z1+= facing.getFrontOffsetZ() * 0.00025;
         }
-        RenderUtils.renderFill(FULL, te.getPos(), x1, y , z1, 0,0,0,1,1,1, new EnumFacing[]{facing});
     }
 
 

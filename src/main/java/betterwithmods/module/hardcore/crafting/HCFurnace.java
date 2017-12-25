@@ -31,6 +31,7 @@ public class HCFurnace extends Feature {
 
     public static int DEFAULT_FURNACE_TIMING = 200;
     public static HashMap<Ingredient, Integer> FURNACE_TIMINGS = Maps.newHashMap();
+    public static HashMap<Ingredient, Integer> FUEL_TIMINGS = Maps.newHashMap();
 
     public static final Block FURNACE = new BlockFurnace(false).setRegistryName("minecraft:furnace");
     public static final Block LIT_FURNACE = new BlockFurnace(true).setRegistryName("minecraft:lit_furnace");
@@ -104,6 +105,11 @@ public class HCFurnace extends Feature {
                 "ore:oreIron=400",
                 "ore:oreGold=400",
                 "ore:cobblestone=800"
+        });
+
+        FUEL_TIMINGS= loadItemStackIntMap("Furnace Fuel Timing Overrides", "Overrides the fuel time for inputted items or oredict, see Furnace Timing for entry format", new String[]{
+                "minecraft:boat=750",
+                "minecraft:log:0=300"
         });
     }
 
