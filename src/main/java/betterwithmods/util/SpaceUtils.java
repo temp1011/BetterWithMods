@@ -334,7 +334,7 @@ public final class SpaceUtils {
         }
 
         if (hitVec != null) {
-            return SpaceUtils.getOrientation(placer, face, hitVec);
+            return SpaceUtils.getOrientation(placer, face.getOpposite(), hitVec);
         } else if (face != null) {
             return Orientation.fromDirection(face);
         } else {

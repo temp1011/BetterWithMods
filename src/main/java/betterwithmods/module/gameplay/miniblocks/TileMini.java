@@ -43,7 +43,8 @@ public class TileMini extends TileBasic {
     @Override
     public void onPlacedBy(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         loadFromStack(stack);
-        orientation = SpaceUtils.getOrientation(getWorld(), getPos(), placer, face, hitX, hitY, hitZ);
+
+        orientation = SpaceUtils.getOrientation(getWorld(), getPos(), placer, face, 0,0,0);
     }
 
     public void loadFromStack(ItemStack stack) {

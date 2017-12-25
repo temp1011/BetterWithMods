@@ -130,7 +130,7 @@ public class Quaternion {
         }
         return new Quaternion(d);
     }
-    
+
     /* @Override
     public IDataSerializable serialize(String name_prefix, DataHelper data) throws IOException {
         w = data.asSameShare(name_prefix + "w").putDouble(w);
@@ -139,7 +139,7 @@ public class Quaternion {
         z = data.asSameShare(name_prefix + "z").putDouble(z);
         return this;
     } */
-    
+
     public double[] fillArray(double[] out) {
         out[0] = w;
         out[1] = x;

@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore.crafting;
 
+import betterwithmods.client.model.TESRFurnaceContent;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockFurnace;
@@ -10,9 +11,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
@@ -39,6 +47,16 @@ public class HCFurnace extends Feature {
         BWMBlocks.registerBlock(LIT_FURNACE, null);
     }
 
+
+    @Override
+    public void preInitClient(FMLPreInitializationEvent event) {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace.class, new TESRFurnaceContent());
+    }
+
+    @Override
+    public boolean hasSubscriptions() {
+        return true;
+    }
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -87,10 +105,14 @@ public class HCFurnace extends Feature {
                 "ore:oreGold=400",
                 "ore:cobblestone=800"
         });
-
-
-
-        System.out.println(FURNACE_TIMINGS);
     }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onTextureStitch(TextureStitchEvent event) {
+        event.getMap().registerSprite(new ResourceLocation("betterwithmods:blocks/furnace_full"));
+    }
+
+
 }
 
