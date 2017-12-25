@@ -181,7 +181,7 @@ public class HCHunger extends CompatFeature {
     //Changes food to correct value.
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
-        FoodHelper.getFoodValue(event.food).ifPresent(v -> event.foodValues = v);
+        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(event.foodValues.hunger * 3, event.foodValues.saturationModifier * 3));
     }
 
     //Stops Eating if Hunger Effect is active
