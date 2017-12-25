@@ -73,7 +73,7 @@ public class RenderUtils {
         BufferBuilder renderer = t.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        int brightness = minecraft.world.getCombinedLight(pos, 14);
+        int brightness = minecraft.world.getCombinedLight(pos, Math.max(5, minecraft.world.getLight(pos)));
         preRender(x, y, z);
 
         TextureAtlasSprite sprite = minecraft.getTextureMapBlocks().getTextureExtry(textureLocation.toString());

@@ -105,7 +105,7 @@ public class HCFurnace extends Feature {
         FURNACE_TIMINGS = loadItemStackIntMap("Furnace Timing Recipes", "example recipes  minecraft:iron_ore=1000  or ore:oreIron=1000", new String[]{
                 "ore:oreIron=3200",
                 "ore:oreGold=3200",
-                "ore:cobblestone=6400"
+                "ore:cobblestone=3200"
         });
 
         FUEL_TIMINGS = loadItemStackIntMap("Furnace Fuel Timing Overrides", "Overrides the fuel time for inputted items or oredict, see Furnace Timing for entry format", new String[]{
