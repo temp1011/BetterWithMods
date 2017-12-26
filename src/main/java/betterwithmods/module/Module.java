@@ -77,6 +77,8 @@ public class Module {
             ConfigHelper.needsRestart = feature.requiresMinecraftRestartToEnable();
             if (feature.canDisable) {
                 feature.enabled = loadPropBool(feature.configName, feature.getFeatureDescription(), feature.enabledByDefault) && enabled;
+                if (feature.recipeCondition)
+                    feature.loadRecipeCondition(feature.configName.toLowerCase(), "Custom Recipes", "Enables custom recipes provided by this feature", true);
                 feature.setupConstantConfig();
             } else {
                 feature.enabled = true;
@@ -224,6 +226,10 @@ public class Module {
 
     public final String loadPropString(String propName, String desc, String default_) {
         return ConfigHelper.loadPropString(propName, name, desc, default_);
+    }
+
+    public final void loadRecipeCondition(String jsonName, String propName, String comment, boolean _default) {
+        ConfigHelper.loadRecipeCondition(jsonName, propName, name, comment, _default);
     }
 
     public int getPriority() {

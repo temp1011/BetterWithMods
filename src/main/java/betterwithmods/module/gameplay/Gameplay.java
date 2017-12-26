@@ -35,17 +35,17 @@ public class Gameplay extends Module {
 
     @Override
     public void setupConfig() {
-        crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0 );
-        kidFriendly = loadPropBool("Kid Friendly","Makes some features more kid friendly", false);
+        crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0);
+        kidFriendly = loadPropBool("Kid Friendly", "Makes some features more kid friendly", false);
+        loadRecipeCondition("higheff", "High Efficiency Recipes", "Enables High Efficiency Recipes", true);
         super.setupConfig();
     }
 
-	@Override
-	public void init(FMLInitializationEvent event) {
-    	super.init(event);
-		MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
-	}
-
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
+    }
 
 
 }

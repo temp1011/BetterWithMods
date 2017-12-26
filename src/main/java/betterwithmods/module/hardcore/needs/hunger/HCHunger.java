@@ -338,7 +338,7 @@ public class HCHunger extends CompatFeature {
     //TODO fix Hunger starting as vanilla 20.
 
     public String getFeatureDescription() {
-        return "This Feature REQUIRES AppleCore!!!." +
+        return "This Feature REQUIRES AppleCore!!!.\n" +
                 "Completely revamps the hunger system of Minecraft. \n" +
                 "The Saturation value is replaced with Fat. \n" +
                 "Fat will accumulate if too much food is consumed then need to fill the bar.\n" +
