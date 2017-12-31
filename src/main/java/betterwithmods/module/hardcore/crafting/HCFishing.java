@@ -25,12 +25,14 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -56,6 +58,8 @@ public class HCFishing extends Feature {
     public static boolean requireBait, restrictToOpenWater;
     public static int minimumWaterDepth;
 
+   public static ResourceLocation HCFISHING_LOOT = LootTableList.register(new ResourceLocation(BWMod.MODID,"gameplay/fishing"));
+
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
     private static final Ingredient BAIT = Ingredient.fromStacks(
             new ItemStack(Items.ROTTEN_FLESH),
@@ -79,6 +83,14 @@ public class HCFishing extends Feature {
         CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
         addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.FISHING_ROD), "  I", " IS", "I N", 'S', "string", 'I', "stickWood", 'N', "nuggetIron").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "fishing_rod")));
         addHardcoreRecipe(new BaitingRecipe());
+    }
+
+    //Override loottables
+    @SubscribeEvent
+    public void onLootTableLoad(LootTableLoadEvent event) {
+        if(event.getName().equals(LootTableList.GAMEPLAY_FISHING)) {
+            event.setTable(event.getLootTableManager().getLootTableFromLocation(HCFISHING_LOOT));
+        }
     }
 
     @Override
