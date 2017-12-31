@@ -20,7 +20,6 @@ public class GuiMill extends GuiContainer {
         this.mill = mill;
     }
 
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
@@ -43,14 +42,25 @@ public class GuiMill extends GuiContainer {
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
-        if (container.blocked) {
-            String str = "Blocked";
-            int width = fontRenderer.getStringWidth(str)/2;
-            drawString(fontRenderer, str, xPos + this.xSize/2 - width, yPos + 32, EnumDyeColor.RED.getColorValue());
-        }
+
         if (this.mill.isGrinding()) {
             int progress = (int) (12 * this.mill.getGrindProgress());
             drawTexturedModalRect(xPos + 80, yPos + 18 + 12 - progress, 176, 12 - progress, 14, 14);
         }
+
+        if (container.blocked) {
+            String str = "Blocked";
+            int width = fontRenderer.getStringWidth(str)/2;
+            drawString(fontRenderer, str, xPos + this.xSize/2 - width, yPos + 32, EnumDyeColor.RED.getColorValue());
+            drawToolTip(x,y, xPos + this.xSize/2 - width, yPos + 32, 32,32, "The Millstone has too many solid blocks around it.");
+        }
+
     }
+
+    private void drawToolTip(int mouseX, int mouseY, int x, int y, int w, int h,String text) {
+        if(mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= (y + h)) {
+            drawHoveringText(text,mouseX,mouseY);
+        }
+    }
+
 }

@@ -124,12 +124,10 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
 
     public boolean checkForOverpower(World world, BlockPos pos) {
         int potentialDevices = 0;
-        for (int i = 0; i < 6; i++) {
-            BlockPos offset = pos.offset(EnumFacing.getFront(i));
-            if (i != 0) {
-                if (MechanicalUtil.getMechanicalPower(world, offset, EnumFacing.getFront(i).getOpposite()) != null) {
-                    potentialDevices++;
-                }
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            BlockPos offset = pos.offset(facing);
+            if (MechanicalUtil.canInput(world, offset, facing)) {
+                potentialDevices++;
             }
         }
         return potentialDevices > 1;
@@ -155,7 +153,7 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
                 world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.7F);
             }
         }
-        world.notifyNeighborsOfStateChange(pos,this,false);
+        world.notifyNeighborsOfStateChange(pos, this, false);
     }
 
     @Override

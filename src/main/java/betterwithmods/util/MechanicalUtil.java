@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class MechanicalUtil {
-    
+
     public static boolean isRedstonePowered(World world, BlockPos pos) {
         return world.isBlockIndirectlyGettingPowered(pos) > 0;
     }
@@ -22,6 +22,11 @@ public class MechanicalUtil {
             return tile.getCapability(CapabilityMechanicalPower.MECHANICAL_POWER, facing);
         }
         return null;
+    }
+
+    public static boolean canInput(World world, BlockPos pos, EnumFacing facing) {
+        IMechanicalPower power = getMechanicalPower(world, pos, facing);
+        return power != null && power.getMaximumInput(facing) > 0;
     }
 
     public static boolean isAxle(IBlockAccess world, BlockPos pos, EnumFacing facing) {

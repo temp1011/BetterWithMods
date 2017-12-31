@@ -10,6 +10,7 @@ import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -24,8 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
 
@@ -59,7 +60,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private boolean findIfBlocked() {
         int count = 0;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            if (!world.getBlockState(pos.offset(facing)).getMaterial().isReplaceable()) {
+            if (world.isSideSolid(pos.offset(facing),facing.getOpposite())) {
                 count++;
             }
         }
@@ -149,27 +150,20 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         }
     }
 
+    private boolean canEject(EnumFacing facing) {
+        if(world.isAirBlock(pos.offset(facing)))
+            return true;
+        return !world.isBlockFullCube(pos.offset(facing)) && !world.isSideSolid(pos.offset(facing), facing.getOpposite());
+    }
+
     private void ejectStack(ItemStack stack) {
-        List<EnumFacing> validDirections = new ArrayList<>();
-        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            IBlockState check = getBlockWorld().getBlockState(pos.offset(facing));
-            if (check.getMaterial().isReplaceable())
-                validDirections.add(facing);
-        }
-
-        if (validDirections.isEmpty()) {
+        List<EnumFacing> validDirections = Lists.newArrayList(EnumFacing.HORIZONTALS).stream().filter(this::canEject).collect(Collectors.toList());
+        if(validDirections.isEmpty()) {
             blocked = true;
+            return;
         }
 
-        BlockPos offset;
-        if (validDirections.size() > 1)
-            offset = pos.offset(validDirections.get(getBlockWorld().rand.nextInt(validDirections.size())));
-        else if (validDirections.isEmpty())
-            offset = pos.offset(EnumFacing.UP);
-        else
-            offset = pos.offset(validDirections.get(0));
-
-        InvUtils.ejectStackWithOffset(getBlockWorld(), offset, stack);
+        InvUtils.ejectStackWithOffset(getBlockWorld(), pos.offset(validDirections.get(getBlockWorld().rand.nextInt(validDirections.size()))), stack);
     }
 
     public double getGrindProgress() {

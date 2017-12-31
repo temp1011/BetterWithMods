@@ -46,15 +46,12 @@ public class TileCrank extends TileBasic implements IMechanicalPower, IAxle {
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
-        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
-            return true;
-        return super.hasCapability(capability, facing);
+        return capability == CapabilityMechanicalPower.MECHANICAL_POWER && facing != EnumFacing.UP;
     }
 
-    @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
-        if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
+        if (hasCapability(capability,facing))
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
         return super.getCapability(capability, facing);
     }
