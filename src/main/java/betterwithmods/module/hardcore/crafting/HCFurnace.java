@@ -1,6 +1,5 @@
 package betterwithmods.module.hardcore.crafting;
 
-import betterwithmods.client.model.TESRFurnaceContent;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockFurnace;
@@ -11,11 +10,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -44,15 +41,14 @@ public class HCFurnace extends Feature {
     }
 
     @Override
+    public String getFeatureDescription() {
+        return "Overrides the vanilla furnace to allow for some changes: Allows varying item cook times, changes fuel values and a tweak to make the furnace visually show whether it has content";
+    }
+
+    @Override
     public void preInit(FMLPreInitializationEvent event) {
         BWMBlocks.registerBlock(FURNACE);
         BWMBlocks.registerBlock(LIT_FURNACE, null);
-    }
-
-
-    @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace.class, new TESRFurnaceContent());
     }
 
     @Override
