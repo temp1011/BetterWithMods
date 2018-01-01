@@ -21,6 +21,7 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
 import java.util.Arrays;
@@ -133,7 +134,10 @@ public class ConfigHelper {
         if (split.length > 1) {
             int meta = 0;
             if (split.length > 2) {
-                meta = Integer.parseInt(split[2]);
+                if (split[2].equalsIgnoreCase("*"))
+                    meta = OreDictionary.WILDCARD_VALUE;
+                else
+                    meta = Integer.parseInt(split[2]);
             }
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
             if (item != null) {
