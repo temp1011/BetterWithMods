@@ -65,7 +65,6 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -108,15 +107,18 @@ public class BWRegistry {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) event.getRegistry();
-
-        for (ItemStack output : BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
-            for (Iterator<IRecipe> iter = reg.iterator(); iter.hasNext(); ) {
-                IRecipe recipe = iter.next();
+        for (IRecipe recipe : reg) {
+            for (ResourceLocation loc : BWMRecipes.REMOVE_RECIPE_BY_RL) {
+                if (loc.equals(recipe.getRegistryName()))
+                    reg.remove(recipe.getRegistryName());
+            }
+            for (ItemStack output : BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
                 if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
-                    reg.remove(reg.getKey(recipe));
+                    reg.remove(recipe.getRegistryName());
                     break;
                 }
             }
+
         }
     }
 

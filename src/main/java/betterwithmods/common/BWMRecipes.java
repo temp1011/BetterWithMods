@@ -12,6 +12,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -29,6 +30,7 @@ public final class BWMRecipes {
     private static File RECIPE_DIR = null;
     private static final Map<String, List<IRecipe>> HARDCORE_RECIPES = new HashMap<>();
     public static final List<ItemStack> REMOVE_RECIPE_BY_OUTPUT = Lists.newArrayList();
+    public static final List<ResourceLocation> REMOVE_RECIPE_BY_RL = Lists.newArrayList();
 
     public static List<IRecipe> getHardcoreRecipes(String ID) {
         if (HARDCORE_RECIPES.containsKey(ID))
@@ -67,6 +69,14 @@ public final class BWMRecipes {
     public static void removeRecipe(ItemStack output) {
         REMOVE_RECIPE_BY_OUTPUT.add(output);
     }
+
+    public static void removeRecipe(ResourceLocation loc) {
+        REMOVE_RECIPE_BY_RL.add(loc);
+    }
+    public static void removeRecipe(String loc) {
+        removeRecipe(new ResourceLocation(loc));
+    }
+
     // Replace calls to GameRegistry.addShapeless/ShapedRecipe with these methods, which will dump it to a json in your dir of choice
 // Also works with OD, replace GameRegistry.addRecipe(new ShapedOreRecipe/ShapelessOreRecipe with the same calls
 
