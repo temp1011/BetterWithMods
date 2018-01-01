@@ -23,6 +23,15 @@ public class HCBoating extends Feature {
     public static HashMap<Ingredient, Integer> SPEED_ITEMS;
     public static int defaultSpeed;
 
+    public HCBoating() {
+        recipeCondition = true;
+    }
+
+    @Override
+    public void setupConfig() {
+        loadRecipeCondition("boatshovel","Boat Requires Oar", "Make boat recipe require a wooden shovel for the oars", true);
+    }
+
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         SPEED_ITEMS = loadItemStackIntMap("Speed Items", "Items which speed up a boat when held, value is a percentage of the vanilla speed", new String[]{
@@ -30,6 +39,7 @@ public class HCBoating extends Feature {
                 "minecraft:banner:*=100"
         });
         defaultSpeed = loadPropInt("Default Speed modifier", "Speed modifier when not holding any sail type item", 50);
+
     }
 
     @Override

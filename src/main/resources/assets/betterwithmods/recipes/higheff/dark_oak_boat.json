@@ -9,7 +9,7 @@
     "item": "minecraft:dark_oak_boat"
   },
   "pattern": [
-    "S S",
+    "SPS",
     "SSS"
   ],
   "type": "minecraft:crafting_shaped",
@@ -17,6 +17,9 @@
     "S": {
       "item": "betterwithmods:wood_siding",
       "data": 5
+    },
+    "P": {
+      "item": "#BOAT_SHOVEL"
     }
   }
 }
