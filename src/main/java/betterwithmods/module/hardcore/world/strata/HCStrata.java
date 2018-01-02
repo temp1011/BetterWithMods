@@ -1,6 +1,7 @@
 package betterwithmods.module.hardcore.world.strata;
 
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
 import betterwithmods.util.item.ToolsManager;
 import com.google.common.collect.Maps;
@@ -123,7 +124,7 @@ public class HCStrata extends Feature {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
-            ItemStack stack = event.getHarvester().getHeldItemMainhand();
+            ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(),event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.min(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
@@ -139,7 +140,7 @@ public class HCStrata extends Feature {
         World world = event.getEntityPlayer().getEntityWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, pos)) {
-            ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+            ItemStack stack = BrokenToolRegistry.findItem(event.getEntityPlayer(),event.getState());
             float scale = ToolsManager.getSpeed(stack, event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {

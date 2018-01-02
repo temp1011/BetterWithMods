@@ -7,7 +7,6 @@ import betterwithmods.module.Feature;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -59,44 +58,22 @@ public class HCPiles extends Feature {
         registerPile(Blocks.GRASS_PATH, new ItemStack(BWMItems.DIRT_PILE, 3));
         registerPile(Blocks.GRAVEL, new ItemStack(BWMItems.GRAVEL_PILE, 3));
         registerPile(Blocks.SAND, new ItemStack(BWMItems.SAND_PILE, 3));
-        registerPile(Blocks.SAND,1, new ItemStack(BWMItems.RED_SAND_PILE, 3));
+        registerPile(Blocks.SAND, 1, new ItemStack(BWMItems.RED_SAND_PILE, 3));
         registerPile(BWMBlocks.DIRT_SLAB, new ItemStack(BWMItems.DIRT_PILE, 1));
-        registerPile(Blocks.CLAY, new ItemStack(Items.CLAY_BALL,3));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.DIRT_PILE, 4), new ItemStack(Blocks.DIRT));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.DIRT_PILE, 2), new ItemStack(BWMBlocks.DIRT_SLAB));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.DIRT_PILE));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMBlocks.DIRT_SLAB));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.GRAVEL_PILE, 4), new ItemStack(Blocks.GRAVEL));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.GRAVEL), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.SAND_PILE, 4), new ItemStack(Blocks.SAND));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.SAND), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.SAND_PILE));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.SAND, 1, 1), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE));
-//        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.DIRT_SLAB, 4), "##", '#', Blocks.DIRT);
+        registerPile(Blocks.CLAY, new ItemStack(Items.CLAY_BALL, 3));
+
     }
 
-    @Override
-    public void disabledInit(FMLInitializationEvent event) {
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(Blocks.DIRT), new ItemStack(BWMBlocks.DIRT_SLAB), new ItemStack(BWMBlocks.DIRT_SLAB));
-//        BWMRecipes.addOreRecipe(new ItemStack(BWMBlocks.DIRT_SLAB, 4), "##", '#', Blocks.DIRT);
-    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
-        if (event.isSilkTouching() || event.getResult().equals(Event.Result.DENY))
-            return;
         IBlockState state = event.getState();
-        EntityPlayer player = event.getHarvester();
-        if (player != null) {
-            ItemStack stack = event.getHarvester().getHeldItemMainhand();
-            if (stack.isEmpty()) {
-                // if the tool broke while harvesting this block...
-                // it's not in the main hand anymore by the time HarvestDropsEvent happens
-                stack = BrokenToolRegistry.getDestroyedItem(player);
-            }
-            if (PlayerHelper.isCurrentToolEffectiveOnBlock(stack, event.getState()))
-                return;
-        }
+        if (event.isSilkTouching() || event.getResult().equals(Event.Result.DENY) || !blockStateToPile.containsKey(state))
+            return;
+
+        if (PlayerHelper.isCurrentToolEffectiveOnBlock(event.getHarvester(), event.getPos(), event.getState()))
+            return;
+
         if (blockStateToPile.containsKey(state)) {
             ItemStack pile = blockStateToPile.get(state).copy();
             event.getDrops().clear();

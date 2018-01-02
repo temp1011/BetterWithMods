@@ -5,6 +5,7 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,6 +21,7 @@ import net.minecraftforge.oredict.OreIngredient;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by primetoxinz on 5/10/17.
@@ -38,7 +40,12 @@ public class BWOreDictionary {
     public static List<ItemStack> logs;
     public static List<IRecipe> logRecipes = new ArrayList<>();
 
+    public static HashMultimap<String, String> toolEffectiveOre = HashMultimap.create();
+
+
     public static void registerOres() {
+
+        toolEffectiveOre.putAll("axe", Lists.newArrayList("logWood", "plankWood"));
 
         registerOre("book", BWMItems.MANUAL);
         registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
@@ -137,11 +144,11 @@ public class BWOreDictionary {
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
         registerOre("cobblestone", new ItemStack(BWMBlocks.COBBLE, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("slats", new ItemStack(BWMBlocks.SLATS, 1,OreDictionary.WILDCARD_VALUE));
-        registerOre("grates", new ItemStack(BWMBlocks.GRATE,1, OreDictionary.WILDCARD_VALUE));
+        registerOre("slats", new ItemStack(BWMBlocks.SLATS, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("grates", new ItemStack(BWMBlocks.GRATE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
 
-        registerOre("blockCandle", new ItemStack(BWMBlocks.CANDLE,1,OreDictionary.WILDCARD_VALUE));
+        registerOre("blockCandle", new ItemStack(BWMBlocks.CANDLE, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -232,7 +239,7 @@ public class BWOreDictionary {
     }
 
     public static int listContains(Object obj, List<Object> list) {
-        if (list != null && list.size() > 0 && !list.isEmpty()) {
+        if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
                     ItemStack stack = (ItemStack) obj;
@@ -273,10 +280,17 @@ public class BWOreDictionary {
         return false;
     }
 
+    public static List<String> getOres(ItemStack stack) {
+        return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).collect(Collectors.toList());
+    }
+
     public static boolean hasSuffix(ItemStack stack, String suffix) {
         return listContains(stack, getOreNames(suffix));
     }
 
+    public static boolean isToolForOre(String tool, ItemStack stack) {
+        return toolEffectiveOre.get(tool).stream().anyMatch(getOres(stack)::contains);
+    }
 
     public static class Wood {
         public ItemStack log, plank, bark;

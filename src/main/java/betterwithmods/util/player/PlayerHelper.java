@@ -1,6 +1,8 @@
 package betterwithmods.util.player;
 
-import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.HCArmor;
 import betterwithmods.module.hardcore.needs.HCGloom;
@@ -23,11 +25,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
+import static betterwithmods.event.FakePlayerHandler.player;
 
 /**
  * Set of methods dealing with EntityPlayer
@@ -38,6 +42,7 @@ public final class PlayerHelper {
     public final static UUID PENALTY_SPEED_UUID = UUID.fromString("c5595a67-9410-4fb2-826a-bcaf432c6a6f");
 
     private PlayerHelper() {
+
     }
 
     public static ItemStack getHolding(EntityPlayer player) {
@@ -216,18 +221,20 @@ public final class PlayerHelper {
         return modifier;
     }
 
+
     /**
      * This pos-sensitive version should be used when it's available, as it uses {@link IBlockState#getActualState(IBlockAccess, BlockPos)}.
      *
      * @param player
      * @param pos
+     * @param state
      * @return
      */
-    public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos) {
-        ItemStack stack = player.getHeldItemMainhand();
-        World world = player.getEntityWorld();
-        IBlockState state = world.getBlockState(pos).getActualState(world, pos);
-        return isCurrentToolEffectiveOnBlock(stack, state) && ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+    public static boolean isCurrentToolEffectiveOnBlock(EntityPlayer player, BlockPos pos, IBlockState state) {
+        ItemStack stack = BrokenToolRegistry.findItem(player, state);
+        if (player == null || state == null)
+            return false;
+        return isCurrentToolEffectiveOnBlock(stack, pos, state);
     }
 
     /**
@@ -237,25 +244,26 @@ public final class PlayerHelper {
      * @param state The block.
      * @return Whether the tool can harvest well the block.
      */
-    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state) {
+    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, BlockPos pos, IBlockState state) {
+
         if (stack == null) return false;
-        //Hardcore Stumping
-        if (state.getBlock() == BWMBlocks.STUMP) {
-            return false;
-        }
         if (stack.hasTagCompound()) {
             NBTTagCompound stats = stack.getSubCompound("Stats");
             if (stats != null) {
                 return stats.getByte("Broken") != 1;
             }
         }
+
+        ItemStack block = BWMRecipes.getStackFromState(state);
+
         for (String type : stack.getItem().getToolClasses(stack)) {
-            if (type == "mattock")
+            if (Objects.equals(type, "mattock"))
                 return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("axe", state);
-            if (state.getBlock().isToolEffective(type, state))
+
+            if (state.getBlock().isToolEffective(type, state) || BWOreDictionary.isToolForOre(type, block))
                 return true;
         }
-        return false;
+        return ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
 
     public static ItemStack getPlayerHead(EntityPlayer player) {
