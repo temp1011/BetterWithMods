@@ -138,8 +138,7 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
         int stage = state.getValue(STAGE);
         if (stage > 0) {
             if (stage < 7) {
-                if (stage <= 6)
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
+                world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
                 if (stage <= 5)
                     world.scheduleBlockUpdate(pos, this, tickRate(world) + stage, 5);
                 else
