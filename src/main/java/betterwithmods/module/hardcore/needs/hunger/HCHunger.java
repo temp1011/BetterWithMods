@@ -335,8 +335,6 @@ public class HCHunger extends CompatFeature {
         event.getPlayer().addExhaustion(blockBreakExhaustion - 0.005f);
     }
 
-    //TODO fix Hunger starting as vanilla 20.
-
     public String getFeatureDescription() {
         return "This Feature REQUIRES AppleCore!!!.\n" +
                 "Completely revamps the hunger system of Minecraft. \n" +

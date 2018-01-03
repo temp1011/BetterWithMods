@@ -17,7 +17,6 @@ import static betterwithmods.module.hardcore.beacons.EnderchestCap.ENDERCHEST_CA
 public class TileEnderchest extends TileEntityEnderChest {
 
     public enum Type {
-        //TODO drop contents if NONE
         NONE((tile, player) -> tile.getCapability(ENDERCHEST_CAPABILITY, EnumFacing.UP).getInventory()),
         DIMENSION1((tile, player) -> {
             World world = tile.getWorld();
@@ -43,7 +42,6 @@ public class TileEnderchest extends TileEntityEnderChest {
         }
     }
 
-    @Nonnull
     private Type type = Type.NONE;
 
     @Override

@@ -85,7 +85,6 @@ public class HCGloom extends Feature {
 
     @SubscribeEvent
     public void onRespawn(PlayerEvent.PlayerRespawnEvent e) {
-        //FIXME hopefully fixes permanent gloom after dying???
         setGloomTick(e.player, 0);
     }
 

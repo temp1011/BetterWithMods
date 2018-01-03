@@ -137,7 +137,6 @@ public class HCTools extends Feature {
     }
 
     private void destroyItem(ItemStack stack, EntityLivingBase entity) {
-        //FIXME No sound triggered.
         int damage = stack.getMaxDamage();
         stack.damageItem(damage, entity);
     }

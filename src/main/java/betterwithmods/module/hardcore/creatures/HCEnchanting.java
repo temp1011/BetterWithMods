@@ -142,7 +142,6 @@ public class HCEnchanting extends Feature {
         // FORTUNE ->  Priest Trade
         // POWER   -> Librarian Trade
         // LUCK_OF_THE_SEA, LURE -> Fisherman Trade
-        //TODO new things
         /*
         BINDING_CURSE illager
         MENDING REMOVE
@@ -157,7 +156,6 @@ public class HCEnchanting extends Feature {
 
     @SubscribeEvent
     public void onDeath(LivingDropsEvent event) {
-        //TODO stage support?
         for (Class<? extends EntityLivingBase> entity : SCROLL_DROPS.keySet()) {
             if (entity.isAssignableFrom(event.getEntityLiving().getClass())) {
                 ScrollDrop drop = SCROLL_DROPS.get(entity);

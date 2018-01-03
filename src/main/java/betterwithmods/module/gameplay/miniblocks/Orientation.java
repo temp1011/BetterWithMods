@@ -267,7 +267,6 @@ public enum Orientation implements IStringSerializable {
         return null;
     }
 
-    // TODO: Cache you, cache me!
     public Orientation mirror(@Nonnull Mirror mirror) {
         EnumFacing.Axis axis = null;
         switch (mirror) {
