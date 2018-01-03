@@ -115,7 +115,6 @@ public final class BWMItems {
         registerItem(STEEL_BOOTS);
         registerItem(CREEPER_OYSTER);
         registerItem(ENDER_SPECTACLES);
-        registerItem(BREEDING_HARNESS);
         registerItem(RAW_EGG);
         registerItem(COOKED_EGG);
         registerItem(RAW_SCRAMBLED_EGG);
