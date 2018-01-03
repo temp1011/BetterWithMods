@@ -3,7 +3,10 @@ package betterwithmods;
 import betterwithmods.client.BWGuiHandler;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.event.*;
+import betterwithmods.event.BlastingOilEvent;
+import betterwithmods.event.BreedingHardnessEvent;
+import betterwithmods.event.FakePlayerHandler;
+import betterwithmods.event.FeedWolfchopEvent;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.network.*;
 import betterwithmods.proxy.IProxy;
@@ -61,7 +64,6 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-        MinecraftForge.EVENT_BUS.register(new PotionEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlastingOilEvent());
         MinecraftForge.EVENT_BUS.register(new BreedingHardnessEvent());
         MinecraftForge.EVENT_BUS.register(new FeedWolfchopEvent());

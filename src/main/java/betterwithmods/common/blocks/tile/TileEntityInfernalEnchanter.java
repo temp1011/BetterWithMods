@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeHooks;
  */
 public class TileEntityInfernalEnchanter extends TileBasic implements ITickable {
     private final static int RADIUS = 8;
-    private int bookcaseCount;
+    public int bookcaseCount;
     private boolean active;
 
     private static float getPower(World world, BlockPos pos) {

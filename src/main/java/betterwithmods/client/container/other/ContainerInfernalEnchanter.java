@@ -30,13 +30,15 @@ import java.util.Set;
 public class ContainerInfernalEnchanter extends Container {
     public int[] enchantLevels;
     public int xpSeed;
+    public int bookcaseCount;
     private TileEntityInfernalEnchanter tile;
     private SimpleStackHandler handler;
 
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
-        handler = new FilteredStackHandler(2,tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true) {
+        this.bookcaseCount = tile.getBookcaseCount();
+        handler = new FilteredStackHandler(2, tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true) {
             @Override
             public void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
@@ -61,10 +63,18 @@ public class ContainerInfernalEnchanter extends Container {
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
-        if (id > 0 && id < 3) {
-            enchantLevels[id] = data;
-        } else if (id == 3) {
-            xpSeed = data;
+        switch (id) {
+            default:
+                if (id < this.enchantLevels.length) {
+                    enchantLevels[id] = data;
+                }
+                break;
+            case 3:
+                xpSeed = data;
+                break;
+            case 4:
+                bookcaseCount = data;
+                break;
         }
     }
 
@@ -84,9 +94,10 @@ public class ContainerInfernalEnchanter extends Container {
 
     public void broadcastData(IContainerListener listener) {
         for (int i = 0; i < this.enchantLevels.length; i++) {
-            listener.sendWindowProperty(this, 0, this.enchantLevels[i]);
+            listener.sendWindowProperty(this, i, this.enchantLevels[i]);
         }
         listener.sendWindowProperty(this, 3, this.xpSeed & -16);
+        listener.sendWindowProperty(this, 4, this.tile.getBookcaseCount());
     }
 
     public boolean areValidItems(ItemStack scroll, ItemStack item) {
@@ -109,7 +120,6 @@ public class ContainerInfernalEnchanter extends Container {
     }
 
     public void onContextChanged(IItemHandler handler) {
-
         ItemStack scroll = handler.getStackInSlot(0);
         ItemStack item = handler.getStackInSlot(1);
 
@@ -118,14 +128,14 @@ public class ContainerInfernalEnchanter extends Container {
         int enchantCount = 1;
         if (areValidItems(scroll, item)) {
             enchantment = ItemArcaneScroll.getEnchantment(scroll);
-            enchantCount = EnchantmentHelper.getEnchantments(item).size() ;
+            enchantCount = EnchantmentHelper.getEnchantments(item).size();
         }
         for (int i = 1; i <= enchantLevels.length; i++) {
             if (enchantment == null || i > enchantment.getMaxLevel()) {
-                enchantLevels[i - 1] = 0;
+                enchantLevels[i - 1] = -1;
             } else {
                 double max = Math.min(enchantment.getMaxLevel(), enchantLevels.length);
-                double j = i/max;
+                double j = i / max;
                 enchantLevels[i - 1] = (int) Math.ceil(30.0 * j) + (30 * enchantCount);
             }
         }
@@ -192,7 +202,7 @@ public class ContainerInfernalEnchanter extends Container {
 
     @Override
     public boolean enchantItem(EntityPlayer player, int level) {
-        if (this.enchantLevels[level] > 0 && hasLevels(player, level)) {
+        if (this.enchantLevels[level] >= level && hasLevels(player, level)) {
             if (!player.world.isRemote) {
                 ItemStack item = this.handler.getStackInSlot(1);
                 ItemStack scroll = this.handler.getStackInSlot(0);
