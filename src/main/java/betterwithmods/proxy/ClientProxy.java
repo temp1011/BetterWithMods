@@ -75,8 +75,6 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-
-
         ModuleLoader.preInitClient(event);
         registerRenderInformation();
         initRenderers();
@@ -196,6 +194,8 @@ public class ClientProxy implements IProxy {
     public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
         resourceProxy.addResource(space, domain, dir, file, ext);
     }
+
+
 
 
 }

@@ -20,13 +20,14 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber
 public class PotionEventHandler {
-
-
+    
     @SubscribeEvent
-    public void onRenderFireOverlay(RenderBlockOverlayEvent e) {
+    public static void onRenderFireOverlay(RenderBlockOverlayEvent e) {
         if (e.getOverlayType() == RenderBlockOverlayEvent.OverlayType.FIRE) {
             if (e.getPlayer().getEntityWorld().getBlockState(e.getBlockPos()).getBlock() == BWMBlocks.STOKED_FLAME) {
                 renderFireInFirstPerson();
@@ -35,7 +36,7 @@ public class PotionEventHandler {
         }
     }
 
-    private void renderFireInFirstPerson() {
+    private static void renderFireInFirstPerson() {
         Minecraft mc = Minecraft.getMinecraft();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
@@ -76,7 +77,7 @@ public class PotionEventHandler {
     }
 
     @SubscribeEvent
-    public void onHarvestBlock(BlockEvent.HarvestDropsEvent event) {
+    public static void onHarvestBlock(BlockEvent.HarvestDropsEvent event) {
 
         if (event.getHarvester() != null && event.getHarvester().isPotionActive(BWRegistry.POTION_FORTUNE)) {
             PotionEffect effect = event.getHarvester().getActivePotionEffect(BWRegistry.POTION_FORTUNE);
@@ -89,7 +90,7 @@ public class PotionEventHandler {
     }
 
     @SubscribeEvent
-    public void onLivingDeath(LootingLevelEvent event) {
+    public static void onLivingDeath(LootingLevelEvent event) {
         if (event.getEntityLiving() != null && event.getEntityLiving().isPotionActive(BWRegistry.POTION_LOOTING)) {
             PotionEffect effect = event.getEntityLiving().getActivePotionEffect(BWRegistry.POTION_LOOTING);
             int level = effect.getAmplifier() + 1;
@@ -100,7 +101,7 @@ public class PotionEventHandler {
     }
 
     @SubscribeEvent
-    public void onPotionUpdate(LivingEvent.LivingUpdateEvent e) {
+    public static void onPotionUpdate(LivingEvent.LivingUpdateEvent e) {
         if (e.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) e.getEntity();
             for (PotionEffect potion : player.getActivePotionEffects()) {
@@ -112,17 +113,15 @@ public class PotionEventHandler {
     }
 
     @SubscribeEvent
-    public void saveSoup(LivingEntityUseItemEvent.Finish event) {
-        if (event.getItem() != null) {
-            if (event.getItem().getItem() instanceof ItemSoup) {
-                if (event.getItem().getCount() > 0) {
-                    ItemStack result = event.getResultStack();
-                    event.setResultStack(event.getItem());
-                    if (event.getEntityLiving() instanceof EntityPlayer) {
-                        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-                        if (!player.inventory.addItemStackToInventory(result)) {
-                            player.dropItem(result, false);
-                        }
+    public static void saveSoup(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem().getItem() instanceof ItemSoup) {
+            if (event.getItem().getCount() > 0) {
+                ItemStack result = event.getResultStack();
+                event.setResultStack(event.getItem());
+                if (event.getEntityLiving() instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+                    if (!player.inventory.addItemStackToInventory(result)) {
+                        player.dropItem(result, false);
                     }
                 }
             }

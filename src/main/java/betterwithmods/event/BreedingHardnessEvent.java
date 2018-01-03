@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -34,6 +35,8 @@ import static net.minecraft.network.datasync.DataSerializers.ITEM_STACK;
  * @author primetoxinz
  * @version 11/27/16
  */
+
+@Mod.EventBusSubscriber
 public class BreedingHardnessEvent {
 
     private static final String TAG_HARNESS = "betterwithmods:harness";
@@ -63,7 +66,7 @@ public class BreedingHardnessEvent {
 
 
     @SubscribeEvent
-    public void onEntityInit(EntityEvent.EntityConstructing event) {
+    public static void onEntityInit(EntityEvent.EntityConstructing event) {
         if (isValidAnimal(event.getEntity())) {
             EntityDataManager manager = event.getEntity().getDataManager();
             manager.register(getHarnessData(event.getEntity()), ItemStack.EMPTY);
@@ -71,7 +74,7 @@ public class BreedingHardnessEvent {
     }
 
     @SubscribeEvent
-    public void onEntity(EntityJoinWorldEvent e) {
+    public static void onEntity(EntityJoinWorldEvent e) {
         if (isValidAnimal(e.getEntity())) {
             EntityLiving animal = (EntityLiving) e.getEntity();
             ItemStack dataStack = animal.getDataManager().get(getHarnessData(animal));
@@ -88,7 +91,7 @@ public class BreedingHardnessEvent {
     }
 
     @SubscribeEvent
-    public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getHand() != EnumHand.MAIN_HAND)
             return;
         Entity target = event.getTarget();
@@ -128,7 +131,7 @@ public class BreedingHardnessEvent {
     }
 
     @SubscribeEvent
-    public void onLivingTick(LivingEvent.LivingUpdateEvent e) {
+    public static void onLivingTick(LivingEvent.LivingUpdateEvent e) {
         EntityLivingBase entity = e.getEntityLiving();
         if (isValidAnimal(entity)) {
             if (!getHarness(entity).isEmpty())
