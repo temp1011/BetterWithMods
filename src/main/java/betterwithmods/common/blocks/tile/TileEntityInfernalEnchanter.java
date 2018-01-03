@@ -1,5 +1,7 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.common.blocks.BlockInfernalEnchanter;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,12 +58,16 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
                 if(active)
                     world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1, 1);
             }
+            IBlockState state = world.getBlockState(pos);
             if (active) {
+                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE,true));
                 int x = pos.getX(), y = pos.getY(), z = pos.getZ();
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .125, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .125, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .875, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .875, 0, 0, 0);
+            } else {
+                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE,false));
             }
         }
     }
@@ -89,4 +95,7 @@ public class TileEntityInfernalEnchanter extends TileBasic implements ITickable 
         return "bwm.infernalenchanter";
     }
 
+    public boolean isActive() {
+        return active;
+    }
 }
