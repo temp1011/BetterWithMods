@@ -28,7 +28,7 @@ public final class WorldUtils {
     private WorldUtils() {
     }
 
-    /**
+        /**
      * Based on {@link World#getLightFromNeighbors(BlockPos)} build 2185
      */
     public static int getNaturalLightFromNeighbors(World worldIn, BlockPos pos) {

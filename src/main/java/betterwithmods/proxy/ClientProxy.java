@@ -18,6 +18,8 @@ import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
 import betterwithmods.manual.api.prefab.manual.TextureTabIconRenderer;
 import betterwithmods.manual.client.manual.provider.*;
 import betterwithmods.module.ModuleLoader;
+import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
+import betterwithmods.module.gameplay.breeding_harness.CapabilityHarness;
 import betterwithmods.module.hardcore.crafting.HCFurnace;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import net.minecraft.block.state.IBlockState;
@@ -29,6 +31,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
@@ -39,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -123,7 +127,7 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingPot.class, new TESRCookingPot());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeacon.class, new TESRBeacon());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSteelSaw.class, new TESRSteelSaw());
-        if(ModuleLoader.isFeatureEnabled(HCFurnace.class)) {
+        if (ModuleLoader.isFeatureEnabled(HCFurnace.class)) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace.class, new TESRFurnaceContent());
         }
     }
@@ -196,6 +200,21 @@ public class ClientProxy implements IProxy {
     }
 
 
+    @Override
+    public void syncHarness(int entityId, ItemStack harness) {
+        Entity entity = getEntityByID(entityId);
+        if (entity != null) {
+            CapabilityHarness cap = BreedingHarness.getCapability(entity);
+            if (cap != null) {
+                cap.setHarness(harness);
+            }
+        }
+    }
 
-
+    private Entity getEntityByID(int id) {
+        World world = Minecraft.getMinecraft().world;
+        if (world == null)
+            return null;
+        return world.getEntityByID(id);
+    }
 }

@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Module;
+import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,6 +31,7 @@ public class Gameplay extends Module {
         registerFeature(new TurntableRecipes());
         registerFeature(new HopperRecipes());
         registerFeature(new NetherGrowth());
+        registerFeature(new BreedingHarness());
 //        registerFeature(new MiniBlocks());
     }
 

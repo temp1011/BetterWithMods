@@ -1,8 +1,8 @@
 package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
-import betterwithmods.event.BreedingHardnessEvent;
 import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityCow;
@@ -23,7 +23,7 @@ public class RenderCowHarness extends RenderCow {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityCow entity) {
-        if (!BreedingHardnessEvent.getHarness(entity).isEmpty())
+        if(BreedingHarness.hasHarness(entity))
             return Gameplay.kidFriendly ? HARNESS_KF : HARNESS;
         return super.getEntityTexture(entity);
     }

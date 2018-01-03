@@ -1,8 +1,8 @@
 package betterwithmods.client.render;
 
 import betterwithmods.BWMod;
-import betterwithmods.event.BreedingHardnessEvent;
 import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSheep;
 import net.minecraft.entity.passive.EntitySheep;
@@ -23,7 +23,7 @@ public class RenderSheepHarness extends RenderSheep {
 
     @Override
     protected ResourceLocation getEntityTexture(EntitySheep entity) {
-        if (!BreedingHardnessEvent.getHarness(entity).isEmpty())
+        if (BreedingHarness.hasHarness(entity))
             return Gameplay.kidFriendly ? HARNESS_KF : HARNESS;
         return super.getEntityTexture(entity);
     }

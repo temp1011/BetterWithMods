@@ -3,7 +3,7 @@ package betterwithmods;
 import betterwithmods.client.BWGuiHandler;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.event.*;
+import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.network.*;
 import betterwithmods.proxy.IProxy;
@@ -45,6 +45,7 @@ public class BWMod {
         NetworkHandler.register(MessageSyncModule.class, Side.CLIENT);
         NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
         NetworkHandler.register(MessageFat.class, Side.CLIENT);
+        NetworkHandler.register(MessageHarnessSync.class, Side.CLIENT);
         proxy.preInit(evt);
     }
 

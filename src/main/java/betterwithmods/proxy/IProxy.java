@@ -21,6 +21,6 @@ public interface IProxy {
     default void addResourceOverride(String space, String domain, String dir, String file, String ext) {
     }
 
-    default void syncHarness(ItemStack harness) {
+    default void syncHarness(int entityId, ItemStack harness) {
     }
 }
