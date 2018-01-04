@@ -5,6 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
+import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.player.FatPenalty;
@@ -56,6 +57,7 @@ import squeek.applecore.api.hunger.HungerEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
 
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by primetoxinz on 6/20/17.
@@ -293,6 +295,8 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
+            if (event.player instanceof EntityPlayerMP)
+                NetworkHandler.INSTANCE.sendTo(new MessageFat(event.player.getUniqueID()), (EntityPlayerMP) event.player);
             if (player.isCreative() || player.world.getDifficulty() == EnumDifficulty.PEACEFUL)
                 return;
             if (!PlayerHelper.getHungerPenalty(player).canSprint())
@@ -304,6 +308,9 @@ public class HCHunger extends CompatFeature {
             } else {
                 setExhaustionTick(player, getExhaustionTick(player) + 1);
             }
+
+
+
         }
     }
 
@@ -379,14 +386,14 @@ public class HCHunger extends CompatFeature {
 
         public static void putFat(AbstractClientPlayer player, FatPenalty fat) {
             ModelBiped model = getPlayerModel(player);
-            float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 4f) : 0.0f;
+            float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 2f) : 0.0f;
             model.bipedBody = new ModelRenderer(model, 16, 16);
             model.bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
         }
 
-        public static void doFat(String playerName) {
+        public static void doFat(String uuid) {
             World world = Minecraft.getMinecraft().world;
-            EntityPlayer player = world.getPlayerEntityByName(playerName);
+            EntityPlayer player = world.getPlayerEntityByUUID(UUID.fromString(uuid));
             FatPenalty fat = PlayerHelper.getFatPenalty(player);
             if (player != null && player instanceof AbstractClientPlayer)
                 putFat((AbstractClientPlayer) player, fat);
