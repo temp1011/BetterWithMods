@@ -103,6 +103,9 @@ public class BreedingHarness extends Feature {
         if(harnessEntity(entity)) {
             if (hasHarness(entity)) {
                 entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(-1);
+                if (entity instanceof EntitySheep && !((EntitySheep) entity).getSheared()) {
+                    ((EntitySheep) entity).setSheared(true);
+                }
             } else {
                 entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
             }
