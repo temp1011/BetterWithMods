@@ -117,7 +117,10 @@ public class ConfigHelper {
         if (split.length > 1) {
             int meta = 0;
             if (split.length > 2) {
-                meta = Integer.parseInt(split[2]);
+                if (split[2].equalsIgnoreCase("*"))
+                    meta = OreDictionary.WILDCARD_VALUE;
+                else
+                    meta = Integer.parseInt(split[2]);
             }
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
             if (item != null) {
@@ -148,7 +151,9 @@ public class ConfigHelper {
     }
 
     private static String fromStack(ItemStack stack) {
-        if (stack.getMetadata() == 0) {
+        if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+            return String.format("%s:*", stack.getItem().getRegistryName());
+        } else if (stack.getMetadata() == 0) {
             return stack.getItem().getRegistryName().toString();
         } else {
             return String.format("%s:%s", stack.getItem().getRegistryName(), stack.getMetadata());

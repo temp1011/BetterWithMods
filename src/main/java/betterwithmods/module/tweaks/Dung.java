@@ -26,6 +26,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static betterwithmods.module.gameplay.CauldronRecipes.addCauldronRecipe;
+
 /**
  * Created by primetoxinz on 4/20/17.
  */
@@ -59,6 +61,8 @@ public class Dung extends Feature {
                 instance.deserializeNBT((NBTTagCompound)nbt);
             }
         },DungProducer::new);
+        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), "dung"});
+        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), "dung"});
     }
 
     @SubscribeEvent

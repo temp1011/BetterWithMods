@@ -2,6 +2,7 @@ package betterwithmods.common;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.block.Block;
@@ -73,6 +74,7 @@ public final class BWMRecipes {
     public static void removeRecipe(ResourceLocation loc) {
         REMOVE_RECIPE_BY_RL.add(loc);
     }
+
     public static void removeRecipe(String loc) {
         removeRecipe(new ResourceLocation(loc));
     }
@@ -81,7 +83,7 @@ public final class BWMRecipes {
 // Also works with OD, replace GameRegistry.addRecipe(new ShapedOreRecipe/ShapelessOreRecipe with the same calls
 
     public static void addFurnaceRecipe(ItemStack input, ItemStack output) {
-        FurnaceRecipes.instance().getSmeltingList().put(input,output);
+        FurnaceRecipes.instance().getSmeltingList().put(input, output);
     }
 
     public static void removeFurnaceRecipe(Item input) {
@@ -91,6 +93,16 @@ public final class BWMRecipes {
     public static void removeFurnaceRecipe(ItemStack input) {
         //for some reason mojang put fucking wildcard for their ore meta
         FurnaceRecipes.instance().getSmeltingList().entrySet().removeIf(next -> next.getKey().isItemEqual(input) || (next.getKey().getItem() == input.getItem() && next.getKey().getMetadata() == OreDictionary.WILDCARD_VALUE));
+    }
+
+    public static Set<IBlockState> getStatesFromStack(ItemStack stack) {
+        if (stack.getItem() instanceof ItemBlock) {
+            if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                return Sets.newHashSet(((ItemBlock) stack.getItem()).getBlock().getBlockState().getValidStates());
+            }
+            return Sets.newHashSet(getStateFromStack(stack));
+        }
+        return Sets.newHashSet();
     }
 
     public static IBlockState getStateFromStack(ItemStack stack) {

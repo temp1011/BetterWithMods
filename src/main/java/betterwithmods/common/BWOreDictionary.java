@@ -46,6 +46,7 @@ public class BWOreDictionary {
     public static void registerOres() {
 
         toolEffectiveOre.putAll("axe", Lists.newArrayList("logWood", "plankWood"));
+        toolEffectiveOre.putAll("mattock", Lists.newArrayList("stone", "cobblestone"));
 
         registerOre("book", BWMItems.MANUAL);
         registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));

@@ -1,5 +1,6 @@
 package betterwithmods.module.hardcore.world.strata;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
@@ -19,15 +20,19 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class HCStrata extends Feature {
 
 
     public static float[] STRATA_SPEEDS;
+    public static float INCORRECT_STRATA_SCALE;
 
     public HCStrata() {
         enabledByDefault = false;
@@ -39,6 +44,7 @@ public class HCStrata extends Feature {
                 (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 0.23f),
                 (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.10f)
         };
+        INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
     }
 
 
@@ -56,7 +62,8 @@ public class HCStrata extends Feature {
                 }
             }
         }
-        addStone(Blocks.STONE);
+        List<ItemStack> stones = loadItemStackList("Strata Stones", "Blocks that are considered as stone to HCStrata", new ItemStack[]{new ItemStack(Blocks.STONE, 1, OreDictionary.WILDCARD_VALUE)});
+        stones.stream().map(BWMRecipes::getStatesFromStack).flatMap(Set::stream).forEach(HCStrata::addStone);
     }
 
     @Override
@@ -93,9 +100,14 @@ public class HCStrata extends Feature {
 
     public static HashMap<IBlockState, BlockType> STATES = Maps.newHashMap();
 
+
+    public static void addStone(IBlockState state) {
+        STATES.put(state, BlockType.STONE);
+    }
+
     public static void addStone(Block block) {
         for (IBlockState state : block.getBlockState().getValidStates())
-            STATES.put(state, BlockType.STONE);
+            addStone(state);
     }
 
     public static void addOre(Block block) {
@@ -120,15 +132,15 @@ public class HCStrata extends Feature {
     }
 
     @SubscribeEvent
-    public void onBreak(BlockEvent.HarvestDropsEvent event) {
+    public void onHarvest(BlockEvent.HarvestDropsEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(),event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
-                int level = Math.min(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
-                if (level < (strata)) {
+                int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
+                if (level <= (strata)) {
                     event.getDrops().clear();
                 }
             }
@@ -136,7 +148,7 @@ public class HCStrata extends Feature {
     }
 
     @SubscribeEvent
-    public void onHarvest(PlayerEvent.BreakSpeed event) {
+    public void getBreakSpeed(PlayerEvent.BreakSpeed event) {
         World world = event.getEntityPlayer().getEntityWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, pos)) {
@@ -144,9 +156,9 @@ public class HCStrata extends Feature {
             float scale = ToolsManager.getSpeed(stack, event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
-                int level = Math.min(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getEntityPlayer(), event.getState()));
-                if (level < (strata)) {
-                    scale /= 6;
+                int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getEntityPlayer(), event.getState()));
+                if (level <= (strata)) {
+                    scale = INCORRECT_STRATA_SCALE;
                 }
             }
             event.setNewSpeed(scale * STRATA_SPEEDS[strata]);

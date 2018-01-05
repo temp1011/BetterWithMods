@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static betterwithmods.event.FakePlayerHandler.player;
-
 /**
  * Set of methods dealing with EntityPlayer
  *
@@ -234,7 +232,7 @@ public final class PlayerHelper {
         ItemStack stack = BrokenToolRegistry.findItem(player, state);
         if (player == null || state == null)
             return false;
-        return isCurrentToolEffectiveOnBlock(stack, pos, state);
+        return isCurrentToolEffectiveOnBlock(stack, state) || ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
 
     /**
@@ -244,7 +242,7 @@ public final class PlayerHelper {
      * @param state The block.
      * @return Whether the tool can harvest well the block.
      */
-    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, BlockPos pos, IBlockState state) {
+    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state) {
 
         if (stack == null) return false;
         if (stack.hasTagCompound()) {
@@ -259,11 +257,13 @@ public final class PlayerHelper {
         for (String type : stack.getItem().getToolClasses(stack)) {
             if (Objects.equals(type, "mattock"))
                 return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("axe", state);
+            if (Objects.equals(type, "bwmmattock"))
+                return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("pickaxe", state);
 
             if (state.getBlock().isToolEffective(type, state) || BWOreDictionary.isToolForOre(type, block))
                 return true;
         }
-        return ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+        return false;
     }
 
     public static ItemStack getPlayerHead(EntityPlayer player) {
