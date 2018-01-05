@@ -2,9 +2,9 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.blocks.mechanical.BlockGearbox;
 import betterwithmods.common.blocks.tile.TileBasic;
-import betterwithmods.util.MechanicalUtil;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

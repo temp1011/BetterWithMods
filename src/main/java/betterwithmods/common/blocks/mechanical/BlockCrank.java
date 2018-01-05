@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
+import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
@@ -9,7 +10,6 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

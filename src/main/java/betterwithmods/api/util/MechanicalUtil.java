@@ -1,4 +1,4 @@
-package betterwithmods.util;
+package betterwithmods.api.util;
 
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;

@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.util.MechanicalUtil;
+import betterwithmods.api.util.MechanicalUtil;
 import com.google.common.collect.Lists;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

@@ -2,6 +2,7 @@ package betterwithmods.common.items;
 
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.api.tile.IAxle;
+import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.EnumTier;
@@ -10,7 +11,6 @@ import betterwithmods.common.blocks.mechanical.BlockAxleGenerator;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.util.DirUtils;
-import betterwithmods.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
