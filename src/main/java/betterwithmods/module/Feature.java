@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -193,5 +194,7 @@ public class Feature {
         return registerHardcoreRecipe(getClass().getSimpleName(), recipe);
     }
 
-
+    public final List<ResourceLocation> loadRLList(String propName, String comment, String[] default_) {
+        return ConfigHelper.loadPropRLList(propName, configCategory, comment, default_);
+    }
 }

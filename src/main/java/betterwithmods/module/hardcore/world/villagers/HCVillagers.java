@@ -3,11 +3,14 @@ package betterwithmods.module.hardcore.world.villagers;
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
 import betterwithmods.util.VillagerUtils;
+import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -15,6 +18,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by primetoxinz on 6/11/17.
@@ -31,6 +36,12 @@ public class HCVillagers extends Feature {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(VillagerLevel.class, new VillagerLevel.Storage(), VillagerLevel::new);
+    }
+
+    @Override
+    public void preInitClient(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(ClientSide.class);
+        super.preInitClient(event);
     }
 
     @Override
@@ -79,6 +90,16 @@ public class HCVillagers extends Feature {
         EntityLivingBase entity = event.getEntityLiving();
         if (entity instanceof EntityZombieVillager) {
             event.setCanceled(true);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static class ClientSide {
+        @SubscribeEvent
+        public static void onRender(GuiScreenEvent event) {
+            if (event.getGui() instanceof GuiMerchant) {
+                GuiVillager.draw((GuiMerchant) event.getGui());
+            }
         }
     }
 }

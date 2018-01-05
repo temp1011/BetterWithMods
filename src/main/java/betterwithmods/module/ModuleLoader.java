@@ -70,14 +70,23 @@ public final class ModuleLoader {
             BWMod.logger.info("[BWM] Module PreInit : " + module.name);
             module.preInit(event);
         });
+
+        if (config.hasChanged())
+            config.save();
     }
 
     public static void init(FMLInitializationEvent event) {
         forEachEnabled(module -> module.init(event));
+
+        if (config.hasChanged())
+            config.save();
     }
 
     public static void postInit(FMLPostInitializationEvent event) {
         forEachEnabled(module -> module.postInit(event));
+
+        if (config.hasChanged())
+            config.save();
     }
 
     public static void finalInit(FMLPostInitializationEvent event) {

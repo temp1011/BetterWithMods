@@ -5,22 +5,26 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HCBoating extends Feature {
 
     public static HashMap<Ingredient, Integer> SPEED_ITEMS;
+    public static List<ResourceLocation> BOAT_ENTRIES;
     public static int defaultSpeed;
 
     public HCBoating() {
@@ -39,7 +43,7 @@ public class HCBoating extends Feature {
                 "minecraft:banner:*=100"
         });
         defaultSpeed = loadPropInt("Default Speed modifier", "Speed modifier when not holding any sail type item", 50);
-
+        BOAT_ENTRIES = loadRLList("Boat List", "Registry name for entities which are considered boats", new String[]{ "minecraft:boat"});
     }
 
     @Override
@@ -53,7 +57,7 @@ public class HCBoating extends Feature {
             return;
         EntityPlayer player = event.player;
         Entity riding = player.getRidingEntity();
-        if (riding instanceof EntityBoat) {
+        if (riding != null && BOAT_ENTRIES.stream().anyMatch( r -> EntityList.isMatchingName(riding, r))) {
             ItemStack stack = PlayerHelper.getHolding(player);
             int speed = defaultSpeed;
             if (!stack.isEmpty())

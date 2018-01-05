@@ -108,8 +108,20 @@ public class ConfigHelper {
         Property prop = ModuleLoader.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
-
         return prop.getStringList();
+    }
+
+    public static List<ResourceLocation> loadPropRLList(String propName, String category, String desc, String[] default_) {
+        String[] l = loadPropStringList(propName,category,desc, default_);
+        return Arrays.stream(l).map(ConfigHelper::rlFromString).collect(Collectors.toList());
+    }
+
+    public static ResourceLocation rlFromString(String loc) {
+        String[] split = loc.split(":");
+        if (split.length > 1) {
+            return new ResourceLocation(split[0], split[1]);
+        }
+        return null;
     }
 
     private static ItemStack stackFromString(String name) {
@@ -169,7 +181,8 @@ public class ConfigHelper {
 
     public static HashMap<Ingredient, Integer> loadItemStackIntMap(String propName, String category, String desc, String[] _default) {
         HashMap<Ingredient, Integer> map = Maps.newHashMap();
-        for (String s : loadPropStringList(propName, category, desc, _default)) {
+        String[] l = loadPropStringList(propName, category, desc, _default);
+        for (String s : l) {
             String[] a = s.split("=");
             if (a.length == 2) {
                 map.put(ConfigHelper.ingredientfromString(a[0]), Integer.parseInt(a[1]));

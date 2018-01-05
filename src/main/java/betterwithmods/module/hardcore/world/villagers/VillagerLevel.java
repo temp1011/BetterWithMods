@@ -35,7 +35,7 @@ public class VillagerLevel implements ICapabilitySerializable<NBTTagCompound> {
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        if(hasCapability(capability,facing))
+        if (hasCapability(capability, facing))
             return CAPABILITY_LEVEL.cast(this);
         return null;
     }
@@ -60,6 +60,14 @@ public class VillagerLevel implements ICapabilitySerializable<NBTTagCompound> {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void incrementLevel() {
+        this.level++;
+    }
+
+    public void addExperience(int add) {
+        this.experience += add;
     }
 
     public int getExperience() {
