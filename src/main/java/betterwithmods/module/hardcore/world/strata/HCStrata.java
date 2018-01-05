@@ -4,6 +4,7 @@ import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.ToolsManager;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -16,20 +17,16 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 public class HCStrata extends Feature {
-
+    public static boolean ENABLED;
 
     public static float[] STRATA_SPEEDS;
     public static float INCORRECT_STRATA_SCALE;
@@ -45,6 +42,7 @@ public class HCStrata extends Feature {
                 (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.10f)
         };
         INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
+        ENABLED = ModuleLoader.isFeatureEnabled(HCStrata.class);
     }
 
 
@@ -65,24 +63,6 @@ public class HCStrata extends Feature {
         List<ItemStack> stones = loadItemStackList("Strata Stones", "Blocks that are considered as stone to HCStrata", new ItemStack[]{new ItemStack(Blocks.STONE, 1, OreDictionary.WILDCARD_VALUE)});
         stones.stream().map(BWMRecipes::getStatesFromStack).flatMap(Set::stream).forEach(HCStrata::addStone);
     }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        if (Loader.isModLoaded("ctm")) {
-            try {
-                Class type = Class.forName("team.chisel.ctm.api.texture.ITextureType");
-                Method method = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry").getDeclaredMethod("register", String.class, type);
-                try {
-                    method.invoke(null, "bwm_strata", new TextureTypeStrata());
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            } catch (ClassNotFoundException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     private enum BlockType {
         STONE(0),
@@ -124,6 +104,8 @@ public class HCStrata extends Feature {
     }
 
     public static int getStratification(int y, int topY) {
+        if(ModuleLoader.isFeatureEnabled(HCStrata.class))
+            return 0;
         if (y >= (topY - 10))
             return 0;
         if (y >= (topY - 30))

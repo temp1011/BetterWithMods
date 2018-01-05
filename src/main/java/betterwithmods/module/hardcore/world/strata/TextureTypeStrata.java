@@ -6,10 +6,11 @@ import net.minecraft.world.IBlockAccess;
 import team.chisel.ctm.api.texture.ICTMTexture;
 import team.chisel.ctm.api.texture.ITextureContext;
 import team.chisel.ctm.api.texture.ITextureType;
+import team.chisel.ctm.api.texture.TextureType;
 import team.chisel.ctm.api.util.TextureInfo;
 
 
-
+@TextureType("bwm_strata")
 public class TextureTypeStrata implements ITextureType {
 
     @Override
