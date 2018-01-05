@@ -1,11 +1,11 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.tile.TileBasic;
@@ -47,10 +47,10 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
 
         for (EnumFacing facing : getDirections()) {
             BlockPos offset = pos.offset(facing);
-            IMechanicalPower mech = MechanicalUtil.getMechanicalPower(world, offset, facing);
+            IMechanicalPower mech = BWMAPI.IMPLEMENTATION.getMechanicalPower(world, offset, facing);
             if (mech != null) {
 
-                IAxle axle = MechanicalUtil.getAxle(world, offset, facing);
+                IAxle axle = BWMAPI.IMPLEMENTATION.getAxle(world, offset, facing);
                 if (axle != null) {
                     if (isFacing(axle)) {
                         byte next = axle.getSignal();
@@ -144,7 +144,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
         if (facing.getAxis() == getAxis()) {
-            IAxle axle = MechanicalUtil.getAxle(world, pos.offset(facing), facing);
+            IAxle axle = BWMAPI.IMPLEMENTATION.getAxle(world, pos.offset(facing), facing);
             if (axle != null && axle.getSignal() > this.getSignal())
                 return 0;
             return power;
@@ -209,7 +209,7 @@ public class TileAxle extends TileBasic implements IMechanicalPower, IAxle {
         super.markDirty();
         ((BlockAxle) getBlockType()).setActive(world, pos, getPower() > 0);
         for (EnumFacing facing : getDirections()) {
-            if (!MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite())) {
+            if (!BWMAPI.IMPLEMENTATION.isAxle(world, pos.offset(facing), facing.getOpposite())) {
                 world.neighborChanged(pos.offset(facing), getBlockType(), pos);
             }
         }

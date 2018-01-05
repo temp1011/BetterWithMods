@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.blocks.mechanical.BlockGearbox;
 import betterwithmods.common.blocks.tile.TileBasic;
 import com.google.common.collect.Lists;
@@ -33,7 +33,7 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
         if (this.getBlockWorld().getTotalWorldTime() % 20L != 0L)
             return;
 
-        if (MechanicalUtil.isRedstonePowered(world, pos)) {
+        if (BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos)) {
             setPower(0);
             markDirty();
             return;
@@ -74,7 +74,7 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        if (facing != getFacing() && MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite()))
+        if (facing != getFacing() && BWMAPI.IMPLEMENTATION.isAxle(world, pos.offset(facing), facing.getOpposite()))
             return Math.min(power, maxPower);
         return -1;
     }
@@ -82,8 +82,8 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         BlockPos pos = getBlockPos().offset(facing);
-        if (MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) != null && !(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
-            return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
+        if (BWMAPI.IMPLEMENTATION.getMechanicalPower(world, pos, facing.getOpposite()) != null && !(BWMAPI.IMPLEMENTATION.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos, facing.getOpposite());
         return 0;
     }
 

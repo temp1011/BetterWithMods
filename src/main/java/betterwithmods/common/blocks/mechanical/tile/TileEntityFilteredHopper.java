@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
@@ -354,7 +354,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         if (facing.getAxis().isHorizontal())
-            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
 

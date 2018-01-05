@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -35,10 +35,10 @@ public class TileEntityCreativeGen extends TileEntity implements IMechanicalPowe
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        IAxle axle = MechanicalUtil.getAxle(world,pos.offset(facing),facing.getOpposite());
+        IAxle axle = BWMAPI.IMPLEMENTATION.getAxle(world,pos.offset(facing),facing.getOpposite());
         if(axle != null)
             return axle.getMaximumInput();
-        IMechanicalPower power = MechanicalUtil.getMechanicalPower(world,pos.offset(facing),facing.getOpposite());
+        IMechanicalPower power = BWMAPI.IMPLEMENTATION.getMechanicalPower(world,pos.offset(facing),facing.getOpposite());
         if(power != null)
             return power.getMaximumInput(facing.getOpposite());
         return 0;

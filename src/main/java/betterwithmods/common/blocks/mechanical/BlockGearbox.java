@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.api.block.IRenderRotationPlacement;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
@@ -129,7 +129,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
         boolean[] dirs = new boolean[6];
         for (int i = 0; i < 6; i++) {
             EnumFacing facing = EnumFacing.getFront(i);
-            dirs[i] = MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite()) && this.getFacing(world, pos) != facing;
+            dirs[i] = BWMAPI.IMPLEMENTATION.isAxle(world, pos.offset(facing), facing.getOpposite()) && this.getFacing(world, pos) != facing;
         }
         return state.withProperty(DirUtils.DOWN, dirs[0]).withProperty(DirUtils.UP, dirs[1]).withProperty(DirUtils.NORTH, dirs[2]).withProperty(DirUtils.SOUTH, dirs[3]).withProperty(DirUtils.WEST, dirs[4]).withProperty(DirUtils.EAST, dirs[5]);
     }

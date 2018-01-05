@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
@@ -126,7 +126,7 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
         int potentialDevices = 0;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
             BlockPos offset = pos.offset(facing);
-            if (MechanicalUtil.canInput(world, offset, facing)) {
+            if (BWMAPI.IMPLEMENTATION.canInput(world, offset, facing)) {
                 potentialDevices++;
             }
         }

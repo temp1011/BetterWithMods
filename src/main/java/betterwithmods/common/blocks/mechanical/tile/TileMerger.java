@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.api.util.MechanicalUtil;
+import betterwithmods.api.BWMAPI;
 import com.google.common.collect.Lists;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,7 @@ public class TileMerger extends TileGearbox {
         if (this.getBlockWorld().getTotalWorldTime() % 20L != 0L)
             return;
 
-        if (MechanicalUtil.isRedstonePowered(world, pos)) {
+        if (BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos)) {
             setPower(0);
             markDirty();
             return;
@@ -52,7 +52,7 @@ public class TileMerger extends TileGearbox {
 
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
-        if (facing != getFacing() && facing != getFacing().getOpposite() && MechanicalUtil.isAxle(world, pos.offset(facing), facing.getOpposite()))
+        if (facing != getFacing() && facing != getFacing().getOpposite() && BWMAPI.IMPLEMENTATION.isAxle(world, pos.offset(facing), facing.getOpposite()))
             return Math.min(power, maxPower);
         return -1;
     }
@@ -60,8 +60,8 @@ public class TileMerger extends TileGearbox {
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         BlockPos pos = getBlockPos().offset(facing);
-        if (MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) != null && !(MechanicalUtil.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
-            return MechanicalUtil.getPowerOutput(world, pos, facing.getOpposite());
+        if (BWMAPI.IMPLEMENTATION.getMechanicalPower(world, pos, facing.getOpposite()) != null && !(BWMAPI.IMPLEMENTATION.getMechanicalPower(world, pos, facing.getOpposite()) instanceof TileGearbox))
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos, facing.getOpposite());
         return 0;
     }
 

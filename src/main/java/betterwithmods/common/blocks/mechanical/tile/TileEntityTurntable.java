@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.tile.IMechSubtype;
@@ -130,7 +130,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     public void rotateTurntable() {
-        Rotation rotation = MechanicalUtil.isRedstonePowered(world, pos) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
+        Rotation rotation = BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
 
         this.potteryRotated = false;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
@@ -222,7 +222,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         if (facing == EnumFacing.DOWN)
-            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
 

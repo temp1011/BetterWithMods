@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.BlockBellows;
 import betterwithmods.common.blocks.tile.TileBasic;
@@ -68,7 +68,7 @@ public class TileBellows extends TileBasic implements IMechanicalPower {
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         if (facing != EnumFacing.UP && facing != getBlock().getFacing(world.getBlockState(pos)))
-            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
 

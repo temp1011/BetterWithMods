@@ -1,9 +1,9 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.api.util.MechanicalUtil;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockRope;
@@ -54,11 +54,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     }
 
     public boolean isRaising() {
-        return !MechanicalUtil.isRedstonePowered(world, pos) && isMechanicallyPowered();
+        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && isMechanicallyPowered();
     }
 
     public boolean isLowering() {
-        return !MechanicalUtil.isRedstonePowered(world, pos) && !isMechanicallyPowered();
+        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && !isMechanicallyPowered();
     }
 
     @Override
@@ -375,7 +375,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     @Override
     public int getMechanicalInput(EnumFacing facing) {
         if (facing.getAxis().isHorizontal())
-            return MechanicalUtil.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
+            return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
 

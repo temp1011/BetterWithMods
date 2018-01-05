@@ -1,6 +1,7 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityAxle;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
@@ -28,10 +29,7 @@ import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.module.hardcore.world.HCTorches;
-import betterwithmods.util.ColorUtils;
-import betterwithmods.util.DispenserBehaviorDynamite;
-import betterwithmods.util.InvUtils;
-import betterwithmods.util.VillagerUtils;
+import betterwithmods.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.Entity;
@@ -81,8 +79,13 @@ public class BWRegistry {
 
     private static int availableEntityId = 0;
 
+    static {
+        BWMAPI.IMPLEMENTATION = new MechanicalUtil();
+    }
+
     public static void preInit() {
         API.manualAPI = ManualAPIImpl.INSTANCE;
+
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
