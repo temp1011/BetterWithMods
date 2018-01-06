@@ -9,7 +9,6 @@ import team.chisel.ctm.api.texture.ITextureType;
 import team.chisel.ctm.api.texture.TextureType;
 import team.chisel.ctm.api.util.TextureInfo;
 
-
 @TextureType("bwm_strata")
 public class TextureTypeStrata implements ITextureType {
 

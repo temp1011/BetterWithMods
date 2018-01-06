@@ -42,7 +42,6 @@ public class HCStrata extends Feature {
                 (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.10f)
         };
         INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
-        ENABLED = ModuleLoader.isFeatureEnabled(HCStrata.class);
     }
 
 
@@ -53,6 +52,7 @@ public class HCStrata extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+        ENABLED = ModuleLoader.isFeatureEnabled(HCStrata.class);
         for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
             for (ItemStack stack : ore.getOres()) {
                 if (stack.getItem() instanceof ItemBlock) {
@@ -104,8 +104,6 @@ public class HCStrata extends Feature {
     }
 
     public static int getStratification(int y, int topY) {
-        if(ModuleLoader.isFeatureEnabled(HCStrata.class))
-            return 0;
         if (y >= (topY - 10))
             return 0;
         if (y >= (topY - 30))
@@ -118,7 +116,7 @@ public class HCStrata extends Feature {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
-            ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(),event.getState());
+            ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(), event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
@@ -134,7 +132,7 @@ public class HCStrata extends Feature {
         World world = event.getEntityPlayer().getEntityWorld();
         BlockPos pos = event.getPos();
         if (shouldStratify(world, pos)) {
-            ItemStack stack = BrokenToolRegistry.findItem(event.getEntityPlayer(),event.getState());
+            ItemStack stack = BrokenToolRegistry.findItem(event.getEntityPlayer(), event.getState());
             float scale = ToolsManager.getSpeed(stack, event.getState());
             int strata = getStratification(pos.getY(), world.getSeaLevel());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {

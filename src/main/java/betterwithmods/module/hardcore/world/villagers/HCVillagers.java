@@ -34,6 +34,11 @@ public class HCVillagers extends Feature {
     private static boolean disableZombieCuring = true;
 
     @Override
+    public void setupConfig() {
+        disableZombieCuring = loadPropBool("Disable Zombie Curing", "Removes the ability to cure zombie villages", true);
+    }
+
+    @Override
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(VillagerLevel.class, new VillagerLevel.Storage(), VillagerLevel::new);
     }
