@@ -33,7 +33,7 @@ public class TileAxle extends TileBasic implements IAxle, ITickable {
     private byte signal;
     private int power;
 
-    public List<IAxleTick> tickHandlers = Lists.newArrayList();
+    public static List<IAxleTick> tickHandlers = Lists.newArrayList();
 
     public TileAxle() {
 
