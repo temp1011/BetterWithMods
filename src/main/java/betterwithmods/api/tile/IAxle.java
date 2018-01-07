@@ -2,7 +2,7 @@ package betterwithmods.api.tile;
 
 import net.minecraft.util.EnumFacing;
 
-public interface IAxle {
+public interface IAxle extends IMechanicalPower {
     byte getSignal();
 
     byte getMaximumSignal();

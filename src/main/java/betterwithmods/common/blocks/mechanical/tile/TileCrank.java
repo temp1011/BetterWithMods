@@ -3,7 +3,6 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IAxle;
 import betterwithmods.api.tile.ICrankable;
-import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockCrank;
 import betterwithmods.common.blocks.tile.TileBasic;
 import net.minecraft.block.Block;
@@ -17,7 +16,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by primetoxinz on 7/24/17.
  */
-public class TileCrank extends TileBasic implements IMechanicalPower, IAxle {
+public class TileCrank extends TileBasic implements IAxle {
     @Override
     public int getMechanicalOutput(EnumFacing facing) {
 	    if (!(world.getTileEntity(pos.offset(facing)) instanceof ICrankable))

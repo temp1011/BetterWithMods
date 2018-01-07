@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by primetoxinz on 7/18/17.
  */
-public class TileAxle extends TileBasic implements IMechanicalPower, IAxle, ITickable {
+public class TileAxle extends TileBasic implements IAxle, ITickable {
     private byte maxSignal;
     private int maxPower;
     private int minPower;
