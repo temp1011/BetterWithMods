@@ -108,12 +108,13 @@ public class HCLumber extends Feature {
     @SubscribeEvent
     public void harvestLog(BlockEvent.HarvestDropsEvent evt) {
         if (!evt.getWorld().isRemote && evt.getHarvester() != null) {
-            if (hasAxe(evt) || Loader.isModLoaded("primal"))
-                return;
+
             ItemStack stack = BWMRecipes.getStackFromState(evt.getState());
 
             BWOreDictionary.Wood wood = BWOreDictionary.woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
             if (wood != null) {
+                if (hasAxe(evt) || Loader.isModLoaded("primal"))
+                    return;
                 evt.getDrops().clear();
                 evt.getDrops().addAll(Lists.newArrayList(wood.getPlank(plankAmount), wood.getSawdust(sawDustAmount), wood.getBark(barkAmount)));
             }
