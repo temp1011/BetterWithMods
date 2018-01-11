@@ -58,7 +58,7 @@ public class HCBoating extends Feature {
         EntityPlayer player = event.player;
         Entity riding = player.getRidingEntity();
         if (riding != null && BOAT_ENTRIES.stream().anyMatch( r -> EntityList.isMatchingName(riding, r))) {
-            ItemStack stack = PlayerHelper.getHolding(player);
+            ItemStack stack = PlayerHelper.getHolding(player, player.getActiveHand());
             int speed = defaultSpeed;
             if (!stack.isEmpty())
                 speed = SPEED_ITEMS.entrySet().stream().filter(e -> e.getKey().apply(stack)).mapToInt(Map.Entry::getValue).findAny().orElse(defaultSpeed);

@@ -36,7 +36,7 @@ public class BrokenToolRegistry {
     public static ItemStack findItem(EntityPlayer player, IBlockState state) {
         if (player == null)
             return ItemStack.EMPTY;
-        ItemStack stack = PlayerHelper.getHolding(player);
+        ItemStack stack = PlayerHelper.getHolding(player, player.getActiveHand());
         if (stack.isEmpty()) {
             // if the tool broke while harvesting this block...
             // it's not in the main hand anymore by the time HarvestDropsEvent happens

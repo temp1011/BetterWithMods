@@ -8,6 +8,7 @@ import betterwithmods.module.hardcore.needs.HCArmor;
 import betterwithmods.module.hardcore.needs.HCGloom;
 import betterwithmods.module.hardcore.needs.HCInjury;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
+import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,7 +30,9 @@ import net.minecraftforge.common.ForgeHooks;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Set of methods dealing with EntityPlayer
@@ -43,26 +46,25 @@ public final class PlayerHelper {
 
     }
 
-    public static ItemStack getHolding(EntityPlayer player) {
-        ItemStack held;
-        if (player.world.isRemote) {
-            held = player.getHeldItem(EnumHand.MAIN_HAND);
-            if (held.isEmpty()) {
-                held = player.getHeldItem(EnumHand.OFF_HAND);
-            }
-        } else {
-            held = player.getHeldItem(player.getActiveHand());
-        }
-        return held;
+    public static ItemStack getHolding(EntityPlayer player, EnumHand hand) {
+        return player.getHeldItem(hand);
+    }
+
+    public static Set<ItemStack> getHolding(EntityPlayer player) {
+        Set<ItemStack> holding = Sets.newHashSet();
+        holding.add(player.getHeldItem(EnumHand.MAIN_HAND));
+        holding.add(player.getHeldItem(EnumHand.OFF_HAND));
+        return holding.stream().filter(s -> !s.isEmpty()).collect(Collectors.toSet());
     }
 
     public static boolean isHolding(EntityPlayer player, List<ItemStack> stacks) {
-        ItemStack held = getHolding(player);
-        if (held.isEmpty())
+        Set<ItemStack> held = getHolding(player);
+        if (held.isEmpty() || stacks.isEmpty())
             return false;
         for (ItemStack stack : stacks) {
-            if (held.isItemEqual(stack))
-                return true;
+            for (ItemStack h : held)
+                if (h.isItemEqual(stack))
+                    return true;
         }
         return false;
     }
