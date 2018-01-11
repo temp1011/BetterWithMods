@@ -140,6 +140,7 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.BREAD), 12);
 
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE), 3);
+        FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE,1,1), 3);
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_CARROT), 3);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_DINNER), 24);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_POTATOES), 18);
