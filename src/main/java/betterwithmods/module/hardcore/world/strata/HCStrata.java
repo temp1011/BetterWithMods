@@ -37,9 +37,9 @@ public class HCStrata extends Feature {
 
     @Override
     public void setupConfig() {
-        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 0.75),
-                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 0.23f),
-                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 0.10f)
+        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 1.0),
+                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 1.0),
+                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 1.0)
         };
         INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
     }
@@ -141,7 +141,7 @@ public class HCStrata extends Feature {
                     scale = INCORRECT_STRATA_SCALE;
                 }
             }
-            event.setNewSpeed(scale * STRATA_SPEEDS[strata]);
+            event.setNewSpeed(scale * STRATA_SPEEDS[strata] * event.getOriginalSpeed());
         }
 
     }
