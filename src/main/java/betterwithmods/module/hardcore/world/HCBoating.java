@@ -32,6 +32,11 @@ public class HCBoating extends Feature {
     }
 
     @Override
+    public String getFeatureDescription() {
+        return "Boats are much slower as simple oars are not very good for speed. To go faster you must hold a Wind Sail.";
+    }
+
+    @Override
     public void setupConfig() {
         loadRecipeCondition("boatshovel","Boat Requires Oar", "Make boat recipe require a wooden shovel for the oars", true);
     }

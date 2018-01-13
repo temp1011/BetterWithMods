@@ -51,7 +51,7 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
             }
         }
 
-        isValid = valid && this.getBlockWorld().canBlockSeeSky(pos);
+        isValid = valid && !isEnd();
     }
 
     @Override
@@ -74,4 +74,5 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
         else
             return super.getRenderBoundingBox();
     }
+
 }

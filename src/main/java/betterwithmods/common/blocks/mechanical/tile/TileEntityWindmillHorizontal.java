@@ -38,7 +38,7 @@ public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
                     break;
             }
         }
-        isValid = valid && this.getBlockWorld().canBlockSeeSky(pos);
+        isValid = valid && this.getBlockWorld().canBlockSeeSky(pos) && !isNether();
     }
 
     //Extend the bounding box if the TESR is bigger than the occupying block.

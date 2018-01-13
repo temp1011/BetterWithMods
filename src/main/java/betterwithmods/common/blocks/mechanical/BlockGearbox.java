@@ -21,6 +21,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -58,7 +59,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return getStateForAdvancedRotationPlacement(getDefaultState(), placer.isSneaking() ? side : side.getOpposite(), flX, flY, flZ);
     }
-
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
@@ -118,8 +118,14 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         if (state.getValue(ACTIVE)) {
             emitGearboxParticles(world, pos, rand);
-            if (rand.nextInt(50) == 0)
+
+            if (rand.nextInt(10) == 0 && world.isRaining() || world.isThundering()) {
+                world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F, true);
+            }
+            if (rand.nextInt(50) == 0) {
                 world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BWSounds.WOODCREAK, SoundCategory.BLOCKS, 0.25F, world.rand.nextFloat() * 0.25F + 0.25F, false);
+            }
+
         }
     }
 
