@@ -186,8 +186,8 @@ public class Feature {
         return ConfigHelper.loadItemStackIntMap(propName, configCategory, comment, _default);
     }
 
-    public final void loadRecipeCondition(String jsonName, String propName, String comment, boolean _default) {
-        ConfigHelper.loadRecipeCondition(jsonName, propName, configCategory, comment, _default);
+    public final boolean loadRecipeCondition(String jsonName, String propName, String comment, boolean _default) {
+        return ConfigHelper.loadRecipeCondition(jsonName, propName, configCategory, comment, _default);
     }
 
     public IRecipe addHardcoreRecipe(IRecipe recipe) {

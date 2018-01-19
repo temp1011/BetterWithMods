@@ -9,13 +9,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.Set;
 
@@ -23,7 +23,6 @@ import java.util.Set;
  * Created by primetoxinz on 4/20/17.
  */
 public class HCTools extends Feature {
-
 
     private static final Set<Item> TOOLS = Sets.newHashSet(
             Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SWORD, Items.DIAMOND_SHOVEL, Items.DIAMOND_HOE,
@@ -91,7 +90,7 @@ public class HCTools extends Feature {
         diamondDurability = loadPropInt("Hardcore Hardness Diamond Durability", "Number of usages for diamond tools.", "", 1561, 1, 1562);
         goldDurability = loadPropInt("Hardcore Hardness Gold Durability", "Number of usages for golden tools.", "", 32, 1, 33);
 
-        changeAxeRecipe = loadPropBool("Change Axe Recipe", "Change the axe recipes to only require 2 materials", true);
+        changeAxeRecipe = loadRecipeCondition("changeAxeRecipe","Change Axe Recipe", "Change the axe recipes to only require 2 materials", true);
     }
 
     @Override
@@ -103,6 +102,12 @@ public class HCTools extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         if (removeLowTools)
             removeLowTierToolRecipes();
+        if (changeAxeRecipe) {
+            BWMRecipes.removeRecipe(new ResourceLocation("minecraft:stone_axe"));
+            BWMRecipes.removeRecipe(new ResourceLocation("minecraft:iron_axe"));
+            BWMRecipes.removeRecipe(new ResourceLocation("minecraft:golden_axe"));
+            BWMRecipes.removeRecipe(new ResourceLocation("minecraft:diamond_axe"));
+        }
     }
 
     @Override
@@ -112,12 +117,7 @@ public class HCTools extends Feature {
             Items.WOODEN_PICKAXE.setMaxDamage(1);
             Items.STONE_PICKAXE.setMaxDamage(5);
         }
-        if (changeAxeRecipe) {
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.STONE_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "cobblestone").setRegistryName("minecraft:stone_axe"));
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.IRON_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "ingotIron").setRegistryName("minecraft:iron_axe"));
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.GOLDEN_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "ingotGold").setRegistryName("minecraft:golden_axe"));
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.DIAMOND_AXE, "C ", "CS", " S", 'S', "stickWood", 'C', "gemDiamond").setRegistryName("minecraft:diamond_axe"));
-        }
+
     }
 
     /**

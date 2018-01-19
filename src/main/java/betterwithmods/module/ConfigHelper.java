@@ -38,8 +38,10 @@ public class ConfigHelper {
 
     public static HashMap<String, Boolean> CONDITIONS = Maps.newHashMap();
 
-    public static void loadRecipeCondition(String jsonString, String propName, String category, String desc, boolean default_) {
-        CONDITIONS.put(jsonString, loadPropBool(propName, category, desc, default_));
+    public static boolean loadRecipeCondition(String jsonString, String propName, String category, String desc, boolean default_) {
+        boolean value = loadPropBool(propName, category, desc, default_);
+        CONDITIONS.put(jsonString, value);
+        return value;
     }
 
     public static class ConditionConfig implements IConditionFactory {
