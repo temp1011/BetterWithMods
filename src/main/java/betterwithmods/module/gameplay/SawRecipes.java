@@ -1,5 +1,6 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.api.util.IWood;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.items.ItemMaterial;
@@ -80,7 +81,7 @@ public class SawRecipes extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
-        for (BWOreDictionary.Wood wood : BWOreDictionary.woods) {
+        for (IWood wood : BWOreDictionary.woods) {
             addSawRecipe(new SawRecipe(wood.getLog(1), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2))));
         }
     }

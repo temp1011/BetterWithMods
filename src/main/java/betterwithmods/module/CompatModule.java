@@ -36,6 +36,7 @@ public class CompatModule extends Module {
         registerCompatFeature("rustic", "betterwithmods.module.compat.Rustic");
         registerCompatFeature("tconstruct", "betterwithmods.module.compat.tcon.TConstruct");
         registerCompatFeature("thermalexpansion","betterwithmods.module.compat.ThermalExpansion");
+        registerCompatFeature("dynamictrees","betterwithmods.module.compat.DynamicTrees");
     }
 
     @Override

@@ -1,12 +1,17 @@
 package betterwithmods.common;
 
+import betterwithmods.api.util.IWood;
+import betterwithmods.api.util.IWoodProvider;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
+import betterwithmods.common.registry.Wood;
+import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -34,7 +39,9 @@ public class BWOreDictionary {
     public static List<Ore> oreNames;
     public static List<Ore> ingotNames;
 
-    public static List<Wood> woods = new ArrayList<>();
+    public static List<IWood> woods = new ArrayList<>();
+    public static List<IWoodProvider> woodProviders = new ArrayList<>();
+
 
     public static List<ItemStack> planks;
     public static List<ItemStack> logs;
@@ -293,54 +300,23 @@ public class BWOreDictionary {
         return toolEffectiveOre.get(tool).stream().anyMatch(getOres(stack)::contains);
     }
 
-    public static class Wood {
-        public ItemStack log, plank, bark;
-        boolean isSoulDust = false;
+    public static IWood getWoodFromState(IBlockState state) {
 
-        public Wood(ItemStack log, ItemStack plank) {
-            this.log = log;
-            this.plank = plank;
-
-            //TODO add custom bark render for all bark
-            this.bark = ItemBark.getStack("oak", 1);
+        ItemStack stack = BWMRecipes.getStackFromState(state);
+        IWood wood = null;
+        if(!stack.isEmpty()) {
+            wood = woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
         }
-
-        public Wood(ItemStack log, ItemStack plank, ItemStack bark) {
-            this.log = log;
-            this.plank = plank;
-            this.bark = bark;
+        if(wood == null) {
+            for (IWoodProvider provider : woodProviders) {
+                if (provider.match(state)) {
+                    wood = provider.getWood(state);
+                    break;
+                }
+            }
         }
-
-        public Wood(ItemStack log, ItemStack plank, ItemStack bark, boolean isSoulDust) {
-            this(log, plank, bark);
-            this.isSoulDust = isSoulDust;
-        }
-
-        public ItemStack getLog(int count) {
-            ItemStack copy = log.copy();
-            copy.setCount(count);
-            return copy;
-        }
-
-        public ItemStack getPlank(int count) {
-            ItemStack copy = plank.copy();
-            copy.setCount(count);
-            return copy;
-        }
-
-        public ItemStack getBark(int count) {
-            ItemStack copy = bark.copy();
-            copy.setCount(count);
-            return copy;
-        }
-
-        public ItemStack getSawdust(int count) {
-            return isSoulDust ? ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
-        }
-
-
+        return wood;
     }
-
 
     public static class Ore extends OreIngredient {
         private String prefix;
