@@ -75,7 +75,7 @@ public class HCStumping extends Feature {
             }
             return true;
         }
-        return false;
+        return BWOreDictionary.getWoodFromState(state) != null;
     }
 
     public static boolean isRoots(IBlockState state) {
