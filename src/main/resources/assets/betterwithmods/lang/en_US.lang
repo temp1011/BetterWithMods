@@ -57,7 +57,7 @@ tile.bwm:steel_block.name=Soulforged Steel Block
 tile.bwm:cut_steel_block.name=Cut Soulforged Steel Block
 tile.bwm:steel_pressure_plate.name=Steel Pressure Plate
 
-tile.bwm:windmill.windmill.name=Windmill
+tile.bwm:windmill.windmill.name=Horizontal Windmill
 tile.bwm:windmill.waterwheel.name=Waterwheel
 tile.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
