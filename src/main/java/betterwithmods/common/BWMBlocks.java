@@ -106,6 +106,8 @@ public final class BWMBlocks {
 	public static final Block CANDLE = new BlockCandle().setRegistryName("candle").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block CANDLE_HOLDER = new BlockCandleHolder().setRegistryName("candle_holder").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block MERGER = new BlockMerger().setRegistryName("steel_merger");
+	public static final Block SHAFT = new BlockShaft().setRegistryName("shaft");
+
 
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -203,6 +205,7 @@ public final class BWMBlocks {
 		registerBlock(CANDLE, new ItemBlockMeta(CANDLE));
 		registerBlock(CANDLE_HOLDER);
 		registerBlock(MERGER);
+		registerBlock(SHAFT);
 	}
 
 	public static void registerTileEntities() {

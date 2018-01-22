@@ -245,6 +245,7 @@ tile.bwm:dirt_slab.2.name=Mycelium Slab
 
 tile.bwm:infernal_enchanter.name=Infernal Enchanter
 tile.bwm:candle_holder.name=Candle Holder
+tile.bwm:shaft.name=Shaft
 
 tile.bwm:broken_gearbox.name=Broken Gearbox
 

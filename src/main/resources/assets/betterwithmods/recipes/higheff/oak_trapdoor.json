@@ -15,8 +15,8 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "S": {
-      "item": "betterwithmods:wood_siding",
-      "data": 5
+      "ore": "sidingWood",
+      "type": "forge:ore_dict"
     }
   }
 }
