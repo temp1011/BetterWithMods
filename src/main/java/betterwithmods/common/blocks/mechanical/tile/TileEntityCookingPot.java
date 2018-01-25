@@ -7,6 +7,7 @@ import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -278,14 +279,14 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                     fireFactor += BWMHeatRegistry.getHeat(getBlockWorld().getBlockState(target));
                 }
             }
-            return Math.max(5,fireFactor/4);
+            return Math.max(5, Math.round(fireFactor * Gameplay.cauldronMultipleFiresFactor));
         }
         return Math.max(0,fireFactor);
     }
 
     private void performNormalFireUpdate(int fireIntensity) {
         if (this.containsValidIngredients) {
-            this.cookCounter += fireIntensity;
+            this.cookCounter += Math.round(fireIntensity * Gameplay.cauldronNormalSpeedFactor);
 
             if (this.cookCounter >= 4350) {
                 attemptToCookNormal();
@@ -297,7 +298,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     private void performStokedFireUpdate(int fireIntensity) {
         if (this.containsValidIngredients) {
-            this.cookCounter += fireIntensity;
+            this.cookCounter += Math.round(fireIntensity * Gameplay.cauldronStokedSpeedFactor);
 
             if (this.cookCounter >= 4350) {
                 attemptToCookStoked();
