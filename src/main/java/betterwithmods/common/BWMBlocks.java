@@ -1,7 +1,7 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.tile.multiblock.TileEntityProxyBlock;
+import betterwithmods.api.tile.multiblock.TileMultiblockDummy;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.*;
@@ -12,6 +12,7 @@ import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
 import betterwithmods.common.items.tools.ItemSteelSaw;
+import betterwithmods.module.industry.multiblocks.BlockLathe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MapColor;
@@ -204,7 +205,7 @@ public final class BWMBlocks {
 		registerBlock(INFERNAL_ENCHANTER);
 		registerBlock(CANDLE, new ItemBlockMeta(CANDLE));
 		registerBlock(CANDLE_HOLDER);
-		registerBlock(MERGER);
+//		registerBlock(MERGER);
 		registerBlock(SHAFT);
 	}
 
@@ -236,7 +237,7 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileEntityInfernalEnchanter.class, "bwm.infernal_enchanter");
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
 		GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
-		GameRegistry.registerTileEntity(TileEntityProxyBlock.class, "bwm.multiblock_dummy");
+		GameRegistry.registerTileEntity(TileMultiblockDummy.class, "bwm.multiblock_dummy");
 		GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
 		GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
 

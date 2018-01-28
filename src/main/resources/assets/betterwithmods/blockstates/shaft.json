@@ -23,6 +23,10 @@
       },
       "disconnected": {
         "model": "betterwithmods:shaft_disconnected"
+      },
+      "candle": {
+      },
+      "skull": {
       }
     },
     "ground": {
