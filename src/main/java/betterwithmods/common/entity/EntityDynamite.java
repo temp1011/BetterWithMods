@@ -192,7 +192,7 @@ public class EntityDynamite extends Entity implements IProjectile {
 
     private void spawnDeadFish(int x, int y, int z) {
         LootContext.Builder build = new LootContext.Builder((WorldServer) this.getEntityWorld());
-        for (ItemStack stack : this.getEntityWorld().getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.getEntityWorld().rand, build.build())) {
+        for (ItemStack stack : this.getEntityWorld().getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING_FISH).generateLootForPools(this.getEntityWorld().rand, build.build())) {
             EntityItem item = new EntityItem(this.getEntityWorld(), x, y, z, stack.copy());
             this.getEntityWorld().spawnEntity(item);
         }
