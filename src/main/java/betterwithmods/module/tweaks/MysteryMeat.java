@@ -3,6 +3,7 @@ package betterwithmods.module.tweaks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.Feature;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public class MysteryMeat extends Feature {
 
     @SubscribeEvent
     public void dropMysteryMeat(LivingDropsEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer || event.getEntityLiving() instanceof EntityVillager) {
+        if (event.getEntityLiving() instanceof EntityPlayer || event.getEntityLiving() instanceof EntityVillager || event.getEntityLiving() instanceof AbstractIllager) {
             addDrop(event, new ItemStack(BWMItems.MYSTERY_MEAT, 1+event.getEntityLiving().world.rand.nextInt(2) + event.getLootingLevel()));
         }
     }
