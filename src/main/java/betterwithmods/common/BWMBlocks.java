@@ -1,18 +1,15 @@
 package betterwithmods.common;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.tile.multiblock.TileMultiblockDummy;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.*;
-import betterwithmods.common.blocks.mechanical.multiblock.BlockDummy;
 import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.mini.*;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.items.ItemHempSeed;
 import betterwithmods.common.items.ItemSimpleSlab;
 import betterwithmods.common.items.tools.ItemSteelSaw;
-import betterwithmods.module.industry.multiblocks.BlockLathe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MapColor;
@@ -99,8 +96,6 @@ public final class BWMBlocks {
 	public static final Block BLOOD_LEAVES = new BlockBloodLeaves().setRegistryName("blood_leaves");
 	public static final Block BLOOD_SAPLING = new BlockBloodSapling().setRegistryName("blood_sapling");
 	public static final Block NETHER_CLAY = new BlockNetherClay().setRegistryName("nether_clay");
-	public static final Block DUMMY = new BlockDummy().setRegistryName("multiblock_dummy");
-	public static final Block LATHE = new BlockLathe().setRegistryName("lathe");
 	public static final Block COBBLE = new BlockCobble().setRegistryName("cobblestone");
 	public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter").setCreativeTab(BWCreativeTabs.BWTAB);
@@ -198,8 +193,6 @@ public final class BWMBlocks {
 		registerBlock(BLOOD_LEAVES);
 		registerBlock(BLOOD_SAPLING);
 		registerBlock(NETHER_CLAY);
-		registerBlock(DUMMY, null);
-		registerBlock(LATHE, null);
 		registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
 		registerBlock(STEEL_PRESSURE_PLATE);
 		registerBlock(INFERNAL_ENCHANTER);
@@ -233,11 +226,9 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TilePump.class, "bwm.pump");
 		GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
 		GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
-		GameRegistry.registerTileEntity(TileEntityLathe.class, "bwm.lathe");
 		GameRegistry.registerTileEntity(TileEntityInfernalEnchanter.class, "bwm.infernal_enchanter");
 		GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
 		GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
-		GameRegistry.registerTileEntity(TileMultiblockDummy.class, "bwm.multiblock_dummy");
 		GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
 		GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
 
