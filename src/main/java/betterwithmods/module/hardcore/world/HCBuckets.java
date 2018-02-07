@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore.world;
 import betterwithmods.module.Feature;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
 import betterwithmods.util.player.PlayerHelper;
+import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
@@ -46,6 +47,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.List;
+
 /**
  * Created by primetoxinz on 4/20/17.
  */
@@ -53,6 +56,7 @@ public class HCBuckets extends Feature {
     private static boolean hardcoreFluidContainer;
     private static boolean disableLavaBuckets;
     private static boolean riskyLavaBuckets;
+    private static List<Integer> dimensionBlacklist;
 
     public static void editModdedFluidDispenseBehavior() {
         if (!hardcoreFluidContainer)
@@ -84,6 +88,7 @@ public class HCBuckets extends Feature {
         hardcoreFluidContainer = loadPropBool("Hardcore Fluid Container", "Hardcore Buckets Affects Modded Fluid Containers", true);
         disableLavaBuckets = loadPropBool("Hardcore Lava Buckets", "You can't put Lava in a metal bucket! Are you crazy!?", false);
         riskyLavaBuckets = loadPropBool("Risky Lava Buckets", "Makes Lava Buckets really hot, be careful. If only you could have some Resistance to Fire! ", true);
+        dimensionBlacklist = Ints.asList(loadPropIntList("Dimension Black List", "A List of dimension ids in which water buckets will work normally. This is done in the End by default to make Enderman Farms actually reasonable to create.", new int[]{DimensionType.THE_END.getId()}));
     }
 
     @Override
@@ -218,6 +223,10 @@ public class HCBuckets extends Feature {
         return state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER;
     }
 
+    private boolean isLava(Block block) {
+        return block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
+    }
+
     @SubscribeEvent
     public void fluidContainerUse(PlayerInteractEvent.RightClickBlock event) {
         if (!hardcoreFluidContainer)
@@ -244,7 +253,7 @@ public class HCBuckets extends Feature {
             if (!world.getBlockState(pos).getMaterial().isReplaceable())
                 return;
             state = world.getBlockState(pos);
-            if (world.provider.getDimensionType() == DimensionType.OVERWORLD) {
+            if (!dimensionBlacklist.contains(world.provider.getDimension())) {
                 if (event.getEntityPlayer() instanceof EntityPlayerMP) {
                     if (event.getUseBlock() == Event.Result.DENY) {
                         if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos)) {
@@ -337,9 +346,10 @@ public class HCBuckets extends Feature {
         if (disableLavaBuckets && PlayerHelper.isSurvival(e.getEntityPlayer())) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
-            if (e.getTarget() != null && e.getTarget().getBlockPos() != null) {
+            if (e.getTarget() != null) {
                 Block block = e.getWorld().getBlockState(e.getTarget().getBlockPos()).getBlock();
-                if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) {
+
+                if (isLava(block)) {
                     e.getEntityPlayer().attackEntityFrom(DamageSource.LAVA, 1);
                     e.getWorld().playSound(null, e.getTarget().getBlockPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1.5f);
                     e.setCanceled(true);
@@ -347,6 +357,8 @@ public class HCBuckets extends Feature {
             }
         }
     }
+
+
 
     @Override
     public boolean hasSubscriptions() {
