@@ -473,6 +473,11 @@ item.bwm:steel_chest.name=Plate Armor Chest
 item.bwm:steel_pants.name=Plate Armor Leggings
 item.bwm:steel_boots.name=Plate Armor Boots
 
+item.bwm:leather_tanned_helmet.name=Tanned Leather Cap
+item.bwm:leather_tanned_chest.name=Tanned Leather Tunic
+item.bwm:leather_tanned_pants.name=Tanned Leather Pants
+item.bwm:leather_tanned_boots.name=Tanned Leather Boots
+
 item.bwm:composite_bow.name=Composite Bow
 item.bwm:broadhead_arrow.name=Broadhead Arrow
 

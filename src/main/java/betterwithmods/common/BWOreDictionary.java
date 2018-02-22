@@ -107,6 +107,7 @@ public class BWOreDictionary {
         registerOre("barkBlood", new ItemStack(BWMItems.BARK, 1, 6));
 
         registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+        registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT));
         registerOre("hideBelt", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_BELT));
         registerOre("hideScoured", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER));
         registerOre("hideStrap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP));

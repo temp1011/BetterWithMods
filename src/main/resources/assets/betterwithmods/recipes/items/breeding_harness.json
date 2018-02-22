@@ -14,8 +14,8 @@
       "data": 8
     },
     "L": {
-      "item": "betterwithmods:material",
-      "data": 6
+      "ore": "hideTanned",
+      "type": "forge:ore_dict"
     }
   }
 }
