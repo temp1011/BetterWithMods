@@ -87,6 +87,10 @@ public final class BWMItems {
     public static final Item BAT_WING = new ItemFood(3,0.3F,false).setRegistryName("bat_wing").setCreativeTab(CreativeTabs.FOOD);
     public static final Item COOKED_BAT_WING = new ItemFood(6,0.6F,false).setRegistryName("cooked_bat_wing").setCreativeTab(CreativeTabs.FOOD);
     public static final Item ARCANE_SCROLL = new ItemArcaneScroll().setRegistryName("arcane_scroll").setCreativeTab(BWCreativeTabs.BWTAB);
+    public static final Item LEATHER_TANNED_HELMET = new ItemLeatherTannedArmor(EntityEquipmentSlot.HEAD).setRegistryName("leather_tanned_helmet");
+    public static final Item LEATHER_TANNED_CHEST = new ItemLeatherTannedArmor(EntityEquipmentSlot.CHEST).setRegistryName("leather_tanned_chest");
+    public static final Item LEATHER_TANNED_PANTS = new ItemLeatherTannedArmor(EntityEquipmentSlot.LEGS).setRegistryName("leather_tanned_pants");
+    public static final Item LEATHER_TANNED_BOOTS = new ItemLeatherTannedArmor(EntityEquipmentSlot.FEET).setRegistryName("leather_tanned_boots");
 
     private static final List<Item> ITEMS = new ArrayList<>();
 
@@ -149,6 +153,10 @@ public final class BWMItems {
         registerItem(BAT_WING);
         registerItem(COOKED_BAT_WING);
         registerItem(ARCANE_SCROLL);
+        registerItem(LEATHER_TANNED_BOOTS);
+        registerItem(LEATHER_TANNED_CHEST);
+        registerItem(LEATHER_TANNED_HELMET);
+        registerItem(LEATHER_TANNED_PANTS);
     }
 
     /**
