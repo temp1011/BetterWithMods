@@ -88,6 +88,11 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         return setFacingInBlock(state, living.getHorizontalFacing()).withProperty(ACTIVE, false).withProperty(EnumTier.TIER, EnumTier.VALUES[meta]);
     }
 
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(EnumTier.TIER).ordinal();
+    }
+
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
         return state.withProperty(DirUtils.HORIZONTAL, facing);
     }
