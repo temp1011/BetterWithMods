@@ -6,6 +6,7 @@ import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.crafting.HCLumber;
+import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
@@ -46,6 +47,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -341,13 +343,17 @@ public class HCHunger extends CompatFeature {
         event.player.attackEntityFrom(DamageSource.STARVE, 1);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
+        if(event.isCanceled() || player == null || player.isCreative())
+            return;
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
-        if(state.getBlockHardness(world,pos) <= 0 && HCLumber.hasAxe(player,pos,state) && HCLumber.getAxeLevel(player.getHeldItemMainhand(),player,state) >= Item.ToolMaterial.IRON.getHarvestLevel())
+        ItemStack stack = player.getHeldItemMainhand();
+        String tooltype = state.getBlock().getHarvestTool(state);
+        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < HCTools.noHungerThredhold)
             return; //doesn't consume hunger if using iron tier axes
         player.addExhaustion(blockBreakExhaustion - 0.005f);
     }

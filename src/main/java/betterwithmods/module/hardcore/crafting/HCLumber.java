@@ -40,10 +40,6 @@ public class HCLumber extends Feature {
         return PlayerHelper.isCurrentToolEffectiveOnBlock(harvester, pos, state);
     }
 
-    public static int getAxeLevel(ItemStack stack,EntityPlayer player,IBlockState state) { //Yeah uhhh future proofing in case we wanna blacklist or whitelist something, run inline if you hate this i guess
-        return stack.getItem().getHarvestLevel(stack,"axe",player,state);
-    }
-
     @Override
     public void setupConfig() {
         plankAmount = loadPropInt("Plank Amount", "Amount of Planks dropped when Punching Wood", 2);
@@ -122,20 +118,6 @@ public class HCLumber extends Feature {
                 event.getDrops().addAll(Lists.newArrayList(wood.getPlank(plankAmount), wood.getSawdust(sawDustAmount), wood.getBark(barkAmount)));
             }
         }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void harvestGarbage(BlockEvent.BreakEvent event) {
-        EntityPlayer player = event.getPlayer();
-        if(event.isCanceled() || player == null || player.isCreative())
-            return;
-        World world = event.getWorld();
-        BlockPos pos = event.getPos();
-        IBlockState state = world.getBlockState(pos);
-        ItemStack stack = player.getHeldItemMainhand();
-        String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < Item.ToolMaterial.DIAMOND.getHarvestLevel())
-            stack.damageItem(1,player); //Make 0 hardness blocks damage tools that are not diamond level
     }
 
     @Override
