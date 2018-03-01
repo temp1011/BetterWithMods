@@ -114,6 +114,7 @@ public class ClientProxy implements IProxy {
         ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
         ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
         ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
+        ModuleLoader.registerModels(event);
     }
 
     private void registerRenderInformation() {

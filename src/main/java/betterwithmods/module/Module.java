@@ -14,6 +14,7 @@ import betterwithmods.BWMod;
 import betterwithmods.api.FeatureEnabledEvent;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
@@ -174,6 +175,11 @@ public class Module {
     @SideOnly(Side.CLIENT)
     public void postInitClient(FMLPostInitializationEvent event) {
         forEachEnabled(feature -> feature.postInitClient(event));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerModels(ModelRegistryEvent event) {
+        forEachEnabled(feature -> feature.registerModels(event));
     }
 
     public void serverStarting(FMLServerStartingEvent event) {

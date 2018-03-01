@@ -17,6 +17,7 @@ import betterwithmods.module.industry.Industry;
 import betterwithmods.module.tweaks.Tweaks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -108,6 +109,11 @@ public final class ModuleLoader {
     @SideOnly(Side.CLIENT)
     public static void postInitClient(FMLPostInitializationEvent event) {
         forEachEnabled(module -> module.postInitClient(event));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerModels(ModelRegistryEvent event) {
+        forEachEnabled(module -> module.registerModels(event));
     }
 
     public static void serverStarting(FMLServerStartingEvent event) {

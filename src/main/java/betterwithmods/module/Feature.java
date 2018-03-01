@@ -17,6 +17,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -94,6 +95,11 @@ public class Feature {
 
     @SideOnly(Side.CLIENT)
     public void postInitClient(FMLPostInitializationEvent event) {
+        // NO-OP
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerModels(ModelRegistryEvent event) {
         // NO-OP
     }
 

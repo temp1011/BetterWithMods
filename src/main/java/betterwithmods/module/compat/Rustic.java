@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -128,11 +129,10 @@ public class Rustic extends CompatFeature {
     }
 
     @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
+    public void registerModels(ModelRegistryEvent event) {
         setInventoryModel(SIDING);
         setInventoryModel(MOULDING);
         setInventoryModel(CORNER);
-
     }
 
 }

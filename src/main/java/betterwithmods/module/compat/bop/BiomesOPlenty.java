@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,7 +66,7 @@ public class BiomesOPlenty extends CompatFeature {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient(FMLPreInitializationEvent event) {
+    public void registerModels(ModelRegistryEvent event) {
         BWMItems.setInventoryModel(PILES);
         BWMBlocks.setInventoryModel(SIDING);
         BWMBlocks.setInventoryModel(MOULDING);
