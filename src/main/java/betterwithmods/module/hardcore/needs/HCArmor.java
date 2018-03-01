@@ -94,7 +94,7 @@ public class HCArmor extends Feature {
                 ItemStack current = entity.getItemStackFromSlot(slot);
                 if (current.isEmpty()) {
                     if (!flag && entity.getRNG().nextFloat() < 0.1) {
-                        break;
+                        continue;
                     }
                     flag = false;
                     entity.setItemStackToSlot(slot, IRON_ARMOR[s]);
