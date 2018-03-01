@@ -23,13 +23,15 @@ public interface IMechanicalPower {
 
     default int calculateInput() {
         int findPower = 0;
+        boolean overpowered = false;
         for (EnumFacing facing : EnumFacing.values()) {
             int power = getMechanicalInput(facing);
-            if (power > findPower) {
+            if (power > findPower)
                 findPower = power;
-            }
+            if (power > getMaximumInput(facing))
+                overpowered = true;
         }
-        if (overpowerChance() && findPower > getMaximumInput(EnumFacing.UP)) {
+        if (overpowerChance() && overpowered) {
             overpower();
             return 0;
         }
