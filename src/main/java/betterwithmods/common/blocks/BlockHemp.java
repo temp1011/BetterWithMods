@@ -47,7 +47,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return (world.getLight(pos) > 12 || world.canSeeSky(pos) || world.canSeeSky(pos.up()) || isBelowLightBlock(world, pos)) && (canBePlantedHere(world, pos) || canPlantGrowOnBlock(world.getBlockState(pos.down()).getBlock()));
+        return (world.getLight(pos) > 12 || world.canSeeSky(pos) || world.canSeeSky(pos.up()) || isBelowLightBlock(world, pos)) && (canBePlantedHere(world, pos) || canPlantGrowOnBlock(world.getBlockState(pos.down())));
     }
 
     private boolean isBelowLightBlock(World world, BlockPos pos) {
@@ -105,8 +105,9 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         return new ItemStack(this, 1, 0);
     }
 
-    private boolean canPlantGrowOnBlock(Block block) {
-        return block == this;
+    private boolean canPlantGrowOnBlock(IBlockState state) {
+        Block block = state.getBlock();
+        return block == this && state.getValue(AGE) == 7;
     }
 
     @Override
