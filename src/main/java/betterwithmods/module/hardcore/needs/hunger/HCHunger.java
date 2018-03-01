@@ -5,6 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
+import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
@@ -12,6 +13,7 @@ import betterwithmods.util.player.FatPenalty;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Sets;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -32,6 +34,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -340,7 +343,13 @@ public class HCHunger extends CompatFeature {
 
     @SubscribeEvent
     public void onHarvest(BlockEvent.BreakEvent event) {
-        event.getPlayer().addExhaustion(blockBreakExhaustion - 0.005f);
+        EntityPlayer player = event.getPlayer();
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+        IBlockState state = world.getBlockState(pos);
+        if(state.getBlockHardness(world,pos) <= 0 && HCLumber.hasAxe(player,pos,state) && HCLumber.getAxeLevel(player.getHeldItemMainhand(),player,state) >= Item.ToolMaterial.IRON.getHarvestLevel())
+            return; //doesn't consume hunger if using iron tier axes
+        player.addExhaustion(blockBreakExhaustion - 0.005f);
     }
 
     public String getFeatureDescription() {
