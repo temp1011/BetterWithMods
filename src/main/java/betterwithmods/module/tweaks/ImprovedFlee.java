@@ -55,6 +55,8 @@ public class ImprovedFlee extends Feature {
         if (event.getPlayer() != null) {
             AxisAlignedBB box = event.getPlacedBlock().getBoundingBox(event.getWorld(), event.getPos()).offset(event.getPos()).grow(10);
             for (EntityAnimal animal : event.getWorld().getEntitiesWithinAABB(EntityAnimal.class, box)) {
+                if(animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
+                    continue;
                 animal.setRevengeTarget(event.getPlayer());
             }
         }
