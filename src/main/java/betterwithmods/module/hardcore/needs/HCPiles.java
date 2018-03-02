@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -16,13 +17,16 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by primetoxinz on 4/20/17.
  */
 public class HCPiles extends Feature {
+    public static boolean keepSoilDrops;
 
     public static Map<IBlockState, ItemStack> blockStateToPile = new HashMap<>();
 
@@ -38,6 +42,11 @@ public class HCPiles extends Feature {
 
     public static void registerPile(IBlockState block, ItemStack stack) {
         blockStateToPile.put(block, stack);
+    }
+
+    @Override
+    public void setupConfig() {
+        keepSoilDrops = loadPropBool("Soil Blocks Keep Their Drops", "Blocks affected by HC Piles that drop things other than themselves will keep those drops.", false);
     }
 
     @Override
@@ -76,11 +85,21 @@ public class HCPiles extends Feature {
 
         if (blockStateToPile.containsKey(state)) {
             ItemStack pile = blockStateToPile.get(state).copy();
+            ArrayList<ItemStack> extraDrops = null;
+            if(keepSoilDrops) //Save a bit of time if it's disabled.
+                extraDrops = event.getDrops().stream().filter(drop -> !drop.isItemEqual(pile) && !isBlockDrop(drop)).collect(Collectors.toCollection(ArrayList::new));
             event.getDrops().clear();
             if (event.getWorld().rand.nextFloat() <= event.getDropChance()) {
                 event.getDrops().add(pile);
             }
+            if(extraDrops != null)
+                event.getDrops().addAll(extraDrops);
         }
+    }
+
+    private boolean isBlockDrop(ItemStack stack)
+    {
+        return !stack.isEmpty() && stack.getItem() instanceof ItemBlock;
     }
 
     @Override
