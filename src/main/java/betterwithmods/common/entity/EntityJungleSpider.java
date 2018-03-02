@@ -1,7 +1,9 @@
 package betterwithmods.common.entity;
 
 import betterwithmods.BWMod;
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,6 +11,7 @@ import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -17,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class EntityJungleSpider extends EntityCaveSpider {
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation(BWMod.MODID, "entity/jungle_spider"));
@@ -77,13 +81,41 @@ public class EntityJungleSpider extends EntityCaveSpider {
     @Override
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        IBlockState topBlock = world.getBlockState(world.getHeight(pos).down());
+        BlockPos topPos = world.getHeight(pos).down();
+        IBlockState topBlock = world.getBlockState(topPos);
 
-        if(topBlock.getBlock() == Blocks.LEAVES && topBlock.getValue(BlockLeaves.DECAYABLE)) {
-            this.setPosition(posX,world.getHeight(pos).getY() - 2 - rand.nextInt(32),posZ);
-            return super.getCanSpawnHere();
+        //On the ground, search up a little, just so we can also spawn in caves
+        ArrayList<Integer> possible_spawns = getPossibleSpawnHeights(new BlockPos.MutableBlockPos(pos.up(32)),32);
+        //Otherwise, if there's a leaf canopy search from there
+        if(possible_spawns.isEmpty() && topBlock.getBlock() == Blocks.LEAVES && topBlock.getValue(BlockLeaves.DECAYABLE)) {
+            possible_spawns = getPossibleSpawnHeights(new BlockPos.MutableBlockPos(topPos), 16);
         }
+        if(possible_spawns.isEmpty())
+            return false;
+        this.setPosition(posX, possible_spawns.get(rand.nextInt(possible_spawns.size())), posZ);
+        return super.getCanSpawnHere();
+    }
 
-        return false;
+    private ArrayList<Integer> getPossibleSpawnHeights(BlockPos.MutableBlockPos pos, int limit)
+    {
+        ArrayList<Integer> heights = new ArrayList<>();
+        int leaves = 0;
+        for(int i = 0; i < limit; i++)
+        {
+            IBlockState state = world.getBlockState(pos);
+            if(isJungleLeaves(state))
+                leaves += 1;
+            else
+                leaves = 0;
+            if(leaves == 2) //Only on top of leaves that are two blocks thick.
+                heights.add(pos.getY()+2);
+            pos.move(EnumFacing.DOWN);
+        }
+        return heights;
+    }
+
+    private boolean isJungleLeaves(IBlockState state)
+    {
+        return state.getBlock() == Blocks.LEAVES && state.getValue(BlockLeaves.DECAYABLE);
     }
 }
