@@ -76,7 +76,7 @@ public class Dung extends Feature {
             if(!animal.hasCapability(DUNG_PRODUCER_CAP,null))
                 return;
             DungProducer dungProducer = animal.getCapability(DUNG_PRODUCER_CAP,null);
-            if(animal.isInLove())
+            if(animal.isInLove() && dungProducer.nextPoop < 0)
             {
                 dungProducer.nextPoop = 12000;
             }
