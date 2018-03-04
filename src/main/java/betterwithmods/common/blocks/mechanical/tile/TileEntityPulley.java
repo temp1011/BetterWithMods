@@ -4,8 +4,8 @@ import betterwithmods.BWMod;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.tile.IRopeConnector;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockAnchor;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
@@ -35,7 +35,10 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class TileEntityPulley extends TileEntityVisibleInventory implements IMechanicalPower {
 
@@ -107,6 +110,11 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         }
     }
 
+    private boolean validRopeConnector(BlockPos pos) {
+        IBlockState state = getBlockWorld().getBlockState(pos);
+        return state.getBlock() instanceof IRopeConnector && ((IRopeConnector) state.getBlock()).getFacing(state) == EnumFacing.UP;
+    }
+
     private boolean canGoUp() {
         if (isRaising()) {
             if (putRope(false)) {
@@ -124,8 +132,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
             if (takeRope(false)) {
                 BlockPos newPos = BlockRope.getLowestRopeBlock(getBlockWorld(), pos).down();
                 IBlockState state = getBlockWorld().getBlockState(newPos);
-                boolean flag = !isMoving && state.getBlock() == BWMBlocks.ANCHOR
-                        && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
+                boolean flag = !isMoving && validRopeConnector(newPos);
                 if (newPos.getY() > 0 && (getBlockWorld().isAirBlock(newPos) || state.getBlock().isReplaceable(getBlockWorld(), newPos) || flag)
                         && newPos.up().getY() > 0) {
                     return true;
@@ -137,9 +144,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
     private void goUp() {
         BlockPos lowest = BlockRope.getLowestRopeBlock(getBlockWorld(), pos);
-        IBlockState state = getBlockWorld().getBlockState(lowest.down());
-        boolean flag = state.getBlock() == BWMBlocks.ANCHOR
-                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
+        boolean flag = validRopeConnector(lowest.down());
         rope = new EntityExtendingRope(getBlockWorld(), pos, lowest, lowest.up().getY());
         if (!flag || movePlatform(lowest.down(), true)) {
             getBlockWorld().playSound(null, pos.down(), SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS,
@@ -154,9 +159,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
     private void goDown() {
         BlockPos newPos = BlockRope.getLowestRopeBlock(getBlockWorld(), pos).down();
-        IBlockState state = getBlockWorld().getBlockState(newPos);
-        boolean flag = state.getBlock() == BWMBlocks.ANCHOR
-                && ((BlockAnchor) BWMBlocks.ANCHOR).getFacing(state) == EnumFacing.UP;
+        boolean flag = validRopeConnector(newPos);
         rope = new EntityExtendingRope(getBlockWorld(), pos, newPos.up(), newPos.getY());
         if (!flag || movePlatform(newPos, false)) {
             getBlockWorld().spawnEntity(rope);
@@ -171,14 +174,14 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
     private boolean movePlatform(BlockPos anchor, boolean up) {
         IBlockState state = getBlockWorld().getBlockState(anchor);
-        if (state.getBlock() != BWMBlocks.ANCHOR)
+        if (!(state.getBlock() instanceof IRopeConnector))
             return false;
 
         HashSet<BlockPos> platformBlocks = new HashSet<>();
         platformBlocks.add(anchor);
         boolean success;
         BlockPos below = anchor.down();
-        if (isPlatform(below)) {
+        if (isPlatform(below) && ((IRopeConnector) state.getBlock()).canMovePlatforms(world, anchor)) {
             success = addToList(platformBlocks, below, up);
         } else {
             success = up || isIgnoreable(below);
@@ -202,11 +205,10 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
 
         if (!getBlockWorld().isRemote) {
             for (BlockPos blockPos : platformBlocks) {
-                IBlockState blockState = getBlockWorld().getBlockState(blockPos.up());
                 Vec3i offset = blockPos.subtract(anchor.up());
-                rope.addBlock(offset, getBlockWorld().getBlockState(blockPos));
+                rope.addBlock(offset, getBlockWorld(), blockPos);
                 if (isMoveableBlock(blockPos.up())) {
-                    rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), blockState);
+                    rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), getBlockWorld(), blockPos.up());
                     getBlockWorld().setBlockToAir(blockPos.up());
                 }
                 getBlockWorld().setBlockToAir(blockPos);
@@ -249,9 +251,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
                     getBlockWorld().setBlockState(rail, state.withProperty(shape, flatten(currentShape)), 6);
                 }
             } else {
-                Formatter f = new Formatter();
-                BWMod.logger.warn(f.format("Rail at %s has no shape?", rail));
-                f.close();
+                BWMod.logger.warn(String.format("Rail at %s has no shape?", rail));
             }
         }
     }
@@ -277,7 +277,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
         }
 
         BlockPos blockCheck = up ? p.up() : p.down();
-        if ( !(isIgnoreable(blockCheck) || isMoveableBlock(blockCheck) || isPlatform(blockCheck)) && !set.contains(blockCheck))
+        if (!(isIgnoreable(blockCheck) || isMoveableBlock(blockCheck) || isPlatform(blockCheck)) && !set.contains(blockCheck))
             return false;
 
         set.add(p);

@@ -103,7 +103,7 @@ public final class BWMBlocks {
 	public static final Block CANDLE_HOLDER = new BlockCandleHolder().setRegistryName("candle_holder").setCreativeTab(BWCreativeTabs.BWTAB);
 	public static final Block MERGER = new BlockMerger().setRegistryName("steel_merger");
 	public static final Block SHAFT = new BlockShaft().setRegistryName("shaft");
-
+	public static final Block BUCKET = new BlockBucket().setRegistryName("bucket");
 
 	private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -200,6 +200,7 @@ public final class BWMBlocks {
 		registerBlock(CANDLE_HOLDER);
 //		registerBlock(MERGER);
 		registerBlock(SHAFT);
+		registerBlock(BUCKET);
 	}
 
 	public static void registerTileEntities() {
@@ -231,7 +232,7 @@ public final class BWMBlocks {
 		GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
 		GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
 		GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
-
+		GameRegistry.registerTileEntity(TileEntityBucket.class, "bwm.bucket");
 	}
 
 	/**

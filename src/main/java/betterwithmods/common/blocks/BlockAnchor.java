@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.api.tile.IRopeConnector;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 
 import static betterwithmods.util.DirUtils.FACING;
 
-public class BlockAnchor extends BWMBlock {
+public class BlockAnchor extends BWMBlock implements IRopeConnector {
     public static final PropertyBool LINKED = PropertyBool.create("linked");
     private static final float HEIGHT = 0.375F;
 
@@ -64,7 +65,7 @@ public class BlockAnchor extends BWMBlock {
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase entity, EnumHand hand) {
         IBlockState state = super.getStateForPlacement(world, pos, side, flX, flY, flZ, meta, entity, hand);
-        return this.setFacingInBlock(state, side);
+        return this.setFacingInBlock(state, entity.isSneaking() ? side.getOpposite() : side);
     }
 
     public IBlockState setFacingInBlock(IBlockState state, EnumFacing facing) {
@@ -175,4 +176,5 @@ public class BlockAnchor extends BWMBlock {
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, LINKED);
     }
+
 }

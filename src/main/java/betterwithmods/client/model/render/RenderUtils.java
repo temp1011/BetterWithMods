@@ -32,6 +32,8 @@ public class RenderUtils {
     private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
 
+    public static float FLUID_OFFSET = 0.005f;
+
     public static String fromStack(ItemStack stack) {
         return stack.getItem().getRegistryName().toString() + ":" + stack.getMetadata();
     }
@@ -112,6 +114,7 @@ public class RenderUtils {
         }
         int light1 = brightness >> 0x10 & 0xFFFF;
         int light2 = brightness & 0xFFFF;
+
         int r = 255;
         int g = 255;
         int b = 255;

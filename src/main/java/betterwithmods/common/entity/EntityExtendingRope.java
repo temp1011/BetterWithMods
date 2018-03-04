@@ -4,6 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.AABBArray;
+import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,6 +43,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
     private boolean up;
 
     private Map<Vec3i, IBlockState> blocks;
+    private Map<Vec3i, NBTTagCompound> tiles;
     private AABBArray blockBB;
 
     public EntityExtendingRope(World worldIn) {
@@ -55,7 +58,8 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             this.up = source.getY() < targetY;
             this.setPositionAndUpdate(source.getX() + 0.5, source.getY(), source.getZ() + 0.5);
         }
-        this.blocks = new HashMap<>();
+        this.blocks = Maps.newHashMap();
+        this.tiles = Maps.newHashMap();
         this.blockBB = null;
         this.setSize(0.1F, 1F);
         this.ignoreFrustumCheck = true;
@@ -94,6 +98,9 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             buf.writeBytes(bytes);
             blocks = deserializeBlockmap(buf);
         }
+        if (compound.hasKey("Tiles")) {
+            tiles = deserializeTiles(compound.getCompoundTag("Tiles"));
+        }
         rebuildBlockBoundingBox();
     }
 
@@ -109,7 +116,9 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         compound.setByteArray("BlockData", bytes);
-
+        NBTTagCompound t = new NBTTagCompound();
+        serializeTiles(t, tiles);
+        compound.setTag("Tiles", t);
         if (GlobalConfig.debug) {
             for (int i = 0; i < bytes.length; i++) {
                 if (i % 16 == 0) {
@@ -131,6 +140,29 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         }
     }
 
+    private void serializeTiles(NBTTagCompound tag, Map<Vec3i, NBTTagCompound> tiles) {
+        NBTTagList list = new NBTTagList();
+        tiles.forEach((vec, tile) -> {
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setLong("offset", new BlockPos(vec).toLong());
+            entry.setTag("tile", tile);
+            list.appendTag(entry);
+        });
+        tag.setTag("entries", list);
+    }
+
+    private Map<Vec3i, NBTTagCompound> deserializeTiles(NBTTagCompound tag) {
+        Map<Vec3i, NBTTagCompound> map = new HashMap<>();
+        NBTTagList list = tag.getTagList("entries", 10);
+        list.iterator().forEachRemaining(e -> {
+            NBTTagCompound entry = (NBTTagCompound) e;
+            Vec3i offset = BlockPos.fromLong(entry.getLong("offset"));
+            NBTTagCompound tileData = entry.getCompoundTag("tile");
+            map.put(offset, tileData);
+        });
+        return map;
+    }
+
     private void serializeBlockmap(ByteBuf buf, Map<Vec3i, IBlockState> blocks) {
         // TODO: Maybe add TileEntity support? It would be cool if blocks directly on top of the platform would be transported with it
         buf.writeInt(blocks.size());
@@ -145,6 +177,7 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             buf.writeBytes(blockName.getBytes(Charset.forName("UTF-8")));
             buf.writeByte((byte) block.getMetaFromState(state));
         });
+
     }
 
     private Map<Vec3i, IBlockState> deserializeBlockmap(ByteBuf buf) {
@@ -256,18 +289,6 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                 TileEntityPulley pulley = (TileEntityPulley) te;
                 if (!pulley.onJobCompleted(up, targetY, this)) {
                     BlockPos pos = this.pulley.down(this.pulley.getY() - targetY);
-                    // rails need to be placed after all the other blocks
-                    // blocks.forEach((vec, state) -> {
-                    // if (!(state.getBlock() instanceof BlockRailBase)) {
-                    // if (state.getBlock().)
-                    // getEntityWorld().setBlockState(pos.add(vec), state, 3);
-                    // }
-                    // });
-                    // blocks.forEach((vec, state) -> {
-                    // if (state.getBlock() instanceof BlockRailBase) {
-                    // getEntityWorld().setBlockState(pos.add(vec), state, 3);
-                    // }
-                    // });
 
                     int retries = 0;
                     while (!blocks.isEmpty() && retries < 10) {
@@ -277,7 +298,16 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                             BlockPos blockPos = pos.add(entry.getKey());
                             if (entry.getValue().getBlock().canPlaceBlockAt(getEntityWorld(), blockPos)) {
                                 getEntityWorld().setBlockState(blockPos, entry.getValue(), 3);
+                                if (tiles.containsKey(entry.getKey())) {
+                                    TileEntity tile = getEntityWorld().getTileEntity(blockPos);
+                                    if (tile != null) {
+                                        NBTTagCompound tag = tiles.get(entry.getKey());
+                                        tile.readFromNBT(tag);
+                                        tile.setPos(blockPos);
+                                    }
+                                }
                                 blocks.remove(entry.getKey());
+                                tiles.remove(entry.getKey());
                                 skipped = 0;
                                 break;
                             }
@@ -301,8 +331,15 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
         return false;
     }
 
-    public void addBlock(Vec3i offset, IBlockState state) {
+    public void addBlock(Vec3i offset, World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        TileEntity tile = world.getTileEntity(pos);
         blocks.put(offset, state);
+        if (tile != null) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tile.writeToNBT(tag);
+            tiles.put(offset, tag);
+        }
         rebuildBlockBoundingBox();
     }
 
@@ -377,6 +414,10 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
 
     public Map<Vec3i, IBlockState> getBlocks() {
         return blocks;
+    }
+
+    public Map<Vec3i, NBTTagCompound> getTiles() {
+        return tiles;
     }
 
     @Override
