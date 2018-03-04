@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.tile.IRopeConnector;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
 import betterwithmods.common.blocks.tile.TileEntityBucket;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,7 +30,10 @@ public class BlockBucket extends BWMBlock implements IRopeConnector {
 
     public BlockBucket() {
         super(Material.IRON);
-        setDefaultState(getDefaultState().withProperty(CONNECTED,true).withProperty(IN_WATER,false).withProperty(HAS_WATER,false));
+        setDefaultState(getDefaultState().withProperty(CONNECTED, true).withProperty(IN_WATER, false).withProperty(HAS_WATER, false));
+        setHardness(5.0F);
+        setResistance(10.0F);
+        setSoundType(SoundType.METAL);
     }
 
     @Override
@@ -71,10 +75,10 @@ public class BlockBucket extends BWMBlock implements IRopeConnector {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         IBlockState above = worldIn.getBlockState(pos.up());
-        if(above.getBlock() instanceof BlockRope || worldIn.getTileEntity(pos.up()) instanceof TileEntityPulley) {
-            return getDefaultState().withProperty(CONNECTED,true);
+        if (above.getBlock() instanceof BlockRope || worldIn.getTileEntity(pos.up()) instanceof TileEntityPulley) {
+            return getDefaultState().withProperty(CONNECTED, true);
         }
-        return super.getActualState(state, worldIn, pos).withProperty(CONNECTED,false);
+        return super.getActualState(state, worldIn, pos).withProperty(CONNECTED, false);
     }
 
     @Override

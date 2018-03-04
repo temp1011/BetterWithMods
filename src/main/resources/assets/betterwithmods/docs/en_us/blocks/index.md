@@ -9,7 +9,7 @@
 
 ## Mechanical Devices
  * [Handcrank](hand_crank.md) 
- * [Gearbox](gearbox.md)
+ * [Gearbox](wooden_gearbox.md)
  * [Wooden Axle](wooden_axle.md)
  * [Millstone](mill.md)
  * [Saw](saw.md)

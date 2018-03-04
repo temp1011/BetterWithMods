@@ -147,7 +147,8 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         withTile(world, pos).ifPresent(TileBellows::onChange);
     }
-        @Override
+
+    @Override
     public void overpower(World world, BlockPos pos) {
         breakBellows(world, pos);
     }
@@ -168,6 +169,8 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         }
     }
 
+    private final float scale = 4 / 16f;
+
     public void blowItem(BlockPos pos, EnumFacing facing, EntityItem item) {
         double x = 0, z = 0;
 
@@ -181,7 +184,7 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
                 z += facing.getAxisDirection().getOffset();
                 break;
         }
-        float scale = 1 / 16f;
+
         item.addVelocity(x * scale, 0, z * scale);
     }
 

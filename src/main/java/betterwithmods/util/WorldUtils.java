@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -102,10 +103,10 @@ public final class WorldUtils {
         }
     }
 
-    public static int getDistance(BlockPos pos1, BlockPos pos2) {
-        if (pos1 != null && pos2 != null)
-            return (int) pos1.getDistance(pos2.getX(), pos2.getY(), pos2.getZ());
-        return 0;
+    public static double getDistance(BlockPos pos1, BlockPos pos2) {
+        assert(pos1!=null);
+        assert(pos2!=null);
+        return new Vec3d(pos1).distanceTo(new Vec3d(pos2));
     }
 
     public static boolean spawnGhast(World world, BlockPos pos) {

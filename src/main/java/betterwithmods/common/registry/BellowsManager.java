@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
  */
 public class BellowsManager {
 
-    public static final StackMap<Float> bellowing = new StackMap<>(-1.0F);
+    public static final StackMap<Float> bellowing = new StackMap<>(1.0F);
 
     public static float getWeight(ItemStack stack) {
         return bellowing.get(stack);
