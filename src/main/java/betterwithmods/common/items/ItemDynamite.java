@@ -27,6 +27,7 @@ public class ItemDynamite extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+
         int flintIndex = -1;
 
         for (int i = 0; i < player.inventory.mainInventory.size(); i++) {

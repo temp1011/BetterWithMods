@@ -1,14 +1,22 @@
 package betterwithmods.event;
 
 import betterwithmods.common.items.ItemMaterial;
+import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -18,6 +26,8 @@ import net.minecraftforge.items.IItemHandler;
  */
 @Mod.EventBusSubscriber
 public class BlastingOilEvent {
+
+
     @SubscribeEvent
     public static void onPlayerTakeDamage(LivingHurtEvent e) {
         DamageSource BLAST_OIL = new DamageSource("blastingoil");
@@ -38,5 +48,26 @@ public class BlastingOilEvent {
                 living.getEntityWorld().createExplosion(null, living.posX, living.posY + living.height / 16, living.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
             }
         }
+    }
+
+    private final static HashMap<EntityItem, Boolean> onGround = Maps.newHashMap();
+
+    @SubscribeEvent
+    public static void onHitGround(TickEvent.WorldTickEvent event) {
+        World world = event.world;
+        List<EntityItem> items = world.getLoadedEntityList().stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
+        items.forEach(item -> {
+            boolean ground = item.onGround;
+            if (ground && !onGround.getOrDefault(item, true)) {
+                int count = item.getItem().getCount();
+                if (count > 0) {
+                    world.createExplosion(item, item.posX, item.posY + item.height / 16, item.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
+                    onGround.remove(item);
+                    item.setDead();
+                }
+            }
+            onGround.put(item, ground);
+        });
+
     }
 }

@@ -2,8 +2,13 @@
 
 
 ## Redstone Devices
-    
-    
+ * [Block Dispenser]
+ * [Block Detector](detector.md)
+ * [Buddy Block](buddy_block.md)
+ * [Hibachi](hibachi.md)
+ * [Lens](lens.md)
+ * [Light Block](light.md)
+ 
 ## Mechanical Generators
  * [Windmill](windmill.md)
  * [Waterwheel](waterwheel.md)        
@@ -23,5 +28,6 @@
  * [Infernal Enchanter](infernal_enchanter.md)
  * [Chopping Block](chopping_block.md)
  * [Minimized Wood](minimized_wood.md)
+ * [Mining Charge](mining_charge.md)
 
 
