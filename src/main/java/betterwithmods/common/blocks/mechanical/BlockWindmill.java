@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.api.IColor;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.mechanical.tile.IColor;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillVertical;
 import betterwithmods.util.ColorUtils;
@@ -9,6 +9,7 @@ import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -31,16 +32,16 @@ public class BlockWindmill extends BlockAxleGenerator {
         ItemStack stack = player.getHeldItem(hand);
         TileEntity tile = world.getTileEntity(pos);
 
-        if (world.isRemote && !stack.isEmpty() && ColorUtils.contains(stack.getItem(), stack.getItemDamage()))
-            return true;
-
-        if (!world.isRemote && tile != null && tile instanceof IColor && !stack.isEmpty() && ColorUtils.contains(stack.getItem(), stack.getItemDamage())) {
-            IColor color = (IColor) tile;
-            int meta = ColorUtils.get(stack.getItem(), stack.getItemDamage()); //reverseMeta[stack.getItemDamage()];
-            if (color.dyeBlade(meta)) {
-                if (!player.capabilities.isCreativeMode)
-                    stack.shrink(1);
+        EnumDyeColor color = ColorUtils.getColor(stack);
+        if (color != null) {
+            if (world.isRemote)
                 return true;
+            if(tile instanceof IColor) {
+                if(((IColor) tile).dye(color)) {
+                    if (!player.capabilities.isCreativeMode)
+                        stack.shrink(1);
+                    return true;
+                }
             }
         }
         return false;

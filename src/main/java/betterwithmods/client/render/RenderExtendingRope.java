@@ -1,6 +1,9 @@
 package betterwithmods.client.render;
 
+import betterwithmods.client.model.TESRBucket;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockBucket;
+import betterwithmods.common.blocks.tile.TileEntityBucket;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.util.AABBArray;
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +48,7 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
 
         vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
         BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-        GlStateManager.translate(x - blockpos.getX() - 0.5, (float) (y- (double) blockpos.getY()), z - blockpos.getZ() - 0.5);
+        GlStateManager.translate(x - blockpos.getX() - 0.5, (float) (y - (double) blockpos.getY()), z - blockpos.getZ() - 0.5);
         GlStateManager.translate(-0.005, 0, -0.005);
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
@@ -56,8 +60,19 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
             i++;
         }
 
-        entity.getBlocks().forEach((vec, state) -> blockrendererdispatcher.getBlockModelRenderer().renderModel(world,
-                blockrendererdispatcher.getModelForState(state), state, blockpos.add(vec), vertexbuffer, false, 0));
+        entity.getBlocks().forEach((vec, state) -> {
+            blockrendererdispatcher.getBlockModelRenderer().renderModel(world,
+                    blockrendererdispatcher.getModelForState(state), state, blockpos.add(vec), vertexbuffer, false, 0);
+            if (state.getBlock() instanceof BlockBucket) {
+                if (entity.getTiles().containsKey(vec)) {
+                    TileEntityBucket bucket = new TileEntityBucket();
+                    NBTTagCompound tag = entity.getTiles().get(vec);
+                    bucket.readFromNBT(tag);
+                    new TESRBucket().render(bucket, x, y, z, partialTicks, 0, 0);
+                }
+            }
+
+        });
 
         tessellator.draw();
 

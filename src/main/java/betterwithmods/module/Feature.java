@@ -184,7 +184,16 @@ public class Feature {
         return ConfigHelper.loadPropIntList(propName, configCategory, comment, default_);
     }
 
+
+    public final ItemStack[] loadItemStackArray(String propName, String comment, ItemStack[] default_) {
+        return ConfigHelper.loadItemStackArray(propName, configCategory, comment, default_);
+    }
+
     public final List<ItemStack> loadItemStackList(String propName, String comment, ItemStack[] default_) {
+        return ConfigHelper.loadItemStackList(propName, configCategory, comment, default_);
+    }
+
+    public final List<ItemStack> loadItemStackList(String propName, String comment, String[] default_) {
         return ConfigHelper.loadItemStackList(propName, configCategory, comment, default_);
     }
 

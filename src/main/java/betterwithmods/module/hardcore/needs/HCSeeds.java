@@ -78,7 +78,7 @@ public class HCSeeds extends Feature {
         while (iter.hasNext()) {
             item = iter.next();
             ItemStack stack = item.getItem();
-            if (BWOreDictionary.hasSuffix(stack, "crop"))
+            if (BWOreDictionary.hasPrefix(stack, "crop"))
                 iter.remove();
         }
 
