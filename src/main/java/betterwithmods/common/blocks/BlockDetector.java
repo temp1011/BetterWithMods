@@ -2,17 +2,13 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.DirUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockVine;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -64,7 +60,7 @@ public class BlockDetector extends BlockRotate {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-        super.onBlockPlacedBy(world,pos,state,entity,stack);
+        super.onBlockPlacedBy(world, pos, state, entity, stack);
         EnumFacing facing = DirUtils.convertEntityOrientationToFacing(entity, EnumFacing.NORTH);
         setFacingInBlock(state, facing);
 
@@ -84,32 +80,7 @@ public class BlockDetector extends BlockRotate {
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        boolean blockDetection = detectBlock(world, pos);
-        boolean detected = checkDetection(state, world, pos);
-
-        EnumFacing facing = getFacing(world.getBlockState(pos));
-        BlockPos offset = pos.offset(facing);
-
-        if (world.isAirBlock(offset)) {
-            if (!detected) {
-                if (world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering())) {
-                    if (world.getBiomeForCoordsBody(offset).canRain() || state.getValue(DirUtils.FACING) == EnumFacing.UP)
-                        detected = true;
-                }
-            }
-            world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-        } else if (blockDetection)
-            detected = true;
-
-        if (detected) {
-            if (!isBlockOn(world, pos))
-                setBlockOn(world, pos, true);
-        } else if (isBlockOn(world, pos)) {
-            if (!blockDetection)
-                setBlockOn(world, pos, false);
-            else
-                world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-        }
+        setBlockOn(world, pos, detectBlock(world, pos));
     }
 
     @Override
@@ -124,9 +95,7 @@ public class BlockDetector extends BlockRotate {
 
     @Override
     public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        if (isBlockOn(world, pos))
-            return 15;
-        return 0;
+        return isBlockOn(world, pos) ? 15 : 0;
     }
 
     public EnumFacing getFacing(IBlockState state) {
@@ -155,66 +124,44 @@ public class BlockDetector extends BlockRotate {
                 world.neighborChanged(pos.offset(EnumFacing.getFront(i)), this, pos);
             }
         }
+        world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
     }
 
     public boolean detectBlock(World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacing(world.getBlockState(pos)));
-        Block target = world.getBlockState(offset).getBlock();
+        EnumFacing facing = getFacing(world.getBlockState(pos));
+        BlockPos offset = pos.offset(facing);
+        IBlockState blockState = world.getBlockState(offset);
+        Block target = blockState.getBlock();
 
-        if (world.isAirBlock(offset) && (world.getBiomeForCoordsBody(offset).canRain() && world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering()))) {
+        if (facing == EnumFacing.UP && world.isAirBlock(offset) && (world.getBiomeForCoordsBody(offset).canRain() && world.canBlockSeeSky(offset) && (world.isRaining() || world.isThundering()))) {
             return true;
-        }
-        if (target == BWMBlocks.LENS) {
+        } else if (target == BWMBlocks.LENS) {
             BlockLens lens = (BlockLens) target;
-            if (lens.getFacing(world.getBlockState(offset)) == DirUtils.getOpposite(getFacing(world.getBlockState(pos))) && lens.isLit(world, offset))
-                return true;
-        } else if (world.getBlockState(offset).getMaterial().isSolid())
+            return lens.getFacing(blockState) == DirUtils.getOpposite(getFacing(world.getBlockState(pos))) && lens.isLit(world, offset);
+        } else if (blockState.getMaterial().isSolid() || target instanceof BlockVine || target instanceof BlockReed) {
             return true;
-        else if (!world.getBlockState(offset).isOpaqueCube() && !world.isAirBlock(offset)) {
+        } else if (target == BWMBlocks.LIGHT_SOURCE) {
+            return blockState.getValue(DirUtils.FACING) == facing;
+        } else if (target instanceof BlockHemp) {
+            return blockState.getValue(BlockHemp.TOP);
+        } else if (world.isAirBlock(offset)) {
             int x = offset.getX();
             int y = offset.getY();
             int z = offset.getZ();
             AxisAlignedBB collisionBox = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
             List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, collisionBox);
             world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
-            if (entityList.size() > 0)
+            if (!entityList.isEmpty())
                 return true;
-        }
-        return false;
-    }
-
-    public boolean checkDetection(IBlockState state, World world, BlockPos pos) {
-        BlockPos offset = pos.offset(getFacing(world.getBlockState(pos)));
-
-        if (world.isAirBlock(offset)) {
-            int x = offset.getX();
-            int y = offset.getY();
-            int z = offset.getZ();
-            AxisAlignedBB collisionBox = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
-            List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, collisionBox);
-            entityList.removeIf(e -> e.isDead); // remove dead entities, prevents dead moving pulley blocks from triggering it
-            entityList.removeIf(e -> !(e instanceof EntityItem) && !(e instanceof EntityLivingBase)); // remove anything that isn't an item or a mob/player
-            if (entityList.size() > 0)
-                return true;
-            BlockPos below = offset.offset(EnumFacing.DOWN);
-            if (world.getBlockState(below).getBlock() instanceof BlockCrops && !(world.getBlockState(below).getBlock() instanceof BlockHemp) && world.getBlockState(below).getBlock().getMetaFromState(world.getBlockState(below)) >= ((BlockCrops) world.getBlockState(below).getBlock()).getMaxAge()) {
-                return true;
-            } else if (world.getBlockState(offset).getBlock() == BWMBlocks.LIGHT_SOURCE && ((BlockInvisibleLight) world.getBlockState(offset).getBlock()).getFacing(world.getBlockState(offset)) == getFacing(world.getBlockState(pos))) {
-                return true;
-            }
-        } else {
-            if (world.getBlockState(offset).getBlock() instanceof BlockCrops && world.getBlockState(offset).getBlock().getMetaFromState(world.getBlockState(offset)) >= ((BlockCrops) world.getBlockState(offset).getBlock()).getMaxAge()) {
-                return true;
-            } else if (world.getBlockState(offset).getBlock() == Blocks.NETHER_WART && world.getBlockState(offset).getBlock().getMetaFromState(world.getBlockState(offset)) >= 3)
-                return true;
-            else if (world.getBlockState(offset).getBlock() == Blocks.REEDS)
-                return true;
-            else if (world.getBlockState(offset).getBlock() instanceof BlockVine) {
-                if (state.getValue(DirUtils.FACING) == EnumFacing.UP)
-                    return true;
-                else {
-                    IBlockState vState = world.getBlockState(offset);
-                    return vState.getValue(BlockVine.getPropertyFor(state.getValue(DirUtils.FACING).getOpposite()));
+            else {
+                //Crops except hemp;
+                BlockPos downOffset = offset.down();
+                IBlockState downState = world.getBlockState(downOffset);
+                Block downBlock = downState.getBlock();
+                if (downBlock instanceof BlockCrops) {
+                    return ((BlockCrops) downBlock).isMaxAge(downState);
+                } else if (downBlock == Blocks.NETHER_WART) {
+                    return downState.getValue(BlockNetherWart.AGE) >= 3;
                 }
             }
         }
