@@ -28,7 +28,10 @@ public class CreeperShearing extends Feature {
                 if (e.getSide().isServer() && creeper.isEntityAlive() && !e.getItemStack().isEmpty()) {
                     Item item = e.getItemStack().getItem();
                     if (item instanceof ItemShears) {
+                        if(e.getEntityPlayer().getCooldownTracker().hasCooldown(item))
+                            return;
                         e.getEntityPlayer().getCooldownTracker().setCooldown(item, 20);
+                        e.getItemStack().damageItem(1,e.getEntityLiving());
                         InvUtils.ejectStack(e.getWorld(), creeper.posX, creeper.posY, creeper.posZ, new ItemStack(BWMItems.CREEPER_OYSTER));
                         EntityShearedCreeper shearedCreeper = new EntityShearedCreeper(e.getWorld());
                         creeper.attackEntityFrom(new DamageSource(""), 0);
