@@ -48,7 +48,7 @@ public class BlockBrokenGearbox extends BWMBlock {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (PlayerHelper.isHolding(playerIn, repairIngredient)) {
-            if (InvUtils.usePlayerItem(playerIn, EnumFacing.UP, repairIngredient, type == EnumTier.WOOD ? 2 : 4)) {
+            if (InvUtils.usePlayerItemStrict(playerIn, EnumFacing.UP, repairIngredient, type == EnumTier.WOOD ? 2 : 4)) {
                 Block block = type == EnumTier.WOOD ? BWMBlocks.WOODEN_GEARBOX : BWMBlocks.STEEL_GEARBOX;
                 worldIn.setBlockState(pos, block.getDefaultState().withProperty(DirUtils.FACING, state.getValue(DirUtils.FACING)));
                 worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_DOOR_CLOSE, SoundCategory.BLOCKS, 1, 1);
