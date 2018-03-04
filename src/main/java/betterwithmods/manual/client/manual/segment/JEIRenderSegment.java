@@ -2,7 +2,7 @@ package betterwithmods.manual.client.manual.segment;
 
 import betterwithmods.manual.api.manual.ImageRenderer;
 import betterwithmods.module.compat.jei.JEI;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 public class JEIRenderSegment extends RenderSegment implements IJEISegment {
 
@@ -17,8 +17,8 @@ public class JEIRenderSegment extends RenderSegment implements IJEISegment {
     @Override
     public boolean onMouseClick(final int mouseX, final int mouseY) {
         if (JEI.JEI_RUNTIME != null && recipeOutput != null) {
-            ItemStack stack = getStack(recipeOutput);
-            JEI.showRecipe(stack);
+            Ingredient ingredient = getIngredient(recipeOutput);
+            JEI.showRecipe(ingredient);
             return true;
         }
         return false;

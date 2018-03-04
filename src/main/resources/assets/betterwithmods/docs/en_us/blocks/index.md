@@ -1,5 +1,6 @@
 # Blocks
 
+
 ## Redstone Devices
     
     
@@ -17,6 +18,7 @@
  
 ## Other
  * [Infernal Enchanter](infernal_enchanter.md)
-
+ * [Chopping Block](chopping_block.md)
+ * [Minimized Wood](minimized_wood.md)
 
 

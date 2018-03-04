@@ -4,7 +4,7 @@ Better With Mods is a mod that adds many new items and blocks, as well as having
 
 This mod is broken into two main sections, the Core mod and the Modules system.
 The Core mod consists of:
-   * [Crash Course](mechanical/index.md) 
+   * [Crash Course](crashcourse/index.md) 
    * [Blocks](blocks/index.md)
    * [Items](items/index.md)  
 This content cannot be removed or disabled, some can be configured.  
@@ -16,7 +16,7 @@ The Modules System adds the majority of the content, it is broken into Modules w
  
 
 ## Tutorial
-* [Progression](mechanical/index.md)
+* [Crash Course](crashcourse/index.md)
 
 ## Content
 * [Blocks](blocks/index.md)

@@ -1,7 +1,7 @@
 package betterwithmods.manual.client.manual.segment;
 
 import betterwithmods.module.compat.jei.JEI;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
@@ -63,8 +63,8 @@ public final class JEISegment extends TextSegment implements InteractiveSegment,
 	public boolean onMouseClick(final int mouseX, final int mouseY) {
 		if (Loader.isModLoaded("jei")) {
 			if (JEI.JEI_RUNTIME != null && recipeOutput != null) {
-				ItemStack stack = getStack(recipeOutput);
-				JEI.showRecipe(stack);
+				Ingredient i = getIngredient(recipeOutput);
+				JEI.showRecipe(i);
 				return true;
 			}
 		}

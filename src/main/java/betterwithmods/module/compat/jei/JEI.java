@@ -35,6 +35,7 @@ import mezz.jei.gui.Focus;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -44,9 +45,7 @@ import java.util.List;
 
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.HOPPER;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.MILL;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.TURNTABLE;
+import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
 
 @mezz.jei.api.JEIPlugin
 public class JEI implements IModPlugin {
@@ -139,10 +138,10 @@ public class JEI implements IModPlugin {
         }
     }
 
-    public static void showRecipe(ItemStack stack) {
-	    if (!stack.isEmpty()) {
-	    	IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
-		    JEI.JEI_RUNTIME.getRecipesGui().show(focus);
-	    }
+    public static void showRecipe(Ingredient ingredient) {
+        ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
+        IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
+        JEI.JEI_RUNTIME.getRecipesGui().show(focus);
     }
+
 }
