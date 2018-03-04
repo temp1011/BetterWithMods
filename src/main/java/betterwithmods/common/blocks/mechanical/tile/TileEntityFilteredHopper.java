@@ -137,7 +137,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         ItemStack insert = InvUtils.insert(inv.get(), stack, STACK_SIZE, false);
                         InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE - insert.getCount(), false);
                     }
-                } else {
+                } else if(canDropIntoBlock(pos.down())) {
                     InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE, false);
                     InvUtils.spawnStack(world, pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, STACK_SIZE, stack);
                 }
@@ -147,7 +147,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             ejectCounter++;
         }
         if (ejectXPCounter > 2) {
-            if (world.getBlockState(pos.down()).getMaterial().isReplaceable()) {
+            if (canDropIntoBlock(pos.down())) {
                 if (experienceCount > 19) {
                     experienceCount -= 20;
                     spawnEntityXPOrb(20);
@@ -157,6 +157,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         } else {
             ejectXPCounter++;
         }
+    }
+
+    private boolean canDropIntoBlock(BlockPos pos)
+    {
+        return world.getBlockState(pos).getMaterial().isReplaceable();
     }
 
     @Override
