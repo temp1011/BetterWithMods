@@ -61,13 +61,13 @@ public class EntityUrn extends EntitySnowball {
                 boolean grew = false;
                 for (BlockPos p : pool) {
                     IBlockState state = world.getBlockState(p);
-                    if (state != null && state.getBlock() == BWMBlocks.NETHER_GROWTH) {
+                    if (state.getBlock() == BWMBlocks.NETHER_GROWTH) {
                         BlockNetherGrowth b = (BlockNetherGrowth) state.getBlock();
                         for(int i =0;i<10;i++)
                             b.grow(world, p, state, rand);
                         grew = true;
                     }
-                    if (state != null && state.getBlock() == BWMBlocks.BLOOD_SAPLING) {
+                    if (state.getBlock() == BWMBlocks.BLOOD_SAPLING) {
                         BlockBloodSapling sapling = (BlockBloodSapling)state.getBlock();
                         if (sapling.generateTree(world, p, world.getBlockState(p), rand))
                             grew = true;

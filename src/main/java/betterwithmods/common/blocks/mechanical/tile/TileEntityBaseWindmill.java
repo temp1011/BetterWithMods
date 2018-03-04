@@ -1,6 +1,8 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.IColor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
@@ -11,7 +13,7 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < bladeMeta.length; i++) {
             if (tag.hasKey("Color_" + i))
                 bladeMeta[i] = tag.getInteger("Color_" + i);
         }
@@ -23,7 +25,7 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < bladeMeta.length; i++) {
             t.setInteger("Color_" + i, bladeMeta[i]);
         }
         t.setByte("DyeIndex", this.dyeIndex);
@@ -33,13 +35,13 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     }
 
     @Override
-    public boolean dyeBlade(int dyeColor) {
+    public boolean dye(EnumDyeColor color) {
         boolean dyed = false;
-        if (bladeMeta[dyeIndex] != dyeColor) {
-            bladeMeta[dyeIndex] = dyeColor;
+        if (bladeMeta[dyeIndex] != color.getMetadata()) {
+            bladeMeta[dyeIndex] = color.getMetadata();
             dyed = true;
             IBlockState state = getBlockWorld().getBlockState(this.pos);
-            this.getBlockWorld().notifyBlockUpdate(this.pos, state, state, 3);
+            this.getBlockWorld().notifyBlockUpdate(this.pos, state, state, 2);
             this.markDirty();
         }
         dyeIndex++;
@@ -54,8 +56,8 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     }
 
     @Override
-    public int getColorFromBlade(int blade) {
-        return bladeMeta[blade];
+    public int getColor(int index) {
+        return bladeMeta[index];
     }
 
     @Override

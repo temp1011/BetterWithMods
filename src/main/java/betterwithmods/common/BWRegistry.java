@@ -29,7 +29,10 @@ import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.module.hardcore.world.HCTorches;
-import betterwithmods.util.*;
+import betterwithmods.util.DispenserBehaviorDynamite;
+import betterwithmods.util.InvUtils;
+import betterwithmods.util.MechanicalUtil;
+import betterwithmods.util.VillagerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.Entity;
@@ -134,7 +137,6 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         BellowsManager.postInit();
-        ColorUtils.initColors();
     }
 
     public static void postPostInit() {

@@ -1,6 +1,6 @@
 package betterwithmods.client.model;
 
-import betterwithmods.common.blocks.mechanical.tile.IColor;
+import betterwithmods.api.IColor;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -13,7 +13,7 @@ public class ModelRendererParent extends ModelRenderer {
         if (!this.childModels.isEmpty() && this.childModels.size() > 0) {
             for (int i = 0; i < this.childModels.size(); i++) {
                 if (this.childModels.get(i) instanceof ModelRendererChild) {
-                    ((ModelRendererChild) this.childModels.get(i)).renderWithColor(scale, color.getColorFromBlade(i));
+                    ((ModelRendererChild) this.childModels.get(i)).renderWithColor(scale, color.getColor(i));
                 } else {
                     this.childModels.get(i).render(scale);
                 }

@@ -294,7 +294,7 @@ public class BWOreDictionary {
         return IntStream.of(OreDictionary.getOreIDs(stack)).mapToObj(OreDictionary::getOreName).collect(Collectors.toList());
     }
 
-    public static boolean hasSuffix(ItemStack stack, String suffix) {
+    public static boolean hasPrefix(ItemStack stack, String suffix) {
         return listContains(stack, getOreNames(suffix));
     }
 
