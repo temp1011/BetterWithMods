@@ -2,17 +2,13 @@
 
 
 ## Redstone Devices
- * [Block Dispenser]
+ * [Block Dispenser](block_dispenser.md)
  * [Block Detector](detector.md)
  * [Buddy Block](buddy_block.md)
  * [Hibachi](hibachi.md)
  * [Lens](lens.md)
  * [Light Block](light.md)
  
-## Mechanical Generators
- * [Windmill](windmill.md)
- * [Waterwheel](waterwheel.md)        
-
 ## Mechanical Devices
  * [Handcrank](hand_crank.md) 
  * [Gearbox](wooden_gearbox.md)
@@ -23,6 +19,11 @@
  * [Bellows](bellows.md)
  * [Mechanical Booster Rail](booster.md)
  * [Pulley](pulley.md)
+ * [Turntable](turntable.md)
+ 
+## Mechanical Generators
+ * [Windmill](windmill.md)
+ * [Waterwheel](waterwheel.md)        
  
 ## Other
  * [Infernal Enchanter](infernal_enchanter.md)

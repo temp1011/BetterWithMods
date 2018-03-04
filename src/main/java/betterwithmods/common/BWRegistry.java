@@ -184,7 +184,6 @@ public class BWRegistry {
                     return stack;
                 });
         BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(Blocks.STONE, new BehaviorSilkTouch());
-        BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(BWMBlocks.STUMP, new BehaviorSilkTouch());
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityWolf.class, (world, pos, entity, stack) -> {
             if( ((EntityAgeable)entity).isChild())
                 return NonNullList.create();
