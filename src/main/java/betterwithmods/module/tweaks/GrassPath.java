@@ -1,6 +1,7 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.module.Feature;
+import com.google.common.collect.Lists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,10 +19,12 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.List;
+
 import static betterwithmods.module.hardcore.needs.HCMovement.dirtpathQuality;
 
 public class GrassPath extends Feature {
-
+    public static List<ItemStack> SHOVEL_BLACKLIST = Lists.newArrayList();
     public static int getShovelQuality(ItemStack stack) {
         Item item = stack.getItem();
         if (!item.getToolClasses(stack).contains("shovel"))
@@ -31,6 +34,11 @@ public class GrassPath extends Feature {
         } else {
             return item.getHarvestLevel(stack, "shovel", null, null);
         }
+    }
+
+    @Override
+    public void setupConfig() {
+        SHOVEL_BLACKLIST = loadItemStackList("Shovel Blacklist", "Blacklist an item for being able to make grass paths", new String[]{ "psi:cad"});
     }
 
     @Override

@@ -188,6 +188,10 @@ public class Feature {
         return ConfigHelper.loadItemStackList(propName, configCategory, comment, default_);
     }
 
+    public final List<ItemStack> loadItemStackList(String propName, String comment,String[] default_) {
+        return ConfigHelper.loadItemStackList(propName, configCategory, comment, default_);
+    }
+
     public final HashMap<Ingredient, Integer> loadItemStackIntMap(String propName, String comment, String[] _default) {
         return ConfigHelper.loadItemStackIntMap(propName, configCategory, comment, _default);
     }
