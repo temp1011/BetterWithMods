@@ -54,28 +54,27 @@ import java.util.function.Predicate;
  * Created by primetoxinz on 7/23/17.
  */
 public class HCFishing extends Feature {
-
     public static boolean requireBait, restrictToOpenWater;
     public static int minimumWaterDepth;
 
-   public static ResourceLocation HCFISHING_LOOT = LootTableList.register(new ResourceLocation(BWMod.MODID,"gameplay/fishing"));
+    public static ResourceLocation HCFISHING_LOOT = LootTableList.register(new ResourceLocation(BWMod.MODID, "gameplay/fishing"));
 
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
-    private static final Ingredient BAIT = Ingredient.fromStacks(
-            new ItemStack(Items.ROTTEN_FLESH),
-            new ItemStack(Items.SPIDER_EYE),
-            new ItemStack(BWMItems.CREEPER_OYSTER),
-            new ItemStack(Items.FISH, 1, 2),
-            new ItemStack(Items.FISH, 1, 3),
-            new ItemStack(BWMItems.BAT_WING, 1),
-            new ItemStack(BWMItems.COOKED_BAT_WING, 1));
-
+    private static Ingredient BAIT = Ingredient.EMPTY;
 
     @Override
     public void setupConfig() {
         requireBait = loadPropBool("Require Bait", "Change Fishing Rods to require being Baited with certain items to entice fish, they won't nibble without it!", true);
         restrictToOpenWater = loadPropBool("Restrict to Open Water", "Fishing on underground locations won't work, hook must be placed on a water block with line of sight to the sky.", true);
         minimumWaterDepth = loadPropInt("Minimum Water Depth", "If higher than 1, requires bodies of water to have a minimum depth for fishing to be successful.", 3);
+        BAIT = Ingredient.fromStacks(loadItemStackArray("Bait", "Add items as valid fishing bait", new ItemStack[]{
+                new ItemStack(Items.SPIDER_EYE),
+                new ItemStack(BWMItems.CREEPER_OYSTER),
+                new ItemStack(Items.FISH, 1, 2),
+                new ItemStack(Items.FISH, 1, 3),
+                new ItemStack(BWMItems.BAT_WING, 1),
+                new ItemStack(BWMItems.COOKED_BAT_WING, 1)
+        }));
     }
 
     @Override
@@ -88,7 +87,7 @@ public class HCFishing extends Feature {
     //Override loottables
     @SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
-        if(event.getName().equals(LootTableList.GAMEPLAY_FISHING)) {
+        if (event.getName().equals(LootTableList.GAMEPLAY_FISHING)) {
             event.setTable(event.getLootTableManager().getLootTableFromLocation(HCFISHING_LOOT));
         }
     }

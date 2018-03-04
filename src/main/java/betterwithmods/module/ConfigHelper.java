@@ -178,11 +178,20 @@ public class ConfigHelper {
         return Arrays.stream(loadPropStringList(propName, category, desc, default_)).map(ConfigHelper::stackFromString).collect(Collectors.toList());
     }
 
-
     public static List<ItemStack> loadItemStackList(String propName, String category, String desc, ItemStack[] default_) {
         String[] strings_ = new String[default_.length];
         Arrays.stream(default_).map(ConfigHelper::fromStack).collect(Collectors.toList()).toArray(strings_);
         return loadItemStackList(propName, category, desc, strings_);
+    }
+
+    public static ItemStack[] loadItemStackArray(String propName, String category, String desc, String[] default_) {
+        return Arrays.stream(loadPropStringList(propName, category, desc, default_)).map(ConfigHelper::stackFromString).toArray(ItemStack[]::new);
+    }
+
+    public static ItemStack[] loadItemStackArray(String propName, String category, String desc, ItemStack[] default_) {
+        String[] strings_ = new String[default_.length];
+        Arrays.stream(default_).map(ConfigHelper::fromStack).collect(Collectors.toList()).toArray(strings_);
+        return loadItemStackArray(propName, category, desc, strings_);
     }
 
 
