@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -34,7 +35,7 @@ public class HCGloom extends Feature {
     private static final DataParameter<Integer> GLOOM_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     private static final List<SoundEvent> sounds = Lists.newArrayList(SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundEvents.ENTITY_ENDERMEN_SCREAM, SoundEvents.ENTITY_SILVERFISH_AMBIENT, SoundEvents.ENTITY_WOLF_GROWL);
     private static Set<Integer> dimensionWhitelist;
-    private static List<ItemStack> gloomOverrideItems;
+    private static Ingredient gloomOverrideItems;
 
     private static boolean dangers;
 
@@ -73,7 +74,7 @@ public class HCGloom extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        gloomOverrideItems = loadItemStackList("Gloom Override Items", "Items in this list will override the gloom effect while held in your hand, this allows support for Dynamic Lightning and similar. Add one item per line  (ex minecraft:torch:0)", new ItemStack[0]);
+        gloomOverrideItems = Ingredient.fromStacks(loadItemStackArray("Gloom Override Items", "Items in this list will override the gloom effect while held in your hand, this allows support for Dynamic Lightning and similar. Add one item per line  (ex minecraft:torch:0)", new ItemStack[0]));
     }
 
     @SubscribeEvent
@@ -103,7 +104,7 @@ public class HCGloom extends Feature {
             int tick = getGloomTime(player);
             if (PlayerHelper.isHolding(player, gloomOverrideItems))
                 light = 15;
-            if(player.isPotionActive(MobEffects.NIGHT_VISION))
+            if (player.isPotionActive(MobEffects.NIGHT_VISION))
                 light = 15;
             if (light <= 0) {
                 incrementGloomTime(player);

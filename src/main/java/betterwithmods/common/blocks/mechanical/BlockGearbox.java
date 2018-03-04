@@ -101,7 +101,6 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     }
 
 
-
     private void emitGearboxParticles(World world, BlockPos pos, Random rand) {
         for (int i = 0; i < 5; i++) {
             float flX = pos.getX() + rand.nextFloat();
@@ -198,7 +197,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     public void overpower(World world, BlockPos pos) {
         overpowerSound(world, pos);
         EnumFacing facing = world.getBlockState(pos).getValue(DirUtils.FACING);
-        Block block = this == BWMBlocks.WOODEN_GEARBOX ? BWMBlocks.WOODEN_BROKEN_GEARBOX : BWMBlocks.STEEL_BROKEN_GEARBOX;
+        Block block = type == EnumTier.WOOD ? BWMBlocks.WOODEN_BROKEN_GEARBOX : BWMBlocks.STEEL_BROKEN_GEARBOX;
         world.setBlockState(pos, block.getDefaultState().withProperty(DirUtils.FACING, facing));
     }
 
@@ -297,7 +296,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return getStateForAdvancedRotationPlacement(getDefaultState(),facing,flX,flY,flZ);
+        return getStateForAdvancedRotationPlacement(getDefaultState(), facing, flX, flY, flZ);
     }
 
     @Override

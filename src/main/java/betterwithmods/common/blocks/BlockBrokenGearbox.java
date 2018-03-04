@@ -1,6 +1,11 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.InvUtils;
+import betterwithmods.util.player.PlayerHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -9,7 +14,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -24,10 +33,29 @@ public class BlockBrokenGearbox extends BWMBlock {
     public static final PropertyInteger REPAIR = PropertyInteger.create("repair", 0, 1);
 
     public EnumTier type;
+    public Ingredient repairIngredient;
 
     public BlockBrokenGearbox(EnumTier type) {
         super(Material.WOOD);
         this.type = type;
+        if (type == EnumTier.WOOD) {
+            repairIngredient = Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+        } else {
+            repairIngredient = Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR, 2));
+        }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (PlayerHelper.isHolding(playerIn, repairIngredient)) {
+            if (InvUtils.usePlayerItem(playerIn, EnumFacing.UP, repairIngredient, type == EnumTier.WOOD ? 2 : 4)) {
+                Block block = type == EnumTier.WOOD ? BWMBlocks.WOODEN_GEARBOX : BWMBlocks.STEEL_GEARBOX;
+                worldIn.setBlockState(pos, block.getDefaultState().withProperty(DirUtils.FACING, state.getValue(DirUtils.FACING)));
+                worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_DOOR_CLOSE, SoundCategory.BLOCKS, 1, 1);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

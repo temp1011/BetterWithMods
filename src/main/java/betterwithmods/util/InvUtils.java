@@ -26,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,29 +35,31 @@ public class InvUtils {
     public static <T> NonNullList<T> asNonnullList(T... array) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (array != null)
-            nonNullList.addAll(Arrays.stream(array).filter(e -> e != null).collect(Collectors.toList()));
+            nonNullList.addAll(Arrays.stream(array).filter(Objects::nonNull).collect(Collectors.toList()));
         return nonNullList;
     }
 
     public static <T> NonNullList<T> asNonnullList(List<T> list) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (list != null)
-            nonNullList.addAll(list.stream().filter(e -> e != null).collect(Collectors.toList()));
+            nonNullList.addAll(list.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         return nonNullList;
     }
 
-    public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
+    public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
-        if (inventory != null) {
-            return consumeItemsInInventoryStrict(inventory, stack, amount, false);
-        }
-        return false;
+        return inventory != null && consumeItemsInInventoryStrict(inventory, ingredient, amount, false);
     }
 
     public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, ItemStack stack, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        return inventory != null && consumeItemsInInventory(inventory, stack, amount, false);
+    }
+
+    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
         if (inventory != null) {
-            return consumeItemsInInventory(inventory, stack, amount, false);
+            return consumeItemsInInventory(inventory, ingredient, amount, false);
         }
         return false;
     }
@@ -265,7 +268,7 @@ public class InvUtils {
 
     public static int countOresInInventory(IItemHandler inv, List<ItemStack> list) {
         int ret = 0;
-        if (list != null && !list.isEmpty() && list.size() > 0) {
+        if (list != null && !list.isEmpty()) {
             for (ItemStack oreStack : list) {
                 ret += countItemStacksInInventory(inv, oreStack);
             }
@@ -273,28 +276,14 @@ public class InvUtils {
         return ret;
     }
 
-    public static boolean consumeItemsInInventoryStrict(IItemHandlerModifiable inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
+    public static boolean consumeItemsInInventoryStrict(IItemHandlerModifiable inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                if (toCheck.isItemEqual(stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-                    if (toCheck.hasTagCompound()) {
-                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
-                            if (stack.getCount() >= sizeOfStack) {
-                                decrStackSize(inv, i, sizeOfStack);
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                    } else {
-                        if (stack.getCount() >= sizeOfStack) {
-                            if (!simulate)
-                                decrStackSize(inv, i, sizeOfStack);
-                            return true;
-                        } else {
-                            return false;
-                        }
+                if (ingredient.apply(stack)) {
+                    if (stack.getCount() >= sizeOfStack) {
+                        decrStackSize(inv, i, sizeOfStack);
+                        return true;
                     }
                 }
             }
@@ -305,41 +294,20 @@ public class InvUtils {
     public static boolean consumeItemsInInventory(IItemHandler inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
-            if (toCheck.isItemEqual(inSlot) || (toCheck.getItem() == inSlot.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-//                if (toCheck.hasTagCompound() && ItemStack.areItemStackTagsEqual(toCheck, inSlot)) {
+            if (InvUtils.matches(toCheck, inSlot)) {
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
-//                } else {
-//                    return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
-//                }
             }
         }
-//        for (int i = 0; i < inv.getSlots(); i++) {
-//            ItemStack stack = inv.getStackInSlot(i);
-//            if (!stack.isEmpty()) {
-//                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
-//                    if (toCheck.hasTagCompound()) {
-//                        if (ItemStack.areItemStackTagsEqual(toCheck, stack)) {
-//                            if (stack.getCount() >= sizeOfStack) {
-//                                decrStackSize(inv, i, sizeOfStack);
-//                                return true;
-//                            }
-//                            sizeOfStack -= stack.getCount();
-//                            if (!simulate)
-//                                inv.setStackInSlot(i, ItemStack.EMPTY);
-//                        }
-//                    } else {
-//                        if (stack.getCount() >= sizeOfStack) {
-//                            if (!simulate)
-//                                decrStackSize(inv, i, sizeOfStack);
-//                            return true;
-//                        }
-//                        sizeOfStack -= stack.getCount();
-//                        if (!simulate)
-//                            inv.setStackInSlot(i, ItemStack.EMPTY);
-//                    }
-//                }
-//            }
-//        }
+        return false;
+    }
+
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
+        for (int i = 0; i < inv.getSlots(); i++) {
+            ItemStack inSlot = inv.getStackInSlot(i);
+            if (ingredient.apply(inSlot)) {
+                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+            }
+        }
         return false;
     }
 
@@ -356,7 +324,6 @@ public class InvUtils {
                 inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
-
         return false;
     }
 

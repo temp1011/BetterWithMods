@@ -22,13 +22,13 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeHooks;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -59,15 +59,13 @@ public final class PlayerHelper {
         return holding.stream().filter(s -> !s.isEmpty()).collect(Collectors.toSet());
     }
 
-    public static boolean isHolding(EntityPlayer player, List<ItemStack> stacks) {
+    public static boolean isHolding(EntityPlayer player, Ingredient ingredient) {
         Set<ItemStack> held = getHolding(player);
-        if (held.isEmpty() || stacks.isEmpty())
+        if (held.isEmpty())
             return false;
-        for (ItemStack stack : stacks) {
-            for (ItemStack h : held)
-                if (h.isItemEqual(stack))
-                    return true;
-        }
+        for (ItemStack h : held)
+            if (ingredient.apply(h))
+                return true;
         return false;
     }
 
