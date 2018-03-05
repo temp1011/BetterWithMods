@@ -27,10 +27,6 @@ public class HCBoating extends Feature {
     public static List<ResourceLocation> BOAT_ENTRIES;
     public static int defaultSpeed;
 
-    public HCBoating() {
-        recipeCondition = true;
-    }
-
     @Override
     public String getFeatureDescription() {
         return "Boats are much slower as simple oars are not very good for speed. To go faster you must hold a Wind Sail.";
@@ -38,7 +34,7 @@ public class HCBoating extends Feature {
 
     @Override
     public void setupConfig() {
-        loadRecipeCondition("boatshovel","Boat Requires Oar", "Make boat recipe require a wooden shovel for the oars", true);
+        loadRecipeCondition("boatshovel", "Boat Requires Oar", "Make boat recipe require a wooden shovel for the oars", true);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class HCBoating extends Feature {
                 "minecraft:banner:*=100"
         });
         defaultSpeed = loadPropInt("Default Speed modifier", "Speed modifier when not holding any sail type item", 50);
-        BOAT_ENTRIES = loadRLList("Boat List", "Registry name for entities which are considered boats", new String[]{ "minecraft:boat"});
+        BOAT_ENTRIES = loadRLList("Boat List", "Registry name for entities which are considered boats", new String[]{"minecraft:boat"});
     }
 
     @Override
@@ -62,7 +58,7 @@ public class HCBoating extends Feature {
             return;
         EntityPlayer player = event.player;
         Entity riding = player.getRidingEntity();
-        if (riding != null && BOAT_ENTRIES.stream().anyMatch( r -> EntityList.isMatchingName(riding, r))) {
+        if (riding != null && BOAT_ENTRIES.stream().anyMatch(r -> EntityList.isMatchingName(riding, r))) {
             ItemStack stack = PlayerHelper.getHolding(player, player.getActiveHand());
             int speed = defaultSpeed;
             if (!stack.isEmpty())

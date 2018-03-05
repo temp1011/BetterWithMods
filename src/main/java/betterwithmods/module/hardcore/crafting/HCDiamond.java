@@ -18,11 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * Created by primetoxinz on 4/20/17.
  */
 public class HCDiamond extends Feature {
-    public HCDiamond() {
-        recipeCondition = true;
-    }
-
-    @Override
+     @Override
     public String getFeatureDescription() {
         return "Makes it so diamonds have to me made into an ingot alloy to be used in certain recipes";
     }

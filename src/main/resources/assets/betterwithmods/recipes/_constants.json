@@ -25,6 +25,25 @@
         "modid": "betterwithmods"
       }
     ],
+    "name": "HE_STONE",
+    "ingredient": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "stone"
+      },
+      {
+        "type": "forge:ore_dict",
+        "ore": "sidingStone"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
     "name": "HE_PLANKS_MOULDING",
     "ingredient": [
       {

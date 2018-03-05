@@ -4,6 +4,7 @@ import betterwithmods.api.util.IWood;
 import betterwithmods.api.util.IWoodProvider;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -119,9 +120,9 @@ public class BWOreDictionary {
         registerOre("mouldingWood", new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("cornerWood", new ItemStack(BWMBlocks.WOOD_CORNER, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("sidingStone", new ItemStack(BWMBlocks.STONE_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("sidingStone", new ItemStack(BWMBlocks.STONE_SIDING, 1, 0));
+        registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, 0));
+        registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, 0));
 
         registerOre("fiberHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS));
         registerOre("fabricHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_CLOTH));
@@ -164,6 +165,9 @@ public class BWOreDictionary {
         registerOre("blockWindChime", new ItemStack(BWMBlocks.METAL_CHIME, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
+
+        registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
+
 
     }
 

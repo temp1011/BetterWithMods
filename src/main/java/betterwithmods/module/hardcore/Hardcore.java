@@ -29,6 +29,11 @@ public class Hardcore extends CompatModule {
     @Override
     public void addFeatures() {
         this.addCompatFeatures();
+
+        registerFeature(new HCDiamond().recipes());
+        registerFeature(new HCRedstone().recipes());
+        registerFeature(new HCBoating().recipes());
+
         registerFeature(new HCArmor());
         registerFeature(new HCBeacons());
         registerFeature(new HCBeds());
@@ -38,7 +43,6 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCBuoy());
         registerFeature(new HCCooking());
         registerFeature(new HCChickens());
-        registerFeature(new HCDiamond());
         registerFeature(new HCEndermen());
         registerFeature(new HCFishing());
         registerFeature(new HCGloom());
@@ -53,7 +57,6 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCNames());
         registerFeature(new HCOres());
         registerFeature(new HCPiles());
-        registerFeature(new HCRedstone());
         registerFeature(new HCSeeds());
         registerFeature(new HCSaw());
         registerFeature(new HCSheep());
@@ -69,7 +72,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCEnchanting());
         registerFeature(new HCStrata());
         registerFeature(new HCFurnace());
-        registerFeature(new HCBoating());
+
 //        registerFeature(new HCSquid());
 //        registerFeature(new HCVillagers());
         this.load();

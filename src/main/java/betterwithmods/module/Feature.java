@@ -50,6 +50,11 @@ public class Feature {
 
     public boolean recipeCondition;
 
+    public Feature recipes() {
+        recipeCondition = true;
+        return this;
+    }
+
     public final void setupConstantConfig() {
         String[] incompat = getIncompatibleMods();
         if (incompat != null && incompat.length > 0) {
