@@ -204,8 +204,12 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
             List<AxisAlignedBB> bbs = new ArrayList<>();
             bbs.add(new AxisAlignedBB(0.45, 0, 0.45, 0.55, 1, 0.55)); // rope bounding box
             for (Vec3i vec : blocks.keySet()) {
-                bbs.add(new AxisAlignedBB(vec.getX(), vec.getY(), vec.getZ(), vec.getX() + 1,
-                        vec.getY() + getBlockStateHeight(blocks.get(vec)), vec.getZ() + 1));
+                IBlockState state = blocks.get(vec);
+                if (state.getBlock().isCollidable()) {
+                    AxisAlignedBB bb2 = new AxisAlignedBB(vec.getX(), vec.getY(), vec.getZ(), vec.getX() + 1,
+                            vec.getY() + getBlockStateHeight(state), vec.getZ() + 1);
+                    bbs.add(bb2);
+                }
             }
             this.blockBB = new AABBArray(bbs.toArray(new AxisAlignedBB[0])).offset(-0.5, 0, -0.5);
         }
@@ -296,8 +300,10 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
                         int skipped = 0;
                         for (Entry<Vec3i, IBlockState> entry : blocks.entrySet()) {
                             BlockPos blockPos = pos.add(entry.getKey());
-                            if (entry.getValue().getBlock().canPlaceBlockAt(getEntityWorld(), blockPos)) {
-                                getEntityWorld().setBlockState(blockPos, entry.getValue(), 3);
+                            IBlockState state = entry.getValue();
+                            if (state.getBlock().canPlaceBlockAt(getEntityWorld(), blockPos)) {
+
+                                getEntityWorld().setBlockState(blockPos, state, 3);
                                 if (tiles.containsKey(entry.getKey())) {
                                     TileEntity tile = getEntityWorld().getTileEntity(blockPos);
                                     if (tile != null) {
@@ -332,13 +338,14 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
     }
 
     public void addBlock(Vec3i offset, World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+        IBlockState state = world.getBlockState(pos).getActualState(world,pos);
         TileEntity tile = world.getTileEntity(pos);
         blocks.put(offset, state);
         if (tile != null) {
             NBTTagCompound tag = new NBTTagCompound();
             tile.writeToNBT(tag);
             tiles.put(offset, tag);
+            world.removeTileEntity(pos);
         }
         rebuildBlockBoundingBox();
     }
