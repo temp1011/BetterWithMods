@@ -55,7 +55,7 @@ public class BlastingOilEvent {
     @SubscribeEvent
     public static void onHitGround(TickEvent.WorldTickEvent event) {
         World world = event.world;
-        List<EntityItem> items = world.getLoadedEntityList().stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
+        List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
         items.forEach(item -> {
             boolean ground = item.onGround;
             if (ground && !onGround.getOrDefault(item, true)) {
