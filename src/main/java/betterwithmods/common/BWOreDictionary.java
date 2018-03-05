@@ -159,6 +159,12 @@ public class BWOreDictionary {
 
         registerOre("blockCandle", new ItemStack(BWMBlocks.CANDLE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
+
+        registerOre("blockWindChime", new ItemStack(BWMBlocks.BAMBOO_CHIME, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockWindChime", new ItemStack(BWMBlocks.METAL_CHIME, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
+
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -306,10 +312,10 @@ public class BWOreDictionary {
 
         ItemStack stack = BWMRecipes.getStackFromState(state);
         IWood wood = null;
-        if(!stack.isEmpty()) {
+        if (!stack.isEmpty()) {
             wood = woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
         }
-        if(wood == null) {
+        if (wood == null) {
             for (IWoodProvider provider : woodProviders) {
                 if (provider.match(state)) {
                     wood = provider.getWood(state);

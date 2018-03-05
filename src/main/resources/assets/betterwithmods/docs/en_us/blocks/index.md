@@ -8,7 +8,9 @@
  * [Hibachi](hibachi.md)
  * [Lens](lens.md)
  * [Light Block](light.md)
+ * [Wind Chime](wind_chime.md)
  
+
 ## Mechanical Devices
  * [Handcrank](hand_crank.md) 
  * [Gearbox](wooden_gearbox.md)
@@ -30,5 +32,17 @@
  * [Chopping Block](chopping_block.md)
  * [Minimized Wood](minimized_wood.md)
  * [Mining Charge](mining_charge.md)
+ * [Decorative Blocks](decoration.md)
 
-
+## TODO
+ * [Kiln](kiln.md)
+ * [Cauldron](cauldron.md)
+ * [Crucible](crucible.md)
+ * [Anchor](anchor.md)
+ * [Anvil](anvil.md)
+ * [Vine Trap](vine_trap.md)
+ * [Blood Wood](blood_wood.md)
+ * [Steel Pressure Plate](steel_pressure_plate.md)
+ * [Soul Urn](soul_urn.md)
+ * [Planter](planter.md)
+ * [Platform](platform.md)

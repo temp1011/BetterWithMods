@@ -12,6 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 import java.util.Set;
 
 public class BlockShaft extends BlockStickBase {
@@ -48,6 +49,22 @@ public class BlockShaft extends BlockStickBase {
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return Block.NULL_AABB;
+    }
+
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        this.checkAndDropBlock(worldIn, pos, state);
+    }
+
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        this.checkAndDropBlock(worldIn, pos, state);
+    }
+
+    private void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (!this.canPlaceBlockAt(worldIn, pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
     }
 
 }

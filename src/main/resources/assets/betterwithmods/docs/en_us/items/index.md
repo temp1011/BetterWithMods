@@ -1,12 +1,31 @@
 # Items
 
-
+## Armor
+* [Plated Armor](sfs_armor.md)
 
 ## Materials
-* [Fabric](fabric.md)
 
+* [Blasting Oil](blasting_oil.md)
+
+* [Tanned Leather](tanned_leather.md)
+* [Soap](soap.md)
 
 ## Other
 
-* [Arcane Scrolls](../items/arcane_scrolls.md)
+* [Arcane Scrolls](arcane_scrolls.md)
 * [Animal Restraits](restraint.md)
+* [Dynamite](dynamite.md)
+
+## Todo
+
+* [Tanned Leather Armor](tanned_armor.md)
+* [Hellfire](hellfire.md)
+* [Ground Netherrack](ground_netherrack.md)
+* [Fabric](fabric.md)
+* [Foods](foods.md)
+* [Rope](rope.md)
+* [Filament](filament.md)
+* [Element](element.md)
+* [Gear](gear.md)
+* [Bark](bark.md)
+* More...
