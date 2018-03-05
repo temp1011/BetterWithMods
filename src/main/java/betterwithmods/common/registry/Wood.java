@@ -12,8 +12,6 @@ public  class Wood implements IWood {
     public Wood(ItemStack log, ItemStack plank) {
         this.log = log;
         this.plank = plank;
-
-        //TODO add custom bark render for all bark
         this.bark = ItemBark.getStack("oak", 1);
     }
 

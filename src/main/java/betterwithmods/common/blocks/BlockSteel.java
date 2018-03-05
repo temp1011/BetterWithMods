@@ -9,6 +9,7 @@ import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -143,5 +144,11 @@ public class BlockSteel extends BWMBlock implements IMultiVariants{
 
     public static IBlockState getBlock(int height) {
         return BWMBlocks.STEEL_BLOCK.getDefaultState().withProperty(HEIGHT, height);
+    }
+
+    //Cannot be pushed by a piston
+    @Override
+    public EnumPushReaction getMobilityFlag(IBlockState state) {
+        return EnumPushReaction.IGNORE;
     }
 }

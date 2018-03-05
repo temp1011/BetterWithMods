@@ -2,9 +2,7 @@ package betterwithmods.manual.client.manual.provider;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.BlockChime;
-import betterwithmods.common.blocks.BlockEnderchest;
+import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
@@ -22,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+import static net.minecraft.block.material.Material.ROCK;
 import static net.minecraft.block.material.Material.WOOD;
 
 /**
@@ -53,36 +52,40 @@ public class DefinitionPathProvider implements PathProvider {
     public String pathFor(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
+
         int meta = block.damageDropped(state);
+
+        if (block instanceof BlockKiln)
+            return "%LANGUAGE%/blocks/kiln.md";
+
         ItemStack stack = new ItemStack(block, 1, meta);
+
         if (isBlacklisted(stack) || !stack.getItem().getRegistryName().getResourceDomain().equals(BWMod.MODID))
             return null;
-        if (block == BWMBlocks.PLANTER)
+        else if (block instanceof BlockRope)
+            return "%LANGUAGE%/items/rope.md";
+        else if (block == BWMBlocks.PLANTER)
             return "%LANGUAGE%/blocks/planter.md";
-//        if (block == BWMBlocks.BROKEN_GEARBOX)
-//            return "%LANGUAGE%/blocks/wooden_gearbox.md";
-        if (block == BWMBlocks.BLOOD_SAPLING || block == BWMBlocks.BLOOD_LOG || block == BWMBlocks.BLOOD_LEAVES) {
+        else if (block == BWMBlocks.BLOOD_SAPLING || block == BWMBlocks.BLOOD_LOG || block == BWMBlocks.BLOOD_LEAVES) {
             return "%LANGUAGE%/blocks/blood_wood.md";
-        }
-        if (block instanceof BlockChime) {
+        } else if (block instanceof BlockChime) {
             return "%LANGUAGE%/blocks/wind_chime.md";
-        }
-        if (block instanceof BlockCookingPot) {
+        } else if (block instanceof BlockCookingPot) {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
-        }
-        if (block instanceof BlockMechMachines) {
+        } else if (block instanceof BlockMechMachines) {
             return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.TYPE).getName() + ".md";
-        }
-        if (block instanceof BlockMini) {
-            Material mat = block.getMaterial(state);
+        } else if (block instanceof BlockFurniture || block instanceof BlockPane || block instanceof BlockIronWall) {
+            return "%LANGUAGE%/blocks/decoration.md";
+        } else if (block instanceof BlockMini) {
+            Material mat = state.getMaterial();
             if (mat == WOOD || mat == BlockMini.MINI) {
                 return "%LANGUAGE%/blocks/minimized_wood.md";
+            } else if (mat == ROCK) {
+                return "%LANGUAGE%/blocks/minimized_stone.md";
             }
-        }
-        if (block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
+        } else if (block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
             return "%LANGUAGE%/hardcore/beacons.md";
-        }
-        if (block instanceof BlockWindmill) {
+        } else if (block instanceof BlockWindmill) {
             return "%LANGUAGE%/blocks/windmill.md";
         }
 

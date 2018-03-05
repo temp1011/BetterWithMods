@@ -28,13 +28,16 @@
  * [Waterwheel](waterwheel.md)        
  
 ## Other
+ * [Soulforged Steel Block](soulforged_steel_block.md)
  * [Infernal Enchanter](infernal_enchanter.md)
  * [Chopping Block](chopping_block.md)
  * [Minimized Wood](minimized_wood.md)
  * [Mining Charge](mining_charge.md)
  * [Decorative Blocks](decoration.md)
+ * [Dirt Slab](dirt_slab.md)
 
 ## TODO
+ * [Bucket](bucket.md)
  * [Kiln](kiln.md)
  * [Cauldron](cauldron.md)
  * [Crucible](crucible.md)
@@ -46,3 +49,4 @@
  * [Soul Urn](soul_urn.md)
  * [Planter](planter.md)
  * [Platform](platform.md)
+ * [Minimized Stone](minimized_stone.md)

@@ -15,11 +15,3 @@ The Modules System adds the majority of the content, it is broken into Modules w
    * [Compat](compat.md)
  
 
-## Tutorial
-* [Crash Course](crashcourse/index.md)
-
-## Content
-* [Blocks](blocks/index.md)
-* [Items](items/index.md)
-
-

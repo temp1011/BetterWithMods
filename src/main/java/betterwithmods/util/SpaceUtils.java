@@ -52,7 +52,6 @@ public final class SpaceUtils {
         }
     }
 
-    // TODO: Rename?
     public static EnumFacing determineFlatOrientation(EntityLivingBase player) {
         int var7 = MathHelper.floor((double) ((180 + player.rotationYaw) * 4.0F / 360.0F) + 0.5D) & 3;
         int r = var7 == 0 ? 2 : (var7 == 1 ? 5 : (var7 == 2 ? 3 : (var7 == 3 ? 4 : 0)));

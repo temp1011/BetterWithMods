@@ -1,23 +1,23 @@
 # Items
 
-## Armor
-* [Plated Armor](sfs_armor.md)
+## Armor and Tools
+* [Refined Tools](refined_tools.md)
+* [Plate Armor](plate_armor.md)
 
 ## Materials
 
 * [Blasting Oil](blasting_oil.md)
-
 * [Tanned Leather](tanned_leather.md)
 * [Soap](soap.md)
 
 ## Other
 
 * [Arcane Scrolls](arcane_scrolls.md)
-* [Animal Restraits](restraint.md)
 * [Dynamite](dynamite.md)
 
 ## Todo
 
+* [Animal Restraits](restraint.md)
 * [Tanned Leather Armor](tanned_armor.md)
 * [Hellfire](hellfire.md)
 * [Ground Netherrack](ground_netherrack.md)
@@ -28,4 +28,5 @@
 * [Element](element.md)
 * [Gear](gear.md)
 * [Bark](bark.md)
+* [Haft](haft.md)
 * More...

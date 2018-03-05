@@ -32,11 +32,11 @@ A Beacon base must consist of all same block and depending on the block the effe
 
 * Prismarine - Gives Players Water Breathing
 
-* Sponge - Suffocates all air breathers, unless wearing a [Plate Helmet](../items/sfs_armor.md)
+* Sponge - Suffocates all air breathers, unless wearing a [Plate Helmet](../items/plate_armor.md)
 
-* Dung - Gives Players Nausea and Poison to all not wearing full [Plate Armor](../items/sfs_armor.md)
+* Dung - Gives Players Nausea and Poison to all not wearing full [Plate Armor](../items/plate_armor.md)
 
-* Coal Block - Gives Players Blindness to all not wearing a [Plate Helmet](../items/sfs_armor.md)  
+* Coal Block - Gives Players Blindness to all not wearing a [Plate Helmet](../items/plate_armor.md)  
 
 **Tier Exceptions**
 * Soulforged Steel Beacon - This Beacons allows the Player to set their spawn by right-clicking it with an empty hand.  

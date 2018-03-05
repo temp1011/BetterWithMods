@@ -30,7 +30,7 @@ import java.util.Random;
 //TODO: Clean all of this up to work with any modded sheep with colored pelts?
 public class HCSheep extends Feature {
     public static final ResourceLocation NATURAL_COLOR = new ResourceLocation(BWMod.MODID, "natural_color");
-    private static final HashMap<NaturalColorMix,EnumDyeColor> COLOR_MIX_TABLE = new HashMap<>();
+    private static final HashMap<NaturalColorMix, EnumDyeColor> COLOR_MIX_TABLE = new HashMap<>();
     private static final ArrayList<EnumDyeColor> MUTATION_COLORS = new ArrayList<>();
 
     private static int mutationChance = 500;
@@ -38,19 +38,17 @@ public class HCSheep extends Feature {
     @CapabilityInject(NaturalColor.class)
     public static Capability<NaturalColor> NATURAL_COLOR_CAP;
 
-    private static class NaturalColorMix
-    {
-        EnumDyeColor colorA,colorB;
+    private static class NaturalColorMix {
+        EnumDyeColor colorA, colorB;
 
-        public NaturalColorMix(EnumDyeColor colorA, EnumDyeColor colorB)
-        {
+        public NaturalColorMix(EnumDyeColor colorA, EnumDyeColor colorB) {
             this.colorA = colorA;
             this.colorB = colorB;
         }
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof NaturalColorMix)
+            if (obj instanceof NaturalColorMix)
                 return ((NaturalColorMix) obj).colorA.equals(colorA) && ((NaturalColorMix) obj).colorB.equals(colorB);
 
             return false;
@@ -62,57 +60,51 @@ public class HCSheep extends Feature {
         }
     }
 
-    public static class NaturalColor implements ICapabilitySerializable<NBTTagCompound>
-    {
+    public static class NaturalColor implements ICapabilitySerializable<NBTTagCompound> {
         public EnumDyeColor color = EnumDyeColor.WHITE;
 
         @Override
-        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-        {
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
             return capability == NATURAL_COLOR_CAP;
         }
 
         @Nullable
         @Override
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-        {
-            return hasCapability(capability, facing) ? (T) this : null;
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+            if (capability == NATURAL_COLOR_CAP)
+                return NATURAL_COLOR_CAP.cast(this);
+            return null;
         }
 
         @Override
-        public NBTTagCompound serializeNBT()
-        {
+        public NBTTagCompound serializeNBT() {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("NaturalColor", color.getMetadata());
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt)
-        {
+        public void deserializeNBT(NBTTagCompound nbt) {
             color = EnumDyeColor.byMetadata(nbt.getInteger("NaturalColor"));
         }
     }
 
-    public static void addMutation(EnumDyeColor color)
-    {
+    public static void addMutation(EnumDyeColor color) {
         MUTATION_COLORS.add(color);
     }
 
-    public static void addShapedColorMixing(EnumDyeColor colorA, EnumDyeColor colorB, EnumDyeColor result)
-    {
-        COLOR_MIX_TABLE.put(new NaturalColorMix(colorA,colorB),result);
+    public static void addShapedColorMixing(EnumDyeColor colorA, EnumDyeColor colorB, EnumDyeColor result) {
+        COLOR_MIX_TABLE.put(new NaturalColorMix(colorA, colorB), result);
     }
 
-    public static void addShapelessColorMixing(EnumDyeColor colorA, EnumDyeColor colorB, EnumDyeColor result)
-    {
-        COLOR_MIX_TABLE.put(new NaturalColorMix(colorA,colorB),result);
-        COLOR_MIX_TABLE.put(new NaturalColorMix(colorB,colorA),result);
+    public static void addShapelessColorMixing(EnumDyeColor colorA, EnumDyeColor colorB, EnumDyeColor result) {
+        COLOR_MIX_TABLE.put(new NaturalColorMix(colorA, colorB), result);
+        COLOR_MIX_TABLE.put(new NaturalColorMix(colorB, colorA), result);
     }
 
     @Override
     public void setupConfig() {
-        mutationChance = loadPropInt("Mutation Chance","How likely a sheep is to mutate into a weird natural color. Chance is 1 in n. Default mirrors vanilla chance to obtain pink sheep.",500);
+        mutationChance = loadPropInt("Mutation Chance", "How likely a sheep is to mutate into a weird natural color. Chance is 1 in n. Default mirrors vanilla chance to obtain pink sheep.", 500);
     }
 
     @Override
@@ -131,9 +123,9 @@ public class HCSheep extends Feature {
 
             @Override
             public void readNBT(Capability<NaturalColor> capability, NaturalColor instance, EnumFacing side, NBTBase nbt) {
-                instance.deserializeNBT((NBTTagCompound)nbt);
+                instance.deserializeNBT((NBTTagCompound) nbt);
             }
-        },NaturalColor::new);
+        }, NaturalColor::new);
 
         addMutation(EnumDyeColor.BLACK);
         addMutation(EnumDyeColor.LIME);
@@ -175,107 +167,96 @@ public class HCSheep extends Feature {
     }
 
     @SubscribeEvent
-    public void sheepCapabilityEvent(AttachCapabilitiesEvent<Entity> event)
-    {
+    public void sheepCapabilityEvent(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
-        if(entity instanceof EntitySheep)
-        {
-            event.addCapability(NATURAL_COLOR,new NaturalColor());
+        if (entity instanceof EntitySheep) {
+            event.addCapability(NATURAL_COLOR, new NaturalColor());
         }
     }
 
     @SubscribeEvent
-    public void sheepSpawnEvent(LivingSpawnEvent event)
-    {
-        if(event instanceof LivingSpawnEvent.AllowDespawn)
+    public void sheepSpawnEvent(LivingSpawnEvent event) {
+        if (event instanceof LivingSpawnEvent.AllowDespawn)
             return;
 
         World world = event.getEntity().world;
 
-        if(world.isRemote)
+        if (world.isRemote)
             return;
 
-        if(event.getEntity() instanceof EntitySheep)
-        {
+        if (event.getEntity() instanceof EntitySheep) {
             EntitySheep sheep = (EntitySheep) event.getEntity();
-            mutateSheep(sheep,event.getWorld().rand);
-            setNaturalColor(sheep,sheep.getFleeceColor());
+            mutateSheep(sheep, event.getWorld().rand);
+            setNaturalColor(sheep, sheep.getFleeceColor());
         }
     }
 
     private void mutateSheep(EntitySheep sheep, Random random) {
-        if(random.nextInt(mutationChance) < 1 && !MUTATION_COLORS.isEmpty()) {
+        if (random.nextInt(mutationChance) < 1 && !MUTATION_COLORS.isEmpty()) {
             sheep.setFleeceColor(MUTATION_COLORS.get(random.nextInt(MUTATION_COLORS.size())));
         }
     }
 
-    private EnumDyeColor getNaturalColor(Entity sheep)
-    {
-        if(sheep.hasCapability(NATURAL_COLOR_CAP,null))
-        {
-            NaturalColor color = sheep.getCapability(NATURAL_COLOR_CAP,null);
+    private EnumDyeColor getNaturalColor(Entity sheep) {
+        if (sheep.hasCapability(NATURAL_COLOR_CAP, null)) {
+            NaturalColor color = sheep.getCapability(NATURAL_COLOR_CAP, null);
             return color.color;
         }
 
         return EnumDyeColor.WHITE;
     }
 
-    private void setNaturalColor(Entity sheep, EnumDyeColor newcolor)
-    {
-        if(sheep.hasCapability(NATURAL_COLOR_CAP,null))
-        {
-            NaturalColor color = sheep.getCapability(NATURAL_COLOR_CAP,null);
+    private void setNaturalColor(Entity sheep, EnumDyeColor newcolor) {
+        if (sheep.hasCapability(NATURAL_COLOR_CAP, null)) {
+            NaturalColor color = sheep.getCapability(NATURAL_COLOR_CAP, null);
             color.color = newcolor;
         }
     }
 
-    private EnumDyeColor mixNaturalColors(EnumDyeColor colorA, EnumDyeColor colorB, Random random)
-    {
-        NaturalColorMix mix = new NaturalColorMix(colorA,colorB);
+    private EnumDyeColor mixNaturalColors(EnumDyeColor colorA, EnumDyeColor colorB, Random random) {
+        NaturalColorMix mix = new NaturalColorMix(colorA, colorB);
 
-        if(COLOR_MIX_TABLE.containsKey(mix))
+        if (COLOR_MIX_TABLE.containsKey(mix))
             return COLOR_MIX_TABLE.get(mix);
 
         return random.nextInt(2) < 1 ? colorA : colorB;
     }
 
     @SubscribeEvent
-    public void sheepBreedEvent(BabyEntitySpawnEvent event)
-    {
+    public void sheepBreedEvent(BabyEntitySpawnEvent event) {
         World world = event.getParentA().world;
 
-        if(world.isRemote)
+        if (world.isRemote)
             return;
 
-        if(event.getParentA() instanceof EntitySheep && event.getParentB() instanceof EntitySheep && event.getChild() instanceof EntitySheep) {
+        if (event.getParentA() instanceof EntitySheep && event.getParentB() instanceof EntitySheep && event.getChild() instanceof EntitySheep) {
             EntitySheep father = (EntitySheep) event.getParentA();
             EntitySheep mother = (EntitySheep) event.getParentB();
 
             EntitySheep child = (EntitySheep) event.getChild();
 
-            child.setFleeceColor(mixNaturalColors(getNaturalColor(father),getNaturalColor(mother),world.rand));
-            mutateSheep(child,world.rand);
-            setNaturalColor(child,child.getFleeceColor());
+            child.setFleeceColor(mixNaturalColors(getNaturalColor(father), getNaturalColor(mother), world.rand));
+            mutateSheep(child, world.rand);
+            setNaturalColor(child, child.getFleeceColor());
         }
     }
 
     @SubscribeEvent
-    public void sheepUpdateEvent(LivingEvent.LivingUpdateEvent event)
-    {
+    public void sheepUpdateEvent(LivingEvent.LivingUpdateEvent event) {
         //Hacky reset for when a sheep is sheared.
         Entity entity = event.getEntity();
 
-        if(!entity.world.isRemote && entity instanceof EntitySheep)
-        {
+        if (!entity.world.isRemote && entity instanceof EntitySheep) {
             EntitySheep sheep = (EntitySheep) entity;
-            if(!sheep.getSheared())
+            if (!sheep.getSheared())
                 return;
+            NaturalColor cap = sheep.getCapability(NATURAL_COLOR_CAP, null);
+            if (cap != null) {
+                EnumDyeColor naturalColor = cap.color;
 
-            EnumDyeColor naturalColor = sheep.getCapability(NATURAL_COLOR_CAP,null).color;
-
-            if(sheep.getFleeceColor() != naturalColor)
-            {
-                sheep.setFleeceColor(naturalColor);
+                if (sheep.getFleeceColor() != naturalColor) {
+                    sheep.setFleeceColor(naturalColor);
+                }
             }
         }
     }

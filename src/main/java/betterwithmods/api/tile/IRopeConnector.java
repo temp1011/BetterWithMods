@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 public interface IRopeConnector {
     EnumFacing getFacing(IBlockState state);
 
-    //TODO actually implement this in the pulley
     default boolean canMovePlatforms(World world, BlockPos pos) {
         return true;
     }

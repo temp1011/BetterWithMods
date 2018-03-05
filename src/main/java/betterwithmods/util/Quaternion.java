@@ -41,7 +41,6 @@ public class Quaternion {
     //Data functions
     public Quaternion() {
         this(1, 0, 0, 0);
-        //NORELEASE.fixme("Should we make this class pure?");
     }
     
     public Quaternion(double w, double x, double y, double z) {
