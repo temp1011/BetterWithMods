@@ -8,7 +8,6 @@ import net.minecraft.util.EnumFacing;
 
 public abstract class TileEntityBaseWindmill extends TileAxleGenerator implements IColor {
     protected int[] bladeMeta;
-    private boolean rain, thunder;
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -17,9 +16,6 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
             if (tag.hasKey("Color_" + i))
                 bladeMeta[i] = tag.getInteger("Color_" + i);
         }
-        rain = tag.getBoolean("rain");
-        thunder = tag.getBoolean("thunder");
-
     }
 
     @Override
@@ -29,8 +25,6 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
             t.setInteger("Color_" + i, bladeMeta[i]);
         }
         t.setByte("DyeIndex", this.dyeIndex);
-        t.setBoolean("thunder",this.thunder);
-        t.setBoolean("rain",this.rain);
         return t;
     }
 
@@ -64,20 +58,12 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     public void calculatePower() {
         byte power = 0;
         if (isValid()) {
-            if (thunder)
+            if (world.isThundering())
                 power = 3;
-            else if (rain)
+            else if (world.isRaining())
                 power = 2;
             else
                 power = 1;
-
-            if (tick > 600) {
-                if (isOverworld()) {
-                    rain = world.isRaining();
-                    thunder = world.isThundering();
-                }
-                tick = 0;
-            }
         }
 
         if (power != this.power) {

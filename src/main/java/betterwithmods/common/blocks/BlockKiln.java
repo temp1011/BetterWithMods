@@ -4,6 +4,7 @@ import betterwithmods.api.block.PropertyObject;
 import betterwithmods.common.blocks.tile.TileCamo;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
+import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
@@ -61,8 +62,9 @@ public class BlockKiln extends BWMBlock {
         boolean canCook = false;
         Block above = world.getBlockState(up).getBlock();
         int aboveMeta = world.getBlockState(up).getBlock().damageDropped(world.getBlockState(up));
-        if (!world.isAirBlock(up) && KilnManager.INSTANCE.contains(above, aboveMeta)) {
-            if (KilnStructureManager.isValidKiln(world, pos))
+        KilnRecipe recipe = KilnManager.INSTANCE.getRecipe(above, aboveMeta);
+        if (!world.isAirBlock(up) && recipe != null) {
+            if (KilnStructureManager.isValidKiln(world, pos) && KilnStructureManager.isValidRecipe(world, pos, recipe))
                 canCook = true;
         }
 

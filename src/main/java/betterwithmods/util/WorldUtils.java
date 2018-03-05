@@ -113,9 +113,9 @@ public final class WorldUtils {
         EntityGhast ghast = new EntityGhast(world);
         double failures = 1;
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.min(failures, 30);
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
             double yPos = pos.getY() + failures;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.min(failures, 30);
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
             AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));

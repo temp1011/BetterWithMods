@@ -18,6 +18,7 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
     protected int power;
     protected int maxPower;
     protected int tick;
+    protected int unchanged;
 
     public TileGearbox() {
     }
@@ -39,11 +40,15 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
         }
         int power = this.getMechanicalInput(getFacing());
 
-        if (power > getMaximumInput(getFacing())) {
-            getBlock().overpower(world, pos);
-        }
+
         if (power != this.power) {
             setPower(power);
+            unchanged = 0;
+        } else {
+            unchanged++;
+        }
+        if (isOverpowered() && unchanged > 30) {
+            getBlock().overpower(world, pos);
         }
         markDirty();
     }
@@ -144,5 +149,9 @@ public class TileGearbox extends TileBasic implements IMechanicalPower {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
+    }
+
+    public boolean isOverpowered() {
+        return this.power > getMaximumInput(getFacing());
     }
 }

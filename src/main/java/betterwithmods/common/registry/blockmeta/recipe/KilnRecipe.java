@@ -12,4 +12,12 @@ public class KilnRecipe extends BlockMetaRecipe {
     public KilnRecipe(Block block, int meta, List<ItemStack> outputs) {
         super(block, meta, outputs);
     }
+
+    public int getMaxHeat() {
+        return 8;
+    }
+
+    public int getMinHeat() {
+        return 8;
+    }
 }

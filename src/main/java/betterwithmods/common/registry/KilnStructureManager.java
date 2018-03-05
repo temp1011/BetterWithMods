@@ -2,6 +2,7 @@ package betterwithmods.common.registry;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -33,7 +34,7 @@ public class KilnStructureManager {
 
     public static boolean createKiln(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if(!isKilnBlock(state))
+        if (!isKilnBlock(state))
             return false;
         if (isValidKiln(world, pos)) {
             IBlockState kiln = BWMBlocks.KILN.getDefaultState();
@@ -49,10 +50,15 @@ public class KilnStructureManager {
     }
 
     //@Param BlockPos pos - the position of the kiln block
-    public static boolean hasHeat(IBlockAccess world, BlockPos pos) {
+    public static int getHeat(IBlockAccess world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos.down());
         BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(state);
-        return source != null;
+        return source.getHeat();
+    }
+
+    public static boolean isValidRecipe(IBlockAccess world, BlockPos pos, KilnRecipe recipe) {
+        int heat = getHeat(world, pos);
+        return (heat <= recipe.getMaxHeat() && heat >= recipe.getMinHeat());
     }
 
     public static boolean isValidKiln(IBlockAccess world, BlockPos pos) {
@@ -64,7 +70,7 @@ public class KilnStructureManager {
             if (isKilnBlock(state))
                 numBrick++;
         }
-        return numBrick > 2 && hasHeat(world, pos);
+        return numBrick > 2;
     }
 
 

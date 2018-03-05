@@ -46,7 +46,7 @@ public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
     }
 
     public boolean contains(Block block, int meta) {
-        return recipes.stream().filter(r -> r.equals(block, meta)).findFirst().isPresent();
+        return recipes.stream().anyMatch(r -> r.equals(block, meta));
     }
 
     public ArrayList<T> getRecipes() {
