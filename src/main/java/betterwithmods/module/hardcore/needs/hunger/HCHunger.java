@@ -5,7 +5,6 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
@@ -41,7 +40,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -190,16 +188,6 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
         event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(event.foodValues.hunger * 3, event.foodValues.saturationModifier * 3));
-    }
-
-    //Stops Eating if Hunger Effect is active
-    @SubscribeEvent
-    public void onFood(LivingEntityUseItemEvent.Start event) {
-        if (event.getItem().getItem() instanceof ItemFood && event.getEntityLiving() instanceof EntityPlayer && PlayerHelper.isSurvival((EntityPlayer) event.getEntityLiving())) {
-            if (event.getEntityLiving().isPotionActive(MobEffects.HUNGER)) {
-                event.setCanceled(true);
-            }
-        }
     }
 
     @SubscribeEvent

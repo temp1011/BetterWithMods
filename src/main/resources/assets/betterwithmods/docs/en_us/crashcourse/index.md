@@ -8,9 +8,9 @@ The next step is to make continuous Mechanical Power through a Windmill, to do t
 
 Once enough Hemp Fiber is gathered, create a Windmill to create continuous Mechanical Power. The Windmill must be placed on an Axle and need a 13x13 vertical area to be placed.
 
-Now that you have a [Windmill](..blocks/windmill.md), you must use Axles and Gearboxes to transfer Mechanical Power to as many machines as needed. Be careful though, the Windmill has one major downside; When the Weather gets too rough, the Windmill will rotate faster; this will eventually cause the first Gearbox connected to be overpowered and break. (Check Gearbox for more information.)
+Now that you have a [Windmill](../blocks/windmill.md), you must use Axles and Gearboxes to transfer Mechanical Power to as many machines as needed. Be careful though, the Windmill has one major downside; When the Weather gets too rough, the Windmill will rotate faster; this will eventually cause the first Gearbox connected to be overpowered and break. (Check Gearbox for more information.)
 
-Alternatively, the [Vertical Windmill](..blocks/windmill.md) is also an option, which is a slightly more expensive windmill that needs a 9x7x9 area cleared, with 7 vertical axles. It offers no advantages other than allowing different axle placement methods, but it sure does look fancy. Do note that if you try to place an axle off of this windmill directly, it'll break off. You need to have it directly hooked into it's first gearbox.
+Alternatively, the [Vertical Windmill](../blocks/windmill.md) is also an option, which is a slightly more expensive windmill that needs a 9x7x9 area cleared, with 7 vertical axles. It offers no advantages other than allowing different axle placement methods, but it sure does look fancy. Do note that if you try to place an axle off of this windmill directly, it'll break off. You need to have it directly hooked into it's first gearbox.
 
 
 ![Basic Windmill Setup](betterwithmods:docs/imgs/mechanical-power.png)
