@@ -35,6 +35,13 @@ public class MillRecipes extends Feature {
         if(grindingOnly) {
             BWMRecipes.removeRecipe(new ItemStack(Items.SUGAR));
             BWMRecipes.removeRecipe(new ItemStack(Items.BLAZE_POWDER));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.RED,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.YELLOW,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.LIGHT_BLUE,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.MAGENTA,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.SILVER,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.ORANGE,1));
+            BWMRecipes.removeRecipe(getDye(EnumDyeColor.PINK,1));
         }
     }
 
