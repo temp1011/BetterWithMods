@@ -73,7 +73,6 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         int meta = state.getValue(STAGE);
-
         if (meta == 0) {
             if (Gameplay.crankExhaustion > 0.0) {
                 int minHunger = ModuleLoader.isFeatureEnabled(HCHunger.class) ? 20 : 6;
@@ -98,7 +97,6 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
         if (!world.isRemote) {
             if (!checkForOverpower(world, pos)) {
                 world.setBlockState(pos, state.withProperty(STAGE, 1));
-                world.markBlockRangeForRenderUpdate(pos, pos);
                 world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 2.0F);
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
             } else {
@@ -147,7 +145,6 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
                 world.setBlockState(pos, state.withProperty(STAGE, stage + 1));
             } else {
                 world.setBlockState(pos, state.withProperty(STAGE, 0));
-                world.markBlockRangeForRenderUpdate(pos, pos);
                 world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
                 world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.7F);
             }
