@@ -27,7 +27,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Feature {
@@ -184,6 +186,11 @@ public class Feature {
     public final String[] loadPropStringList(String propName, String desc, String[] default_) {
         return ConfigHelper.loadPropStringList(propName, configCategory, desc, default_);
     }
+
+    public final HashSet<String> loadPropStringHashSet(String propName, String desc, String[] default_) {
+        return new HashSet<>(Arrays.asList(ConfigHelper.loadPropStringList(propName, configCategory, desc, default_)));
+    }
+
 
     public final int[] loadPropIntList(String propName, String comment, int[] default_) {
         return ConfigHelper.loadPropIntList(propName, configCategory, comment, default_);
