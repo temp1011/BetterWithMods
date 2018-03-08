@@ -32,6 +32,7 @@ public class Tweaks extends Module {
         registerFeature(new BatWings());
         registerFeature(new MushroomFarming());
         registerFeature(new FoodPoisoning());
+        registerFeature(new Notes());
     }
 
     @Override
