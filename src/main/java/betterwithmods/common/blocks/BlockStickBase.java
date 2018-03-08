@@ -7,15 +7,17 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public abstract class BlockStickBase extends BWMBlock {
     public static final PropertyEnum<Connection> CONNECTION = PropertyEnum.create("connection", Connection.class);
@@ -61,9 +63,6 @@ public abstract class BlockStickBase extends BWMBlock {
         }
         IBlockState above = worldIn.getBlockState(pos.up());
         Block block = above.getBlock();
-        ItemStack stack = new ItemStack(block, 1, block.getMetaFromState(above));
-
-
         return getConnections(newState, worldIn, pos);
     }
 
@@ -92,6 +91,21 @@ public abstract class BlockStickBase extends BWMBlock {
         return false;
     }
 
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        this.checkAndDropBlock(worldIn, pos, state);
+    }
+
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        this.checkAndDropBlock(worldIn, pos, state);
+    }
+
+    private void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (!this.canPlaceBlockAt(worldIn, pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+    }
 
     public enum Connection implements IStringSerializable {
         DISCONNECTED,
