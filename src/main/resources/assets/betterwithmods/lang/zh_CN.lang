@@ -88,6 +88,24 @@ tile.bwm:vase.13.name=绿色花瓶
 tile.bwm:vase.14.name=红色花瓶
 tile.bwm:vase.15.name=黑色花瓶
 
+tile.bwm:candle.0.name=白色蜡烛
+tile.bwm:candle.1.name=橙色蜡烛
+tile.bwm:candle.2.name=品红色蜡烛
+tile.bwm:candle.3.name=淡蓝色蜡烛
+tile.bwm:candle.4.name=黄色蜡烛
+tile.bwm:candle.5.name=黄绿色蜡烛
+tile.bwm:candle.6.name=粉红色蜡烛
+tile.bwm:candle.7.name=灰色蜡烛
+tile.bwm:candle.8.name=淡灰色蜡烛
+tile.bwm:candle.9.name=青色蜡烛
+tile.bwm:candle.10.name=紫色蜡烛
+tile.bwm:candle.11.name=蓝色蜡烛
+tile.bwm:candle.12.name=棕色蜡烛
+tile.bwm:candle.13.name=绿色蜡烛
+tile.bwm:candle.14.name=红色蜡烛
+tile.bwm:candle.15.name=黑色蜡烛
+
+
 tile.bwm:urn.0.name=陶瓮
 tile.bwm:urn.1.name=灵魂陶瓮 （12%）
 tile.bwm:urn.2.name=灵魂陶瓮 （25%）
@@ -225,6 +243,10 @@ tile.bwm:dirt_slab.0.name=泥土台阶
 tile.bwm:dirt_slab.1.name=草方块台阶
 tile.bwm:dirt_slab.2.name=菌丝台阶
 
+tile.bwm:infernal_enchanter.name=炼狱附魔台
+tile.bwm:candle_holder.name=蜡烛台
+tile.bwm:shaft.name=轴
+
 tile.bwm:broken_gearbox.name=破损变速箱
 
 tile.bwm:stake.name=标线桩
@@ -322,8 +344,10 @@ tile.bwm:bop_compat_corner.15.name=桉树边角
 
 tile.bwm:deadweight.name=铁砧
 tile.bwm:deadweight.intact.name=铁砧
-tile.bwm:deadweight.slightlyDamaged.name=轻微损坏的铁砧
-tile.bwm:deadweight.veryDamaged.name=重度损坏的铁砧
+tile.bwm:deadweight.slightlyDamaged.name=轻微受损的铁砧
+tile.bwm:deadweight.veryDamaged.name=严重受损的铁砧
+
+tile.bwm:bucket.name=Well Bucket
 
 item.bwm:material.gear.name=木齿轮
 item.bwm:material.nethercoal.name=下界煤
@@ -417,8 +441,10 @@ item.bwm:mystery_meat.name=神秘的肉
 item.bwm:cooked_mystery_meat.name=熟神秘的肉
 item.bwm:kibble.name=粗粮
 item.bwm:apple_pie.name=苹果派
+item.bwm:bat_wing.name=蝙蝠翼
+item.bwm:cooked_bat_wing.name=烤蝙蝠翼
 
-item.bwm:manual.name=唯一之书
+item.bwm:manual.name=唯心之书
 
 item.bwm:axle_generator.windmill.name=风车
 item.bwm:axle_generator.waterwheel.name=水车
@@ -449,6 +475,11 @@ item.bwm:steel_chest.name=熔魂钢胸甲
 item.bwm:steel_pants.name=熔魂钢护腿
 item.bwm:steel_boots.name=熔魂钢靴子
 
+item.bwm:leather_tanned_helmet.name=鞣制皮革头盔
+item.bwm:leather_tanned_chest.name=鞣制皮革胸甲
+item.bwm:leather_tanned_pants.name=鞣制皮革护腿
+item.bwm:leather_tanned_boots.name=鞣制皮革靴子
+
 item.bwm:composite_bow.name=东方弓
 item.bwm:broadhead_arrow.name=宽头箭
 
@@ -469,6 +500,8 @@ item.bwm:bop_piles.silty_dirt_pile.name=小堆淤土
 item.bwm:bop_piles.sandy_dirt_pile.name=小堆砂土
 
 enchantment.level.-1=
+bwm.infernalenchanter=炼狱附魔台
+
 lore.bwm:dynamite=矮人的钓鱼竿
 
 material.hellfire=炼狱之火
@@ -495,8 +528,8 @@ inv.pulley.name=滑车
 inv.turntable.name=螺杆旋转台
 inv.steel_anvil.name=熔魂钢钢砧
 
-inv.hopper.name=漏斗配方
-inv.hopper.soul_urn.name=漏斗-灵魂陶瓮配方
+inv.hopper.name=漏斗合成
+inv.hopper.soul_urn.name=漏斗-灵魂陶瓮合成
 
 itemGroup.bwm:bwTab=Better With Mods
 
@@ -509,6 +542,7 @@ modifier.mending.desc=§o抢人头！§r\n吸收经验修复工具。
 
 entity.entity_sheared_creeper.name=剪过的爬行者
 entity.bwm_jungle_spider.name=丛林蜘蛛
+entity.extending_rope.name=移动平台
 tile.bwm:single_machine=机械装置
 
 subtitles.bwm.wood.creak=木头吱吱作响
@@ -532,6 +566,8 @@ bwm.message.immersive.1=和应用于沉浸工程的动能发电机
 bwm.message.exhaustion=你太疲惫不堪了。
 
 bwm.message.needs_bait=鱼可能不会咬钩，需要一些诱饵。
+bwm.message.needs_open_sky=没有钓到任何东西，请尝试更换水源。
+bwm.message.needs_deep_water=没有钓到任何东西，可能是水太浅了。
 
 bwm.message.waterwheel.0=没有足够的空间放置水车。 需要一个5×5的工作区域。
 bwm.message.windmill.0=没有足够的空间放置风车。 需要一个13x13的工作区域。
@@ -543,6 +579,7 @@ bwm.config.debug.tooltip=某些功能的调试信息
 bwm.config.vanilla_tweaks.tooltip=原版Minecraft的变化
 bwm.config.pulley.tooltip=滑车能影响的平台的大小
 
+bwm.effect.slow_fall=缓速下降
 bwm.effect.true_sight=真实视觉
 bwm.effect.fortune=时运
 bwm.effect.looting=掠夺
