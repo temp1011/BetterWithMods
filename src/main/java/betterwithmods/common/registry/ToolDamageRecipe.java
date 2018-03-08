@@ -75,7 +75,6 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-
         return result.copy();
     }
 

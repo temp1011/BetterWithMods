@@ -15,6 +15,10 @@ public class CompatFeature extends Feature {
         this.modid = modid;
     }
 
+    @Override
+    public String getFeatureDescription() {
+        return "Compatibility for " + modid;
+    }
 
     public Item getItem(ResourceLocation location) {
         return Item.REGISTRY.getObject(location);
@@ -39,8 +43,6 @@ public class CompatFeature extends Feature {
             return (ItemFood) item;
         return null;
     }
-
-
 
 
 }

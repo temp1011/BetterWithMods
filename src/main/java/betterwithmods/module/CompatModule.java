@@ -28,14 +28,9 @@ public class CompatModule extends Module {
     public void addCompatFeatures() {
         registerCompatFeature("biomesoplenty", "betterwithmods.module.compat.bop.BiomesOPlenty");
         registerCompatFeature("harvestcraft", "betterwithmods.module.compat.Harvestcraft");
-        registerCompatFeature("crafttweaker", "betterwithmods.module.compat.minetweaker.MineTweaker");
         registerCompatFeature("quark", "betterwithmods.module.compat.Quark");
-        registerCompatFeature("nethercore", "betterwithmods.module.compat.NetherCore");
         registerCompatFeature("actuallyadditions", "betterwithmods.module.compat.ActuallyAdditions");
         registerCompatFeature("immersiveengineering", "betterwithmods.module.compat.immersiveengineering.ImmersiveEngineering");
-        registerCompatFeature("rustic", "betterwithmods.module.compat.Rustic");
-        registerCompatFeature("tconstruct", "betterwithmods.module.compat.tcon.TConstruct");
-        registerCompatFeature("thermalexpansion","betterwithmods.module.compat.ThermalExpansion");
         registerCompatFeature("dynamictrees","betterwithmods.module.compat.DynamicTrees");
     }
 

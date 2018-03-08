@@ -10,7 +10,7 @@
   },
   "pattern": [
     "CCC",
-    "C U",
+    "C C",
     "CLC"
   ],
   "type": "forge:ore_shaped",

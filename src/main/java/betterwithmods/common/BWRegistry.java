@@ -22,7 +22,6 @@ import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
-import betterwithmods.module.compat.Rustic;
 import betterwithmods.module.compat.bop.BiomesOPlenty;
 import betterwithmods.module.gameplay.CraftingRecipes;
 import betterwithmods.module.hardcore.crafting.*;
@@ -125,7 +124,6 @@ public class BWRegistry {
                     break;
                 }
             }
-
         }
     }
 
@@ -266,8 +264,6 @@ public class BWRegistry {
 
         replaceIRecipe(BiomesOPlenty.class, reg);
         replaceIRecipe(Quark.class, reg);
-        replaceIRecipe(Rustic.class, reg);
-
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
