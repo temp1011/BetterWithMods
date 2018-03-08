@@ -15,14 +15,20 @@ import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
  * Created by primetoxinz on 4/20/17.
  */
 public class MossGeneration extends Feature {
-    private static final int RADIUS = 5;
+    private static int RADIUS;
+    private static int RATE;
+
+    @Override
+    public void setupConfig() {
+        RADIUS = loadPropInt("Moss radius from the mob spawner", "", 5);
+        RATE = loadPropInt("Moss grow rate", "1 out of this rate will cause a moss to try to generate", 100);
+    }
 
     @SubscribeEvent
     public void generateMossNearSpawner(TickEvent.WorldTickEvent event) {
@@ -52,7 +58,7 @@ public class MossGeneration extends Feature {
 
     public static void mossify(World world, BlockPos pos) {
         IBlockState mossy;
-        if (world.rand.nextInt(30) == 0 && (mossy = getMossyVariant(world.getBlockState(pos))) != null) {
+        if (world.rand.nextInt(RATE) == 0 && (mossy = getMossyVariant(world.getBlockState(pos))) != null) {
             world.setBlockState(pos, mossy);
         }
     }
@@ -78,6 +84,6 @@ public class MossGeneration extends Feature {
 
     public static int randomRange(int start, int end) {
         int d = end - start;
-        return start + RandomUtils.nextInt(0,d);
+        return start + RandomUtils.nextInt(0, d);
     }
 }
