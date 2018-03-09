@@ -20,7 +20,16 @@ public class BlockCandleHolder extends BlockStickBase implements IMultiVariants 
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.isSideSolid(pos.down(), EnumFacing.UP) || worldIn.getBlockState(pos).getBlock() instanceof BlockCandleHolder;
+        return worldIn.isSideSolid(pos.down(), EnumFacing.UP) || worldIn.getBlockState(pos.down()).getBlock() instanceof BlockCandleHolder;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if(!canPlaceBlockAt(worldIn,pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
