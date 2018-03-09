@@ -33,6 +33,7 @@ public class Tweaks extends Module {
         registerFeature(new MushroomFarming());
         registerFeature(new FoodPoisoning());
         registerFeature(new Notes());
+        registerFeature(new MineshaftGeneration());
     }
 
     @Override
