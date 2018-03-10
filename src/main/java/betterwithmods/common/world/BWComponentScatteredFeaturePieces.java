@@ -24,6 +24,11 @@ import java.util.Random;
  * Created by blueyu2 on 11/27/16.
  */
 public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeaturePieces {
+    public BWComponentScatteredFeaturePieces()
+    {
+        super();
+    }
+
     public static class DesertPyramid extends ComponentScatteredFeaturePieces.DesertPyramid {
         private int worldX, worldZ;
 
