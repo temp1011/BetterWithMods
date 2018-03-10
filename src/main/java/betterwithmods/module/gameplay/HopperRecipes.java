@@ -27,8 +27,15 @@ import net.minecraftforge.oredict.OreDictionary;
  * Created by primetoxinz on 6/23/17.
  */
 public class HopperRecipes extends Feature {
+    public static boolean brimstoneFiltering;
+
     public HopperRecipes() {
         canDisable = false;
+    }
+
+    @Override
+    public void setupConfig() {
+        brimstoneFiltering = loadPropBool("Glowstone Filtering", "Passing glowstone through a soulsand filter makes brimstone.", false);
     }
 
     private static boolean isItem(ItemStack stack) {
@@ -73,6 +80,10 @@ public class HopperRecipes extends Feature {
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST,1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
+        if(brimstoneFiltering) {
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
+        }
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
