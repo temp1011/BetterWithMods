@@ -1,27 +1,35 @@
 package betterwithmods.common.entity;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class EntityFallingGourd extends EntityFallingBlock {
     private static final DataParameter<Integer> FALLBLOCK = EntityDataManager.createKey(EntityFallingGourd.class, DataSerializers.VARINT);
     private ItemStack seedStack = ItemStack.EMPTY;
+    private SoundEvent shatterSound = SoundEvents.ENTITY_SLIME_SQUISH;
+    private boolean smashOnImpact = false;
 
     @SuppressWarnings("unused")
     public EntityFallingGourd(World worldIn) {
@@ -64,18 +72,20 @@ public class EntityFallingGourd extends EntityFallingBlock {
             this.motionZ *= 0.9800000190734863D;
             if (!this.getEntityWorld().isRemote) {
                 blockpos1 = new BlockPos(this);
-                if (this.onGround) {
-                    IBlockState iblockstate = this.getEntityWorld().getBlockState(blockpos1);
-                    if (this.getEntityWorld().isAirBlock(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ)) && BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ)))) {
-                        this.onGround = false;
+                if (onGround) {
+                    IBlockState iblockstate = world.getBlockState(blockpos1);
+                    if (world.isAirBlock(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ)) && BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(new BlockPos(this.posX, this.posY - 0.01D, this.posZ)))) {
+                        onGround = false;
                         return;
                     }
 
-                    this.motionX *= 0.699999988079071D;
-                    this.motionZ *= 0.699999988079071D;
+                    this.motionX *= 0.7D;
+                    this.motionZ *= 0.7D;
                     this.motionY *= -0.5D;
+                    if (10 + rand.nextInt(7) <= this.fallTime)
+                        smashOnImpact = true;
                     if (iblockstate.getBlock() != Blocks.PISTON_EXTENSION) {
-                        if (this.getEntityWorld().mayPlace(block, blockpos1, true, EnumFacing.UP, null) && !BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(blockpos1.down())) && (10 + rand.nextInt(7)) > this.fallTime && this.getEntityWorld().setBlockState(blockpos1, fallblock, 3)) {
+                        if (!smashOnImpact && this.getEntityWorld().mayPlace(block, blockpos1, true, EnumFacing.UP, null) && !BlockFalling.canFallThrough(this.getEntityWorld().getBlockState(blockpos1.down())) && this.getEntityWorld().setBlockState(blockpos1, fallblock, 3)) {
                             this.setDead();
                             if (block instanceof BlockFalling) {
                                 ((BlockFalling) block).onEndFalling(this.getEntityWorld(), blockpos1, fallblock, iblockstate);
@@ -84,21 +94,32 @@ public class EntityFallingGourd extends EntityFallingBlock {
                             this.shatter();
                         }
                     }
-                } else if (this.fallTime > 100 && !this.getEntityWorld().isRemote && (blockpos1.getY() < 1 || blockpos1.getY() > 256) || this.fallTime > 600) {
+                } /*else if (fallTime > 100 && !world.isRemote && (blockpos1.getY() < 1 || blockpos1.getY() > 256) || fallTime > 600) {
                     this.shatter();
-                }
+                }*/
             }
         }
     }
 
     @Override
-    public void fall(float p_fall_1_, float p_fall_2_) {
-        //TODO: I guess this should deal like half a heart of damage maybe
+    public void fall(float distance, float damageMultiplier) {
+        int i = MathHelper.ceil(distance - 1.0F);
+
+        if (i > 0 && !world.isRemote)
+        {
+            List<Entity> list = Lists.newArrayList(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()));
+
+            for (Entity entity : list)
+            {
+                entity.attackEntityFrom(DamageSource.FALLING_BLOCK, 1);
+                smashOnImpact = true;
+            }
+        }
     }
 
     public void shatter() {
-        //TODO: This needs to make a splash sound
         if (!getEntityWorld().isRemote) {
+            playSound(shatterSound, 0.8F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F); //slime sound i guess
             IBlockState fallblock = getBlock();
             if (fallblock != null)
                 getEntityWorld().playEvent(2001, new BlockPos(this), Block.getStateId(fallblock));
@@ -110,9 +131,8 @@ public class EntityFallingGourd extends EntityFallingBlock {
                     this.entityDropItem(seeds, 0.0F);
                 }
             }
+            this.setDead();
         }
-
-        this.setDead();
     }
 
     @Nullable
@@ -133,6 +153,10 @@ public class EntityFallingGourd extends EntityFallingBlock {
         seedStack = stack;
     }
 
+    public void setShatterSound(SoundEvent sound) {
+        shatterSound = sound;
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -140,27 +164,14 @@ public class EntityFallingGourd extends EntityFallingBlock {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound p_readEntityFromNBT_1_) {
-        super.readEntityFromNBT(p_readEntityFromNBT_1_);
-        IBlockState fallblock;
-        int i = p_readEntityFromNBT_1_.getByte("Data") & 255;
-        if (p_readEntityFromNBT_1_.hasKey("Block", 8)) {
-            fallblock = Block.getBlockFromName(p_readEntityFromNBT_1_.getString("Block")).getStateFromMeta(i);
-        } else if (p_readEntityFromNBT_1_.hasKey("TileID", 99)) {
-            fallblock = Block.getBlockById(p_readEntityFromNBT_1_.getInteger("TileID")).getStateFromMeta(i);
-        } else {
-            fallblock = Block.getBlockById(p_readEntityFromNBT_1_.getByte("Tile") & 255).getStateFromMeta(i);
-        }
-        setBlock(fallblock);
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        setBlock(fallTile);
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound p_writeEntityToNBT_1_) {
-        super.writeEntityToNBT(p_writeEntityToNBT_1_);
-        IBlockState fallblock = getBlock();
-        Block block = fallblock != null ? fallblock.getBlock() : Blocks.AIR;
-        ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
-        p_writeEntityToNBT_1_.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
-        p_writeEntityToNBT_1_.setByte("Data", (byte) block.getMetaFromState(fallblock));
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        fallTile = getBlock();
+        super.writeEntityToNBT(compound);
     }
 }
