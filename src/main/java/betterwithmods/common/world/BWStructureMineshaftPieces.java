@@ -20,7 +20,6 @@ import java.util.Random;
 public class BWStructureMineshaftPieces extends StructureMineshaftPieces {
     public BWStructureMineshaftPieces()
     {
-        super();
     }
 
     private static StructureMineshaftPieces.Peice createRandomShaftPiece(List<StructureComponent> structureComponents, Random random, int x, int y, int z, @Nullable EnumFacing facing, int componentType, MapGenMineshaft.Type type) {

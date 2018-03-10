@@ -26,7 +26,6 @@ import java.util.Random;
 public class BWComponentScatteredFeaturePieces extends ComponentScatteredFeaturePieces {
     public BWComponentScatteredFeaturePieces()
     {
-        super();
     }
 
     public static class DesertPyramid extends ComponentScatteredFeaturePieces.DesertPyramid {
