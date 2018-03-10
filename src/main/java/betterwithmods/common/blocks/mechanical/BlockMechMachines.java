@@ -204,12 +204,16 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if(!worldIn.isRemote) {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileEntityFilteredHopper) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) tile;
-                hopper.insert(entityIn);
+        EnumType type = state.getValue(TYPE);
+        if(type == EnumType.HOPPER) {
+            if(!worldIn.isRemote) {
+                TileEntity tile = worldIn.getTileEntity(pos);
+                if (tile instanceof TileEntityFilteredHopper) {
+                    TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) tile;
+                    hopper.insert(entityIn);
+                }
             }
+            entityIn.setPosition(entityIn.posX,entityIn.posY + 0.1,entityIn.posZ); //Fix to stop items being caught on this
         }
     }
 

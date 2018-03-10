@@ -236,8 +236,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         else if (this.filterType == 0)
             return this.getFilterStack().isItemEqual(stack);
         if (this.filterType > 0) {
-            if (!this.isPowered())
-                return false;
             if (HopperFilters.getAllowedItems(filterType) != null)
                 return HopperFilters.getAllowedItems(filterType).test(stack);
         }
