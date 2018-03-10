@@ -22,6 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import static net.minecraft.util.EnumFacing.Axis.X;
+import static net.minecraft.util.EnumFacing.Axis.Y;
 import static net.minecraft.util.EnumFacing.Axis.Z;
 
 
@@ -69,7 +70,7 @@ public class BlockStake extends BWMBlock {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack stack = playerIn.getHeldItemMainhand();
         if (stack.isItemEqual(new ItemStack(Items.STRING)))
-            return placeString(worldIn, pos, side.getOpposite(), stack);
+            return placeString(worldIn, pos, side, stack);
         return false;
     }
 
@@ -121,25 +122,27 @@ public class BlockStake extends BWMBlock {
         }
     }
 
-    public static PropertyBool[] Z_ROTATE = new PropertyBool[]{DirUtils.SOUTH, DirUtils.NORTH, DirUtils.UP, DirUtils.DOWN, DirUtils.EAST, DirUtils.WEST};
+    public static PropertyBool[] Z_ROTATE = new PropertyBool[]{DirUtils.SOUTH, DirUtils.NORTH, DirUtils.DOWN, DirUtils.UP, DirUtils.EAST, DirUtils.WEST};
     public static PropertyBool[] X_ROTATE = new PropertyBool[]{DirUtils.SOUTH, DirUtils.NORTH, DirUtils.WEST, DirUtils.EAST, DirUtils.DOWN, DirUtils.UP};
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         IBlockState newState = state;
-        EnumFacing.Axis axis = state.getValue(DirUtils.FACING).getAxis();
-        if (axis == Z) {
-            for (int i = 0; i < EnumFacing.VALUES.length; i++) {
-                newState = newState.withProperty(Z_ROTATE[i], getDirection(worldIn, pos, EnumFacing.getFront(i)));
-            }
-        } else if (axis == X) {
-            for (int i = 0; i < EnumFacing.VALUES.length; i++) {
-                newState = newState.withProperty(X_ROTATE[i], getDirection(worldIn, pos, EnumFacing.getFront(i)));
-            }
-        } else {
-            for (int i = 0; i < EnumFacing.VALUES.length; i++) {
-                newState = newState.withProperty(DirUtils.DIR_PROP[i], getDirection(worldIn, pos, EnumFacing.getFront(i)));
-            }
+        EnumFacing facing = state.getValue(DirUtils.FACING);
+        EnumFacing.Axis axis = facing.getAxis();
+        
+        boolean inverted = facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE; //so technically not inverted.
+        PropertyBool[] transform = DirUtils.DIR_PROP;
+        if (axis == Z)
+            transform = Z_ROTATE;
+        else if (axis == X)
+            transform = X_ROTATE;
+
+        for (int i = 0; i < EnumFacing.VALUES.length; i++) {
+            EnumFacing front = EnumFacing.getFront(i);
+            if(inverted && ((axis != Y && front.getAxis() != Y) || (axis == Y && front.getAxis() != X))) //Dude idk why but it needs this.
+                front = front.getOpposite();
+            newState = newState.withProperty(transform[i], getDirection(worldIn, pos, front));
         }
         return newState;
     }
