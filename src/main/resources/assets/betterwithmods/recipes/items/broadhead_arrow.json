@@ -14,7 +14,7 @@
       "type": "forge:ore_dict"
     },
     "S": {
-      "ore": "mouldingWood",
+      "ore": "stickWood",
       "type": "forge:ore_dict"
     },
     "F": {
