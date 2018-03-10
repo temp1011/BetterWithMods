@@ -14,7 +14,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,19 +57,22 @@ public class BlastingOilEvent {
     @SubscribeEvent
     public static void onHitGround(TickEvent.WorldTickEvent event) {
         World world = event.world;
+        if(world.isRemote)
+            return;
         List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
+        HashSet<EntityItem> toRemove = new HashSet<>();
         items.forEach(item -> {
             boolean ground = item.onGround;
-            if (ground && !onGround.getOrDefault(item, true)) {
+            if (item.isBurning() || (ground && !onGround.getOrDefault(item, true))) {
                 int count = item.getItem().getCount();
                 if (count > 0) {
                     world.createExplosion(item, item.posX, item.posY + item.height / 16, item.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
-                    onGround.remove(item);
+                    toRemove.add(item);
                     item.setDead();
                 }
             }
             onGround.put(item, ground);
         });
-
+        toRemove.forEach(onGround::remove);
     }
 }
