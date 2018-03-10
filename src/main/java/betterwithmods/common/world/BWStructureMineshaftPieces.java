@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BWStructureMineshaftPieces extends StructureMineshaftPieces {
-    public BWStructureMineshaftPieces()
-    {
-    }
-
+public class BWStructureMineshaftPieces {
     private static StructureMineshaftPieces.Peice createRandomShaftPiece(List<StructureComponent> structureComponents, Random random, int x, int y, int z, @Nullable EnumFacing facing, int componentType, MapGenMineshaft.Type type) {
         int i = random.nextInt(100);
 
