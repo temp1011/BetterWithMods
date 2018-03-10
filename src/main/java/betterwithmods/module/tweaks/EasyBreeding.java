@@ -6,22 +6,29 @@ import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.creatures.HCChickens;
 import com.google.common.collect.Sets;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITempt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -54,12 +61,23 @@ public class EasyBreeding extends Feature {
     @GameRegistry.ObjectHolder("betterwithmods:hemp")
     public static final Item HEMP_SEED = null;
 
+    public static HashMap<Item,IExtraFoodItem> EXTRA_FOOD_ITEMS = new HashMap<>();
+
+    public static boolean isOtherValidFood(ItemStack stack, EntityLivingBase animal) {
+        Item item = stack.getItem();
+        return EXTRA_FOOD_ITEMS.containsKey(item) && EXTRA_FOOD_ITEMS.get(item).canEat(stack, animal);
+    }
+
+    public static boolean eatFood(ItemStack stack, EntityLivingBase animal) {
+        Item item = stack.getItem();
+        return EXTRA_FOOD_ITEMS.containsKey(item) && EXTRA_FOOD_ITEMS.get(item).eat(stack, animal);
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
         Set<Item> items = ReflectionHelper.getPrivateValue(EntityPig.class, null, "TEMPTATION_ITEMS", "field_184764_bw");
         items.addAll(Sets.newHashSet(BWMItems.CHOCOLATE, BWMItems.KIBBLE));
-
     }
 
     @Override
@@ -77,7 +95,6 @@ public class EasyBreeding extends Feature {
             }
         }
     }
-
 
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent event) {
@@ -99,6 +116,19 @@ public class EasyBreeding extends Feature {
 
     }
 
+    @SubscribeEvent
+    public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        ItemStack foodStack = event.getItemStack();
+        IExtraFoodItem extraFoodItem = EXTRA_FOOD_ITEMS.get(foodStack.getItem());
+        Entity target = event.getTarget();
+        if (target instanceof EntityLivingBase && extraFoodItem != null && extraFoodItem.canEat(foodStack,(EntityLivingBase) target)) {
+            event.setCanceled(true);
+            event.setResult(Event.Result.DENY);
+            extraFoodItem.eat(foodStack,(EntityLivingBase) target);
+            foodStack.shrink(1);
+        }
+    }
+
     @Override
     public boolean hasSubscriptions() {
         return true;
@@ -107,5 +137,12 @@ public class EasyBreeding extends Feature {
     @Override
     public String[] getIncompatibleMods() {
         return new String[]{"easyBreeding"};
+    }
+
+    public interface IExtraFoodItem
+    {
+        boolean canEat(ItemStack item, EntityLivingBase eater);
+
+        boolean eat(ItemStack item, EntityLivingBase eater);
     }
 }

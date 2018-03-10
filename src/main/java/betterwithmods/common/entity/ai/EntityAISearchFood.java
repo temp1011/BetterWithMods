@@ -1,5 +1,6 @@
 package betterwithmods.common.entity.ai;
 
+import betterwithmods.module.tweaks.EasyBreeding;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -34,7 +35,7 @@ public class EntityAISearchFood extends EntityAIBase {
                 List<EntityItem> entityItems = entity.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(entityPos, entityPos.add(1, 1, 1)).expand(5, 5, 5));
                 if (!entityItems.isEmpty()) {
                     for (EntityItem item : entityItems) {
-                        if (entity.isBreedingItem(item.getItem())) {
+                        if (entity.isBreedingItem(item.getItem()) || EasyBreeding.isOtherValidFood(item.getItem(),entity)) {
                             targetItem = item;
                             break;
                         }
@@ -122,17 +123,19 @@ public class EntityAISearchFood extends EntityAIBase {
     private void processItemEating() {
         if (!entity.getEntityWorld().isRemote) {
             ItemStack foodStack = targetItem.getItem().splitStack(1);
-            boolean bred = false;
+            boolean eaten = false;
             if (entity.isBreedingItem(foodStack)) {
                 if (entity.getGrowingAge() == 0 && !entity.isInLove()) {
-                    bred = true;
+                    eaten = true;
                     entity.setInLove(null);
                 } else if (entity.isChild()) {
-                    bred = true;
+                    eaten = true;
                     entity.ageUp((int) ((float) (-entity.getGrowingAge() / 20) * 0.1F), true);
                 }
             }
-            if (!bred) {
+            if (EasyBreeding.eatFood(foodStack, entity))
+                eaten = true;
+            if (!eaten) {
                 targetItem.getItem().grow(1);
             } else if (targetItem.getItem().getCount() < 1) {
                 targetItem.setDead();
