@@ -6,6 +6,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.structure.ComponentScatteredFeaturePieces;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
@@ -38,7 +39,7 @@ public class BWMapGenScatteredFeature extends MapGenScatteredFeature {
                     case "SandTemple":
                         return new BWComponentScatteredFeaturePieces.DesertPyramid(random, chunkX * 16, chunkZ * 16);
                     case "Igloo":
-                        return new BWComponentScatteredFeaturePieces.Igloo(random, chunkX * 16, chunkZ * 16);
+                        return new ComponentScatteredFeaturePieces.Igloo(random, chunkX * 16, chunkZ * 16);
                     case "StoneTemple":
                         return new BWComponentScatteredFeaturePieces.JunglePyramid(random, chunkX * 16, chunkZ * 16);
                 }
