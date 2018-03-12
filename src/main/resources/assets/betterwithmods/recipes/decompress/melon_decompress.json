@@ -6,7 +6,7 @@
   "ingredients": [
     {
       "item": "minecraft:melon_block",
-      "data": 8
+      "data": 0
     }
   ],
   "type": "minecraft:crafting_shapeless"
