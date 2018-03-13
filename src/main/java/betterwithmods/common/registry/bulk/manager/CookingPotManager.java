@@ -10,6 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     private static final CookingPotManager instance = new CookingPotManager();
@@ -43,6 +44,10 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     //Unstoked
+    public CookingPotRecipe addUnstokedRecipe(List<ItemStack> input, ItemStack output) {
+        return addUnstokedRecipe(input.stream().map(Ingredient::fromStacks).collect(Collectors.toList()), Lists.newArrayList(output));
+    }
+
     public CookingPotRecipe addUnstokedRecipe(ItemStack input, ItemStack... output) {
         return addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(input.copy())), Lists.newArrayList(output));
     }

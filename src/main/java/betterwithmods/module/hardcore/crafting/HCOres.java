@@ -2,8 +2,8 @@ package betterwithmods.module.hardcore.crafting;
 
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.module.Feature;
-import betterwithmods.module.gameplay.CrucibleRecipes;
 import com.google.common.collect.Sets;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -61,24 +60,27 @@ public class HCOres extends Feature {
             addHardcoreRecipe(new ShapedOreRecipe(null, Items.BUCKET, "N N", "N N", "NNN", 'N', "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "bucket")));
             addHardcoreRecipe(new ShapelessOreRecipe(null, Items.FLINT_AND_STEEL, Items.FLINT, "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "flint_and_steel")));
         }
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[]{new ItemStack(Items.BUCKET)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[]{new ItemStack(Items.WATER_BUCKET)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 7), new Object[]{new ItemStack(Items.MILK_BUCKET)});
 
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{new ItemStack(Items.MAP)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{new ItemStack(Items.COMPASS)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_NUGGET, 4), new Object[]{new ItemStack(Items.CLOCK)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET), new Object[]{new ItemStack(Items.FLINT_AND_STEEL)});
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.BUCKET), new ItemStack(Items.IRON_NUGGET, 7));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.IRON_NUGGET, 7));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.IRON_NUGGET, 7));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.MAP), new ItemStack(Items.IRON_NUGGET, 4));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_NUGGET, 4));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Blocks.TRIPWIRE_HOOK, 2), new ItemStack(Items.IRON_NUGGET));
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_NUGGET, 4));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 3), new Object[]{new ItemStack(Items.BUCKET)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Blocks.TRIPWIRE_HOOK, 2, 0)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT), new Object[]{new ItemStack(Items.FLINT_AND_STEEL, 1, OreDictionary.WILDCARD_VALUE)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4), new Object[]{new ItemStack(Items.COMPASS)});
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.GOLD_INGOT, 4), new Object[]{new ItemStack(Items.CLOCK)});
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.BUCKET), new ItemStack(Items.IRON_INGOT, 3));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.IRON_INGOT, 3));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.IRON_INGOT, 3));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.MAP), new ItemStack(Items.IRON_INGOT, 4));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Blocks.TRIPWIRE_HOOK, 2), new ItemStack(Items.IRON_INGOT));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4));
     }
 
     @Override
