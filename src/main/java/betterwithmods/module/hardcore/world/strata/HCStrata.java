@@ -17,10 +17,16 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import team.chisel.ctm.client.texture.type.TextureTypeRegistry;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +54,24 @@ public class HCStrata extends Feature {
     @Override
     public String getFeatureDescription() {
         return "Divides the underground into three strata. Each strata requires the next tool tier to properly mine";
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+
+        if(Loader.isModLoaded("ctm")) {
+            try {
+                Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
+                Class clazz1 = Class.forName("team.chisel.ctm.api.texture.ITextureType");
+                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureContextStrata");
+                Method register = ReflectionHelper.findMethod(clazz,"register","register",String.class,clazz1);
+                register.invoke(null,"bwm_strata", clazz2.newInstance());
+            } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+
+        }
+        TextureTypeRegistry.register("bwm_strata", new TextureTypeStrata());
     }
 
     @Override
