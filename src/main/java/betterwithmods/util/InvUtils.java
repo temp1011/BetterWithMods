@@ -21,6 +21,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
@@ -32,6 +33,9 @@ import java.util.stream.Collectors;
 
 public class InvUtils {
 
+    public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
+        return InventoryIterator.stream(handler).anyMatch(ingredient::apply);
+    }
     public static <T> NonNullList<T> asNonnullList(T... array) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (array != null)

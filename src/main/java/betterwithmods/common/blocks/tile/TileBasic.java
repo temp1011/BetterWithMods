@@ -52,4 +52,16 @@ public class TileBasic extends TileEntity {
     public void onBreak() {
 
     }
+
+    public int value(NBTTagCompound tag, String key, int defaultValue) {
+        return tag.hasKey(key) ? tag.getInteger(key) : defaultValue;
+    }
+
+    public String value(NBTTagCompound tag, String key, String defaultValue) {
+        return tag.hasKey(key) ? tag.getString(key) : defaultValue;
+    }
+
+    public boolean value(NBTTagCompound tag, String key, boolean defaultValue) {
+        return tag.hasKey(key) ? tag.getBoolean(key) : defaultValue;
+    }
 }

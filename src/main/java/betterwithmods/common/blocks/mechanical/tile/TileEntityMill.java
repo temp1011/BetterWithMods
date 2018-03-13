@@ -4,10 +4,10 @@ import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.TileBasicInventory;
-import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
@@ -60,7 +60,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private boolean findIfBlocked() {
         int count = 0;
         for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-            if (world.isSideSolid(pos.offset(facing),facing.getOpposite())) {
+            if (world.isSideSolid(pos.offset(facing), facing.getOpposite())) {
                 count++;
             }
         }
@@ -151,14 +151,14 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     private boolean canEject(EnumFacing facing) {
-        if(world.isAirBlock(pos.offset(facing)))
+        if (world.isAirBlock(pos.offset(facing)))
             return true;
         return !world.isBlockFullCube(pos.offset(facing)) && !world.isSideSolid(pos.offset(facing), facing.getOpposite());
     }
 
     private void ejectStack(ItemStack stack) {
         List<EnumFacing> validDirections = Lists.newArrayList(EnumFacing.HORIZONTALS).stream().filter(this::canEject).collect(Collectors.toList());
-        if(validDirections.isEmpty()) {
+        if (validDirections.isEmpty()) {
             blocked = true;
             return;
         }
@@ -175,13 +175,10 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     private boolean grindContents() {
-        MillManager mill = MillManager.getInstance();
-        List<Object> ingredients = mill.getValidCraftingIngredients(inventory);
-
-        if (ingredients != null) {
+        if (BWRegistry.MILLSTONE.canCraft(this, inventory)) {
             if (grindType == 1)
                 this.getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            NonNullList<ItemStack> output = mill.craftItem(world, this, inventory);
+            NonNullList<ItemStack> output = BWRegistry.MILLSTONE.craftItem(world, this, inventory);
             if (!output.isEmpty()) {
                 for (ItemStack anOutput : output) {
                     ItemStack stack = anOutput.copy();
@@ -197,7 +194,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private void validateContents() {
         int oldGrindType = getGrindType();
         int newGrindType = 0;
-        MillRecipe recipe = MillManager.getInstance().getMostValidRecipe(inventory);
+        MillRecipe recipe = BWRegistry.MILLSTONE.getRecipe(this, inventory);
         if (recipe != null) {
             this.containsIngredientsToGrind = true;
             newGrindType = recipe.getGrindType();

@@ -1,28 +1,11 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.common.registry.bulk.manager.CauldronManager;
-import betterwithmods.common.registry.bulk.manager.StokedCauldronManager;
+import betterwithmods.common.BWRegistry;
 
 public class TileEntityCauldron extends TileEntityCookingPot {
     public TileEntityCauldron() {
-        super(CauldronManager.getInstance(), StokedCauldronManager.getInstance());
+        super(BWRegistry.CAULDRON);
     }
-
-    @Override
-    public boolean validateUnstoked() {
-        return CauldronManager.getInstance().getCraftingResult(inventory) != null;
-    }
-
-    @Override
-    public boolean validateStoked() {
-        return StokedCauldronManager.getInstance().getCraftingResult(inventory) != null;
-    }
-
-    @Override
-    protected boolean attemptToCookNormal() {
-        return super.attemptToCookNormal();
-    }
-
 
     @Override
     public String getName() {

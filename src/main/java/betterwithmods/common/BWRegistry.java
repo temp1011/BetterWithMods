@@ -16,6 +16,8 @@ import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.bulk.manager.CookingPotManager;
+import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
@@ -71,6 +73,12 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
+
+    public static final CookingPotManager CAULDRON = new CookingPotManager();
+    public static final CookingPotManager CRUCIBLE = new CookingPotManager();
+    public static final MillManager MILLSTONE = new MillManager();
+
+
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
     public static final Potion POTION_TRUESIGHT = null;
     @GameRegistry.ObjectHolder("betterwithmods:fortune")
@@ -232,8 +240,8 @@ public class BWRegistry {
 
 
     public static void registerHeatSources() {
-        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 3);
-        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 8);
+        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 1);
+        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 2);
     }
 
     @SubscribeEvent
