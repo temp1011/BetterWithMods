@@ -3,7 +3,7 @@ package betterwithmods.module.compat.jei.wrapper;
 import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author primetoxinz
  * @version 11/11/16
  */
-public class BlockMetaWrapper extends BlankRecipeWrapper {
+public class BlockMetaWrapper implements IRecipeWrapper {
     public final List<ItemStack> outputs = Lists.newArrayList();
     public final ItemStack input;
 

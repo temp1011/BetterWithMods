@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -54,7 +55,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public boolean isInvalid() {
-        return getInputs().isEmpty() || getOutputs().isEmpty();
+        return (getInputs().isEmpty() || getInputs().stream().anyMatch( i -> ArrayUtils.isEmpty(i.getMatchingStacks()))|| getOutputs().isEmpty());
     }
 
     @Override

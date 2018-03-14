@@ -3,9 +3,7 @@ package betterwithmods.module.hardcore.crafting;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
-import betterwithmods.module.gameplay.CrucibleRecipes;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -57,13 +55,14 @@ public class HCRedstone extends Feature {
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "S", "R", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_button")));
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "SS", "RR", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_pressure_plate")));
         }
-
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
+        //TODO
+//        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 4, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
 
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 6, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
+        //TODO
+//        CrucibleRecipes.addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 6, 0), new Object[]{new ItemStack(Blocks.IRON_TRAPDOOR, 2)});
     }
 }

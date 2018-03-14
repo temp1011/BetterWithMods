@@ -80,18 +80,19 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         this.blocked = findIfBlocked();
         getBlock().setActive(world, pos, isActive());
 
-        if (this.validateContents)
-            validateContents();
+        validateContents();
 
         if (isBlocked()) {
             return;
         }
 
-        if (isActive())
+        if (isActive()) {
             if (getBlockWorld().rand.nextInt(20) == 0)
                 getBlockWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F);
+        }
 
         if (this.containsIngredientsToGrind && isActive()) {
+
             if (!this.getBlockWorld().isRemote) {
                 if (grindType == 2) {
                     if (this.getBlockWorld().rand.nextInt(25) < 2) {
@@ -106,7 +107,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             if (this.grindCounter > GRIND_TIME - 1) {
                 grindContents();
                 this.grindCounter = 0;
-                this.validateContents = true;
+
             }
         }
     }

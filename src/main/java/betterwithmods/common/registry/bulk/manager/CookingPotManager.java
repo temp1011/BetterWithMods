@@ -1,6 +1,6 @@
 package betterwithmods.common.registry.bulk.manager;
 
-import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
+import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
@@ -74,7 +74,9 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
 
     @Override
     protected Optional<CookingPotRecipe> findRecipe(TileEntity tile, ItemStackHandler inv) {
-        int heat = tile instanceof TileEntityCookingPot ? ((TileEntityCookingPot) tile).getHeat() : 0;
-        return recipes.stream().filter(r -> r.matches(inv) && r.getHeat() >= heat).sorted().findFirst();
+        if (tile instanceof IHeated) {
+            return recipes.stream().filter(r -> r.matches(inv) && r.canCraft((IHeated) tile)).sorted().findFirst();
+        }
+        return Optional.empty();
     }
 }

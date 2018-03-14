@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IHeated;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
@@ -30,15 +31,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import java.util.List;
 
 
-public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower {
-    public int cookCounter;
+public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower, IHeated {
+    public int cookProgress, cookTime;
     public EnumFacing facing;
     public int heat;
     protected CraftingManagerBulk<CookingPotRecipe> manager;
 
     public TileEntityCookingPot(CraftingManagerBulk<CookingPotRecipe> manager) {
         this.manager = manager;
-        this.cookCounter = 0;
+        this.cookProgress = 0;
+        this.cookTime = 0;
         this.occupiedSlots = 0;
         this.facing = EnumFacing.UP;
     }
@@ -90,7 +92,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.facing = EnumFacing.getFront(value(tag, "facing", EnumFacing.UP.getIndex()));
-        this.cookCounter = value(tag, "time", 0);
+        this.cookProgress = value(tag, "progress", 0);
+        this.cookTime = value(tag, "time", 4000);
         this.heat = value(tag, "heat", 0);
     }
 
@@ -98,8 +101,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagCompound t = super.writeToNBT(tag);
         t.setInteger("facing", facing.getIndex());
-        t.setInteger("time", this.cookCounter);
+        t.setInteger("progress", this.cookProgress);
         t.setInteger("heat", this.heat);
+        t.setInteger("time", this.cookTime);
         return t;
     }
 
@@ -111,23 +115,31 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         if (getBlock() instanceof BlockCookingPot) {
             IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (isPowered()) {
-                this.cookCounter = 0;
+                this.cookProgress = 0;
                 this.facing = getPoweredSide();
                 ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
             } else {
+                if (this.facing != EnumFacing.UP)
+                    this.facing = EnumFacing.UP;
+
                 entityCollision();
-                int heat = findHeat();
+                int heat = findHeat(getPos());
                 if (this.heat != heat) {
                     this.heat = heat;
-                    this.cookCounter = 0;
+                    this.cookProgress = 0;
+                }
+                int time = findCookTime();
+                if (this.cookTime != time) {
+                    this.cookTime = time;
                 }
                 if (manager.canCraft(this, inventory)) {
-                    if (this.cookCounter >= getCookTime()) {
-                        manager.craftItem(world, this, inventory);
+                    if (this.cookProgress >= getCookTime()) {
+                        InvUtils.insert(inventory, manager.craftItem(world, this, inventory), false);
+                        cookProgress = 0;
                     }
-                    cookCounter++;
+                    cookProgress++;
                 } else {
-                    cookCounter = 0;
+                    cookProgress = 0;
                 }
             }
             if (facing != state.getValue(DirUtils.TILTING)) {
@@ -136,17 +148,38 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         }
     }
 
-    public int getCookTime() {
-        //TODO
-        return 4350;
+    private static final int MAX_TIME = 1000;
+
+    private int findCookTime() {
+        int divisor = -heat;
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                divisor += findHeat(pos.add(x, 0, z));
+            }
+        }
+        if (divisor != 0)
+            return MAX_TIME / divisor;
+        return MAX_TIME;
+    }
+
+    private int getCookProgress() {
+        return cookProgress;
+    }
+
+    private int getCookTime() {
+        return cookTime;
+    }
+
+    public int getPercentProgress() {
+        return (int) (((double) getCookProgress()) / ((double) getCookTime()) * 100);
     }
 
     public int getHeat() {
         return heat;
     }
 
-    public int findHeat() {
-        return BWMHeatRegistry.getHeat(world.getBlockState(getPos().down()));
+    private int findHeat(BlockPos pos) {
+        return BWMHeatRegistry.getHeat(world.getBlockState(pos.down()));
     }
 
     private void entityCollision() {
@@ -161,11 +194,11 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     private boolean captureDroppedItems() {
-        boolean insert = true;
+        boolean insert = false;
         if (!InvUtils.isFull(inventory)) {
             List<EntityItem> items = this.getCaptureItems(getBlockWorld(), getPos());
             for (EntityItem item : items)
-                insert &= InvUtils.insertFromWorld(inventory, item, 0, 27, false);
+                insert |= InvUtils.insertFromWorld(inventory, item, 0, 27, false);
         }
         if (insert) {
             this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

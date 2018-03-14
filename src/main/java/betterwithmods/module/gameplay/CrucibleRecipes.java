@@ -1,6 +1,9 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWRegistry;
 import betterwithmods.module.Feature;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 /**
@@ -17,7 +20,7 @@ public class CrucibleRecipes extends Feature {
 //        addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
 //        addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new Object[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
 //        addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new Object[]{new ItemStack(Blocks.GLASS_PANE, 8)});
-//        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new Object[]{new ItemStack(Blocks.COBBLESTONE)});
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.STONE));
 //        addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 6), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 7)});
 //        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1)});
 //        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});

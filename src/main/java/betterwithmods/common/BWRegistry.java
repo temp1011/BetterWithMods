@@ -242,6 +242,7 @@ public class BWRegistry {
     public static void registerHeatSources() {
         BWMHeatRegistry.addHeatSource(Blocks.FIRE, 1);
         BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 2);
+        BWMHeatRegistry.addHeatSource(Blocks.BARRIER, 10);
     }
 
     @SubscribeEvent

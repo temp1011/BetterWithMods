@@ -1,12 +1,17 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import betterwithmods.util.StackIngredient;
+import com.google.common.collect.Lists;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.oredict.OreIngredient;
 
 import java.util.Map;
 
@@ -20,7 +25,9 @@ public class CauldronRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-//        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8), new Object[]{"dustPotash", new OreStack("dustHellfire", 4)});
+        //TODO
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustPotash"), StackIngredient.fromOre(4, "dustHellfire")),
+                Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8)));
 //        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL, 4), new Object[]{"dustHellfire", "dustCarbon"});
 //        //Flour OreDict is foodFlour, Donuts need sugar
 //        addCauldronRecipe(new ItemStack(BWMItems.DONUT, 4, 0), new Object[]{"foodFlour", Items.SUGAR});
@@ -45,7 +52,9 @@ public class CauldronRecipes extends Feature {
 //        addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
 //        addCauldronRecipe(new ItemStack(Blocks.PISTON, 4), new Object[]{new ItemStack(Blocks.STICKY_PISTON, 4), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
 //
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{new ItemStack(Items.LEATHER)});
+
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.LEATHER), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
+//        addStokedCauldronRecipe(, new Object[]{});
 //        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)});
 //        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)});
 //        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP, 8)});
@@ -98,7 +107,7 @@ public class CauldronRecipes extends Feature {
                 if (input.getItem() instanceof ItemFood && input.getItem() != Items.BREAD) {
                     ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input);
                     if (!output.isEmpty()) {
-                        CauldronRecipes.addCauldronRecipe(new CauldronFoodRecipe(output.copy(), new Object[]{input.copy()}));
+//                        CauldronRecipes.addCauldronRecipe(new CauldronFoodRecipe(output.copy(), new Object[]{input.copy()}));
                     }
                 }
             }

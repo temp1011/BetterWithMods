@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.tile.IHeated;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -17,5 +18,9 @@ public class CookingPotRecipe extends BulkRecipe {
 
     public int getHeat() {
         return heat;
+    }
+
+    public boolean canCraft(IHeated tile) {
+        return tile.getHeat() == getHeat();
     }
 }
