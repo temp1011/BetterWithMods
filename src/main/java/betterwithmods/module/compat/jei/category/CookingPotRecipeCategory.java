@@ -64,7 +64,6 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
         IGuiItemStackGroup stacks = layout.getItemStacks();
 
         stacks.init(outputSlot, false, 118, 18);
-        stacks.init(outputSlot + 1, false, 118 + 18, 18);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {

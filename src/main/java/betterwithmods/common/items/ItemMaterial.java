@@ -3,11 +3,13 @@ package betterwithmods.common.items;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMItems;
+import betterwithmods.util.StackIngredient;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -25,17 +27,17 @@ public class ItemMaterial extends Item implements IMultiLocations {
 
     @Override
     public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-        if(EnumMaterial.VALUES[stack.getMetadata()] == EnumMaterial.DIAMOND_INGOT && playerIn != null) {
+        if (EnumMaterial.VALUES[stack.getMetadata()] == EnumMaterial.DIAMOND_INGOT && playerIn != null) {
             BlockPos pos = playerIn.getPosition().up();
-            worldIn.playSound(null, playerIn.getPosition(),SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,1.0f,1.0f);
-            worldIn.createExplosion(null,pos.getX(),pos.getY(),pos.getZ(),0.1f,false);
+            worldIn.playSound(null, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            worldIn.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 0.1f, false);
         }
         super.onCreated(stack, worldIn, playerIn);
     }
 
     @Override
     public int getItemBurnTime(ItemStack stack) {
-        switch(EnumMaterial.VALUES[stack.getMetadata()]) {
+        switch (EnumMaterial.VALUES[stack.getMetadata()]) {
             case GEAR:
                 return 18;
             case NETHERCOAL:
@@ -53,6 +55,16 @@ public class ItemMaterial extends Item implements IMultiLocations {
     public static ItemStack getMaterial(EnumMaterial material, int count) {
         return new ItemStack(BWMItems.MATERIAL, count, material.getMetadata());
     }
+
+
+    public static Ingredient getIngredient(EnumMaterial material) {
+        return getIngredient(material, 1);
+    }
+
+    public static Ingredient getIngredient(EnumMaterial material, int count) {
+        return StackIngredient.fromStacks(count, getMaterial(material, count));
+    }
+
 
     @Override
     public String[] getLocations() {

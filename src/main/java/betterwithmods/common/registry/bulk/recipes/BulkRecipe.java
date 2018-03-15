@@ -7,6 +7,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -31,10 +32,20 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
-        if (consumeIngredients(inv)) {
-            return InvUtils.asNonnullList(getOutputs());
+        NonNullList<ItemStack> items = NonNullList.create();
+        if (consumeIngredients(inv, items)) {
+            items.addAll(getOutputs());
+            return items;
         }
         return NonNullList.create();
+    }
+
+    private static NonNullList<ItemStack> defaultRecipeGetRemainingItems(ItemStackHandler inv) {
+        NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < inv.getSlots(); i++) {
+            ret.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
+        }
+        return ret;
     }
 
     public List<ItemStack> getOutputs() {
@@ -45,7 +56,8 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return inputs;
     }
 
-    private boolean consumeIngredients(ItemStackHandler inventory) {
+    private boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
+        containItems.addAll(defaultRecipeGetRemainingItems(inventory));
         for (Ingredient ingredient : inputs) {
             int count = ingredient instanceof StackIngredient ? ((StackIngredient) ingredient).getCount() : 1;
             if (!InvUtils.consumeItemsInInventory(inventory, ingredient, count, false))

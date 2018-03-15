@@ -1,5 +1,6 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
@@ -9,15 +10,16 @@ import betterwithmods.util.StackIngredient;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,53 +32,8 @@ public class CauldronRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        //TODO
-
         unstoked();
         stoked();
-
-
-//        addStokedCauldronRecipe(, new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP, 8)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT, 2)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 1), new Object[]{new ItemStack(Items.BOOK, 2, OreDictionary.WILDCARD_VALUE)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_PORKCHOP)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.PORKCHOP)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_BEEF, 4)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.BEEF, 4)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.MUTTON, 6)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_MUTTON, 6)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH)});
-//
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{"logWood"});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("plankWood", 6)});
-//        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("dustWood", 16)});
-//        addCauldronRecipe(new ItemStack(BWMItems.CHICKEN_SOUP, 3), new Object[]{new ItemStack(Items.COOKED_CHICKEN), new ItemStack(Items.CARROT), new ItemStack(Items.BAKED_POTATO), new ItemStack(Items.BOWL, 3)});
-//        addCauldronRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), new ItemStack(Items.BUCKET), new Object[]{"foodCocoapowder", new ItemStack(Items.SUGAR), new ItemStack(Items.MILK_BUCKET)});
-//        addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
-//        addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});
-//        addCauldronRecipe(new ItemStack(BWMItems.HEARTY_STEW, 5), new Object[]{"listAllmeatcooked", Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.BROWN_MUSHROOM, 3), "foodFlour"});
-//
-//        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.MUSHROOM_STEW), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Blocks.BROWN_MUSHROOM, 3), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL)});
-//        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BEETROOT_SOUP), new Object[]{new ItemStack(Items.BEETROOT, 6), new ItemStack(Items.BOWL)});
-//        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.RABBIT_STEW, 5), new Object[]{Items.COOKED_RABBIT, Items.CARROT, Items.BAKED_POTATO, new ItemStack(Items.BOWL, 5), new ItemStack(Blocks.RED_MUSHROOM, 3), "foodFlour"});
-//
-//
-//        addCauldronRecipe(new ItemStack(BWMItems.KIBBLE, 2), new ItemStack[]{new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(Items.ROTTEN_FLESH, 4), new ItemStack(Items.SUGAR)});
-//        addCauldronRecipe(new ItemStack(BWMBlocks.BLOOD_SAPLING), new ItemStack[] {new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.SAPLING, 1, 5),
-//        new ItemStack(Items.NETHER_WART), BlockUrn.getStack(BlockUrn.EnumType.FULL, 8)});
     }
 
     private void stoked() {
@@ -89,6 +46,35 @@ public class CauldronRecipes extends Feature {
                 StackIngredient.fromOre(4, "meatMutton"),
                 StackIngredient.fromOre(10, "meatRotten")
         ).forEach(meat -> BWRegistry.CAULDRON.addStokedRecipe(meat, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW)));
+
+        Lists.newArrayList(
+                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
+                StackIngredient.fromStacks(8, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP)),
+                StackIngredient.fromStacks(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT)),
+                StackIngredient.fromStacks(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT)),
+                StackIngredient.fromStacks(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT)),
+                StackIngredient.fromStacks(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT)),
+                StackIngredient.fromStacks(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT)),
+                StackIngredient.fromOre(2, "book")
+        ).forEach(i -> BWRegistry.CAULDRON.addStokedRecipe(i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE)));
+
+        Lists.newArrayList(
+                StackIngredient.fromOre("logWood"),
+                StackIngredient.fromOre(6, "plankWood"),
+                StackIngredient.fromOre(16, "dustWood")
+        ).forEach(i -> BWRegistry.CAULDRON.addStokedRecipe(i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH)));
+
+        BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.POTASH)), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)));
+
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2));
+
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_HELMET, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_CHEST, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2));
 
 
     }
@@ -140,6 +126,56 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("gunpowder"), new OreIngredient("string")), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD)), new OreIngredient("soap")), BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(StackIngredient.fromStacks(4, new ItemStack(Blocks.STICKY_PISTON)), new OreIngredient("soap")), new ItemStack(Blocks.PISTON, 4));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("meatFish"), Ingredient.fromItem(Items.MILK_BUCKET), StackIngredient.fromStacks(2, new ItemStack(Items.BOWL))), new ItemStack(BWMItems.CHOWDER, 2));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromItem(Items.CARROT), Ingredient.fromItem(Items.COOKED_CHICKEN), Ingredient.fromItem(Items.BAKED_POTATO), StackIngredient.fromStacks(3, new ItemStack(Items.BOWL))), new ItemStack(BWMItems.CHICKEN_SOUP, 3));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("foodCocoapowder"), Ingredient.fromItem(Items.SUGAR), Ingredient.fromItem(Items.MILK_BUCKET)), new ItemStack(BWMItems.CHOCOLATE, 2));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                new OreIngredient("listAllmeatcooked"),
+                new OreIngredient("foodFlour"),
+                Ingredient.fromItem(Items.CARROT),
+                Ingredient.fromItem(Items.BAKED_POTATO),
+                StackIngredient.fromStacks(5, new ItemStack(Items.BOWL)),
+                StackIngredient.fromStacks(3, new ItemStack(Blocks.BROWN_MUSHROOM))
+        ), new ItemStack(BWMItems.HEARTY_STEW, 5));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.MILK_BUCKET),
+                Ingredient.fromItem(Items.BOWL),
+                StackIngredient.fromStacks(3, new ItemStack(Blocks.BROWN_MUSHROOM))
+        ), new ItemStack(Items.MUSHROOM_STEW));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.SUGAR),
+                StackIngredient.fromOre(4, "meatRotten"),
+                StackIngredient.fromStacks(4, new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()))
+        ), new ItemStack(BWMItems.KIBBLE, 2));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.BOWL),
+                StackIngredient.fromStacks(6, new ItemStack(Items.BEETROOT))
+        ), new ItemStack(Items.BEETROOT_SOUP));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.COOKED_RABBIT),
+                Ingredient.fromItem(Items.CARROT),
+                Ingredient.fromItem(Items.BAKED_POTATO),
+                StackIngredient.fromOre("foodFlour"),
+                StackIngredient.fromStacks(3, new ItemStack(Blocks.RED_MUSHROOM)),
+                StackIngredient.fromStacks(5, new ItemStack(Items.BOWL))
+        ), new ItemStack(Items.RABBIT_STEW, 5));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING)),
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING, 1, 1)),
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING, 1, 2)),
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING, 1, 3)),
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING, 1, 4)),
+                Ingredient.fromStacks(new ItemStack(Blocks.SAPLING, 1, 5)),
+                Ingredient.fromStacks(new ItemStack(Items.NETHER_WART)),
+                StackIngredient.fromOre(8, "blockSoulUrn")
+        ), new ItemStack(BWMBlocks.BLOOD_SAPLING));
+
     }
 
     @Override

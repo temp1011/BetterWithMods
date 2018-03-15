@@ -14,12 +14,21 @@ public class StackIngredient extends Ingredient {
         return new StackIngredient(count, ingredient);
     }
 
+
+    public static StackIngredient fromStacks(ItemStack... stacks) {
+        return fromStacks(1,stacks);
+    }
+
     public static StackIngredient fromStacks(int count, ItemStack... stacks) {
         return new StackIngredient(count, stacks);
     }
 
     public static StackIngredient fromOre(int count, String ore) {
         return fromIngredient(count, new OreIngredient(ore));
+    }
+
+    public static StackIngredient fromOre(String ore) {
+        return fromOre(1, ore);
     }
 
     private final int count;

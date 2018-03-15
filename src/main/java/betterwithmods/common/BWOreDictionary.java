@@ -56,7 +56,7 @@ public class BWOreDictionary {
         toolEffectiveOre.putAll("axe", Lists.newArrayList("logWood", "plankWood"));
         toolEffectiveOre.putAll("mattock", Lists.newArrayList("stone", "cobblestone"));
 
-        registerOre("book", BWMItems.MANUAL);
+        registerOre("book", BWMItems.MANUAL, Items.BOOK, Items.WRITTEN_BOOK);
         registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
         registerOre("padding", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
         registerOre("soap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP));
@@ -130,6 +130,7 @@ public class BWOreDictionary {
         registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
         registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
 
+
         registerOre("listAllmeat", Items.PORKCHOP, Items.BEEF, Items.CHICKEN, Items.FISH, Items.MUTTON, BWMItems.MYSTERY_MEAT);
         registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
         registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_FISH, Items.COOKED_MUTTON, Items.COOKED_RABBIT, BWMItems.COOKED_MYSTERY_MEAT);
@@ -173,6 +174,7 @@ public class BWOreDictionary {
         registerOre("meatBeef", Items.BEEF, Items.COOKED_BEEF);
         registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
         registerOre("meatRotten", Items.ROTTEN_FLESH);
+        registerOre("meatFish",new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
