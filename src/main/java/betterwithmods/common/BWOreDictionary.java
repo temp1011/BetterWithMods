@@ -169,6 +169,10 @@ public class BWOreDictionary {
         registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
         registerOre("dustBlaze", new ItemStack(Items.BLAZE_POWDER));
 
+        registerOre("meatPork", Items.PORKCHOP, Items.COOKED_PORKCHOP);
+        registerOre("meatBeef", Items.BEEF, Items.COOKED_BEEF);
+        registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
+        registerOre("meatRotten", Items.ROTTEN_FLESH);
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {

@@ -55,7 +55,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public boolean isInvalid() {
-        return (getInputs().isEmpty() || getInputs().stream().anyMatch( i -> ArrayUtils.isEmpty(i.getMatchingStacks()))|| getOutputs().isEmpty());
+        return (getInputs().isEmpty() || getInputs().stream().anyMatch(i -> ArrayUtils.isEmpty(i.getMatchingStacks())) || getOutputs().isEmpty());
     }
 
     @Override
@@ -81,12 +81,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return Integer.compare(getPriority(), bulkRecipe.getPriority());
     }
 
-
-    public boolean matches(ItemStackHandler inventory) {
+    public int matches(ItemStackHandler inventory) {
+        int index = -1;
         for (Ingredient ingredient : inputs) {
-            if (!InvUtils.containsIngredient(inventory, ingredient))
-                return false;
+            if ((index = InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient)) == -1)
+                return -1;
         }
-        return true;
+        return index;
     }
 }

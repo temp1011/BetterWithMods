@@ -5,8 +5,10 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class StackIngredient extends Ingredient {
+
 
     public static StackIngredient fromIngredient(int count, Ingredient ingredient) {
         return new StackIngredient(count, ingredient);
@@ -22,11 +24,11 @@ public class StackIngredient extends Ingredient {
 
     private final int count;
 
-    private StackIngredient(int count, Ingredient ingredient) {
+    protected StackIngredient(int count, Ingredient ingredient) {
         this(count, ingredient.getMatchingStacks());
     }
 
-    private StackIngredient(int count, ItemStack... stacks) {
+    protected StackIngredient(int count, ItemStack... stacks) {
         super(stacks);
         this.count = count;
     }
@@ -34,6 +36,15 @@ public class StackIngredient extends Ingredient {
     @Override
     public boolean apply(@Nullable ItemStack stack) {
         return super.apply(stack) && (stack != null && stack.getCount() >= count);
+    }
+
+    @Override
+    public ItemStack[] getMatchingStacks() {
+        return Arrays.stream(super.getMatchingStacks()).map(stack -> {
+            ItemStack copy = stack.copy();
+            copy.setCount(count);
+            return copy;
+        }).toArray(ItemStack[]::new);
     }
 
     public int getCount() {

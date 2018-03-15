@@ -44,8 +44,8 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     //Unstoked
-    public CookingPotRecipe addUnstokedRecipe(List<ItemStack> input, ItemStack output) {
-        return addUnstokedRecipe(input.stream().map(Ingredient::fromStacks).collect(Collectors.toList()), Lists.newArrayList(output));
+    public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, ItemStack output) {
+        return addUnstokedRecipe(inputs, Lists.newArrayList(output));
     }
 
     public CookingPotRecipe addUnstokedRecipe(ItemStack input, ItemStack... output) {
@@ -73,10 +73,12 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     @Override
-    protected Optional<CookingPotRecipe> findRecipe(TileEntity tile, ItemStackHandler inv) {
+    protected Optional<CookingPotRecipe> findRecipe(List<CookingPotRecipe> recipes, TileEntity tile, ItemStackHandler inv) {
         if (tile instanceof IHeated) {
-            return recipes.stream().filter(r -> r.matches(inv) && r.canCraft((IHeated) tile)).sorted().findFirst();
+            List<CookingPotRecipe> r1 = recipes.stream().filter(r -> r.canCraft(((IHeated) tile))).map(CookingPotRecipe.class::cast).collect(Collectors.toList());
+            return super.findRecipe(r1, tile, inv);
         }
         return Optional.empty();
     }
+
 }
