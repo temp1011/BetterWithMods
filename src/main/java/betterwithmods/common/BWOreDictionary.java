@@ -170,6 +170,8 @@ public class BWOreDictionary {
         registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
         registerOre("dustBlaze", new ItemStack(Items.BLAZE_POWDER));
 
+        registerOre("foodDonut", BWMItems.DONUT);
+
         registerOre("meatPork", Items.PORKCHOP, Items.COOKED_PORKCHOP);
         registerOre("meatBeef", Items.BEEF, Items.COOKED_BEEF);
         registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
@@ -344,7 +346,6 @@ public class BWOreDictionary {
             super(ore);
             this.prefix = prefix;
             this.ore = ore;
-
         }
 
         public List<ItemStack> getOres() {
@@ -362,5 +363,6 @@ public class BWOreDictionary {
         public String getSuffix() {
             return ore.substring(getPrefix().length());
         }
+
     }
 }
