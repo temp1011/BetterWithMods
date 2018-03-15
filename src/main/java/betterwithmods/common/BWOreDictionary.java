@@ -167,7 +167,7 @@ public class BWOreDictionary {
         registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
 
         registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
-
+        registerOre("dustBlaze", new ItemStack(Items.BLAZE_POWDER));
 
     }
 

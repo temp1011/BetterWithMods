@@ -14,7 +14,8 @@ import java.util.List;
 
 public class ItemBark extends Item implements IMultiLocations {
 
-    private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8};
+    private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8, 8};
+    public static String[] barkOres = {"barkOak", "barkSpruce", "barkBirch", "barkJungle", "barkAcacia", "barkDarkOak"};
     public static List<String> barks = Lists.newArrayList("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "bloody");
 
     public ItemBark() {
