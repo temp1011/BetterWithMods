@@ -1,7 +1,6 @@
 package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
-import com.google.common.collect.Comparators;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -40,8 +39,8 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
         }).filter(p -> p.getValue() > -1).sorted(Comparator.comparingInt(Pair::getValue)).map(Pair::getKey).sorted().findFirst();
     }
 
-    protected Optional<T> findRecipe(TileEntity tile, ItemStackHandler inv) {
-        return findRecipe(recipes, tile, inv);
+    protected Optional<T> findRecipe(List<ItemStack> outputs) {
+        return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).findFirst();
     }
 
     public boolean canCraft(TileEntity tile, ItemStackHandler inv) {
@@ -55,4 +54,13 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     public List<T> getRecipes() {
         return this.recipes;
     }
+
+    public boolean remove(T t) {
+        return t != null && recipes.remove(t);
+    }
+
+    public boolean remove(List<ItemStack> outputs) {
+        return remove(findRecipe(outputs).orElse(null));
+    }
+
 }
