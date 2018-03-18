@@ -7,7 +7,7 @@ import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.SawingRecipe;
+import betterwithmods.common.registry.crafting.SawingRecipe;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.crafting;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Streams;
@@ -19,7 +19,7 @@ public class IngredientTool extends Ingredient {
     public IngredientTool(Predicate<ItemStack> tool, ItemStack exampleStack) {
         this.tool = tool;
         example = exampleStack;
-        if (!TOOLS.keySet().stream().anyMatch(s -> s.isItemEqual(example))) {
+        if (TOOLS.keySet().stream().noneMatch(s -> s.isItemEqual(example))) {
             TOOLS.put(example, collectAllTools(tool));
         }
     }

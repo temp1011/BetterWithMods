@@ -1,9 +1,8 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.crafting;
 
 import com.google.gson.JsonObject;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -14,13 +13,14 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created by blueyu2 on 12/12/16.
  */
 public class CuttingRecipe extends ToolDamageRecipe {
-    public CuttingRecipe(Ingredient input, ItemStack result) {
-        super(new ResourceLocation("cutting"), result, input, stack -> stack.getItem() instanceof ItemShears);
+    public CuttingRecipe(ResourceLocation group, Ingredient input, ItemStack result) {
+        super(group, result, input, stack -> stack.getItem() instanceof ItemShears);
     }
 
     @Override
@@ -34,20 +34,17 @@ public class CuttingRecipe extends ToolDamageRecipe {
     }
 
     @Override
-    public float[] getSoundValues() {
-        return new float[]{1.0f, 1.0f};
+    public Pair<Float, Float> getSoundValues() {
+        return Pair.of(1.0f, 1.0f);
     }
 
     public static class Factory implements IRecipeFactory {
         @Override
         public IRecipe parse(JsonContext context, JsonObject json) {
             String group = JsonUtils.getString(json, "group", "");
-            JsonObject o = JsonUtils.getJsonObject(json, "cut");
-            Item item = JsonUtils.getItem(o, "item");
-            int meta = JsonUtils.hasField(o, "data") ? JsonUtils.getInt(o, "data") : 0;
-            Ingredient cut = Ingredient.fromStacks(new ItemStack(item, 1, meta));
+            Ingredient cut = CraftingHelper.getIngredient(JsonUtils.getJsonObject(json, "cut"), context);
             ItemStack itemstack = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
-            return new CuttingRecipe(cut, itemstack);
+            return new CuttingRecipe(new ResourceLocation(group), cut, itemstack);
         }
     }
 }
