@@ -23,4 +23,9 @@ public class CookingPotRecipe extends BulkRecipe {
     public boolean canCraft(IHeated tile) {
         return tile.getHeat() == getHeat();
     }
+
+    @Override
+    public CookingPotRecipe setPriority(int priority) {
+        return (CookingPotRecipe) super.setPriority(priority);
+    }
 }

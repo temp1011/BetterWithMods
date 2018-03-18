@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CraftingManagerBulk<T extends BulkRecipe> {
     protected List<T> recipes;
@@ -39,8 +40,8 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
         }).filter(p -> p.getValue() > -1).sorted(Comparator.comparingInt(Pair::getValue)).map(Pair::getKey).sorted().findFirst();
     }
 
-    protected Optional<T> findRecipe(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).findFirst();
+    protected List<T> findRecipe(List<ItemStack> outputs) {
+        return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).collect(Collectors.toList());
     }
 
     public boolean canCraft(TileEntity tile, ItemStackHandler inv) {
@@ -60,7 +61,7 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     public boolean remove(List<ItemStack> outputs) {
-        return remove(findRecipe(outputs).orElse(null));
+        return findRecipe(outputs).stream().anyMatch(this::remove);
     }
 
 }

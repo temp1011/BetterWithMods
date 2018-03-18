@@ -20,4 +20,9 @@ public class MillRecipe extends BulkRecipe {
     public int getGrindType() {
         return grindType;
     }
+
+    @Override
+    public MillRecipe setPriority(int priority) {
+        return (MillRecipe) super.setPriority(priority);
+    }
 }

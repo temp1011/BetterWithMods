@@ -12,6 +12,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,13 +85,14 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public BulkRecipe setPriority(int priority) {
         this.priority = priority;
+        return this;
     }
 
     @Override
     public int compareTo(@Nonnull BulkRecipe bulkRecipe) {
-        return Integer.compare(getPriority(), bulkRecipe.getPriority());
+        return Comparator.comparingInt(BulkRecipe::getPriority).reversed().compare(this,bulkRecipe);
     }
 
     public int matches(ItemStackHandler inventory) {
