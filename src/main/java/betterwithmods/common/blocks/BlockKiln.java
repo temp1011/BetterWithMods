@@ -99,13 +99,13 @@ public class BlockKiln extends BWMBlock {
         world.scheduleBlockUpdate(pos, this, currentTickRate, 5);
     }
 
-    private int calculateTickRate(IBlockAccess world, BlockPos pos) {
+    private int calculateTickRate(World world, BlockPos pos) {
         int secondaryFire = 0;
         for (int xP = -1; xP < 2; xP++) {
             for (int zP = -1; zP < 2; zP++) {
                 if (xP != 0 || zP != 0) {
                     BlockPos bPos = pos.add(xP, -1, zP);
-                    secondaryFire += BWMHeatRegistry.getHeat(world.getBlockState(bPos));
+                    secondaryFire += BWMHeatRegistry.getHeat(world, bPos);
                 }
             }
         }
@@ -118,11 +118,9 @@ public class BlockKiln extends BWMBlock {
         BlockPos above = pos.up();
         BlockPos below = pos.down();
         IBlockState aboveBlock = world.getBlockState(above);
-        IBlockState belowBlock = world.getBlockState(below);
         if (cookTime > 0) {
-
             if (!KilnManager.INSTANCE.contains(aboveBlock.getBlock(), aboveBlock.getBlock().damageDropped(aboveBlock))) {
-                if (BWMHeatRegistry.get(belowBlock) != null) {
+                if (BWMHeatRegistry.get(world, below) != null) {
                     if (getCookCounter(world, pos) > 0) {
                         world.sendBlockBreakProgress(0, above, -1);
                         setCookCounter(world, pos, 0);

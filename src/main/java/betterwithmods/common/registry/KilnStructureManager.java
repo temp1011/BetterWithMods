@@ -50,13 +50,12 @@ public class KilnStructureManager {
     }
 
     //@Param BlockPos pos - the position of the kiln block
-    public static int getHeat(IBlockAccess world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos.down());
-        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(state);
+    public static int getHeat(World world, BlockPos pos) {
+        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(world,pos.down());
         return source.getHeat();
     }
 
-    public static boolean isValidRecipe(IBlockAccess world, BlockPos pos, KilnRecipe recipe) {
+    public static boolean isValidRecipe(World world, BlockPos pos, KilnRecipe recipe) {
         int heat = getHeat(world, pos);
         return (heat <= recipe.getMaxHeat() && heat >= recipe.getMinHeat());
     }

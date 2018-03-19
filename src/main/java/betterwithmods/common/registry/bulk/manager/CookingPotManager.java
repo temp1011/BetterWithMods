@@ -13,6 +13,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
+    public static final int UNSTOKED_HEAT = 1;
+    public static final int STOKED_HEAT = 2;
+
     private static final CookingPotManager instance = new CookingPotManager();
 
     public static CookingPotManager getInstance() {
@@ -40,7 +43,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addStokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, 2));
+        return addRecipe(new CookingPotRecipe(inputs, outputs, STOKED_HEAT));
     }
 
     //Unstoked
@@ -69,7 +72,11 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, 1));
+        return addRecipe(new CookingPotRecipe(inputs, outputs, UNSTOKED_HEAT));
+    }
+
+    public CookingPotRecipe addHeatlessRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {
+        return addRecipe(new CookingPotRecipe(inputs, outputs, heat).setIgnoreHeat(true));
     }
 
     @Override

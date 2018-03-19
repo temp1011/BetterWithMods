@@ -10,6 +10,7 @@ import java.util.List;
 public class CookingPotRecipe extends BulkRecipe {
 
     private int heat;
+    private boolean ignoreHeat;
 
     public CookingPotRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int heat) {
         super(inputs, outputs);
@@ -21,7 +22,12 @@ public class CookingPotRecipe extends BulkRecipe {
     }
 
     public boolean canCraft(IHeated tile) {
-        return tile.getHeat() == getHeat();
+        return ignoreHeat || (tile.getHeat() == getHeat());
+    }
+
+    public CookingPotRecipe setIgnoreHeat(boolean ignoreHeat) {
+        this.ignoreHeat = ignoreHeat;
+        return this;
     }
 
     @Override

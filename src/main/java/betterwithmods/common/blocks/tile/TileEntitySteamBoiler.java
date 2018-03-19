@@ -79,7 +79,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
     public void calculateHeatUnits() {
         BlockPos pos = this.pos.offset(EnumFacing.DOWN);
         int heat = 0;
-        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(world.getBlockState(pos));
+        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(world,pos);
         if(source != null)
             heat = source.getHeat();
         if (heat > 0) {
@@ -88,7 +88,7 @@ public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISte
                     if (x == 0 && z == 0)
                         continue;
                     BlockPos check = pos.add(x, 0, z);
-                    heat += BWMHeatRegistry.getHeat(world.getBlockState(check));
+                    heat += BWMHeatRegistry.getHeat(world,pos);
                 }
             }
         }

@@ -179,7 +179,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     private int findHeat(BlockPos pos) {
-        return BWMHeatRegistry.getHeat(world.getBlockState(pos.down()));
+        return BWMHeatRegistry.getHeat(world,pos.down());
     }
 
     private void entityCollision() {
@@ -246,10 +246,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     public boolean isUseableByPlayer(EntityPlayer player) {
         return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
-    }
-
-    public int getFireIntensity() {
-        return BWMHeatRegistry.getHeat(world.getBlockState(pos.down()));
     }
 
     @Override

@@ -53,7 +53,7 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     public List<T> getRecipes() {
-        return this.recipes;
+        return this.recipes.stream().filter(BulkRecipe::isHidden).collect(Collectors.toList());
     }
 
     public boolean remove(T t) {

@@ -36,7 +36,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         NonNullList<ItemStack> items = NonNullList.create();
         if (consumeIngredients(inv, items)) {
             items.addAll(getOutputs());
-            return items;
+            return BulkCraftEvent.fireOnCraft(tile, world, inv, this, items);
         }
         return NonNullList.create();
     }
@@ -92,7 +92,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
 
     @Override
     public int compareTo(@Nonnull BulkRecipe bulkRecipe) {
-        return Comparator.comparingInt(BulkRecipe::getPriority).reversed().compare(this,bulkRecipe);
+        return Comparator.comparingInt(BulkRecipe::getPriority).reversed().compare(this, bulkRecipe);
     }
 
     public int matches(ItemStackHandler inventory) {
@@ -103,4 +103,9 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         }
         return index;
     }
+
+    public boolean isHidden() {
+        return false;
+    }
 }
+

@@ -21,10 +21,11 @@ import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
+import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
-import betterwithmods.common.registry.crafting.ToolDamageRecipe;
 import betterwithmods.common.registry.crafting.ToolBaseRecipe;
+import betterwithmods.common.registry.crafting.ToolDamageRecipe;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
 import com.google.common.collect.Lists;
@@ -108,11 +109,11 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), "minecraft.crafting");
 
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter( r -> r.getHeat() == 1).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter( r -> r.getHeat() == 2).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
+        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter( r -> r.getHeat() == CookingPotManager.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
+        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter( r -> r.getHeat() == CookingPotManager.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
 
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter( r -> r.getHeat() == 1).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter( r -> r.getHeat() == 2).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
+        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter( r -> r.getHeat() == CookingPotManager.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
+        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter( r -> r.getHeat() == CookingPotManager.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
 
         reg.addRecipes(BWRegistry.MILLSTONE.getRecipes(), MillRecipeCategory.UID);
         reg.addRecipes(SawManager.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
