@@ -28,7 +28,7 @@ public class ImprovedFlee extends Feature {
     public void setupConfig() {
         blockPlace = loadPropBool("Animals Flee from Block Place", "When a block is placed in the vicinity of an animal it will get scared and run.", true);
         blockBreak = loadPropBool("Animals Flee from Block Break", "When a non-replaceable block is broken in the vicinity of an animal it will get scared and run.", true);
-//        groupFlee = loadPropBool("Animals Group Flee", "When an animal is attacked in the vicinity of another animal it will get scared and run.", true);
+        groupFlee = loadPropBool("Animals Group Flee", "When an animal is attacked in the vicinity of another animal it will get scared and run.", true);
     }
 
     @SubscribeEvent
@@ -55,7 +55,7 @@ public class ImprovedFlee extends Feature {
         if (event.getPlayer() != null) {
             AxisAlignedBB box = event.getPlacedBlock().getBoundingBox(event.getWorld(), event.getPos()).offset(event.getPos()).grow(10);
             for (EntityAnimal animal : event.getWorld().getEntitiesWithinAABB(EntityAnimal.class, box)) {
-                if(animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
+                if (animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
                     continue;
                 animal.setRevengeTarget(event.getPlayer());
             }
@@ -78,13 +78,10 @@ public class ImprovedFlee extends Feature {
     public void onGroupFlee(LivingSetAttackTargetEvent event) {
         if (!groupFlee)
             return;
-        if (event.getEntityLiving() instanceof EntityAnimal) {
-
+        if (event.getTarget() != null && event.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal a = (EntityAnimal) event.getEntityLiving();
             AxisAlignedBB box = new AxisAlignedBB(a.posX, a.posY, a.posZ, a.posX + 1, a.posY + 1, a.posZ + 1).grow(10);
-            for (EntityAnimal animal : a.getEntityWorld().getEntitiesWithinAABB(EntityAnimal.class, box, entity ->
-                    entity != null && entity != a && entity.getRevengeTarget() == null)) {
-                System.out.println(animal.getRevengeTimer());
+            for (EntityAnimal animal : a.getEntityWorld().getEntitiesWithinAABB(EntityAnimal.class, box, entity -> entity != null && entity != a && entity.getRevengeTarget() == null)) {
                 animal.setRevengeTarget(event.getTarget());
             }
         }
