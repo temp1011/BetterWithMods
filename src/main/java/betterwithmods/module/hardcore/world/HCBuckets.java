@@ -355,7 +355,7 @@ public class HCBuckets extends Feature {
         if (disableLavaBuckets && PlayerHelper.isSurvival(e.getEntityPlayer())) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
-            if (e.getTarget() != null) {
+            if (e.getTarget() != null && e.getTarget().typeOfHit == RayTraceResult.Type.BLOCK) {
                 Block block = e.getWorld().getBlockState(e.getTarget().getBlockPos()).getBlock();
 
                 if (isLava(block)) {
