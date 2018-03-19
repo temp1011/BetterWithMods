@@ -307,6 +307,8 @@ public class HCBuckets extends Feature {
     @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
+        if(world.isRemote)
+            return;
         if (riskyLavaBuckets) {
             boolean isPlayerRisky = e.player.isSprinting() || !e.player.onGround;
             if (isPlayerRisky && world.getTotalWorldTime() % 10 == 0) {
