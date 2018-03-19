@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -78,8 +77,6 @@ public class Module {
             ConfigHelper.needsRestart = feature.requiresMinecraftRestartToEnable();
             if (feature.canDisable) {
                 feature.enabled = loadPropBool(feature.configName, feature.getFeatureDescription(), feature.enabledByDefault) && enabled;
-                if (feature.recipeCondition)
-                    feature.loadRecipeCondition(feature.configName.toLowerCase(), "Custom Recipes", "Enables custom recipes provided by this feature", true);
                 feature.setupConstantConfig();
             } else {
                 feature.enabled = true;
@@ -89,7 +86,7 @@ public class Module {
             if (!feature.forceLoad) {
                 String[] incompatibilities = feature.getIncompatibleMods();
                 if (incompatibilities != null) {
-                    List<String> failiures = new ArrayList();
+                    List<String> failiures = Lists.newArrayList();
 
                     for (String s : incompatibilities)
                         if (Loader.isModLoaded(s)) {
@@ -116,6 +113,9 @@ public class Module {
                 disabledFeatures.add(feature);
 
             feature.setupConfig();
+
+            if (feature.enabled && feature.recipeCondition)
+                feature.loadRecipeCondition(feature.configName.toLowerCase(), "Custom Recipes", "Enables custom recipes provided by this feature", true);
 
             if (!feature.enabled && feature.prevEnabled) {
                 if (feature.hasSubscriptions())
