@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Iterator;
@@ -59,6 +60,8 @@ public class HCSeeds extends Feature {
 
     @SubscribeEvent
     public void onHoe(UseHoeEvent e) {
+        if (e.getResult() == Event.Result.DENY)
+            return;
         World world = e.getWorld();
         if (!world.isRemote) {
             BlockPos pos = e.getPos();
@@ -70,7 +73,7 @@ public class HCSeeds extends Feature {
             }
         }
     }
-    
+
     @SubscribeEvent
     public void mobDrop(LivingDropsEvent e) {
         Iterator<EntityItem> iter = e.getDrops().iterator();

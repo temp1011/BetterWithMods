@@ -1,35 +1,29 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.crafting;
 
-import betterwithmods.client.container.anvil.ContainerSteelAnvil;
-import betterwithmods.util.InvUtils;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 /**
  * Created by primetoxinz on 6/27/17.
  */
-public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public abstract class ToolBaseRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
     private ResourceLocation group;
     protected Predicate<ItemStack> isTool;
     protected ItemStack result;
     protected Ingredient input;
 
-    public ToolDamageRecipe(ResourceLocation group, ItemStack result, Ingredient input, Predicate<ItemStack> isTool) {
+    public ToolBaseRecipe(ResourceLocation group, ItemStack result, Ingredient input, Predicate<ItemStack> isTool) {
         this.group = group;
         this.isTool = isTool;
         this.result = result;
@@ -47,14 +41,16 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
                     if (!hasTool) {
                         hasTool = true;
                         inRecipe = true;
-                    } else
+                    } else {
                         return false;
-                } else if (OreDictionary.containsMatch(true, InvUtils.asNonnullList(input.getMatchingStacks()), slot)) {
+                    }
+                } else if (input.apply(slot)) {
                     if (!hasInput) {
                         hasInput = true;
                         inRecipe = true;
-                    } else
+                    } else {
                         return false;
+                    }
                 }
                 if (!inRecipe)
                     return false;
@@ -88,24 +84,10 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         return result.copy();
     }
 
-    public boolean shouldDamage(ItemStack stack, EntityPlayer player, IBlockState state)  {
-        return true;
-    }
-
     @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         playSound(inv);
-        NonNullList<ItemStack> stacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-        for (int i = 0; i < stacks.size(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-            if (!stack.isEmpty() && isTool.test(stack)) {
-                ItemStack copy = stack.copy();
-                if (!shouldDamage(copy, null, null) || !copy.attemptDamageItem(1, new Random(), null)) {
-                    stacks.set(i, copy.copy());
-                }
-            }
-        }
-        return stacks;
+        return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
     }
 
     public String getGroup() {
@@ -114,29 +96,11 @@ public class ToolDamageRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
         return "";
     }
 
-    public void playSound(InventoryCrafting inv) {
-        Container container = ReflectionHelper.getPrivateValue(InventoryCrafting.class, inv, "eventHandler", "field_70465_c");
-        EntityPlayer player = null;
-        if (container instanceof ContainerWorkbench)
-            player = ReflectionHelper.getPrivateValue(ContainerWorkbench.class, (ContainerWorkbench) container, "player", "field_192390_i");
-        if (container instanceof ContainerPlayer)
-            player = ReflectionHelper.getPrivateValue(ContainerPlayer.class, (ContainerPlayer) container, "player", "field_82862_h");
-        if (container instanceof ContainerSteelAnvil)
-            player = ((ContainerSteelAnvil) container).player;
+    public abstract void playSound(InventoryCrafting inv);
 
+    public abstract SoundEvent getSound();
 
-        if (player != null) {
-            player.world.playSound(null, player.getPosition(), getSound(), SoundCategory.BLOCKS, getSoundValues()[0], getSoundValues()[1]);
-        }
-    }
-
-    public SoundEvent getSound() {
-        return null;
-    }
-
-    public float[] getSoundValues() {
-        return new float[2];
-    }
+    public abstract Pair<Float,Float> getSoundValues();
 
     @Override
     public NonNullList<Ingredient> getIngredients() {

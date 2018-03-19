@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.crafting;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class SawingRecipe extends ToolDamageRecipe {
     public SawingRecipe(ItemStack result, Ingredient input) {
@@ -20,8 +21,8 @@ public class SawingRecipe extends ToolDamageRecipe {
     }
 
     @Override
-    public float[] getSoundValues() {
-        return new float[]{1.0f, 0.80f};
+    public Pair<Float, Float> getSoundValues() {
+        return Pair.of(1.0f,0.8f);
     }
 
     @Override

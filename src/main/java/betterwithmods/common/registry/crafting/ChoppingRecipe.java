@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.crafting;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.util.IWood;
@@ -15,6 +15,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Set;
 
@@ -36,8 +37,8 @@ public class ChoppingRecipe extends ToolDamageRecipe {
     }
 
     @Override
-    public float[] getSoundValues() {
-        return new float[]{0.25F, 2.5F};
+    public Pair<Float, Float> getSoundValues() {
+        return Pair.of(0.25F, 2.5F);
     }
 
     @Override
@@ -60,11 +61,7 @@ public class ChoppingRecipe extends ToolDamageRecipe {
             Set<String> classes = item.getToolClasses(stack);
             if (classes.contains("axe") || classes.contains("mattock")) {
                 ResourceLocation loc = item.getRegistryName();
-                if (loc != null && loc.getResourceDomain().equals("tconstruct")) {
-                    if (stack.getItemDamage() >= stack.getMaxDamage())
-                        return false;
-                }
-                return true;
+                return loc == null || !loc.getResourceDomain().equals("tconstruct") || stack.getItemDamage() < stack.getMaxDamage();
             }
         }
         return false;

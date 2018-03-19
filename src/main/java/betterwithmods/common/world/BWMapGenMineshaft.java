@@ -1,14 +1,13 @@
 package betterwithmods.common.world;
 
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.gen.structure.MapGenMineshaft;
+import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraftforge.common.BiomeDictionary;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class BWMapGenMineshaft extends MapGenMineshaft {
@@ -23,6 +22,9 @@ public class BWMapGenMineshaft extends MapGenMineshaft {
     public static class BWStructureMineshaftStart extends StructureStart
     {
         private MapGenMineshaft.Type mineShaftType;
+
+        public BWStructureMineshaftStart() {
+        }
 
         public BWStructureMineshaftStart(World world, Random random, int chunkX, int chunkZ, MapGenMineshaft.Type type)
         {

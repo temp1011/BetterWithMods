@@ -28,7 +28,7 @@ public class HCStructures extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Makes it so structures are looted within a radius of spawn and unlooted outside of that radius. \nEncourages exploration.\n" +
+        return "Makes it so structures are looted within a radius of spawn and unlooted outside of that radius. \nEncourages exploration.\nHC" +
                 "Also makes unlooted structures the only source of Enchanting Tables and Brewing Stands.";
     }
 

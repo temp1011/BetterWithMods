@@ -1,6 +1,7 @@
 {
   "pools": [
     {
+      "name": "betterwithmods:gameplay/fishing/junk",
       "rolls": 1,
       "entries": [
         {

@@ -2,21 +2,19 @@ package betterwithmods.module.hardcore.crafting;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.entity.EntityHCFishHook;
+import betterwithmods.common.registry.crafting.BaitingRecipe;
 import betterwithmods.module.Feature;
-import betterwithmods.util.InvUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,8 +23,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -36,19 +34,16 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Predicate;
 
 /**
  * Created by primetoxinz on 7/23/17.
@@ -60,27 +55,34 @@ public class HCFishing extends Feature {
     public static ResourceLocation HCFISHING_LOOT = LootTableList.register(new ResourceLocation(BWMod.MODID, "gameplay/fishing"));
 
     private static final ResourceLocation BAITED_FISHING_ROD = new ResourceLocation(BWMod.MODID, "baited_fishing_rod");
-    private static Ingredient BAIT = Ingredient.EMPTY;
+    public static Ingredient BAIT = Ingredient.EMPTY;
 
     @Override
     public void setupConfig() {
         requireBait = loadPropBool("Require Bait", "Change Fishing Rods to require being Baited with certain items to entice fish, they won't nibble without it!", true);
         restrictToOpenWater = loadPropBool("Restrict to Open Water", "Fishing on underground locations won't work, hook must be placed on a water block with line of sight to the sky.", true);
         minimumWaterDepth = loadPropInt("Minimum Water Depth", "If higher than 1, requires bodies of water to have a minimum depth for fishing to be successful.", 3);
+
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
+        BWMRecipes.removeRecipe(new ResourceLocation("fishing_rod"));
+
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
         BAIT = Ingredient.fromStacks(loadItemStackArray("Bait", "Add items as valid fishing bait", new ItemStack[]{
                 new ItemStack(Items.SPIDER_EYE),
                 new ItemStack(BWMItems.CREEPER_OYSTER),
                 new ItemStack(Items.FISH, 1, 2),
                 new ItemStack(Items.FISH, 1, 3),
                 new ItemStack(BWMItems.BAT_WING, 1),
-                new ItemStack(BWMItems.COOKED_BAT_WING, 1)
+                new ItemStack(BWMItems.COOKED_BAT_WING, 1),
+                new ItemStack(Items.ROTTEN_FLESH)
         }));
-    }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
-        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.FISHING_ROD), "  I", " IS", "I N", 'S', "string", 'I', "stickWood", 'N', "nuggetIron").setMirrored(true).setRegistryName(new ResourceLocation("minecraft", "fishing_rod")));
         addHardcoreRecipe(new BaitingRecipe());
     }
 
@@ -88,7 +90,8 @@ public class HCFishing extends Feature {
     @SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
         if (event.getName().equals(LootTableList.GAMEPLAY_FISHING)) {
-            event.setTable(event.getLootTableManager().getLootTableFromLocation(HCFISHING_LOOT));
+            LootTable table = event.getLootTableManager().getLootTableFromLocation(HCFISHING_LOOT);
+            event.setTable(table);
         }
     }
 
@@ -180,10 +183,12 @@ public class HCFishing extends Feature {
                 FishingBait cap = event.getItemStack().getCapability(FISHING_ROD_CAP, EnumFacing.UP);
                 event.setCanceled(true);
                 event.setResult(Event.Result.ALLOW);
-                if (cap.hasBait() || event.getEntityPlayer().isCreative()) {
-                    throwLine(event.getItemStack().getItem(), event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getWorld().rand).getType();
-                } else if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND)) {
-                    event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
+                if (cap != null) {
+                    if (cap.hasBait() || event.getEntityPlayer().isCreative()) {
+                        throwLine(event.getItemStack().getItem(), event.getEntityPlayer(), event.getHand(), event.getWorld(), event.getWorld().rand).getType();
+                    } else if (!event.getWorld().isRemote && (event.getHand() == EnumHand.MAIN_HAND || event.getHand() == EnumHand.OFF_HAND)) {
+                        event.getEntityPlayer().sendMessage(new TextComponentTranslation("bwm.message.needs_bait"));
+                    }
                 }
             }
         }
@@ -260,98 +265,6 @@ public class HCFishing extends Feature {
 
     public static boolean isAirBlock(World world, BlockPos pos) {
         return (world.getBlockState(pos).getBlock() == Blocks.AIR);
-    }
-
-    public class BaitingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
-        protected ResourceLocation group;
-        protected Predicate<ItemStack> isTool;
-        protected Ingredient input;
-
-        public BaitingRecipe() {
-            this.group = new ResourceLocation("baiting_recipe");
-            this.input = BAIT;
-            this.isTool = stack -> isBaited(stack, false);
-            setRegistryName(this.getGroup());
-        }
-
-        @Override
-        public boolean matches(InventoryCrafting inv, World worldIn) {
-            return isMatch(inv);
-        }
-
-        public ItemStack findRod(InventoryCrafting inv) {
-            for (int x = 0; x < inv.getSizeInventory(); x++) {
-                ItemStack slot = inv.getStackInSlot(x);
-                if (isTool.test(slot)) {
-                    return slot;
-                }
-            }
-            return ItemStack.EMPTY;
-        }
-
-        public boolean isMatch(IInventory inv) {
-            boolean hasTool = false, hasInput = false;
-            for (int x = 0; x < inv.getSizeInventory(); x++) {
-                boolean inRecipe = false;
-                ItemStack slot = inv.getStackInSlot(x);
-
-                if (!slot.isEmpty()) {
-                    if (isTool.test(slot)) {
-                        if (!hasTool) {
-                            hasTool = true;
-                            inRecipe = true;
-                        } else
-                            return false;
-                    } else if (OreDictionary.containsMatch(true, InvUtils.asNonnullList(input.getMatchingStacks()), slot)) {
-                        if (!hasInput) {
-                            hasInput = true;
-                            inRecipe = true;
-                        } else
-                            return false;
-                    }
-                    if (!inRecipe)
-                        return false;
-                }
-            }
-            return hasTool && hasInput;
-        }
-
-        public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-            NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-            for (int i = 0; i < ret.size(); i++) {
-                ret.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
-            }
-            return ret;
-        }
-
-        @Override
-        public ItemStack getCraftingResult(InventoryCrafting inv) {
-            ItemStack rod = findRod(inv);
-            if (!rod.isEmpty())
-                return setBaited(rod.copy(), true);
-            return ItemStack.EMPTY;
-        }
-
-        @Override
-        public boolean canFit(int width, int height) {
-            return width * height >= 2;
-        }
-
-        @Override
-        public ItemStack getRecipeOutput() {
-            return ItemStack.EMPTY;
-        }
-
-        @Override
-        public String getGroup() {
-            return group.toString();
-        }
-
-
-        @Override
-        public boolean isDynamic() {
-            return true;
-        }
     }
 
 

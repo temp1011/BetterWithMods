@@ -1,6 +1,6 @@
 {
   "recipes": {
-    "cutting_recipe": "betterwithmods.common.registry.CuttingRecipe$Factory"
+    "cutting_recipe": "betterwithmods.common.registry.crafting.CuttingRecipe$Factory"
   },
   "conditions": {
     "config": "betterwithmods.module.ConfigHelper$ConditionConfig"
