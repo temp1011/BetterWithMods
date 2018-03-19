@@ -58,6 +58,8 @@ public class HCBuckets extends Feature {
     private static boolean riskyLavaBuckets;
     private static List<Integer> dimensionBlacklist;
 
+    private static List<ItemStack> bucketBlacklist;
+
     public static void editModdedFluidDispenseBehavior() {
         if (!hardcoreFluidContainer)
             return;
@@ -71,7 +73,7 @@ public class HCBuckets extends Feature {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+        return !stack.isEmpty() && bucketBlacklist.stream().anyMatch(stack::isItemEqual) && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
     }
 
     private static boolean isNonVanillaBucket(ItemStack stack) {
@@ -116,6 +118,9 @@ public class HCBuckets extends Feature {
                 }
                 return outputStack;
             }
+        });
+        bucketBlacklist = loadItemStackList("Fluid container blacklist", "Blacklist itemstacks from being effected by HCBuckets", new String[]{
+                "thermalcultivation:watering_can"
         });
     }
 
@@ -169,6 +174,8 @@ public class HCBuckets extends Feature {
                 if (fluid == null || fluid.getFluid() == null) {
                     if (isWater(state) && state.getBlock().getMetaFromState(state) > 0) {
                         if (!player.capabilities.isCreativeMode) {
+
+
                             if (evt.getEmptyBucket().getItem() == Items.BUCKET) {
                                 evt.setFilledBucket(new ItemStack(Items.WATER_BUCKET));
                                 return;
@@ -357,7 +364,6 @@ public class HCBuckets extends Feature {
             }
         }
     }
-
 
 
     @Override
