@@ -1,0 +1,55 @@
+package betterwithmods.common.registry.blockmeta.recipe;
+
+import betterwithmods.util.InvUtils;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
+
+/**
+ * Purpose:
+ *
+ * @author primetoxinz
+ * @version 03/19/2018
+ */
+public class BlockRecipe {
+    private final BlockIngredient input;
+    private final NonNullList<ItemStack> outputs;
+
+    public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
+        this.input = input;
+        this.outputs = InvUtils.asNonnullList(outputs);
+    }
+
+    public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
+        NonNullList<ItemStack> items = NonNullList.create();
+        if (consumeIngredients(world, pos)) {
+            items.addAll(getOutputs());
+        }
+        return items;
+    }
+
+    public boolean consumeIngredients(World world, BlockPos pos) {
+        return world.setBlockToAir(pos);
+    }
+
+    public BlockIngredient getInput() {
+        return input;
+    }
+
+    public NonNullList<ItemStack> getOutputs() {
+        return outputs;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s-> %s", input, getOutputs());
+    }
+
+    public boolean isInvalid() {
+        return ArrayUtils.isEmpty(input.getMatchingStacks()) || outputs.isEmpty();
+    }
+}

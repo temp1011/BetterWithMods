@@ -61,7 +61,7 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     public boolean remove(List<ItemStack> outputs) {
-        return findRecipe(outputs).stream().anyMatch(this::remove);
+        return recipes.removeAll(findRecipe(outputs));
     }
 
 }

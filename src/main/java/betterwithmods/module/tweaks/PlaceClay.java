@@ -4,10 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockUnfiredPottery;
 import betterwithmods.common.blocks.tile.TileCamo;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.blockmeta.managers.KilnManager;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.module.Feature;
-import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -37,18 +34,18 @@ public class PlaceClay extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.BRICK))) {
-            @Override
-            public ItemStack getStack() {
-                return new ItemStack(Items.CLAY_BALL);
-            }
-        });
-        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))) {
-            @Override
-            public ItemStack getStack() {
-                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
-            }
-        });
+//        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.BRICK))) {
+//            @Override
+//            public ItemStack getStack() {
+//                return new ItemStack(Items.CLAY_BALL);
+//            }
+//        });
+//        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))) {
+//            @Override
+//            public ItemStack getStack() {
+//                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
+//            }
+//        });
 
     }
 

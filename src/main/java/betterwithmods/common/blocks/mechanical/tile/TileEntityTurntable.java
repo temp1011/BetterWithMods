@@ -4,13 +4,10 @@ import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.TurntableRotationManager;
-import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -175,10 +172,11 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         IBlockState state = getBlockWorld().getBlockState(pos);
         ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
 
-        if (TurntableManager.INSTANCE.contains(stack) && TurntableManager.INSTANCE.getRecipe(stack) != null) {
-            rotateCraftable(state, TurntableManager.INSTANCE.getRecipe(stack), pos);
-            this.potteryRotated = true;
-        }
+        //TODO
+//        if (TurntableManager.INSTANCE.contains(stack) && TurntableManager.INSTANCE.getRecipe(stack) != null) {
+//            rotateCraftable(state, TurntableManager.INSTANCE.getRecipe(stack), pos);
+//            this.potteryRotated = true;
+//        }
         return TurntableRotationManager.rotate(world, pos, rotation);
     }
 
@@ -187,20 +185,23 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos) {
-        Block block = input.getBlock();
-        this.potteryRotation++;
-        if (this.potteryRotation > 7) {
-            if (!craft.getOutputs().isEmpty() && craft.getOutputs().size() > 0) {
-                for (ItemStack scrap : craft.getOutputs()) {
-                    InvUtils.ejectStackWithOffset(getBlockWorld(), pos.up(), scrap.copy());
-                }
-            }
-            getBlockWorld().setBlockState(pos, BWMRecipes.getStateFromStack(craft.getResult()));
-            this.potteryRotation = 0;
-
-        }
+        //TODO
+//        Block block = input.getBlock();
+//        this.potteryRotation++;
+//        if (this.potteryRotation > 7) {
+//            if (!craft.getOutputs().isEmpty() && craft.getOutputs().size() > 0) {
+//                for (ItemStack scrap : craft.getOutputs()) {
+//                    InvUtils.ejectStackWithOffset(getBlockWorld(), pos.up(), scrap.copy());
+//                }
+//            }
+//
+//            //TODO
+////            getBlockWorld().setBlockState(pos, BWMRecipes.getStateFromStack(craft.getResult()));
+//            this.potteryRotation = 0;
+//
+//        }
         spawnParticles(input);
-        this.getBlockWorld().playSound(null, pos, block.getSoundType(input, this.getBlockWorld(), pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
+//        this.getBlockWorld().playSound(null, pos, block.getSoundType(input, this.getBlockWorld(), pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
     }
 
     @Override
@@ -243,7 +244,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         return super.hasCapability(capability, facing);
     }
 
-    @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)

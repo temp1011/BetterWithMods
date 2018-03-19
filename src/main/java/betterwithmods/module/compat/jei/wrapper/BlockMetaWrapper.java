@@ -1,13 +1,12 @@
 package betterwithmods.module.compat.jei.wrapper;
 
-import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
-import com.google.common.collect.Lists;
+import betterwithmods.common.registry.blockmeta.recipe.BlockRecipe;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * Purpose:
@@ -16,17 +15,15 @@ import java.util.List;
  * @version 11/11/16
  */
 public class BlockMetaWrapper implements IRecipeWrapper {
-    public final List<ItemStack> outputs = Lists.newArrayList();
-    public final ItemStack input;
+    public final BlockRecipe recipe;
 
-    public BlockMetaWrapper(BlockMetaRecipe recipe) {
-        this.input = recipe.getStack();
-        outputs.addAll(recipe.getOutputs());
+    public BlockMetaWrapper(BlockRecipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
     public void getIngredients(@Nonnull  IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, input);
-        ingredients.setOutputs(ItemStack.class, outputs);
+        ingredients.setInput(Ingredient.class, recipe.getInput());
+        ingredients.setOutputs(ItemStack.class, recipe.getOutputs());
     }
 }

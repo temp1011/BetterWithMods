@@ -2,18 +2,13 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.PropertyObject;
 import betterwithmods.common.blocks.tile.TileCamo;
-import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.blockmeta.managers.KilnManager;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
@@ -25,7 +20,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class BlockKiln extends BWMBlock {
@@ -62,11 +56,12 @@ public class BlockKiln extends BWMBlock {
         boolean canCook = false;
         Block above = world.getBlockState(up).getBlock();
         int aboveMeta = world.getBlockState(up).getBlock().damageDropped(world.getBlockState(up));
-        KilnRecipe recipe = KilnManager.INSTANCE.getRecipe(above, aboveMeta);
-        if (!world.isAirBlock(up) && recipe != null) {
-            if (KilnStructureManager.isValidKiln(world, pos) && KilnStructureManager.isValidRecipe(world, pos, recipe))
-                canCook = true;
-        }
+        //TODO
+//        KilnRecipe recipe = KilnManager.INSTANCE.getRecipe(above, aboveMeta);
+//        if (!world.isAirBlock(up) && recipe != null) {
+//            if (KilnStructureManager.isValidKiln(world, pos) && KilnStructureManager.isValidRecipe(world, pos, recipe))
+//                canCook = true;
+//        }
 
         if (canCook) {
             int newCookTime = oldCookTime + 1;
@@ -119,14 +114,15 @@ public class BlockKiln extends BWMBlock {
         BlockPos below = pos.down();
         IBlockState aboveBlock = world.getBlockState(above);
         if (cookTime > 0) {
-            if (!KilnManager.INSTANCE.contains(aboveBlock.getBlock(), aboveBlock.getBlock().damageDropped(aboveBlock))) {
-                if (BWMHeatRegistry.get(world, below) != null) {
-                    if (getCookCounter(world, pos) > 0) {
-                        world.sendBlockBreakProgress(0, above, -1);
-                        setCookCounter(world, pos, 0);
-                    }
-                }
-            }
+            //TODO
+//            if (!KilnManager.INSTANCE.contains(aboveBlock.getBlock(), aboveBlock.getBlock().damageDropped(aboveBlock))) {
+//                if (BWMHeatRegistry.get(world, below) != null) {
+//                    if (getCookCounter(world, pos) > 0) {
+//                        world.sendBlockBreakProgress(0, above, -1);
+//                        setCookCounter(world, pos, 0);
+//                    }
+//                }
+//            }
         }
         world.scheduleBlockUpdate(pos, this, 20, 5);
     }
@@ -147,13 +143,14 @@ public class BlockKiln extends BWMBlock {
     private void cookBlock(World world, BlockPos pos) {
         Block block = world.getBlockState(pos).getBlock();
         int meta = world.getBlockState(pos).getBlock().damageDropped(world.getBlockState(pos));
-        if (block != null) {
-            if (KilnManager.INSTANCE.contains(block, meta)) {
-                List<ItemStack> result = KilnManager.INSTANCE.getProducts(block, meta);
-                InvUtils.ejectStackWithOffset(world, pos, result);
-                world.setBlockToAir(pos);
-            }
-        }
+        //TODO
+//        if (block != null) {
+//            if (KilnManager.INSTANCE.contains(block, meta)) {
+//                List<ItemStack> result = KilnManager.INSTANCE.getProducts(block, meta);
+//                InvUtils.ejectStackWithOffset(world, pos, result);
+//                world.setBlockToAir(pos);
+//            }
+//        }
     }
 
     @Override

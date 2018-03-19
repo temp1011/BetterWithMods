@@ -1,5 +1,6 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileCamo;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
@@ -55,9 +56,12 @@ public class KilnStructureManager {
         return source.getHeat();
     }
 
+    public static IHeated getKiln() {
+        return KilnStructureManager::getHeat;
+    }
+
     public static boolean isValidRecipe(World world, BlockPos pos, KilnRecipe recipe) {
-        int heat = getHeat(world, pos);
-        return (heat <= recipe.getMaxHeat() && heat >= recipe.getMinHeat());
+        return recipe.canCraft(getKiln(),world, pos);
     }
 
     public static boolean isValidKiln(IBlockAccess world, BlockPos pos) {

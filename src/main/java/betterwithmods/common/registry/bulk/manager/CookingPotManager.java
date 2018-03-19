@@ -82,7 +82,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     @Override
     protected Optional<CookingPotRecipe> findRecipe(List<CookingPotRecipe> recipes, TileEntity tile, ItemStackHandler inv) {
         if (tile instanceof IHeated) {
-            List<CookingPotRecipe> r1 = recipes.stream().filter(r -> r.canCraft(((IHeated) tile))).map(CookingPotRecipe.class::cast).collect(Collectors.toList());
+            List<CookingPotRecipe> r1 = recipes.stream().filter(r -> r.canCraft((IHeated) tile, tile.getWorld(), tile.getPos())).map(CookingPotRecipe.class::cast).collect(Collectors.toList());
             return super.findRecipe(r1, tile, inv);
         }
         return Optional.empty();

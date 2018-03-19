@@ -174,7 +174,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         return (int) (((double) getCookProgress()) / ((double) getCookTime()) * 100);
     }
 
-    public int getHeat() {
+    @Override
+    public int getHeat(World world, BlockPos pos) {
         return heat;
     }
 

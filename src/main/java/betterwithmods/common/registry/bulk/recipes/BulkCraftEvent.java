@@ -15,6 +15,7 @@ public class BulkCraftEvent extends Event {
     private BulkRecipe recipe;
     private NonNullList<ItemStack> outputs;
 
+
     public BulkCraftEvent(TileEntity tile, World world, ItemStackHandler inventory, BulkRecipe recipe, NonNullList<ItemStack> outputs) {
         this.tile = tile;
         this.world = world;

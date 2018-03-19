@@ -2,7 +2,6 @@ package betterwithmods.module.tweaks;
 
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
-import betterwithmods.module.gameplay.KilnRecipes;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -26,8 +25,9 @@ public class KilnSmelting extends Feature {
         BWOreDictionary.oreNames.stream().flatMap(ore -> Arrays.stream(ore.getMatchingStacks())).filter(s -> s.getItem() instanceof ItemBlock).forEach(s -> {
             ItemStack output = FurnaceRecipes.instance().getSmeltingResult(s).copy();
             output.setCount(oreProductionCount);
-            if (!s.isEmpty() && !output.isEmpty())
-                KilnRecipes.addKilnRecipe(s, output);
+            //TODO
+//            if (!s.isEmpty() && !output.isEmpty())
+//                KilnRecipes.addKilnRecipe(s, output);
         });
 
     }

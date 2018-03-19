@@ -74,7 +74,7 @@ public class ContainerCookingPot extends Container {
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
         listener.sendWindowProperty(this, 0, this.tile.getPercentProgress());
-        listener.sendWindowProperty(this, 1, this.tile.getHeat());
+        listener.sendWindowProperty(this, 1, this.tile.getHeat(tile.getWorld(), tile.getPos()));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ContainerCookingPot extends Container {
             }
         }
 
-        int h = this.tile.getHeat();
+        int h = this.tile.getHeat(tile.getWorld(), tile.getPos());
         if (heat != h) {
             heat = h;
             for (IContainerListener craft : this.listeners) {

@@ -1,6 +1,5 @@
 package betterwithmods.common.registry.blockmeta.recipe;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -8,12 +7,9 @@ import java.util.List;
 /**
  * Created by primetoxinz on 5/16/17.
  */
-public class SawRecipe extends BlockMetaRecipe {
-    public SawRecipe(Block block, int meta, List<ItemStack> outputs) {
-        super(block, meta, outputs);
-    }
+public class SawRecipe extends BlockRecipe {
 
-    public SawRecipe(ItemStack stack, List<ItemStack> outputs) {
-        super(stack, outputs);
+    public SawRecipe(BlockIngredient input, List<ItemStack> outputs) {
+        super(input, outputs);
     }
 }

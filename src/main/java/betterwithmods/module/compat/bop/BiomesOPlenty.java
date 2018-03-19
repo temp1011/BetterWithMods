@@ -4,9 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.mini.*;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.gameplay.SawRecipes;
 import betterwithmods.module.hardcore.needs.HCPiles;
 import betterwithmods.module.hardcore.needs.HCSeeds;
 import betterwithmods.module.tweaks.MobSpawning.NetherSpawnWhitelist;
@@ -101,16 +99,16 @@ public class BiomesOPlenty extends CompatFeature {
         }
 
         Block plank = getBlock("biomesoplenty:planks_0");
-        for (int i = 0; i < 16; i++) {
-            SawRecipes.addSawRecipe(plank, i, new ItemStack(SIDING, 2, i));
-            SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
-            SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
-            SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-//            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "plank_recover")));
-//            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "siding_recover")));
-//            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "moulding_recover")));
-
-        }
+//        for (int i = 0; i < 16; i++) {
+//            SawRecipes.addSawRecipe(plank, i, new ItemStack(SIDING, 2, i));
+//            SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
+//            SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
+//            SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+////            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "plank_recover")));
+////            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "siding_recover")));
+////            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "moulding_recover")));
+//
+//        }
         for (int i = 0; i < woods.length; i++) {
             ItemStack moulding = new ItemStack(MOULDING, 1, i);
             ItemStack siding = new ItemStack(SIDING, 1, i);

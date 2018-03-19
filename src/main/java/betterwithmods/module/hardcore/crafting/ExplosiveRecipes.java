@@ -22,11 +22,11 @@ public class ExplosiveRecipes extends Feature {
     @SubscribeEvent
     public void onBulkCraft(BulkCraftEvent event) {
 
-        if(event.getTile() instanceof IHeated && event.getRecipe() instanceof CookingPotRecipe) {
+        if (event.getTile() instanceof IHeated && event.getRecipe() instanceof CookingPotRecipe) {
             CookingPotRecipe recipe = (CookingPotRecipe) event.getRecipe();
-            if(((IHeated) event.getTile()).getHeat() > recipe.getHeat()) {
+            if (((IHeated) event.getTile()).getHeat(event.getWorld(), event.getTile().getPos()) > recipe.getHeat()) {
                 BlockPos pos = event.getTile().getPos();
-                event.getWorld().createExplosion(null,pos.getX(),pos.getY(),pos.getZ(),1,true);
+                event.getWorld().createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1, true);
             }
 
         }

@@ -1,13 +1,13 @@
 package betterwithmods.common.registry.bulk.recipes;
 
-import betterwithmods.api.tile.IHeated;
+import betterwithmods.api.tile.IHeatRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CookingPotRecipe extends BulkRecipe {
+public class CookingPotRecipe extends BulkRecipe implements IHeatRecipe{
 
     private int heat;
     private boolean ignoreHeat;
@@ -17,12 +17,15 @@ public class CookingPotRecipe extends BulkRecipe {
         this.heat = heat;
     }
 
+
+    @Override
     public int getHeat() {
         return heat;
     }
 
-    public boolean canCraft(IHeated tile) {
-        return ignoreHeat || (tile.getHeat() == getHeat());
+    @Override
+    public boolean ignore() {
+        return ignoreHeat;
     }
 
     public CookingPotRecipe setIgnoreHeat(boolean ignoreHeat) {

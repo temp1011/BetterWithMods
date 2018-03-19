@@ -1,17 +1,18 @@
 package betterwithmods.common.registry.blockmeta.managers;
 
-import betterwithmods.BWMod;
-import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
+import betterwithmods.common.registry.blockmeta.recipe.BlockRecipe;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -19,65 +20,45 @@ import java.util.Optional;
  * @author primetoxinz
  * @version 11/11/16
  */
-public abstract class BlockMetaManager<T extends BlockMetaRecipe> {
+public abstract class BlockMetaManager<T extends BlockRecipe> {
 
     private final ArrayList<T> recipes = Lists.newArrayList();
 
-    public abstract T createRecipe(Block block, int meta, List<ItemStack> outputs);
-
-    public void addRecipe(ItemStack input, ItemStack... products) {
-        if (!input.isEmpty() && input.getItem() instanceof ItemBlock) {
-            addRecipe(((ItemBlock) input.getItem()).getBlock(), input.getMetadata(), products);
-        } else {
-            BWMod.logger.info("BlockMeta inputs: %s must be a block", input);
-        }
+    public T addRecipe(T recipe) {
+        if (!recipe.isInvalid())
+            recipes.add(recipe);
+        return recipe;
     }
 
-    public void addRecipe(Block block, int meta, ItemStack... products) {
-        addRecipe(createRecipe(block, meta, Arrays.asList(products)));
+    protected List<T> findRecipe(List<ItemStack> outputs) {
+        return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).collect(Collectors.toList());
     }
 
-    public void addRecipe(T recipe) {
-        recipes.add(recipe);
+    public List<T> findRecipes(IBlockState state) {
+        return recipes.stream().filter(r -> r.getInput().apply(state)).collect(Collectors.toList());
     }
 
-    public boolean contains(ItemStack stack) {
-        return !(stack == null || stack.isEmpty() || !(stack.getItem() instanceof ItemBlock)) && contains(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
+    public Optional<T> findRecipe(IBlockState state) {
+        return findRecipes(state).stream().findFirst();
     }
 
-    public boolean contains(Block block, int meta) {
-        return recipes.stream().anyMatch(r -> r.equals(block, meta));
+    @Nonnull
+    public NonNullList<ItemStack> craftItem(World world, BlockPos pos, IBlockState state) {
+        return findRecipe(state).map(r -> r.onCraft(world, pos)).orElse(NonNullList.create());
     }
 
-    public ArrayList<T> getRecipes() {
-        return recipes;
+    public boolean canCraft(IBlockState state) {
+        return findRecipe(state).isPresent();
     }
 
-    public T getRecipe(ItemStack stack) {
-        assert stack.getItem() instanceof ItemBlock;
-        return getRecipe(((ItemBlock) stack.getItem()).getBlock(), stack.getMetadata());
+    public boolean remove(T t) {
+        return t != null && recipes.remove(t);
     }
 
-    public T getRecipe(Block block, int meta) {
-        Optional<T> recipe = recipes.stream().filter(r -> r.equals(block, meta)).findFirst();
-        return recipe.orElse(null);
+
+    public boolean remove(List<ItemStack> outputs) {
+        return recipes.removeAll(findRecipe(outputs));
     }
 
-    public NonNullList<ItemStack> getProducts(Block block, int meta) {
-        T recipe = getRecipe(block, meta);
-        if (recipe != null)
-            return recipe.getOutputs();
-        return NonNullList.create();
-    }
-
-    public List<T> removeRecipes(ItemStack input) {
-        List<T> removed = Lists.newArrayList();
-        for (T ir : recipes) {
-            if (ir.getStack().isItemEqual(input)) {
-                removed.add(ir);
-            }
-        }
-        return removed;
-    }
 
 }
