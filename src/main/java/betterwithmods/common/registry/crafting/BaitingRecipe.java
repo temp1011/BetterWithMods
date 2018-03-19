@@ -61,6 +61,14 @@ public class BaitingRecipe extends ToolBaseRecipe {
     }
 
     @Override
+    public ItemStack getRecipeOutput() {
+        ItemStack rod = new ItemStack(Items.FISHING_ROD);
+        if (!rod.isEmpty())
+            return setBaited(rod.copy(), true);
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     public boolean isDynamic() {
         return true;
     }
