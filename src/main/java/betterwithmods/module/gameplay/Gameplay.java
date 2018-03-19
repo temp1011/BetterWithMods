@@ -34,6 +34,8 @@ public class Gameplay extends Module {
         registerFeature(new NetherGrowth());
         registerFeature(new BreedingHarness());
 //        registerFeature(new MiniBlocks());
+        registerFeature(new PlayerDataHandler());
+        registerFeature(new ReadTheFingManual());
     }
 
     @Override

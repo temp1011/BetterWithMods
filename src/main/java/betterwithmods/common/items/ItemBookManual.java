@@ -1,6 +1,8 @@
 package betterwithmods.common.items;
 
 import betterwithmods.manual.api.ManualAPI;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * The manual!
@@ -65,5 +68,11 @@ public final class ItemBookManual extends ItemBook {
     @Override
     public int getItemEnchantability() {
         return 0;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(I18n.format("tooltip.bwm_book.name"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 }

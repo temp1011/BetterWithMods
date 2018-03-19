@@ -444,7 +444,7 @@ item.bwm:apple_pie.name=Apple Pie
 item.bwm:bat_wing.name=Bat Wing
 item.bwm:cooked_bat_wing.name=Cooked Bat Wing
 
-item.bwm:manual.name=Book of Single
+item.bwm:manual.name=Better With Mods Manual
 
 item.bwm:axle_generator.windmill.name=Windmill
 item.bwm:axle_generator.waterwheel.name=Water Wheel
@@ -596,6 +596,7 @@ tooltip.chime.name=Emits a Redstone Signal when Raining, or when an Entity passe
 tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, check your Gearboxes!
+tooltip.bwm_book.name=The Book of Single
 
 bwm.manual.home=Home
 bwm.manual.blocks=Block
