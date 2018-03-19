@@ -2,11 +2,16 @@ package betterwithmods.common.registry.blockmeta.managers;
 
 import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
+import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
 public class SawManager extends BlockMetaManager<SawRecipe> {
+
+    public SawRecipe addRecipe(ItemStack input, ItemStack outputs) {
+        return addRecipe(input, Lists.newArrayList(outputs));
+    }
 
     public SawRecipe addRecipe(ItemStack input, List<ItemStack> outputs) {
         return addRecipe(new SawRecipe(new BlockIngredient(input), outputs));
@@ -14,5 +19,9 @@ public class SawManager extends BlockMetaManager<SawRecipe> {
 
     public SawRecipe addRecipe(BlockIngredient input, List<ItemStack> outputs) {
         return addRecipe(new SawRecipe(input, outputs));
+    }
+
+    public SawRecipe addSelfdropRecipe(ItemStack stack) {
+        return addRecipe(new BlockIngredient(stack), Lists.newArrayList(stack));
     }
 }

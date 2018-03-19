@@ -21,7 +21,7 @@ public class BlockRecipe {
 
     public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
         this.input = input;
-        this.outputs = InvUtils.asNonnullList(outputs);
+        this.outputs = outputs == null ? NonNullList.create() : InvUtils.asNonnullList(outputs);
     }
 
     public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
@@ -50,6 +50,6 @@ public class BlockRecipe {
     }
 
     public boolean isInvalid() {
-        return ArrayUtils.isEmpty(input.getMatchingStacks()) || outputs.isEmpty();
+        return ArrayUtils.isEmpty(input.getMatchingStacks()) || outputs == null;
     }
 }

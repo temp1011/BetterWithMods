@@ -60,5 +60,7 @@ public abstract class BlockMetaManager<T extends BlockRecipe> {
         return recipes.removeAll(findRecipe(outputs));
     }
 
-
+    public List<T> getRecipes() {
+        return recipes;
+    }
 }

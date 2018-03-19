@@ -43,8 +43,10 @@ public class BlockIngredient extends Ingredient {
             if (states == null) states = Sets.newHashSet();
             NonNullList<ItemStack> lst = NonNullList.create();
             for (ItemStack itemstack : this.stacks) {
-                if (!states.addAll(BWMRecipes.getStatesFromStack(itemstack)))
+                Set<IBlockState> s = BWMRecipes.getStatesFromStack(itemstack);
+                if (s.isEmpty())
                     continue;
+                states.addAll(s);
                 if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
                     itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
                 } else {

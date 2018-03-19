@@ -2,7 +2,7 @@ package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.module.compat.jei.wrapper.BlockMetaWrapper;
+import betterwithmods.module.compat.jei.wrapper.BlockRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by primetoxinz on 9/5/16.
  */
-public class SteelSawRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
+public class SteelSawRecipeCategory implements IRecipeCategory<BlockRecipeWrapper> {
     public static final int width = 82;
     public static final int height = 50;
     public static final String UID = "bwm.saw.steel";
@@ -61,7 +61,7 @@ public class SteelSawRecipeCategory implements IRecipeCategory<BlockMetaWrapper>
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockRecipeWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 8, 9);
         guiItemStacks.init(1, false, 57, 9);
