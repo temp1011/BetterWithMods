@@ -62,14 +62,15 @@ tile.bwm:windmill.waterwheel.name=Waterwheel
 tile.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
 tile.bwm:planter.0.name=Planter
-tile.bwm:planter.1.name=Dirt Planter
+tile.bwm:planter.1.name=Farmland Planter
 tile.bwm:planter.2.name=Grass Planter
 tile.bwm:planter.3.name=Soul Sand Planter
 tile.bwm:planter.4.name=Fertile Planter
-tile.bwm:planter.5.name=Sandy Planter
+tile.bwm:planter.5.name=Sand Planter
 tile.bwm:planter.6.name=Water Planter
 tile.bwm:planter.7.name=Gravel Planter
 tile.bwm:planter.8.name=Red Sand Planter
+tile.bwm:planter.9.name=Dirt Planter
 
 tile.bwm:vase.0.name=White Vase
 tile.bwm:vase.1.name=Orange Vase

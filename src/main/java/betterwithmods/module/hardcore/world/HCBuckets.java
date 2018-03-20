@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore.world;
 
 import betterwithmods.module.Feature;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
@@ -73,7 +74,7 @@ public class HCBuckets extends Feature {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return !stack.isEmpty() && bucketBlacklist.stream().anyMatch(stack::isItemEqual) && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+        return bucketBlacklist.stream().noneMatch(stack::isItemEqual) && InvUtils.isFluidContainer(stack);
     }
 
     private static boolean isNonVanillaBucket(ItemStack stack) {
@@ -307,7 +308,7 @@ public class HCBuckets extends Feature {
     @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
-        if(world.isRemote)
+        if (world.isRemote)
             return;
         if (riskyLavaBuckets) {
             boolean isPlayerRisky = e.player.isSprinting() || !e.player.onGround;

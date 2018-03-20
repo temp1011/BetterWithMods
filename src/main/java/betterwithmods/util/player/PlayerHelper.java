@@ -47,8 +47,15 @@ public final class PlayerHelper {
     }
 
     public static ItemStack getHolding(EntityPlayer player, EnumHand hand) {
-        if (hand != null)
+        if (hand != null) {
+            switch (hand) {
+                case MAIN_HAND:
+                    return player.getHeldItemMainhand();
+                case OFF_HAND:
+                    return player.getHeldItemOffhand();
+            }
             return player.getHeldItem(hand);
+        }
         return player.getHeldItem(EnumHand.MAIN_HAND);
     }
 

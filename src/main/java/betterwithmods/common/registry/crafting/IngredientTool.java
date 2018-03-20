@@ -24,6 +24,10 @@ public class IngredientTool extends Ingredient {
         }
     }
 
+    public IngredientTool(String toolClass) {
+        this(s -> s.getItem().getHarvestLevel(s, toolClass, null, null) > -1, ItemStack.EMPTY);
+    }
+
     @Override
     public ItemStack[] getMatchingStacks() {
         ItemStack stack = TOOLS.keySet().stream().filter(s -> s.isItemEqual(example)).findFirst().orElse(null);
