@@ -7,11 +7,10 @@ tile.bwm:steel_gearbox.name=钢质变速箱
 tile.bwm:wooden_broken_gearbox.name=损坏的木质变速箱
 tile.bwm:steel_broken_gearbox.name=损坏的钢质变速箱
 
-
-tile.bwm:single_machine.0.name=磨石
-tile.bwm:single_machine.1.name=滑车
-tile.bwm:single_machine.2.name=滤筛漏斗
-tile.bwm:single_machine.3.name=螺杆旋转台
+tile.bwm:millstone.name=磨石
+tile.bwm:pulley.name=滑车
+tile.bwm:filtered_hopper.name=滤筛漏斗
+tile.bwm:turntable.name=螺杆旋转台
 tile.bwm:pane.0.name=网格栅栏
 tile.bwm:pane.1.name=板条栅栏
 tile.bwm:wicker.name=筚板
@@ -29,9 +28,9 @@ tile.bwm:slats.4.name=金合欢木板条栅栏
 tile.bwm:slats.5.name=深色橡木板条栅栏
 tile.bwm:screw_pump.name=螺杆泵
 
-tile.bwm:cooking_pot.0.name=坩埚
-tile.bwm:cooking_pot.1.name=釜锅
-tile.bwm:cooking_pot.2.name=神秘容器
+tile.bwm:crucible.name=坩埚
+tile.bwm:cauldron.name=釜锅
+tile.bwm:dragon_vessel.name=神秘容器
 
 tile.bwm:kiln.name=窑
 tile.bwm:bellows.0.name=风箱
@@ -543,7 +542,7 @@ modifier.mending.desc=§o抢人头！§r\n吸收经验修复工具。
 entity.entity_sheared_creeper.name=剪过的爬行者
 entity.bwm_jungle_spider.name=丛林蜘蛛
 entity.extending_rope.name=移动平台
-tile.bwm:single_machine=机械装置
+
 
 subtitles.bwm.wood.creak=木头吱吱作响
 subtitles.bwm.stone.grind=石磨磨碎声

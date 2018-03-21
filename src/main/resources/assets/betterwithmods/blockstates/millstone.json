@@ -2,11 +2,12 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "betterwithmods:blocks/pulley_side",
-      "top": "betterwithmods:blocks/pulley_top",
-      "bottom": "betterwithmods:blocks/pulley_bottom"
+      "side": "betterwithmods:blocks/mill_side",
+      "particle": "#side",
+      "up": "betterwithmods:blocks/mill_top",
+      "down": "betterwithmods:blocks/mill_bottom"
     },
-    "model": "betterwithmods:pulley",
+    "model": "betterwithmods:mill",
     "uvlock": false
   },
   "variants": {

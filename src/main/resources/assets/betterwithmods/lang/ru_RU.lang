@@ -29,9 +29,9 @@ tile.bwm:slats.4.name=Акациевые ламели
 tile.bwm:slats.5.name=Ламели из тёмного дуба
 tile.bwm:screw_pump.name=Винтовой насос
 
-tile.bwm:cooking_pot.0.name=Тигель
-tile.bwm:cooking_pot.1.name=Котел
-tile.bwm:cooking_pot.2.name=Мистический сосуд
+tile.bwm:crucible.name=Тигель
+tile.bwm:cauldron.name=Котел
+tile.bwm:dragon_vessel.name=Мистический сосуд
 
 tile.bwm:kiln.name=Килн
 tile.bwm:bellows.0.name=Меха

@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -14,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -55,4 +57,21 @@ public abstract class BWMBlock extends Block {
             }
         }
     }
+
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        if(hasTileEntity(blockState)) {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                    return InvUtils.calculateComparatorLevel(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP));
+                }
+            }
+        }
+        return 0;
+    }
+
 }

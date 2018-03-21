@@ -6,7 +6,7 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
@@ -396,8 +396,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public BlockMechMachines getBlock() {
-        return (BlockMechMachines) getBlockType();
+    public BlockMechMachine getBlock() {
+        return (BlockMechMachine) getBlockType();
     }
 
     @Override

@@ -17,8 +17,6 @@ import javax.annotation.Nullable;
  */
 public class TileBasic extends TileEntity {
 
-
-
     @Override
     public void handleUpdateTag(NBTTagCompound tag) {
         super.handleUpdateTag(tag);

@@ -3,7 +3,6 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
@@ -31,7 +30,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
 
     private static final int height = 3;
     private static final int[] ticksToRotate = {10, 20, 40, 80};
-    public byte timerPos = 0;
+    private int timerPos = 0;
     private int potteryRotation = 0;
     private boolean potteryRotated = false;
     private double[] offsets = {0.25D, 0.375D, 0.5D, 0.625D};
@@ -60,7 +59,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("PotteryRotation", this.potteryRotation);
-        tag.setByte("SwitchSetting", this.timerPos);
+        tag.setByte("SwitchSetting", (byte) this.timerPos);
         tag.setBoolean("Asynchronous", this.asynchronous);
         if (this.asynchronous || this.rotationTime != 0)
             tag.setInteger("RotationTime", this.rotationTime);
@@ -150,10 +149,10 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         if (!potteryRotated)
             potteryRotation = 0;
 
-        getBlockWorld().neighborChanged(pos, BWMBlocks.SINGLE_MACHINES, pos);
+        getBlockWorld().neighborChanged(pos, getBlock(), pos);
     }
 
-    public byte getTimerPos() {
+    public int getTimerPos() {
         return timerPos;
     }
 
@@ -264,5 +263,10 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public Block getBlock() {
         return getBlockType();
+    }
+
+    @Override
+    public boolean hasFastRenderer() {
+        return true;
     }
 }

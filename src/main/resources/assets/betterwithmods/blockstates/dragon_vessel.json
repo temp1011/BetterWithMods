@@ -2,12 +2,14 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "top": "betterwithmods:blocks/cauldron_top",
-      "bottom": "betterwithmods:blocks/cauldron_bottom",
-      "side": "betterwithmods:blocks/cauldron_side",
+      "side": "betterwithmods:blocks/vessel_side",
+      "top": "betterwithmods:blocks/vessel_bars",
+      "bottom": "betterwithmods:blocks/vessel_bottom",
+      "invfill": "betterwithmods:blocks/vessel_contents",
+      "inside": "betterwithmods:blocks/vessel_top",
       "particle": "#side"
     },
-    "model": "betterwithmods:cooking_pot",
+    "model": "betterwithmods:vessel",
     "uvlock": false
   },
   "variants": {

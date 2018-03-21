@@ -7,8 +7,6 @@ import betterwithmods.client.container.bulk.GuiCrucible;
 import betterwithmods.client.container.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.mechanical.BlockCookingPot;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
@@ -43,10 +41,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
-
-import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
-import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
 
 @mezz.jei.api.JEIPlugin
 public class JEI implements IModPlugin {
@@ -103,11 +97,11 @@ public class JEI implements IModPlugin {
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
 
-        reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
-        reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
-        reg.addRecipeCatalyst(BlockMechMachines.getStack(TURNTABLE), TurntableRecipeCategory.UID);
-        reg.addRecipeCatalyst(BlockCookingPot.getStack(CAULDRON), CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
-        reg.addRecipeCatalyst(BlockCookingPot.getStack(CRUCIBLE), CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.MILLSTONE), MillRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.FILTERED_HOPPER), HopperRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.TURNTABLE), TurntableRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.CAULDRON), CauldronRecipeCategory.UID, StokedCauldronRecipeCategory.UID);
+        reg.addRecipeCatalyst(new ItemStack(BWMBlocks.CRUCIBLE), CrucibleRecipeCategory.UID, StokedCrucibleRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.SAW), SawRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.STEEL_SAW), SteelSawRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(Blocks.BRICK_BLOCK), KilnRecipeCategory.UID);

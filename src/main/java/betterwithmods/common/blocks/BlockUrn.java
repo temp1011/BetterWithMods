@@ -3,7 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockFilteredHopper;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -138,10 +138,8 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         BlockPos up = pos.up();
         Block block = world.getBlockState(up).getBlock();
-        if (block != null && block == BWMBlocks.SINGLE_MACHINES) {
-            if (world.getBlockState(up).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER) {
-                return state.withProperty(UNDERHOPPER, true);
-            }
+        if (block instanceof BlockFilteredHopper) {
+            return state.withProperty(UNDERHOPPER, true);
         }
         return state;
     }

@@ -3,8 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.tile.IRopeConnector;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockPulley;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -152,7 +151,7 @@ public class BlockAnchor extends BWMBlock implements IRopeConnector {
 
     private boolean isPulley(IBlockAccess world, BlockPos origin, EnumFacing facing) {
         BlockPos pos = origin.offset(facing);
-        return world.getBlockState(pos).getBlock() == BWMBlocks.SINGLE_MACHINES && world.getBlockState(pos).getValue(BlockMechMachines.TYPE) == EnumType.PULLEY;
+        return world.getBlockState(pos).getBlock() instanceof BlockPulley;
     }
 
     @Override

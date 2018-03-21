@@ -1,7 +1,7 @@
 package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.compat.jei.wrapper.HopperRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -11,6 +11,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -89,7 +90,7 @@ public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper
             }
         }
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(4, BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER));
+        guiItemStacks.set(4, new ItemStack(BWMBlocks.FILTERED_HOPPER));
 
     }
 }

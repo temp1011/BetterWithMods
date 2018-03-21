@@ -8,10 +8,10 @@ tile.bwm:wooden_broken_gearbox.name=Broken Wooden Gearbox
 tile.bwm:steel_broken_gearbox.name=Broken Steel Gearbox
 
 
-tile.bwm:single_machine.0.name=Mill Stone
-tile.bwm:single_machine.1.name=Pulley
-tile.bwm:single_machine.2.name=Filtered Hopper
-tile.bwm:single_machine.3.name=Turntable
+tile.bwm:millstone.name=Mill Stone
+tile.bwm:pulley.name=Pulley
+tile.bwm:filtered_hopper.name=Filtered Hopper
+tile.bwm:turntable.name=Turntable
 tile.bwm:pane.0.name=Grate
 tile.bwm:pane.1.name=Slats
 tile.bwm:wicker.name=Wicker
@@ -29,9 +29,9 @@ tile.bwm:slats.4.name=Acacia Slats
 tile.bwm:slats.5.name=Dark Oak Slats
 tile.bwm:screw_pump.name=Screw Pump
 
-tile.bwm:cooking_pot.0.name=Crucible
-tile.bwm:cooking_pot.1.name=Cauldron
-tile.bwm:cooking_pot.2.name=Mysterious Vessel
+tile.bwm:crucible.name=Crucible
+tile.bwm:cauldron.name=Cauldron
+tile.bwm:dragon_vessel.name=Mysterious Vessel
 
 tile.bwm:kiln.name=Kiln
 tile.bwm:bellows.0.name=Bellows
@@ -544,7 +544,7 @@ modifier.mending.desc=??oKillsteal!??r\nAbsorbs experience to repair the tool.
 entity.entity_sheared_creeper.name=Sheared Creeper
 entity.bwm_jungle_spider.name=Jungle Spider
 entity.extending_rope.name=Moving Platform
-tile.bwm:single_machine=Mechanical Machine
+
 
 subtitles.bwm.wood.creak=Wood creaks
 subtitles.bwm.stone.grind=Stones grinding

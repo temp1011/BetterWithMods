@@ -2,7 +2,6 @@ package betterwithmods.module.hardcore.world;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.util.item.Stack;
@@ -43,9 +42,8 @@ public class HCBuoy extends CompatFeature {
         buoyancy.put(BWMBlocks.VASE, 1.0F);
         buoyancy.put(BWMBlocks.GRATE, 1.0F);
         buoyancy.put(BWMBlocks.URN, 1.0F);
-        buoyancy.put(BWMBlocks.STUMP, 1.0F);
-        buoyancy.put(BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER), 1.0F);
-        buoyancy.put(BlockMechMachines.getStack(BlockMechMachines.EnumType.PULLEY), 1.0F);
+        buoyancy.put(BWMBlocks.FILTERED_HOPPER, 1.0F);
+        buoyancy.put(BWMBlocks.PULLEY, 1.0F);
 
         //Items
         buoyancy.put(BWMItems.MATERIAL, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP).getMetadata(), 1.0F);

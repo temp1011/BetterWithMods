@@ -5,7 +5,7 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.TileBasicInventory;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
@@ -53,8 +53,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         return oldState.getBlock() != newState.getBlock();
     }
 
-    public BlockMechMachines getBlock() {
-        return (BlockMechMachines) this.getBlockType();
+    public BlockMechMachine getBlock() {
+        return (BlockMechMachine) this.getBlockType();
     }
 
     private boolean findIfBlocked() {

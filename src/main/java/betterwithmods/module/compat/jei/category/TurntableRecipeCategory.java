@@ -1,7 +1,7 @@
 package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.compat.jei.wrapper.TurntableRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -10,6 +10,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -67,7 +68,7 @@ public class TurntableRecipeCategory implements IRecipeCategory<TurntableRecipeW
         guiItemStacks.init(2, false, x + 27, y + 18);
         guiItemStacks.init(3, false, x, y + 18);
         guiItemStacks.set(ingredients);
-        guiItemStacks.set(3, BlockMechMachines.getStack(BlockMechMachines.EnumType.TURNTABLE));
+        guiItemStacks.set(3, new ItemStack(BWMBlocks.TURNTABLE));
 
     }
 }

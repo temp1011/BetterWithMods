@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "betterwithmods:single_machine",
-    "data": 2
+    "item": "betterwithmods:filtered_hopper"
   },
   "pattern": [
     "S S",

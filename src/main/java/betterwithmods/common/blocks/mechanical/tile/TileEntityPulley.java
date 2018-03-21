@@ -7,7 +7,7 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.api.tile.IRopeConnector;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockRope;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.entity.EntityExtendingRope;
@@ -101,7 +101,7 @@ public class TileEntityPulley extends TileEntityVisibleInventory implements IMec
     private void tryNextOperation() {
         this.power = calculateInput();
 
-        if (!activeOperation() && this.getBlockWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachines) {
+        if (!activeOperation() && this.getBlockWorld().getBlockState(this.pos).getBlock() instanceof BlockMechMachine) {
             if (canGoDown(false)) {
                 goDown();
             } else if (canGoUp()) {

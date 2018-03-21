@@ -3,8 +3,6 @@ package betterwithmods.manual.client.manual.provider;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.*;
-import betterwithmods.common.blocks.mechanical.BlockCookingPot;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.manual.api.manual.PathProvider;
@@ -70,10 +68,6 @@ public class DefinitionPathProvider implements PathProvider {
             return "%LANGUAGE%/blocks/blood_wood.md";
         } else if (block instanceof BlockChime) {
             return "%LANGUAGE%/blocks/wind_chime.md";
-        } else if (block instanceof BlockCookingPot) {
-            return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
-        } else if (block instanceof BlockMechMachines) {
-            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.TYPE).getName() + ".md";
         } else if (block instanceof BlockFurniture || block instanceof BlockPane || block instanceof BlockIronWall) {
             return "%LANGUAGE%/blocks/decoration.md";
         } else if (block instanceof BlockMini) {

@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockMechMachines;
+import betterwithmods.common.blocks.mechanical.mech_machine.BlockPulley;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -85,10 +85,8 @@ public class BlockRope extends BWMBlock {
         if (blockAbove == this) {
             supported = true;
         }
-        if (blockAbove == BWMBlocks.SINGLE_MACHINES) {
-            if (world.getBlockState(pos.up()).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.PULLEY) {
-                supported = true;
-            }
+        if (blockAbove instanceof BlockPulley) {
+            supported = true;
         }
 
         return supported;
