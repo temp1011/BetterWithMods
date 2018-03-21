@@ -17,6 +17,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -213,7 +214,9 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
                     hopper.insert(entityIn);
                 }
             }
-            entityIn.setPosition(entityIn.posX,entityIn.posY + 0.1,entityIn.posZ); //Fix to stop items being caught on this
+            if(entityIn instanceof EntityItem) {
+                entityIn.setPosition(entityIn.posX, entityIn.posY + 0.1, entityIn.posZ); //Fix to stop items being caught on this
+            }
         }
     }
 
