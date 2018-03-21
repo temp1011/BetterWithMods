@@ -105,7 +105,7 @@ public class BiomesOPlenty extends CompatFeature {
             SawRecipes.addSawRecipe(plank, i, new ItemStack(SIDING, 2, i));
             SawRecipes.addSawRecipe(MOULDING, i, new ItemStack(CORNER, 2, i));
             SawRecipes.addSawRecipe(SIDING, i, new ItemStack(MOULDING, 2, i));
-            SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+            SawRecipes.addSawRecipe(CORNER, i, ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR, 2));
 //            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(plank, 1, i), new ItemStack(SIDING, 1, i), new ItemStack(SIDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "plank_recover")));
 //            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(SIDING, 1, i), new ItemStack(MOULDING, 1, i), new ItemStack(MOULDING, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "siding_recover")));
 //            addHardcoreRecipe(new ShapelessOreRecipe(null, new ItemStack(MOULDING, 1, i), new ItemStack(CORNER, 1, i), new ItemStack(CORNER, 1, i)).setRegistryName(new ResourceLocation("betterwithmods", "bop_" + woods[i] + "moulding_recover")));

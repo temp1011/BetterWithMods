@@ -57,43 +57,44 @@ public class BWOreDictionary {
         toolEffectiveOre.putAll("mattock", Lists.newArrayList("stone", "cobblestone"));
 
         registerOre("book", BWMItems.MANUAL);
-        registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-        registerOre("padding", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING));
-        registerOre("soap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP));
-        registerOre("archimedesScrew", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCREW));
-        registerOre("filament", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT));
-        registerOre("latchRedstone", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
-        registerOre("plateSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PLATE_STEEL));
-        registerOre("arrowSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BROADHEAD));
-        registerOre("springSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_SPRING));
-        registerOre("gearSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR));
-        registerOre("gearWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR));
-        registerOre("cropHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP));
-        registerOre("dyeBrown", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-        registerOre("dung", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
-        registerOre("slimeball", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
-        registerOre("glue", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
-        registerOre("ingotSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
-        registerOre("dustNetherrack", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK));
-        registerOre("dustHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
-        registerOre("dustSoul", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST));
-        registerOre("ingotConcentratedHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE));
-        registerOre("dustCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST));
-        registerOre("dustPotash", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH));
-        registerOre("dustWood", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST));
-        registerOre("dustSulfur", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE));
-        registerOre("dustSaltpeter", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER));
-        registerOre("nuggetSoulforgedSteel", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NUGGET_STEEL));
+        registerOre("dung", ItemMaterial.getStack(ItemMaterial.EnumMaterial.DUNG));
+        registerOre("padding", ItemMaterial.getStack(ItemMaterial.EnumMaterial.PADDING));
+        registerOre("soap", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP));
+        registerOre("archimedesScrew", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCREW));
+        registerOre("filament", ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT));
+        registerOre("element", ItemMaterial.getStack(ItemMaterial.EnumMaterial.ELEMENT));
+        registerOre("latchRedstone", ItemMaterial.getStack(ItemMaterial.EnumMaterial.REDSTONE_LATCH));
+        registerOre("plateSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.PLATE_STEEL));
+        registerOre("arrowSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.BROADHEAD));
+        registerOre("springSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_SPRING));
+        registerOre("gearSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_GEAR));
+        registerOre("gearWood", ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR));
+        registerOre("cropHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_LEAF));
+        registerOre("dyeBrown", ItemMaterial.getStack(ItemMaterial.EnumMaterial.DUNG));
+        registerOre("dung", ItemMaterial.getStack(ItemMaterial.EnumMaterial.DUNG));
+        registerOre("slimeball", ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE));
+        registerOre("glue", ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE));
+        registerOre("ingotSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT));
+        registerOre("dustNetherrack", ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK));
+        registerOre("dustHellfire", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
+        registerOre("dustSoul", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST));
+        registerOre("ingotConcentratedHellfire", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE));
+        registerOre("dustCoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.COAL_DUST));
+        registerOre("dustPotash", ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH));
+        registerOre("dustWood", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SAWDUST));
+        registerOre("dustSulfur", ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE));
+        registerOre("dustSaltpeter", ItemMaterial.getStack(ItemMaterial.EnumMaterial.NITER));
+        registerOre("nuggetSoulforgedSteel", ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_NUGGET));
         registerOre("foodFlour", BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
-        registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
-        registerOre("foodCocoapowder", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER));
-        registerOre("dustCarbon", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
-        registerOre("dustCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST));
-        registerOre("dustCharcoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
-        registerOre("gemNetherCoal", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL));
-        registerOre("materialNetherSludge", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
+        registerOre("dustCharcoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
+        registerOre("foodCocoapowder", ItemMaterial.getStack(ItemMaterial.EnumMaterial.COCOA_POWDER));
+        registerOre("dustCarbon", ItemMaterial.getStack(ItemMaterial.EnumMaterial.COAL_DUST), ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
+        registerOre("dustCoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.COAL_DUST));
+        registerOre("dustCharcoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
+        registerOre("gemNetherCoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL));
+        registerOre("materialNetherSludge", ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
-        registerOre("chainmail", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL));
+        registerOre("chainmail", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHAIN_MAIL));
 
         registerOre("blockHardenedNetherClay", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
         registerOre("blockConcentratedHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
@@ -107,12 +108,12 @@ public class BWOreDictionary {
         registerOre("barkDarkOak", new ItemStack(BWMItems.BARK, 1, 5));
         registerOre("barkBlood", new ItemStack(BWMItems.BARK, 1, 6));
 
-        registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
-        registerOre("hideTanned", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT));
-        registerOre("hideBelt", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_BELT));
-        registerOre("hideScoured", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER));
-        registerOre("hideStrap", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP));
-        registerOre("leather", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT));
+        registerOre("hideTanned", ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+        registerOre("hideTanned", ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT));
+        registerOre("hideBelt", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_BELT));
+        registerOre("hideScoured", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER));
+        registerOre("hideStrap", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_STRAP));
+        registerOre("leather", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT));
 
 
         registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
@@ -124,18 +125,18 @@ public class BWOreDictionary {
         registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, 0));
         registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, 0));
 
-        registerOre("fiberHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS));
-        registerOre("fabricHemp", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_CLOTH));
+        registerOre("fiberHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_FIBERS));
+        registerOre("fabricHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_CLOTH));
 
-        registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
-        registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
+        registerOre("ingotDiamond", ItemMaterial.getStack(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        registerOre("nuggetDiamond", ItemMaterial.getStack(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
 
         registerOre("listAllmeat", Items.PORKCHOP, Items.BEEF, Items.CHICKEN, Items.FISH, Items.MUTTON, BWMItems.MYSTERY_MEAT);
         registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
         registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_FISH, Items.COOKED_MUTTON, Items.COOKED_RABBIT, BWMItems.COOKED_MYSTERY_MEAT);
         registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
 
-        registerOre("tallow", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW));
+        registerOre("tallow", ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW));
 
         registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
 

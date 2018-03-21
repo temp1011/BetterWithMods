@@ -82,7 +82,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
             case BRICK:
                 return Lists.newArrayList(new ItemStack(Items.CLAY_BALL));
             case NETHER_BRICK:
-                return Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
+                return Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
             default:
                 return super.getDrops(world,pos,state,fortune);
         }
@@ -135,7 +135,7 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
             case BRICK:
                 return new ItemStack(Items.CLAY_BALL);
             case NETHER_BRICK:
-                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
+                return ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
             default:
                 return super.getPickBlock(state, target, world, pos, player);
         }

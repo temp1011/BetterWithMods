@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +39,7 @@ public class BlastingOilEvent {
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
 
-                if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
+                if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
                     count += stack.getCount();
                     inventory.extractItem(i, stack.getCount(), false);
                 }
@@ -59,7 +58,7 @@ public class BlastingOilEvent {
         World world = event.world;
         if(world.isRemote)
             return;
-        List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
+        List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
         HashSet<EntityItem> toRemove = new HashSet<>();
         items.forEach(item -> {
             boolean ground = item.onGround;

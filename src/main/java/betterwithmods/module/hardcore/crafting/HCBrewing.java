@@ -75,13 +75,13 @@ public class HCBrewing extends Feature {
                 if (removeWitchPotionDrops && isWitchDropBlacklisted(stack))
                     iterator.remove();
                 else if (stack.getItem() == Items.REDSTONE)
-                    item.setItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WITCH_WART, stack.getCount()));
+                    item.setItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.WITCH_WART, stack.getCount()));
             }
         }
 
         if (entity instanceof EntitySquid) {
             if (entity.world.rand.nextInt(100) < 10) {
-                entity.entityDropItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.MYSTERY_GLAND), 0);
+                entity.entityDropItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.MYSTERY_GLAND), 0);
             }
         }
     }
@@ -108,9 +108,9 @@ public class HCBrewing extends Feature {
         Items.LINGERING_POTION.setMaxStackSize(potionStackSize);
 
         if (tryChangePotions) {
-            Ingredient extender = convertToPotionItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WITCH_WART));
-            Ingredient strenthener = convertToPotionItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE));
-            Ingredient inverter = convertToPotionItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POISON_SAC));
+            Ingredient extender = convertToPotionItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.WITCH_WART));
+            Ingredient strenthener = convertToPotionItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE));
+            Ingredient inverter = convertToPotionItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.POISON_SAC));
             Ingredient awkward = convertToPotionItem(Items.NETHER_WART);
             Ingredient fireResistance = convertToPotionItem(Items.MAGMA_CREAM);
             Ingredient nightVision = convertToPotionItem(Items.SPIDER_EYE);
@@ -122,7 +122,7 @@ public class HCBrewing extends Feature {
             Ingredient waterBreathing = convertToPotionItem(new ItemStack(Items.FISH, ItemFishFood.FishType.PUFFERFISH.getMetadata()));
             if (waterBreathingAnyFish)
                 waterBreathing = convertToPotionItem(Items.FISH);
-            Ingredient healing = convertToPotionItem(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.MYSTERY_GLAND));
+            Ingredient healing = convertToPotionItem(ItemMaterial.getStack(ItemMaterial.EnumMaterial.MYSTERY_GLAND));
 
             PotionHelper.addContainerRecipe(Items.POTIONITEM, BWMItems.CREEPER_OYSTER, Items.SPLASH_POTION);
             PotionHelper.addContainerRecipe(Items.SPLASH_POTION, Items.DRAGON_BREATH, Items.LINGERING_POTION);
@@ -222,17 +222,17 @@ public class HCBrewing extends Feature {
                         if(abstractRecipe.isIngredient(extenderToReplace) && isExtended(abstractRecipe.getInput(),abstractRecipe.getOutput()))
                         {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WITCH_WART),abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getStack(ItemMaterial.EnumMaterial.WITCH_WART),abstractRecipe.getOutput()));
                         }
                         else if(abstractRecipe.isIngredient(strengthenerToReplace) && isStrong(abstractRecipe.getInput(),abstractRecipe.getOutput()))
                         {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE),abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE),abstractRecipe.getOutput()));
                         }
                         else if(abstractRecipe.isIngredient(inverterToReplace) && isInverted(abstractRecipe.getInput(),abstractRecipe.getOutput()))
                         {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POISON_SAC),abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(),ItemMaterial.getStack(ItemMaterial.EnumMaterial.POISON_SAC),abstractRecipe.getOutput()));
                         }
                         else if(abstractRecipe.isIngredient(splashToReplace) && isSplash(abstractRecipe.getInput(),abstractRecipe.getOutput()))
                         {

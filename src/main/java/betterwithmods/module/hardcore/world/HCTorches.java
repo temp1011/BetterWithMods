@@ -22,11 +22,11 @@ public class HCTorches extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TORCH, "C", "S", 'C', Ingredient.fromStacks(new ItemStack(Items.COAL, 1, 0), new ItemStack(Items.COAL, 1, 1)), 'S', "stickWood").setRegistryName(new ResourceLocation("minecraft", "torch")));
-        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TORCH, "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.TORCH, "C", "S", 'C', ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
+        addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Blocks.TORCH, 4), "C", "S", 'C', ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL), 'S', "stickWood").setRegistryName(new ResourceLocation("betterwithmods", "torch")));
     }
 }

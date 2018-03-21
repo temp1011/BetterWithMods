@@ -16,7 +16,7 @@ import java.util.Random;
 public class VillagerTrades {
 
     public static List<EntityVillager.ITradeList> CLERIC_1 = Lists.newArrayList(
-            new EntityVillager.ListItemForEmeralds(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), new EntityVillager.PriceInfo(-18, -22)),
+            new EntityVillager.ListItemForEmeralds(ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_LEAF), new EntityVillager.PriceInfo(-18, -22)),
             new EntityVillager.ListItemForEmeralds(new ItemStack(Blocks.RED_MUSHROOM), new EntityVillager.PriceInfo(-14, -16)),
             new EntityVillager.ListItemForEmeralds(new ItemStack(Blocks.CACTUS), new EntityVillager.PriceInfo(-35, -62)),
             new EntityVillager.ListItemForEmeralds(new ItemStack(Items.FLINT_AND_STEEL), new EntityVillager.PriceInfo(1, 1)),

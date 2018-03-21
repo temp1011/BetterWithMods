@@ -109,7 +109,7 @@ public class BlockSteel extends BWMBlock implements IMultiVariants{
             }
             worldIn.spawnParticle(EnumParticleTypes.FLAME,pos.getX()-1,pos.getY()+1, pos.getZ()-1,0,0,0);
             stack.damageItem(1,playerIn);
-            InvUtils.ejectStackWithOffset(worldIn, pos, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PLATE_STEEL));
+            InvUtils.ejectStackWithOffset(worldIn, pos, ItemMaterial.getStack(ItemMaterial.EnumMaterial.PLATE_STEEL));
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }

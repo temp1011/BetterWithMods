@@ -56,59 +56,59 @@ public class CauldronRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8), new Object[]{"dustPotash", new OreStack("dustHellfire", 4)});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL, 4), new Object[]{"dustHellfire", "dustCarbon"});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8), new Object[]{"dustPotash", new OreStack("dustHellfire", 4)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL, 4), new Object[]{"dustHellfire", "dustCarbon"});
         //Flour OreDict is foodFlour, Donuts need sugar
         addCauldronRecipe(new ItemStack(BWMItems.DONUT, 4, 0), new Object[]{"foodFlour", Items.SUGAR});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL, 2), new Object[]{"dustHellfire", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW)});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE), new Object[]{new OreStack("dustHellfire", 8)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL, 2), new Object[]{"dustHellfire", ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE), new Object[]{new OreStack("dustHellfire", 8)});
         addCauldronRecipe(new ItemStack(Items.DYE, 1, 2), new Object[]{"blockCactus"});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"string", "dustGlowstone", "dustRedstone"});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"fiberHemp", "dustGlowstone", "dustRedstone"});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "fiberHemp"});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"string", "dustGlowstone", "dustRedstone"});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT), new Object[]{"fiberHemp", "dustGlowstone", "dustRedstone"});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "string"});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ELEMENT), new Object[]{Items.BLAZE_POWDER, "dustRedstone", "fiberHemp"});
 
         String[] barkNames = {"barkOak", "barkSpruce", "barkBirch", "barkJungle", "barkAcacia", "barkDarkOak"};
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             int meta = type.getMetadata();
-            addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
-            addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
+            addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
+            addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
         }
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[] {ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack("barkBlood", 8)});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[] {ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack("barkBlood", 8)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[] {ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack("barkBlood", 8)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[] {ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack("barkBlood", 8)});
         addCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[]{"dustSulfur", "dustSaltpeter", "dustCarbon"});
-        addCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE), new Object[]{Items.GUNPOWDER, "string"});
-        addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
-        addCauldronRecipe(new ItemStack(Blocks.PISTON, 4), new Object[]{new ItemStack(Blocks.STICKY_PISTON, 4), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FUSE), new Object[]{Items.GUNPOWDER, "string"});
+        addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)});
+        addCauldronRecipe(new ItemStack(Blocks.PISTON, 4), new Object[]{new ItemStack(Blocks.STICKY_PISTON, 4), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)});
 
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{new ItemStack(Items.LEATHER)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP, 8)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT, 2)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 1), new Object[]{new ItemStack(Items.BOOK, 2, OreDictionary.WILDCARD_VALUE)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_PORKCHOP)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.PORKCHOP)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_BEEF, 4)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.BEEF, 4)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.MUTTON, 6)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_MUTTON, 6)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{new ItemStack(Items.LEATHER)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_STRAP, 8)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT, 2)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 2), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 3), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 4), new Object[]{new ItemStack(BWMItems.LEATHER_TANNED_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 1), new Object[]{new ItemStack(Items.BOOK, 2, OreDictionary.WILDCARD_VALUE)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_PORKCHOP)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.PORKCHOP)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_BEEF, 4)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.BEEF, 4)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.MUTTON, 6)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.COOKED_MUTTON, 6)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), new Object[]{new ItemStack(Items.ROTTEN_FLESH, 10)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH)});
 
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{"logWood"});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("plankWood", 6)});
-        addStokedCauldronRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("dustWood", 16)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH), new Object[]{"logWood"});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("plankWood", 6)});
+        addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH), new Object[]{new OreStack("dustWood", 16)});
         addCauldronRecipe(new ItemStack(BWMItems.CHICKEN_SOUP, 3), new Object[]{new ItemStack(Items.COOKED_CHICKEN), new ItemStack(Items.CARROT), new ItemStack(Items.BAKED_POTATO), new ItemStack(Items.BOWL, 3)});
         addCauldronRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), new ItemStack(Items.BUCKET), new Object[]{"foodCocoapowder", new ItemStack(Items.SUGAR), new ItemStack(Items.MILK_BUCKET)});
         addCauldronRecipe(new ItemStack(BWMItems.CHOWDER, 2), new ItemStack(Items.BUCKET), new Object[]{new ItemStack(Items.COOKED_FISH), new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BOWL, 2)});

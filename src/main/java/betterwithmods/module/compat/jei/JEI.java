@@ -128,8 +128,8 @@ public class JEI implements IModPlugin {
             dam2.setItemDamage(dam2.getMaxDamage() * 3 / 4);
             ItemStack dam3 = stack.copy();
             dam3.setItemDamage(dam3.getMaxDamage() * 2 / 4);
-            reg.addAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam2));
-            reg.addAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam3));
+            reg.addAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT)), Collections.singletonList(dam2));
+            reg.addAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT)), Collections.singletonList(dam3));
         }
     }
 

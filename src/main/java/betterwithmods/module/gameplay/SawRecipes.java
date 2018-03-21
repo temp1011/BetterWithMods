@@ -55,7 +55,7 @@ public class SawRecipes extends Feature {
     public void init(FMLInitializationEvent event) {
         for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
             addSawRecipe(Blocks.PLANKS, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
-            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR, 2));
             addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
             addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
             addSawRecipe(Blocks.WOODEN_SLAB, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));

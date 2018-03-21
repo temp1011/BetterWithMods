@@ -3,7 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
+import betterwithmods.common.items.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyBool;
@@ -141,7 +141,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
 
     @Override
     protected Item getCrop() {
-        return BWMItems.MATERIAL;
+        return ItemMaterial.getItem(ItemMaterial.EnumMaterial.HEMP_LEAF);
     }
 
     @Override

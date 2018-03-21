@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.items.ItemMaterial;
 import net.minecraft.block.BlockClay;
 import net.minecraft.block.SoundType;
@@ -22,17 +21,12 @@ public class BlockNetherClay extends BlockClay {
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
-        return ItemMaterial.EnumMaterial.NETHER_SLUDGE.ordinal();
-    }
-
-    @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         return MapColor.NETHERRACK;
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return BWMItems.MATERIAL;
+        return ItemMaterial.getItem(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
     }
 }

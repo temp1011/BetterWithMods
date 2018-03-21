@@ -3,13 +3,11 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,10 +15,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -189,9 +184,10 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
 
     @Override
     public void overpower(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+        //TODO replace with loot table
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STICK));
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.COBBLESTONE, 2, 0));
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
         world.setBlockToAir(pos);
     }
 }

@@ -1,7 +1,6 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
@@ -58,9 +57,10 @@ public class HopperRecipes extends Feature {
     private static boolean isFlat(ItemStack stack) {
         Item item = stack.getItem();
         int meta = stack.getMetadata();
-        if (item == BWMItems.MATERIAL) {
-            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
-        }
+        //TODO is flat. make this a config or an ingrdient or something.
+//        if (item == BWMItems.MATERIAL) {
+//            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
+//        }
         return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
     }
 
@@ -76,13 +76,13 @@ public class HopperRecipes extends Feature {
         HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> stack.getMaxStackSize() > 1);
         HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> stack.isItemEqual(new ItemStack(Blocks.SOUL_SAND)));
 
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK,1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST,1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK,1), ItemMaterial.getStack(ItemMaterial.EnumMaterial.HELLFIRE_DUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getStack(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST,1), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SAWDUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SAWDUST)));
         if(brimstoneFiltering) {
-            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
-            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST, 1), ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST), ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE)));
         }
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override

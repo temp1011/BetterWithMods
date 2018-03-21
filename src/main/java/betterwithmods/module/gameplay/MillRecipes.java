@@ -50,19 +50,19 @@ public class MillRecipes extends Feature {
 
 
         addMillRecipe(1, new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3), new Object[]{new ItemStack(BWMBlocks.WOLF)});
-        addMillRecipe(2, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new String[]{"netherrack"});
+        addMillRecipe(2, ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new String[]{"netherrack"});
         addMillRecipe(2, new ItemStack(Items.BLAZE_POWDER, 3, 0), new ItemStack[]{new ItemStack(Items.BLAZE_ROD)});
         addMillRecipe(new ItemStack(Items.SUGAR, 2, 0), new ItemStack[]{new ItemStack(Items.REEDS)});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), new String[]{"cropHemp"});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 0)});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHARCOAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 1)});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3), new String[]{"cropHemp"});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.COAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 0)});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHARCOAL_DUST), new ItemStack[]{new ItemStack(Items.COAL, 1, 1)});
         addMillRecipe(getDye(EnumDyeColor.WHITE, 6), new ItemStack[]{new ItemStack(Items.BONE)});
         addMillRecipe(getDye(EnumDyeColor.WHITE, 10), new ItemStack[]{new ItemStack(Items.SKULL, 1, 0)});
         addMillRecipe(getDye(EnumDyeColor.WHITE, 10), new ItemStack[]{new ItemStack(Items.SKULL, 1, 1)});
         addMillRecipe(getDye(EnumDyeColor.WHITE, 9), new ItemStack[]{new ItemStack(Blocks.BONE_BLOCK)});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ItemStack[]{new ItemStack(Items.LEATHER)});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{new ItemStack(Items.RABBIT_HIDE)});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT)});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new ItemStack[]{new ItemStack(Items.LEATHER)});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{new ItemStack(Items.RABBIT_HIDE)});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT), new ItemStack[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT)});
         //Dyes
         addMillRecipe(getDye(EnumDyeColor.RED, 2), new ItemStack[]{new ItemStack(Items.BEETROOT)});
         addMillRecipe(getDye(EnumDyeColor.RED, 4), new ItemStack[]{new ItemStack(Blocks.RED_FLOWER, 1, 0)});
@@ -84,7 +84,7 @@ public class MillRecipes extends Feature {
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropOats"});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropRye"});
         addMillRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new String[]{"cropRice"});
-        addMillRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER), new ItemStack[]{new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage())});
+        addMillRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.COCOA_POWDER), new ItemStack[]{new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage())});
 
     }
 

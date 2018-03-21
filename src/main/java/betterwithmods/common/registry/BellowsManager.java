@@ -46,9 +46,9 @@ public class BellowsManager {
         put(Items.SUGAR, 3f);
         put("foodFlour", 3f);
         BWOreDictionary.dustNames.forEach(stack -> put(stack.getOre(), 3f));
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), 2f);
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP), 2f);
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_LEAF), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_FIBERS), 2f);
         put(BWMBlocks.HEMP, 2f);
         put(Items.BEETROOT_SEEDS, 2f);
         put(Items.MELON_SEEDS, 2f);
@@ -62,9 +62,9 @@ public class BellowsManager {
         put(Items.ARROW, 1f);
         put(Items.TIPPED_ARROW, 1f);
         put(Items.SPECTRAL_ARROW, 1f);
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT), 2f);
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT), 2f);
-        put(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ELEMENT), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT), 2f);
+        put(ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_STRAP), 2f);
 
     }
 

@@ -46,7 +46,7 @@ public class PlaceClay extends Feature {
         KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))) {
             @Override
             public ItemStack getStack() {
-                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
+                return ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
             }
         });
 
@@ -72,7 +72,7 @@ public class PlaceClay extends Feature {
             }
         }
 
-        if (event.getItemStack().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE))) {
+        if (event.getItemStack().isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE))) {
             if (canPlaceAt(event.getEntityPlayer(), event.getWorld(), event.getPos())) {
                 PlayerContainer container = new PlayerContainer(event.getEntityPlayer(), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.NETHER_BRICK));
                 ItemBlock item = (ItemBlock) Item.getItemFromBlock(BWMBlocks.UNFIRED_POTTERY);

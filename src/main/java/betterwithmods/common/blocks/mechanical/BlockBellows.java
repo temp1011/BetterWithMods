@@ -3,14 +3,12 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.tile.TileBellows;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.util.DirUtils;
-import betterwithmods.util.InvUtils;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -254,9 +252,10 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     }
 
     public void breakBellows(World world, BlockPos pos) {
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
-        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 6));
+        //TODO replace with loot table
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Blocks.WOODEN_SLAB, 2, 0));
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 1, 0));
+//        InvUtils.ejectStackWithOffset(world, pos, new ItemStack(BWMItems.MATERIAL, 2, 6));
         world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 0.3F,
                 world.rand.nextFloat() * 0.1F + 0.45F);
         world.setBlockToAir(pos);

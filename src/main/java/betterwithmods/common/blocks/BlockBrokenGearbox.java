@@ -39,9 +39,9 @@ public class BlockBrokenGearbox extends BWMBlock {
         super(Material.WOOD);
         this.type = type;
         if (type == EnumTier.WOOD) {
-            repairIngredient = Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+            repairIngredient = Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR, 2));
         } else {
-            repairIngredient = Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.STEEL_GEAR, 2));
+            repairIngredient = Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_GEAR, 2));
         }
     }
 

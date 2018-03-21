@@ -11,8 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "betterwithmods:material",
-      "data": 10
+      "item": "betterwithmods:wind_sail"
     }
   }
 }

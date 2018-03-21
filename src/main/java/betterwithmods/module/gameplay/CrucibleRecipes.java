@@ -22,8 +22,8 @@ public class CrucibleRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
-        addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
+        addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
+        addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new Object[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new Object[]{new ItemStack(Blocks.GLASS_PANE, 8)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new Object[]{new ItemStack(Blocks.COBBLESTONE)});

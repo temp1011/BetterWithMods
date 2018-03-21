@@ -45,7 +45,7 @@ public  class Wood implements IWood {
     }
 
     public ItemStack getSawdust(int count) {
-        return isSoulDust ? ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, count);
+        return isSoulDust ? ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST) : ItemMaterial.getStack(ItemMaterial.EnumMaterial.SAWDUST, count);
     }
 
 }

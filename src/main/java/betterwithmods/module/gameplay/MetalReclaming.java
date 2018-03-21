@@ -54,14 +54,14 @@ public class MetalReclaming extends Feature {
         int axe_amt = HCTools.changeAxeRecipe ? 2 : 3;
 
         if (reclaimCount > 0) {
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 2), new Object[]{new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 2),new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 3), new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 3), new Object[]{new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, axe_amt), new Object[]{new ItemStack(BWMItems.STEEL_AXE, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{new ItemStack(BWMItems.STEEL_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 4), new Object[]{new ItemStack(BWMItems.STEEL_MATTOCK, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 5), new Object[]{new ItemStack(BWMItems.STEEL_BATTLEAXE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 2), new Object[]{new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 2),new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 3), new Object[]{new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 3), new Object[]{new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, axe_amt), new Object[]{new ItemStack(BWMItems.STEEL_AXE, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new Object[]{new ItemStack(BWMItems.STEEL_SHOVEL, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 4), new Object[]{new ItemStack(BWMItems.STEEL_MATTOCK, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 5), new Object[]{new ItemStack(BWMItems.STEEL_BATTLEAXE, 1, OreDictionary.WILDCARD_VALUE)});
             addReclaimRecipe(new ItemStack(Items.IRON_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), "Iron", 8);
             addReclaimRecipe(new ItemStack(Items.IRON_AXE, 1, OreDictionary.WILDCARD_VALUE), "Iron", axe_amt);
             addReclaimRecipe(new ItemStack(Items.IRON_BOOTS, 1, OreDictionary.WILDCARD_VALUE), "Iron", 4);
@@ -82,17 +82,17 @@ public class MetalReclaming extends Feature {
             addReclaimRecipe(new ItemStack(Items.GOLDEN_SWORD, 1, OreDictionary.WILDCARD_VALUE), "Gold", 2);
             addReclaimRecipe(new ItemStack(Items.SHEARS, 1, OreDictionary.WILDCARD_VALUE), "Iron", 2);
 
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 10), new Object[]{new ItemStack(BWMItems.STEEL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 14), new Object[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 12), new Object[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 8), new Object[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CHAIN_MAIL)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 10), new Object[]{new ItemStack(BWMItems.STEEL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 14), new Object[]{new ItemStack(BWMItems.STEEL_CHEST, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 12), new Object[]{new ItemStack(BWMItems.STEEL_PANTS, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 8), new Object[]{new ItemStack(BWMItems.STEEL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
+            addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 4), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHAIN_MAIL)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 20), new Object[]{new ItemStack(Items.CHAINMAIL_HELMET, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 32), new Object[]{new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 28), new Object[]{new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_NUGGET, 16), new Object[]{new ItemStack(Items.CHAINMAIL_BOOTS, 1, OreDictionary.WILDCARD_VALUE)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL, 7), new Object[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
-            addStokedCrucibleRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new Object[]{ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ARMOR_PLATE)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 7), new Object[]{new ItemStack(BWMBlocks.STEEL_ANVIL)});
+            addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.ARMOR_PLATE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 1), new Object[]{new ItemStack(Items.SHIELD, 1, OreDictionary.WILDCARD_VALUE)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 2, 0), new Object[]{new ItemStack(Items.IRON_DOOR)});
             addStokedCrucibleRecipe(new ItemStack(Items.IRON_INGOT, 8, 0), new Object[]{new ItemStack(Items.IRON_HORSE_ARMOR, 1, OreDictionary.WILDCARD_VALUE)});

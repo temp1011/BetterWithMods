@@ -52,7 +52,7 @@ public class HCRedstone extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        ItemStack LATCH = ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.REDSTONE_LATCH);
+        ItemStack LATCH = ItemMaterial.getStack(ItemMaterial.EnumMaterial.REDSTONE_LATCH);
         if (!stoneDeviceRecipesAnvil) {
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "S", "R", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_button")));
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "SS", "RR", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_pressure_plate")));
