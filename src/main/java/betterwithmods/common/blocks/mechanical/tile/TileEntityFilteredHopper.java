@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.BWMAPI;
-import betterwithmods.api.block.ISoulSensitive;
+import betterwithmods.api.block.ISoulContainer;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
@@ -137,7 +137,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         ItemStack insert = InvUtils.insert(inv.get(), stack, STACK_SIZE, false);
                         InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE - insert.getCount(), false);
                     }
-                } else if(canDropIntoBlock(pos.down())) {
+                } else if (canDropIntoBlock(pos.down())) {
                     InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE, false);
                     InvUtils.spawnStack(world, pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, STACK_SIZE, stack);
                 }
@@ -159,8 +159,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         }
     }
 
-    private boolean canDropIntoBlock(BlockPos pos)
-    {
+    private boolean canDropIntoBlock(BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
     }
 
@@ -254,26 +253,28 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Nullable
-    public ISoulSensitive getSoulContainer() {
+    public ISoulContainer getSoulContainer() {
         Block block = world.getBlockState(pos.down()).getBlock();
-        if(block instanceof ISoulSensitive && ((ISoulSensitive) block).isSoulSensitive(world,pos.down())) {
-            return (ISoulSensitive) block;
+        if (block instanceof ISoulContainer) {
+            return (ISoulContainer) block;
         }
         return null;
     }
-    private ISoulSensitive prevContainer;
+
+    private ISoulContainer prevContainer;
+
     public void increaseSoulCount(int numSouls) {
         this.soulsRetained += numSouls;
-        ISoulSensitive container = getSoulContainer();
-        if(container != null) {
-            if(prevContainer != container)
+        ISoulContainer container = getSoulContainer();
+        if (container != null && container.getMaxSouls() != 0) {
+            if (prevContainer != container)
                 soulsRetained = numSouls;
-            int soulsConsumed = container.processSouls(this.getBlockWorld(), pos.down(), this.soulsRetained);
-            if (container.consumeSouls(this.getBlockWorld(), pos.down(), soulsConsumed))
-                this.soulsRetained -= soulsConsumed;
-
+            if (soulsRetained >= container.getMaxSouls()) {
+                soulsRetained -= container.getMaxSouls();
+                container.onFull(world, pos.down());
+            }
         } else {
-            if(this.soulsRetained > 7 && !isPowered()) {
+            if (this.soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
                 overpower();
@@ -338,7 +339,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if(!hopper.canFilterProcessItem(stack))
+            if (!hopper.canFilterProcessItem(stack))
                 return stack;
             return super.insertItem(slot, stack, simulate);
         }
@@ -382,7 +383,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
-        return super.getCapability(capability,facing);
+        return super.getCapability(capability, facing);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package betterwithmods.client.render;
 
-import betterwithmods.common.blocks.BlockUrn;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.entity.EntityUrn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -32,7 +33,7 @@ public class RenderUrn extends Render<EntityUrn> {
 
         GlStateManager.scale(4,4,4);
         this.bindTexture(getEntityTexture(entity));
-        render.renderItem(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1), ItemCameraTransforms.TransformType.GROUND);
+        render.renderItem(new ItemStack(BWMBlocks.SOUL_URN), ItemCameraTransforms.TransformType.GROUND);
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);

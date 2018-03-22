@@ -1,7 +1,9 @@
 package betterwithmods.client.model.render;
 
 import betterwithmods.BWMod;
-import betterwithmods.client.model.filters.*;
+import betterwithmods.client.model.filters.ModelOpaque;
+import betterwithmods.client.model.filters.ModelTransparent;
+import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.common.BWMBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -54,10 +56,11 @@ public class RenderUtils {
 
     public static void registerFilters() {
         String[] woodTypes = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"};
-        for (int i = 0; i < 6; i++) {
-            addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
-            addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
-        }
+        //TODO all the slats and grates
+//        for (int i = 0; i < 6; i++) {
+//            addFilter(new ItemStack(BWMBlocks.SLATS, 1, i), new ModelSlats(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
+//            addFilter(new ItemStack(BWMBlocks.GRATE, 1, i), new ModelGrate(new ResourceLocation(BWMod.MODID, "textures/blocks/wood_side_" + woodTypes[i] + ".png")));
+//        }
         addFilter(new ItemStack(BWMBlocks.WICKER, 1, 2), new ModelOpaque(new ResourceLocation(BWMod.MODID, "textures/blocks/wicker.png")));
         addFilter(new ItemStack(Blocks.SOUL_SAND), new ModelOpaque(new ResourceLocation("minecraft", "textures/blocks/soul_sand.png")));
         addFilter(new ItemStack(Blocks.IRON_BARS), new ModelTransparent(new ResourceLocation("minecraft", "textures/blocks/iron_bars.png")));

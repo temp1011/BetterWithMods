@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "side": "blocks/hardened_clay",
+      "side": "minecraft:blocks/obsidian",
       "particle": "#side"
     },
     "model": "betterwithmods:urn",

@@ -1,6 +1,5 @@
 package betterwithmods.module.industry;
 
-import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.module.hardcore.beacons.IBeaconEffect;
 import betterwithmods.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +9,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
 
 import javax.annotation.Nullable;
 
@@ -34,56 +32,57 @@ public class WeatherBeaconEffect implements IBeaconEffect {
 
     @Override
     public boolean processInteractions(World world, BlockPos pos, int level, EntityPlayer player, ItemStack stack) {
-        if (stack.isItemEqual(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1))) {
-
-            BlockPos origin = findClosestWater(world, pos, level + 1);
-            BlockPos next;
-            int consume = 0;
-            if (origin != null) {
-                if (consumeWater(world, origin))
-                    consume++;
-                while (consume < MAX_WATER_CONSUMPTION) {
-                    System.out.println(consume);
-                    next = findNeighboringWater(world, origin);
-                    if (next != null) {
-                        if (consumeWater(world, next)) {
-                            origin = next;
-                            consume++;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-                if (consume > 0) {
-                    int scale = 200;
-                    WorldInfo worldinfo = world.getWorldInfo();
-                    int time = consume * scale;
-                    //TODO more variety per level.
-                    switch (level) {
-                        case 1:
-                        case 2:
-                            worldinfo.setCleanWeatherTime(0);
-                            worldinfo.setThunderTime(time);
-                            worldinfo.setRaining(true);
-                            worldinfo.setThundering(false);
-                            worldinfo.setRainTime(time);
-                        case 3:
-                        case 4:
-                            worldinfo.setCleanWeatherTime(0);
-                            worldinfo.setThunderTime(time);
-                            worldinfo.setRaining(true);
-                            worldinfo.setThundering(true);
-                            worldinfo.setRainTime(time);
-                    }
-
-                }
-                stack.shrink(1);
-                return true;
-            }
-            return false;
-        }
+        //TODO
+//        if (stack.isItemEqual(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1))) {
+//
+//            BlockPos origin = findClosestWater(world, pos, level + 1);
+//            BlockPos next;
+//            int consume = 0;
+//            if (origin != null) {
+//                if (consumeWater(world, origin))
+//                    consume++;
+//                while (consume < MAX_WATER_CONSUMPTION) {
+//                    System.out.println(consume);
+//                    next = findNeighboringWater(world, origin);
+//                    if (next != null) {
+//                        if (consumeWater(world, next)) {
+//                            origin = next;
+//                            consume++;
+//                        } else {
+//                            break;
+//                        }
+//                    } else {
+//                        break;
+//                    }
+//                }
+//                if (consume > 0) {
+//                    int scale = 200;
+//                    WorldInfo worldinfo = world.getWorldInfo();
+//                    int time = consume * scale;
+//                    //TODO more variety per level.
+//                    switch (level) {
+//                        case 1:
+//                        case 2:
+//                            worldinfo.setCleanWeatherTime(0);
+//                            worldinfo.setThunderTime(time);
+//                            worldinfo.setRaining(true);
+//                            worldinfo.setThundering(false);
+//                            worldinfo.setRainTime(time);
+//                        case 3:
+//                        case 4:
+//                            worldinfo.setCleanWeatherTime(0);
+//                            worldinfo.setThunderTime(time);
+//                            worldinfo.setRaining(true);
+//                            worldinfo.setThundering(true);
+//                            worldinfo.setRainTime(time);
+//                    }
+//
+//                }
+//                stack.shrink(1);
+//                return true;
+//            }
+//            return false;
+//        }
         return false;
     }
 

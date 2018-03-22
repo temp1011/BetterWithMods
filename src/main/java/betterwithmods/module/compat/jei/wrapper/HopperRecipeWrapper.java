@@ -1,6 +1,6 @@
 package betterwithmods.module.compat.jei.wrapper;
 
-import betterwithmods.common.blocks.BlockUrn;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import com.google.common.collect.Lists;
@@ -46,7 +46,7 @@ public class HopperRecipeWrapper implements IRecipeWrapper {
         public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
             super(recipe);
             if(!recipe.getSecondaryOutput().isEmpty()) {
-                this.input.add(BlockUrn.getStack(BlockUrn.EnumType.EMPTY,1));
+                this.input.add(new ItemStack(BWMBlocks.URN));
             }
         }
     }

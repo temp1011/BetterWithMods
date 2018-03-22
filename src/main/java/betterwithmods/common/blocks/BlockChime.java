@@ -104,7 +104,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof net.minecraft.block.BlockPane || world.getBlockState(pos.up()).getBlock() instanceof BlockMultiPane || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
+        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof net.minecraft.block.BlockPane  || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
     }
 
     @Override

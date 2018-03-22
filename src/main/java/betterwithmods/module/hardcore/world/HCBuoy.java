@@ -40,7 +40,8 @@ public class HCBuoy extends CompatFeature {
         buoyancy.put(BWMBlocks.WOODEN_GEARBOX, 1.0F);
         buoyancy.put(BWMBlocks.BELLOWS, 1.0F);
         buoyancy.put(BWMBlocks.VASE, 1.0F);
-        buoyancy.put(BWMBlocks.GRATE, 1.0F);
+        //TODO
+//        buoyancy.put(BWMBlocks.GRATE, 1.0F);
         buoyancy.put(BWMBlocks.URN, 1.0F);
         buoyancy.put(BWMBlocks.FILTERED_HOPPER, 1.0F);
         buoyancy.put(BWMBlocks.PULLEY, 1.0F);

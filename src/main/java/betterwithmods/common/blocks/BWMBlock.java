@@ -20,6 +20,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 
 public abstract class BWMBlock extends Block {
+
+    private Class<? extends TileEntity> tileClass;
+
     public BWMBlock(Material material) {
         super(material);
         setCreativeTab(BWCreativeTabs.BWTAB);
@@ -63,7 +66,7 @@ public abstract class BWMBlock extends Block {
     }
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-        if(hasTileEntity(blockState)) {
+        if (hasTileEntity(blockState)) {
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
                 if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
@@ -73,5 +76,31 @@ public abstract class BWMBlock extends Block {
         }
         return 0;
     }
+
+    public String getVariant() {
+        return "inventory";
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return tileClass != null;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        try {
+            return tileClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public BWMBlock setTileClass(Class<? extends TileEntity> tileClass) {
+        this.tileClass = tileClass;
+        return this;
+    }
+
 
 }

@@ -5,6 +5,7 @@ import betterwithmods.api.IMultiLocations;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWStateMapper;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.items.*;
 import betterwithmods.common.items.tools.*;
 import net.minecraft.block.Block;
@@ -197,6 +198,7 @@ public final class BWMItems {
     @SideOnly(Side.CLIENT)
     private static void setInventoryModel(ItemBlock item) {
         Block block = item.getBlock();
+
         if (block instanceof IMultiVariants) {
             ModelLoader.setCustomStateMapper(block, new BWStateMapper(block.getRegistryName().toString()));
             String[] variants = ((IMultiVariants) block).getVariants();
@@ -209,6 +211,8 @@ public final class BWMItems {
                 String location = locations[meta];
                 setModelLocation(item, meta, BWMod.MODID + ":" + location, "inventory");
             }
+        } else if (block instanceof BWMBlock) {
+            setModelLocation(item, OreDictionary.WILDCARD_VALUE, ((BWMBlock) block).getVariant());
         } else {
             setModelLocation(item, OreDictionary.WILDCARD_VALUE, "inventory");
         }

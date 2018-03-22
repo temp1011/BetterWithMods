@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "blocks/hardened_clay",
+      "side": "blocks/hardened_clay"
+    },
+    "model": "betterwithmods:planter",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/soul_sand"
+            }
+          }
+        }
+      }
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ]
+  }
+}

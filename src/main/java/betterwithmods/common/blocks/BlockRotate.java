@@ -30,9 +30,9 @@ public abstract class BlockRotate extends BWMBlock {
     }
 
     public abstract void nextState(World world, BlockPos pos, IBlockState state);
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
 
         if (world.isRemote && emptyHands)

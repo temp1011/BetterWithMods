@@ -22,6 +22,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +30,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -49,15 +51,16 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
 
     }
 
-
     public int getAge(IBlockState state) {
         return state.getValue(AGE);
     }
 
+    private final Ingredient urn = new OreIngredient("blockSoulUrn");
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = playerIn.getHeldItemMainhand();
-        if (!held.isItemEqual(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1)))
+        if (!urn.apply(held))
             return false;
         if (!world.isRemote) {
 
@@ -65,7 +68,7 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
             boolean grew = false;
             for (BlockPos p : pool) {
                 IBlockState s = world.getBlockState(p);
-                if (s != null && s.getBlock() == BWMBlocks.NETHER_GROWTH) {
+                if (s.getBlock() == BWMBlocks.NETHER_GROWTH) {
                     BlockNetherGrowth b = (BlockNetherGrowth) s.getBlock();
                     for (int i = 0; i < 10; i++)
                         b.grow(world, p, s, world.rand);

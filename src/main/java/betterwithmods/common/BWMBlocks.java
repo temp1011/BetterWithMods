@@ -37,6 +37,10 @@ import java.util.Objects;
 public final class BWMBlocks {
     public static final Material POTTERY = new Material(MapColor.STONE);
 
+    static {
+        BlockPlanter.init();
+    }
+
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
     public static final Block ROPE = new BlockRope().setRegistryName("rope");
     public static final Block FILTERED_HOPPER = new BlockFilteredHopper().setRegistryName("filtered_hopper");
@@ -51,15 +55,27 @@ public final class BWMBlocks {
     public static final Block STEEL_BROKEN_GEARBOX = new BlockBrokenGearbox(EnumTier.STEEL).setRegistryName("steel_broken_gearbox");
     public static final Block HAND_CRANK = new BlockCrank().setRegistryName("hand_crank");
     public static final Block WICKER = new BlockWicker().setRegistryName("wicker");
-    public static final Block GRATE = new BlockMultiPane().setRegistryName("grate");
-    public static final Block SLATS = new BlockMultiPane().setRegistryName("slats");
-    public static final Block PLANTER = new BlockPlanter().setRegistryName("planter");
+    public static final Block OAK_GRATE = new BlockPane(Material.WOOD).setRegistryName("oak_grate");
+    public static final Block SPRUCE_GRATE = new BlockPane(Material.WOOD).setRegistryName("spruce_grate");
+    public static final Block BIRCH_GRATE = new BlockPane(Material.WOOD).setRegistryName("birch_grate");
+    public static final Block JUNGLE_GRATE = new BlockPane(Material.WOOD).setRegistryName("jungle_grate");
+    public static final Block ACACIA_GRATE = new BlockPane(Material.WOOD).setRegistryName("acacia_grate");
+    public static final Block DARK_OAK_GRATE = new BlockPane(Material.WOOD).setRegistryName("dark_oak_grate");
+    public static final Block OAK_SLATS = new BlockPane(Material.WOOD).setRegistryName("oak_slats");
+    public static final Block SPRUCE_SLATS = new BlockPane(Material.WOOD).setRegistryName("spruce_slats");
+    public static final Block BIRCH_SLATS = new BlockPane(Material.WOOD).setRegistryName("birch_slats");
+    public static final Block JUNGLE_SLATS = new BlockPane(Material.WOOD).setRegistryName("jungle_slats");
+    public static final Block ACACIA_SLATS = new BlockPane(Material.WOOD).setRegistryName("acacia_slats");
+    public static final Block DARK_OAK_SLATS = new BlockPane(Material.WOOD).setRegistryName("dark_oak_slats");
     public static final Block VASE = new BlockVase().setRegistryName("vase");
-    public static final Block URN = new BlockUrn().setRegistryName("urn");
+    public static final Block URN = new BlockUrn(BlockUrn.EnumType.EMPTY).setRegistryName("urn");
+    public static final Block VOID_URN = new BlockUrn(BlockUrn.EnumType.VOID).setRegistryName("void_urn");
+    public static final Block SOUL_URN = new BlockUrn(BlockUrn.EnumType.SOUL).setRegistryName("soul_urn");
     public static final Block UNFIRED_POTTERY = new BlockUnfiredPottery().setRegistryName("unfired_pottery");
     public static final Block STOKED_FLAME = new BlockFireStoked().setRegistryName("stoked_flame");
     public static final Block HIBACHI = new BlockHibachi().setRegistryName("hibachi");
-    public static final Block BELLOWS = new BlockBellows().setRegistryName("bellows");
+    public static final Block BELLOWS = new BlockBellows().setTileClass(TileBellows.class).setRegistryName("bellows");
+    public static final Block SPRING_ACTION_BELLOWS = new BlockBellows().setTileClass(TileSpringActionBellows.class).setRegistryName("spring_action_bellows");
     public static final Block KILN = new BlockKiln().setRegistryName("kiln");
     public static final Block HEMP = new BlockHemp().setRegistryName("hemp");
     public static final Block DETECTOR = new BlockDetector().setRegistryName("detector");
@@ -116,6 +132,7 @@ public final class BWMBlocks {
     public static final Block SHAFT = new BlockShaft().setRegistryName("shaft");
     public static final Block BUCKET = new BlockBucket().setRegistryName("bucket");
 
+
     private static final List<Block> BLOCKS = new ArrayList<>();
 
     public static List<Block> getBlocks() {
@@ -123,6 +140,7 @@ public final class BWMBlocks {
     }
 
     public static void registerBlocks() {
+        BlockPlanter.PLANTERS.values().forEach(BWMBlocks::registerBlock);
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(FILTERED_HOPPER);
@@ -137,15 +155,27 @@ public final class BWMBlocks {
         registerBlock(WOODEN_BROKEN_GEARBOX);
         registerBlock(HAND_CRANK);
         registerBlock(WICKER);
-        registerBlock(GRATE, new ItemBlockMeta(GRATE));
-        registerBlock(SLATS, new ItemBlockMeta(SLATS));
-        registerBlock(PLANTER, new ItemBlockPlanter(PLANTER));
+        registerBlock(OAK_GRATE);
+        registerBlock(SPRUCE_GRATE);
+        registerBlock(BIRCH_GRATE);
+        registerBlock(JUNGLE_GRATE);
+        registerBlock(ACACIA_GRATE);
+        registerBlock(DARK_OAK_GRATE);
+        registerBlock(OAK_SLATS);
+        registerBlock(SPRUCE_SLATS);
+        registerBlock(BIRCH_SLATS);
+        registerBlock(JUNGLE_SLATS);
+        registerBlock(ACACIA_SLATS);
+        registerBlock(DARK_OAK_SLATS);
         registerBlock(VASE, new ItemBlockMeta(VASE));
-        registerBlock(URN, new ItemBlockUrn(URN));
+        registerBlock(URN);
+        registerBlock(SOUL_URN, new ItemBlockUrn(SOUL_URN));
+        registerBlock(VOID_URN);
         registerBlock(UNFIRED_POTTERY, new ItemBlockMeta(UNFIRED_POTTERY));
         registerBlock(STOKED_FLAME, null);
         registerBlock(HIBACHI);
-        registerBlock(BELLOWS, new ItemBlockMeta(BELLOWS));
+        registerBlock(BELLOWS);
+        registerBlock(SPRING_ACTION_BELLOWS);
         registerBlock(KILN, null);
         registerBlock(HEMP, new ItemHempSeed(HEMP));
         registerBlock(DETECTOR);
@@ -235,6 +265,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "bwm.creative_generator");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileBellows.class, "bwm.bellows");
+        GameRegistry.registerTileEntity(TileSpringActionBellows.class, "bwm.spring_action_bellows");
         GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
         GameRegistry.registerTileEntity(TileEnderchest.class, "bwm.enderchest");
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");

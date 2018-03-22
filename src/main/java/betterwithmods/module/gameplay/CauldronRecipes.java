@@ -3,7 +3,6 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -74,8 +73,8 @@ public class CauldronRecipes extends Feature {
             addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
             addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack(barkNames[meta], ItemBark.getTanningStackSize(meta))});
         }
-        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[] {ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack("barkBlood", 8)});
-        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[] {ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack("barkBlood", 8)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new OreStack("barkBlood", 8)});
+        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack("barkBlood", 8)});
         addCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[]{"dustSulfur", "dustSaltpeter", "dustCarbon"});
         addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FUSE), new Object[]{Items.GUNPOWDER, "string"});
         addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)});
@@ -121,8 +120,8 @@ public class CauldronRecipes extends Feature {
 
 
         addCauldronRecipe(new ItemStack(BWMItems.KIBBLE, 2), new ItemStack[]{new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(Items.ROTTEN_FLESH, 4), new ItemStack(Items.SUGAR)});
-        addCauldronRecipe(new ItemStack(BWMBlocks.BLOOD_SAPLING), new ItemStack[] {new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.SAPLING, 1, 5),
-        new ItemStack(Items.NETHER_WART), BlockUrn.getStack(BlockUrn.EnumType.FULL, 8)});
+        addCauldronRecipe(new ItemStack(BWMBlocks.BLOOD_SAPLING), new ItemStack[]{new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.SAPLING, 1, 5),
+                new ItemStack(Items.NETHER_WART), new ItemStack(BWMBlocks.SOUL_URN, 8)});
     }
 
     @Override

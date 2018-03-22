@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.world.gen.feature.WorldGenBloodTree;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
@@ -36,8 +35,7 @@ public class BlockBloodSapling extends BlockBush {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return SAPLING_AABB;
     }
 
@@ -56,9 +54,10 @@ public class BlockBloodSapling extends BlockBush {
         return canSustainBush(world.getBlockState(pos.down()));
     }
 
+
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == Blocks.SOUL_SAND || (state.getBlock() == BWMBlocks.PLANTER && state.getValue(BlockPlanter.TYPE) == BlockPlanter.EnumType.SOULSAND);
+        return true;
     }
 
     @Override

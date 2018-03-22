@@ -3,8 +3,8 @@ package betterwithmods.common;
 import betterwithmods.api.util.IWood;
 import betterwithmods.api.util.IWoodProvider;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.BlockRawPastry;
-import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -140,7 +140,7 @@ public class BWOreDictionary {
 
         registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
 
-        registerOre("blockPlanter", new ItemStack(BWMBlocks.PLANTER, 1, OreDictionary.WILDCARD_VALUE));
+        BlockPlanter.PLANTERS.values().forEach(b -> registerOre("blockPlanter", new ItemStack(b)));
 
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
         registerOre("pileDirt", new ItemStack(BWMItems.DIRT_PILE));
@@ -155,8 +155,9 @@ public class BWOreDictionary {
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
         registerOre("cobblestone", new ItemStack(BWMBlocks.COBBLE, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("slats", new ItemStack(BWMBlocks.SLATS, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("grates", new ItemStack(BWMBlocks.GRATE, 1, OreDictionary.WILDCARD_VALUE));
+        //TODO all the slats and grates
+        registerOre("slats", new ItemStack(BWMBlocks.OAK_SLATS));
+        registerOre("grates", new ItemStack(BWMBlocks.OAK_GRATE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
 
         registerOre("blockCandle", new ItemStack(BWMBlocks.CANDLE, 1, OreDictionary.WILDCARD_VALUE));
@@ -167,7 +168,7 @@ public class BWOreDictionary {
         registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
+        registerOre("blockSoulUrn", new ItemStack(BWMBlocks.SOUL_URN));
 
 
     }

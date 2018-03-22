@@ -70,8 +70,12 @@ public class HopperRecipes extends Feature {
 
         HopperFilters.addFilter(1, Blocks.LADDER, 0, HopperRecipes::isItem);
         HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> !isItem(stack));
+        //TODO all the slats and grates
+        /*
         HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> stack.getMaxStackSize() == 1);
         HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, HopperRecipes::isFlat);
+        */
+
         HopperFilters.addFilter(5, new ItemStack(BWMBlocks.WICKER, 1), HopperRecipes::isDust);
         HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> stack.getMaxStackSize() > 1);
         HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> stack.isItemEqual(new ItemStack(Blocks.SOUL_SAND)));

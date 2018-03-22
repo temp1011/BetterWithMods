@@ -3,14 +3,16 @@
   "defaults": {
     "textures": {
       "particle": "blocks/hardened_clay",
-      "side": "betterwithmods:blocks/soulforged_steel"
+      "side": "blocks/hardened_clay",
+      "filltop": "blocks/sand"
     },
-    "model": "betterwithmods:urn",
+    "model": "betterwithmods:planter_with_fill",
     "uvlock": false
   },
   "variants": {
     "normal": [
-      {}
+      {
+      }
     ],
     "inventory": [
       {

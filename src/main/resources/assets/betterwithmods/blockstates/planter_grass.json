@@ -2,10 +2,11 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
+      "particle": "blocks/hardened_clay",
       "side": "blocks/hardened_clay",
-      "particle": "#side"
+      "filltop": "blocks/grass_top"
     },
-    "model": "betterwithmods:urn",
+    "model": "betterwithmods:planter_with_fill_grass",
     "uvlock": false
   },
   "variants": {
@@ -16,12 +17,6 @@
       {
         "transform": "forge:default-block"
       }
-    ],
-    "underhopper": {
-      "true": {
-        "model": "betterwithmods:urn_displaced"
-      },
-      "false": {}
-    }
+    ]
   }
 }

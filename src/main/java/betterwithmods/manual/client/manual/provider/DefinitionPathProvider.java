@@ -62,7 +62,7 @@ public class DefinitionPathProvider implements PathProvider {
             return null;
         else if (block instanceof BlockRope)
             return "%LANGUAGE%/items/rope.md";
-        else if (block == BWMBlocks.PLANTER)
+        else if (block instanceof BlockPlanter)
             return "%LANGUAGE%/blocks/planter.md";
         else if (block == BWMBlocks.BLOOD_SAPLING || block == BWMBlocks.BLOOD_LOG || block == BWMBlocks.BLOOD_LEAVES) {
             return "%LANGUAGE%/blocks/blood_wood.md";

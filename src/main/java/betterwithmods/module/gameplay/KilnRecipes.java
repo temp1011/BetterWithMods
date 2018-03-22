@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
@@ -37,8 +38,8 @@ public class KilnRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
+        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.CRUCIBLE));
-        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, new ItemStack(BWMBlocks.PLANTER));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
         addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));

@@ -2,12 +2,12 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "front": "betterwithmods:blocks/bellows_front",
-      "front_active": "betterwithmods:blocks/bellows_front",
-      "top": "betterwithmods:blocks/bellows_top",
-      "side": "betterwithmods:blocks/bellows_side",
-      "side_active": "betterwithmods:blocks/bellows_side",
-      "particle": "betterwithmods:blocks/bellows_top"
+      "front": "betterwithmods:blocks/advanced_bellows_front_inactive",
+      "top": "betterwithmods:blocks/advanced_bellows_top",
+      "side": "betterwithmods:blocks/advanced_bellows_side_inactive",
+      "particle": "betterwithmods:blocks/advanced_bellows_top",
+      "front_active": "betterwithmods:blocks/advanced_bellows_front_active",
+      "side_active": "betterwithmods:blocks/advanced_bellows_side_active"
     },
     "model": "betterwithmods:bellows"
   },
