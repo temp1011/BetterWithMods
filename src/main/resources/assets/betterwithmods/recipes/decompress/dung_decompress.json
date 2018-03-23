@@ -6,8 +6,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "betterwithmods:aesthetic",
-      "data": 11
+      "item": "betterwithmods:dung_block"
     }
   ]
 }

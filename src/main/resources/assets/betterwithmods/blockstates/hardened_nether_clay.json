@@ -2,12 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "up": "betterwithmods:blocks/rope_top",
-      "down": "betterwithmods:blocks/rope_top",
-      "side": "betterwithmods:blocks/rope_side",
-      "particle": "#side"
+      "all": "betterwithmods:blocks/hardened_nether_sludge"
     },
-    "model": "cube_column",
+    "model": "cube_all",
     "uvlock": true
   },
   "variants": {

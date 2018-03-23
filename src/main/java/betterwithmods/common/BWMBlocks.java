@@ -41,6 +41,7 @@ public final class BWMBlocks {
         BlockCandle.init();
         BlockVase.init();
         BlockPlanter.init();
+        BlockAesthetic.init();
     }
 
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
@@ -83,7 +84,6 @@ public final class BWMBlocks {
     public static final Block LENS = new BlockLens().setRegistryName("lens");
     public static final Block LIGHT_SOURCE = new BlockInvisibleLight().setRegistryName("invisible_light");
     public static final Block SAW = new BlockSaw().setRegistryName("saw");
-    public static final Block AESTHETIC = new BlockAesthetic().setRegistryName("aesthetic");
     public static final Block BOOSTER = new BlockGearBoostedRail().setRegistryName("booster");
     public static final Block WINDMILL = new BlockWindmill().setRegistryName("windmill");
     public static final Block WATERWHEEL = new BlockWaterwheel().setRegistryName("waterwheel");
@@ -140,9 +140,10 @@ public final class BWMBlocks {
     }
 
     public static void registerBlocks() {
-        registerBlocks(BlockPlanter.PLANTERS.values());
-        registerBlocks(BlockCandle.CANDLES.values());
-        registerBlocks(BlockVase.VASES.values());
+        registerBlocks(BlockPlanter.BLOCKS.values());
+        registerBlocks(BlockCandle.BLOCKS.values());
+        registerBlocks(BlockVase.BLOCKS.values());
+        registerBlocks(BlockAesthetic.BLOCKS.values());
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(FILTERED_HOPPER);
@@ -183,7 +184,6 @@ public final class BWMBlocks {
         registerBlock(LENS);
         registerBlock(LIGHT_SOURCE, null);
         registerBlock(SAW);
-        registerBlock(AESTHETIC, new ItemBlockMeta(AESTHETIC));
         registerBlock(BOOSTER);
         registerBlock(WINDMILL, null);
         registerBlock(WATERWHEEL, null);
@@ -225,14 +225,7 @@ public final class BWMBlocks {
         registerBlock(STAKE_STRING, null);
         registerBlock(NETHER_GROWTH, new ItemBlockSpore(NETHER_GROWTH));
 
-        registerBlock(STEEL_BLOCK, new ItemBlockMeta(STEEL_BLOCK) {
-            @Override
-            public String getUnlocalizedName(ItemStack stack) {
-                if (stack.getMetadata() == 0)
-                    return getUnlocalizedName();
-                return "tile.cut_steel_block.name";
-            }
-        });
+        registerBlock(STEEL_BLOCK);
 
         registerBlock(STEEL_SAW, new ItemSteelSaw(STEEL_SAW));
         registerBlock(BLOOD_LOG);

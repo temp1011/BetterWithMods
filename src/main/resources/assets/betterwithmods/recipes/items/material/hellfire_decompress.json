@@ -1,12 +1,11 @@
 {
   "result": {
-    "item": "betterwithmods:soap",
+    "item": "betterwithmods:concentrated_hellfire",
     "count": 9
   },
   "ingredients": [
     {
-      "item": "betterwithmods:aesthetic",
-      "data": 10
+      "item": "betterwithmods:hellfire_block"
     }
   ],
   "type": "minecraft:crafting_shapeless"

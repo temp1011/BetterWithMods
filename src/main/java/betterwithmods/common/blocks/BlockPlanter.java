@@ -36,12 +36,12 @@ import java.util.Random;
 import static betterwithmods.common.blocks.BlockPlanter.EnumType.*;
 
 public class BlockPlanter extends BWMBlock {
-    public static final HashMap<EnumType, BlockPlanter> PLANTERS = Maps.newHashMap();
+    public static final HashMap<EnumType, BlockPlanter> BLOCKS = Maps.newHashMap();
     private final EnumType type;
 
     public static void init() {
         for (EnumType type : EnumType.VALUES) {
-            PLANTERS.put(type, new BlockPlanter(type));
+            BLOCKS.put(type, new BlockPlanter(type));
         }
     }
 
@@ -55,7 +55,7 @@ public class BlockPlanter extends BWMBlock {
     }
 
     public static ItemStack getStack(EnumType type) {
-        return new ItemStack(PLANTERS.get(type));
+        return new ItemStack(BLOCKS.get(type));
     }
 
     public int colorMultiplier(IBlockAccess world, BlockPos pos, int tintIndex) {
@@ -132,7 +132,7 @@ public class BlockPlanter extends BWMBlock {
                 }
                 break;
         }
-        world.setBlockState(pos, PLANTERS.get(newType).getDefaultState());
+        world.setBlockState(pos, BLOCKS.get(newType).getDefaultState());
         return false;
     }
 
@@ -149,7 +149,7 @@ public class BlockPlanter extends BWMBlock {
                         int zP = rand.nextInt(3) - 1;
                         BlockPos checkPos = pos.add(xP, yP, zP);
                         if (world.getBlockState(checkPos).getBlock() == Blocks.GRASS) {
-                            world.setBlockState(pos, PLANTERS.get(GRASS).getDefaultState());
+                            world.setBlockState(pos, BLOCKS.get(GRASS).getDefaultState());
                         }
                     }
                     break;
@@ -217,7 +217,7 @@ public class BlockPlanter extends BWMBlock {
     @Override
     public void onPlantGrow(IBlockState state, World world, BlockPos pos, BlockPos source) {
         if (type == GRASS && source.getY() == pos.getY() + 1)
-            world.setBlockState(pos, PLANTERS.get(DIRT).getDefaultState());
+            world.setBlockState(pos, BLOCKS.get(DIRT).getDefaultState());
     }
 
     public enum EnumType implements IStringSerializable {

@@ -95,8 +95,8 @@ public class BWOreDictionary {
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
         registerOre("chainmail", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHAIN_MAIL));
 
-        registerOre("blockHardenedNetherClay", new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
-        registerOre("blockConcentratedHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, 3));
+        registerOre("blockHardenedNetherClay", BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY));
+        registerOre("blockConcentratedHellfire", BlockAesthetic.getStack(BlockAesthetic.EnumType.HELLFIRE));
         //Added bark subtype entries for Roots compatibility
         registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("barkOak", new ItemStack(BWMItems.BARK, 1, 0));
@@ -137,10 +137,6 @@ public class BWOreDictionary {
 
         registerOre("tallow", ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW));
 
-        registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
-
-
-
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
         registerOre("pileDirt", new ItemStack(BWMItems.DIRT_PILE));
         registerOre("pileSand", new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE));
@@ -159,9 +155,9 @@ public class BWOreDictionary {
         registerOre("grates", new ItemStack(BWMBlocks.OAK_GRATE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
 
-        registerOre("blockPlanter", BlockPlanter.PLANTERS.values());
-        registerOre("blockVase", BlockVase.VASES.values());
-        registerOre("blockCandle", BlockCandle.CANDLES.values());
+        registerOre("blockPlanter", BlockPlanter.BLOCKS.values());
+        registerOre("blockVase", BlockVase.BLOCKS.values());
+        registerOre("blockCandle", BlockCandle.BLOCKS.values());
 
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
 

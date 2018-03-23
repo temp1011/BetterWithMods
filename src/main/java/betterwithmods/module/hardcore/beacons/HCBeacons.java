@@ -6,7 +6,6 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockBeacon;
 import betterwithmods.common.blocks.BlockEnderchest;
-import betterwithmods.common.blocks.BlockSteel;
 import betterwithmods.common.blocks.tile.TileEnderchest;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
 import betterwithmods.module.Feature;
@@ -106,7 +105,7 @@ public class HCBeacons extends Feature {
                 entity.setAir(entity.getAir() - 1);
             }
         }));
-        BEACON_EFFECTS.put(BWMBlocks.STEEL_BLOCK.getDefaultState().withProperty(BlockSteel.HEIGHT, 15), new SpawnBeaconEffect());
+        BEACON_EFFECTS.put(BWMBlocks.STEEL_BLOCK.getDefaultState(), new SpawnBeaconEffect());
 
         BEACON_EFFECTS.put(BlockAesthetic.getVariant(BlockAesthetic.EnumType.PADDING), (world, pos, level) -> IBeaconEffect.forEachPlayersAround(world, pos, level, player -> {
             player.addPotionEffect(new PotionEffect(BWRegistry.POTION_SLOWFALL, 120, level));

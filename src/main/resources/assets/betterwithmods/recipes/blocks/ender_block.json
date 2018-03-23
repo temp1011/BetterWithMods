@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "betterwithmods:aesthetic",
-    "data": 9
+    "item": "betterwithmods:ender_block"
   },
   "pattern": [
     "XXX",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "X": {
-      "ore": "padding",
+      "ore": "enderpearl",
       "type": "forge:ore_dict"
     }
   }

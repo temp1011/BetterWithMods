@@ -42,9 +42,7 @@
       },
       "rope": {
         "textures": {
-          "up": "betterwithmods:blocks/rope_top",
-          "down": "betterwithmods:blocks/rope_top",
-          "side": "betterwithmods:blocks/rope_side"
+
         }
       },
       "flint": {
@@ -82,11 +80,6 @@
 	  "wicker": {
         "textures": {
           "side": "betterwithmods:blocks/wicker"
-        }
-      },
-	  "dung": {
-        "textures": {
-          "side": "betterwithmods:blocks/dung"
         }
       }
     }

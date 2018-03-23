@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.blocks.BlockVase;
@@ -50,7 +51,7 @@ public class KilnRecipes extends Feature {
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
-        addKilnRecipe(BWMBlocks.NETHER_CLAY, new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+        addKilnRecipe(BWMBlocks.NETHER_CLAY, BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2), 0.1F);

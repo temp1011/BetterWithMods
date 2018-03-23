@@ -25,17 +25,17 @@ import static net.minecraft.util.EnumFacing.UP;
 
 public class BlockCandle extends BWMBlock {
 
-    public static final HashMap<EnumDyeColor, Block> CANDLES = Maps.newHashMap();
+    public static final HashMap<EnumDyeColor, Block> BLOCKS = Maps.newHashMap();
 
     public static void init() {
         for (EnumDyeColor color : ColorUtils.DYES) {
-            CANDLES.put(color, new BlockCandle(color));
+            BLOCKS.put(color, new BlockCandle(color));
         }
 
     }
 
     public static ItemStack getStack(EnumDyeColor type) {
-        return new ItemStack(CANDLES.get(type));
+        return new ItemStack(BLOCKS.get(type));
     }
 
 

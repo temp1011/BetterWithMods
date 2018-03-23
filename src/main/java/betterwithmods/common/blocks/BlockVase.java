@@ -33,11 +33,11 @@ import java.util.Random;
  * Created by Christian on 24.09.2016.
  */
 public class BlockVase extends BWMBlock {
-    public static final HashMap<EnumDyeColor, Block> VASES = Maps.newHashMap();
+    public static final HashMap<EnumDyeColor, Block> BLOCKS = Maps.newHashMap();
 
     public static void init() {
         for (EnumDyeColor color : ColorUtils.DYES) {
-            VASES.put(color, new BlockVase(color));
+            BLOCKS.put(color, new BlockVase(color));
         }
     }
 
@@ -52,7 +52,7 @@ public class BlockVase extends BWMBlock {
     }
 
     public static ItemStack getStack(EnumDyeColor type) {
-        return new ItemStack(VASES.get(type));
+        return new ItemStack(BLOCKS.get(type));
     }
 
     @Override

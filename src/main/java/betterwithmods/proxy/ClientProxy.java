@@ -136,12 +136,12 @@ public class ClientProxy implements IProxy {
         final BlockColors col = Minecraft.getMinecraft().getBlockColors();
         final ItemColors itCol = Minecraft.getMinecraft().getItemColors();
 
-        col.registerBlockColorHandler(ColorHandlers.BlockPlanterColor, BlockPlanter.PLANTERS.get(BlockPlanter.EnumType.GRASS));
+        col.registerBlockColorHandler(ColorHandlers.BlockPlanterColor, BlockPlanter.BLOCKS.get(BlockPlanter.EnumType.GRASS));
         col.registerBlockColorHandler(ColorHandlers.BlockFoliageColor, BWMBlocks.VINE_TRAP);
         col.registerBlockColorHandler(ColorHandlers.BlockBloodLeafColor, BWMBlocks.BLOOD_LEAVES);
         col.registerBlockColorHandler(ColorHandlers.BlockGrassColor, BWMBlocks.DIRT_SLAB);
 
-        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor,  BlockPlanter.PLANTERS.get(BlockPlanter.EnumType.GRASS));
+        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor,  BlockPlanter.BLOCKS.get(BlockPlanter.EnumType.GRASS));
         itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, BWMBlocks.VINE_TRAP);
         itCol.registerItemColorHandler(ColorHandlers.ItemBloodLeafColor, BWMBlocks.BLOOD_LEAVES);
         itCol.registerItemColorHandler(ColorHandlers.ItemGrassColor, BWMBlocks.DIRT_SLAB);

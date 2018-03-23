@@ -2,7 +2,6 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -77,7 +76,6 @@ public class CauldronRecipes extends Feature {
         addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), new OreStack("barkBlood", 8)});
         addCauldronRecipe(new ItemStack(Items.GUNPOWDER, 2, 0), new Object[]{"dustSulfur", "dustSaltpeter", "dustCarbon"});
         addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FUSE), new Object[]{Items.GUNPOWDER, "string"});
-        addCauldronRecipe(new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCK.getMeta()), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 4, BlockAesthetic.EnumType.CHOPBLOCKBLOOD.getMeta()), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)});
         addCauldronRecipe(new ItemStack(Blocks.PISTON, 4), new Object[]{new ItemStack(Blocks.STICKY_PISTON, 4), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)});
 
         addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE), new Object[]{new ItemStack(Items.LEATHER)});

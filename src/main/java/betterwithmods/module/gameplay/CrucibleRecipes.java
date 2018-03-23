@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.bulk.manager.CrucibleManager;
@@ -27,7 +28,7 @@ public class CrucibleRecipes extends Feature {
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new Object[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new Object[]{new ItemStack(Blocks.GLASS_PANE, 8)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new Object[]{new ItemStack(Blocks.COBBLESTONE)});
-        addStokedCrucibleRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 6), new Object[]{new ItemStack(BWMBlocks.AESTHETIC, 1, 7)});
+        addStokedCrucibleRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCK), new Object[]{BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1)});
         addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
         addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 1), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 0)});

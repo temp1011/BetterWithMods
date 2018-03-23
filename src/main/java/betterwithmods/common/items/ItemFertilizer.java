@@ -28,8 +28,8 @@ public class ItemFertilizer extends Item {
             world.setBlockState(pos, BWMBlocks.FERTILE_FARMLAND.getDefaultState().withProperty(BlockFarmland.MOISTURE, world.getBlockState(pos).getValue(BlockFarmland.MOISTURE)));
             world.playEvent(2005, pos.up(), 0);
             return true;
-        } else if (block == BlockPlanter.PLANTERS.get(EnumType.FARMLAND) && block.getMetaFromState(world.getBlockState(pos)) == 1) {
-            world.setBlockState(pos, BlockPlanter.PLANTERS.get(EnumType.FERTILE).getDefaultState());
+        } else if (block == BlockPlanter.BLOCKS.get(EnumType.FARMLAND) && block.getMetaFromState(world.getBlockState(pos)) == 1) {
+            world.setBlockState(pos, BlockPlanter.BLOCKS.get(EnumType.FERTILE).getDefaultState());
             world.playEvent(2005, pos.up(), 0);
             return true;
         }

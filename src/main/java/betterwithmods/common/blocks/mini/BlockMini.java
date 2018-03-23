@@ -4,7 +4,6 @@ import betterwithmods.api.block.IAdvancedRotationPlacement;
 import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.InvUtils;
@@ -265,7 +264,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
         STONE(0, "stone", Blocks.STONE),
         STONEBRICK(1, "stone_brick", Blocks.STONEBRICK),
-        WHITESTONE(2, "whitestone", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.WHITESTONE.getMeta())),
+        WHITESTONE(2, "whitestone", BlockAesthetic.BLOCKS.get(BlockAesthetic.EnumType.WHITESTONE)),
         NETHERBRICK(3, "nether_brick", Blocks.NETHER_BRICK),
         BRICK(4, "brick", Blocks.BRICK_BLOCK),
         SANDSTONE(5, "sandstone", Blocks.SANDSTONE);

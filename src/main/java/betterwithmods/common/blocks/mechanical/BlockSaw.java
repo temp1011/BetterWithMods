@@ -2,7 +2,6 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IOverpower;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.mechanical.tile.TileSaw;
@@ -157,13 +156,14 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
             boolean unobstructed = true;
             for (int i = 0; i < 3; i++) {
                 BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() - i, pos.getZ()).offset(dir);
-                Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
-                if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.TYPE).getMeta() < 2) {
+                Block block = blockState.getBlock();
+                boolean chopping_block = blockState == BlockAesthetic.getVariant(BlockAesthetic.EnumType.CHOPBLOCK);
+                if (blockState == BlockAesthetic.getVariant(BlockAesthetic.EnumType.CHOPBLOCKBLOOD) || chopping_block) {
                     source = BWDamageSource.getChoppingBlockDamage();
                     damage *= 3;
-                    if (blockState.getValue(BlockAesthetic.TYPE).getMeta() == 0 && unobstructed)
-                        world.setBlockState(pos2, BWMBlocks.AESTHETIC.getDefaultState().withProperty(BlockAesthetic.TYPE, BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
+                    if (chopping_block && unobstructed)
+                        world.setBlockState(pos2, BlockAesthetic.getVariant(BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
                     break;
                 } else if (!world.isAirBlock(pos2) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock))
                     break;
