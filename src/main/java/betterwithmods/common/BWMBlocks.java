@@ -31,13 +31,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 public final class BWMBlocks {
     public static final Material POTTERY = new Material(MapColor.STONE);
-
     static {
+        BlockCandle.init();
+        BlockVase.init();
         BlockPlanter.init();
     }
 
@@ -67,7 +69,6 @@ public final class BWMBlocks {
     public static final Block JUNGLE_SLATS = new BlockPane(Material.WOOD).setRegistryName("jungle_slats");
     public static final Block ACACIA_SLATS = new BlockPane(Material.WOOD).setRegistryName("acacia_slats");
     public static final Block DARK_OAK_SLATS = new BlockPane(Material.WOOD).setRegistryName("dark_oak_slats");
-    public static final Block VASE = new BlockVase().setRegistryName("vase");
     public static final Block URN = new BlockUrn(BlockUrn.EnumType.EMPTY).setRegistryName("urn");
     public static final Block VOID_URN = new BlockUrn(BlockUrn.EnumType.VOID).setRegistryName("void_urn");
     public static final Block SOUL_URN = new BlockUrn(BlockUrn.EnumType.SOUL).setRegistryName("soul_urn");
@@ -126,7 +127,6 @@ public final class BWMBlocks {
     public static final Block COBBLE = new BlockCobble().setRegistryName("cobblestone");
     public static final Block STEEL_PRESSURE_PLATE = new BlockSteelPressurePlate().setRegistryName("steel_pressure_plate").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Block INFERNAL_ENCHANTER = new BlockInfernalEnchanter().setRegistryName("infernal_enchanter").setCreativeTab(BWCreativeTabs.BWTAB);
-    public static final Block CANDLE = new BlockCandle().setRegistryName("candle").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Block CANDLE_HOLDER = new BlockCandleHolder().setRegistryName("candle_holder").setCreativeTab(BWCreativeTabs.BWTAB);
     public static final Block MERGER = new BlockMerger().setRegistryName("steel_merger");
     public static final Block SHAFT = new BlockShaft().setRegistryName("shaft");
@@ -140,7 +140,9 @@ public final class BWMBlocks {
     }
 
     public static void registerBlocks() {
-        BlockPlanter.PLANTERS.values().forEach(BWMBlocks::registerBlock);
+        registerBlocks(BlockPlanter.PLANTERS.values());
+        registerBlocks(BlockCandle.CANDLES.values());
+        registerBlocks(BlockVase.VASES.values());
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(FILTERED_HOPPER);
@@ -167,7 +169,6 @@ public final class BWMBlocks {
         registerBlock(JUNGLE_SLATS);
         registerBlock(ACACIA_SLATS);
         registerBlock(DARK_OAK_SLATS);
-        registerBlock(VASE, new ItemBlockMeta(VASE));
         registerBlock(URN);
         registerBlock(SOUL_URN, new ItemBlockUrn(SOUL_URN));
         registerBlock(VOID_URN);
@@ -241,9 +242,7 @@ public final class BWMBlocks {
         registerBlock(COBBLE, new ItemBlockMeta(COBBLE));
         registerBlock(STEEL_PRESSURE_PLATE);
         registerBlock(INFERNAL_ENCHANTER);
-        registerBlock(CANDLE, new ItemBlockMeta(CANDLE));
         registerBlock(CANDLE_HOLDER);
-//		registerBlock(MERGER);
         registerBlock(SHAFT);
         registerBlock(BUCKET);
     }
@@ -279,6 +278,10 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
         GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
         GameRegistry.registerTileEntity(TileEntityBucket.class, "bwm.bucket");
+    }
+
+    public static void registerBlocks(Collection<? extends Block> blocks) {
+        blocks.forEach(BWMBlocks::registerBlock);
     }
 
     /**

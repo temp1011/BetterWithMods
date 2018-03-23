@@ -20,7 +20,8 @@ import java.util.HashMap;
 public class ColorUtils {
     public static final PropertyEnum<EnumDyeColor> COLOR = BlockColored.COLOR;
 
-    private static final EnumDyeColor[] DYES = EnumDyeColor.values();
+    public static final EnumDyeColor[] DYES = EnumDyeColor.values();
+
     private static HashMap<String, EnumDyeColor> DYE_CACHE = Maps.newHashMap();
     @Nullable
     private static EnumDyeColor getDye(String dyeOredict) {

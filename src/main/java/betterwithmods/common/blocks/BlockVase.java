@@ -1,27 +1,23 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileEntityVase;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -30,25 +26,33 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
  * Created by Christian on 24.09.2016.
  */
-public class BlockVase extends BWMBlock implements IMultiVariants {
+public class BlockVase extends BWMBlock {
+    public static final HashMap<EnumDyeColor, Block> VASES = Maps.newHashMap();
+
+    public static void init() {
+        for (EnumDyeColor color : ColorUtils.DYES) {
+            VASES.put(color, new BlockVase(color));
+        }
+    }
 
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0, 0.125D, 0.875D, 1.0D, 0.875D);
 
-    public BlockVase() {
+    public BlockVase(EnumDyeColor color) {
         super(BWMBlocks.POTTERY);
         this.setHardness(2.0F);
         this.setHarvestLevel("pickaxe", -1);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ColorUtils.COLOR, EnumDyeColor.WHITE));
         this.setSoundType(SoundType.GLASS);
+        this.setRegistryName("vase_" + color.getName());
     }
 
     public static ItemStack getStack(EnumDyeColor type) {
-        return new ItemStack(BWMBlocks.VASE, 1, type.getMetadata());
+        return new ItemStack(VASES.get(type));
     }
 
     @Override
@@ -74,19 +78,6 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
     @Override
     public boolean isFullCube(IBlockState state) {
         return false;
-    }
-
-    @Override
-    public String[] getVariants() {
-        EnumDyeColor[] dyes = EnumDyeColor.values();
-        String[] variants = new String[dyes.length];
-
-        for (int i = 0; i < dyes.length; ++i) {
-            EnumDyeColor dye = dyes[i];
-            variants[i] = "color=" + dye.getName();
-        }
-
-        return variants;
     }
 
     @Override
@@ -126,7 +117,7 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(ColorUtils.COLOR).getMetadata());
+        ItemStack stack = new ItemStack(this);
         TileEntity tile = world.getTileEntity(pos);
         if (!world.isRemote && tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             InvUtils.writeToStack(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack);
@@ -139,45 +130,8 @@ public class BlockVase extends BWMBlock implements IMultiVariants {
         return true;
     }
 
-    @Override
-    public int damageDropped(IBlockState state) {
-        return (state.getValue(ColorUtils.COLOR)).getMetadata();
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (EnumDyeColor color : EnumDyeColor.values())
-            items.add(getStack(color));
-        super.getSubBlocks(itemIn, items);
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ColorUtils.COLOR, EnumDyeColor.byMetadata(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(ColorUtils.COLOR).getMetadata();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ColorUtils.COLOR);
-    }
-
     public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
-    }
-
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-                return tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0) != null ? 15 : 0;
-            }
-        }
-        return 0;
     }
 
     @Override

@@ -27,6 +27,7 @@ public class HCBuoy extends CompatFeature {
 
     public static void initBuoyancy() {
         //Blocks
+        //TODO make this an ingredient registry in the main mod.
         buoyancy.put(BWMBlocks.WOODEN_AXLE, 1.0F);
         buoyancy.put(BWMBlocks.PUMP, 0.0F);
         buoyancy.put(BWMBlocks.WOOD_SIDING, 1.0F);
@@ -39,7 +40,7 @@ public class HCBuoy extends CompatFeature {
         buoyancy.put(BWMBlocks.ROPE, 1.0F);
         buoyancy.put(BWMBlocks.WOODEN_GEARBOX, 1.0F);
         buoyancy.put(BWMBlocks.BELLOWS, 1.0F);
-        buoyancy.put(BWMBlocks.VASE, 1.0F);
+//        buoyancy.put(BWMBlocks.VASE, 1.0F);
         //TODO
 //        buoyancy.put(BWMBlocks.GRATE, 1.0F);
         buoyancy.put(BWMBlocks.URN, 1.0F);

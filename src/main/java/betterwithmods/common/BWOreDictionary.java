@@ -2,9 +2,7 @@ package betterwithmods.common;
 
 import betterwithmods.api.util.IWood;
 import betterwithmods.api.util.IWoodProvider;
-import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.BlockPlanter;
-import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.OreStack;
@@ -12,6 +10,7 @@ import betterwithmods.common.registry.Wood;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -140,7 +139,7 @@ public class BWOreDictionary {
 
         registerOre("blockHellfire", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
 
-        BlockPlanter.PLANTERS.values().forEach(b -> registerOre("blockPlanter", new ItemStack(b)));
+
 
         registerOre("pile", new ItemStack(BWMItems.DIRT_PILE), new ItemStack(BWMItems.SAND_PILE), new ItemStack(BWMItems.RED_SAND_PILE), new ItemStack(BWMItems.GRAVEL_PILE));
         registerOre("pileDirt", new ItemStack(BWMItems.DIRT_PILE));
@@ -148,7 +147,7 @@ public class BWOreDictionary {
         registerOre("pileRedSand", new ItemStack(BWMItems.RED_SAND_PILE));
         registerOre("pileGravel", new ItemStack(BWMItems.GRAVEL_PILE));
 
-        registerOre("blockVase", new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE));
+
         registerOre("treeSapling", new ItemStack(BWMBlocks.BLOOD_SAPLING));
         registerOre("treeLeaves", new ItemStack(BWMBlocks.BLOOD_LEAVES));
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
@@ -160,7 +159,10 @@ public class BWOreDictionary {
         registerOre("grates", new ItemStack(BWMBlocks.OAK_GRATE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
 
-        registerOre("blockCandle", new ItemStack(BWMBlocks.CANDLE, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockPlanter", BlockPlanter.PLANTERS.values());
+        registerOre("blockVase", BlockVase.VASES.values());
+        registerOre("blockCandle", BlockCandle.CANDLES.values());
+
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
 
         registerOre("blockWindChime", new ItemStack(BWMBlocks.BAMBOO_CHIME, 1, OreDictionary.WILDCARD_VALUE));
@@ -200,6 +202,11 @@ public class BWOreDictionary {
     private static boolean isPlank(ItemStack output) {
         return BWOreDictionary.listContains(output, OreDictionary.getOres("plankWood"));
     }
+
+    public static void registerOre(String ore, Collection<? extends Block> stacks) {
+        stacks.forEach(s -> OreDictionary.registerOre(ore, s));
+    }
+
 
     public static void registerOre(String ore, ItemStack... items) {
         for (ItemStack i : items)
