@@ -37,11 +37,13 @@ import java.util.Objects;
 
 public final class BWMBlocks {
     public static final Material POTTERY = new Material(MapColor.STONE);
+
     static {
         BlockCandle.init();
         BlockVase.init();
         BlockPlanter.init();
         BlockAesthetic.init();
+        BlockChime.init();
     }
 
     public static final Block ANCHOR = new BlockAnchor().setRegistryName("anchor");
@@ -94,8 +96,6 @@ public final class BWMBlocks {
     public static final Block WOOD_TABLE = new BlockWoodTable().setRegistryName("wood_table");
     public static final Block WOLF = new BlockWolf().setRegistryName("companion_cube");
     public static final Block BLOCK_DISPENSER = new BlockBDispenser().setRegistryName("block_dispenser");
-    public static final Block BAMBOO_CHIME = new BlockChime(Material.WOOD).setRegistryName("bamboo_chime");
-    public static final Block METAL_CHIME = new BlockChime(Material.IRON).setRegistryName("metal_chime");
     public static final Block BUDDY_BLOCK = new BlockBUD().setRegistryName("buddy_block");
     public static final Block CREATIVE_GENERATOR = new BlockCreativeGenerator().setRegistryName("creative_generator");
     public static final Block LIGHT = new BlockLight().setRegistryName("light");
@@ -144,6 +144,7 @@ public final class BWMBlocks {
         registerBlocks(BlockCandle.BLOCKS.values());
         registerBlocks(BlockVase.BLOCKS.values());
         registerBlocks(BlockAesthetic.BLOCKS.values());
+        registerBlocks(BlockChime.BLOCKS);
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(FILTERED_HOPPER);
@@ -194,8 +195,6 @@ public final class BWMBlocks {
         registerBlock(WOOD_TABLE, new ItemBlockMeta(WOOD_TABLE));
         registerBlock(WOLF);
         registerBlock(BLOCK_DISPENSER);
-        registerBlock(BAMBOO_CHIME, new ItemBlockMeta(BAMBOO_CHIME));
-        registerBlock(METAL_CHIME, new ItemBlockMeta(METAL_CHIME));
         registerBlock(BUDDY_BLOCK);
         registerBlock(CREATIVE_GENERATOR);
         registerBlock(LIGHT);

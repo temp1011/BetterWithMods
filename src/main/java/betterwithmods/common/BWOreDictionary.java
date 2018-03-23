@@ -161,8 +161,7 @@ public class BWOreDictionary {
 
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
 
-        registerOre("blockWindChime", new ItemStack(BWMBlocks.BAMBOO_CHIME, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("blockWindChime", new ItemStack(BWMBlocks.METAL_CHIME, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockWindChime", BlockChime.BLOCKS);
         registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
 

@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWSounds;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockPlanks;
@@ -13,13 +13,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -27,21 +25,29 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
-public class BlockChime extends BWMBlock implements IMultiVariants {
+public class BlockChime extends BWMBlock {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     private static final AxisAlignedBB CHIME_AABB = new AxisAlignedBB(0.3125D, 0.375D, 0.3125D, 0.6875D, 0.875D, 0.6875D);
 
-    public BlockChime(Material material) {
-        super(material);
+    public static Set<Block> BLOCKS = Sets.newHashSet();
 
+    public static void init() {
+        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+            BLOCKS.add(new BlockChime(type, Material.WOOD));
+            BLOCKS.add(new BlockChime(type, Material.IRON));
+        }
+    }
+
+    private BlockChime(BlockPlanks.EnumType type, Material material) {
+        super(material);
         this.setHardness(2.0F);
         this.setCreativeTab(BWCreativeTabs.BWTAB);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK));
         this.setSoundType(SoundType.WOOD);
+        this.setRegistryName((material == Material.WOOD ? "bamboo" : "metal") + "_chime_" + type.getName());
     }
 
     @Override
@@ -49,23 +55,6 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
         tooltip.add(I18n.format("tooltip.chime.name"));
         super.addInformation(stack, player, tooltip, advanced);
     }
-
-    @Override
-    public String[] getVariants() {
-        ArrayList<String> variants = new ArrayList<>();
-        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
-            variants.add("active=false,variant=" + blockplanks$enumtype.getName());
-        }
-        return variants.toArray(new String[BlockPlanks.EnumType.values().length]);
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            items.add(new ItemStack(this, 1, type.getMetadata()));
-        }
-    }
-
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -80,11 +69,6 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
             }
             return true;
         }
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return state.getValue(BlockPlanks.VARIANT).getMetadata();
     }
 
     @Override
@@ -104,7 +88,7 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof net.minecraft.block.BlockPane  || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
+        return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN) || world.getBlockState(pos.up()).getBlock() instanceof BlockFence || world.getBlockState(pos.up()).getBlock() instanceof net.minecraft.block.BlockPane || world.getBlockState(pos.up()).getBlock() instanceof BlockRope;
     }
 
     @Override
@@ -210,20 +194,16 @@ public class BlockChime extends BWMBlock implements IMultiVariants {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int meta = state.getValue(BlockPlanks.VARIANT).getMetadata();
-        return meta + (state.getValue(ACTIVE) ? 8 : 0);
+        return state.getValue(ACTIVE) ? 1 : 0;
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        boolean active = meta > 7;
-        if (active)
-            meta -= 8;
-        return this.getDefaultState().withProperty(ACTIVE, active).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.byMetadata(meta));
+        return this.getDefaultState().withProperty(ACTIVE, meta == 1);
     }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ACTIVE, BlockPlanks.VARIANT);
+        return new BlockStateContainer(this, ACTIVE);
     }
 }
