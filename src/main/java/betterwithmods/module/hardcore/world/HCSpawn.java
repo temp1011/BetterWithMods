@@ -2,7 +2,6 @@ package betterwithmods.module.hardcore.world;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -42,6 +41,7 @@ public class HCSpawn extends Feature {
     public static int HARDCORE_SPAWN_COOLDOWN;//20 min
     public static int HARDCORE_SPAWN_MAX_ATTEMPTS = 20;
 
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(SpawnSaving.class, new CapabilitySpawn(), SpawnSaving::new);
@@ -75,11 +75,6 @@ public class HCSpawn extends Feature {
             return;
         EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
         if (PlayerHelper.isSurvival(player)) {
-            if (!ModuleLoader.isFeatureEnabled(HCBeds.class)) {
-                if (player.getBedLocation() != null) {
-                    return;
-                }
-            }
             int timeSinceDeath = player.getStatFile().readStat(StatList.TIME_SINCE_DEATH);
             boolean isNew = timeSinceDeath >= HARDCORE_SPAWN_COOLDOWN;
             BlockPos newPos = getRespawnPoint(player, isNew ? player.world.getSpawnPoint() : getSpawn(player), HARDCORE_SPAWN_RADIUS);
