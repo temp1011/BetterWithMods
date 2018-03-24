@@ -25,6 +25,11 @@ public class MineshaftGeneration extends Feature {
     public static IMineshaftBlockState supports;
 
     @Override
+    public String getFeatureDescription() {
+        return "Mineshafts now generate with logs instead of fences";
+    }
+
+    @Override
     public boolean requiresMinecraftRestartToEnable() {
         return true;
     }
