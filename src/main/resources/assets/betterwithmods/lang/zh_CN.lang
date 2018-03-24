@@ -70,6 +70,7 @@ tile.bwm:planter.5.name=沙培植皿
 tile.bwm:planter.6.name=水培培植皿
 tile.bwm:planter.7.name=沙砾培植皿
 tile.bwm:planter.8.name=红沙培植皿
+tile.bwm:planter.9.name=泥土培植皿
 
 tile.bwm:vase.0.name=白色花瓶
 tile.bwm:vase.1.name=橙色花瓶
@@ -107,13 +108,13 @@ tile.bwm:candle.15.name=黑色蜡烛
 
 
 tile.bwm:urn.0.name=陶瓮
-tile.bwm:urn.1.name=灵魂陶瓮 （12%）
-tile.bwm:urn.2.name=灵魂陶瓮 （25%）
-tile.bwm:urn.3.name=灵魂陶瓮 （37%）
-tile.bwm:urn.4.name=灵魂陶瓮 （50%）
-tile.bwm:urn.5.name=灵魂陶瓮 （62%）
-tile.bwm:urn.6.name=灵魂陶瓮 （75%）
-tile.bwm:urn.7.name=灵魂陶瓮 （87%）
+tile.bwm:urn.1.name=灵魂陶瓮（12%）
+tile.bwm:urn.2.name=灵魂陶瓮（25%）
+tile.bwm:urn.3.name=灵魂陶瓮（37%）
+tile.bwm:urn.4.name=灵魂陶瓮（50%）
+tile.bwm:urn.5.name=灵魂陶瓮（62%）
+tile.bwm:urn.6.name=灵魂陶瓮（75%）
+tile.bwm:urn.7.name=灵魂陶瓮（87%）
 tile.bwm:urn.8.name=灵魂陶瓮
 tile.bwm:urn.9.name=虚空陶瓮
 
@@ -229,7 +230,7 @@ tile.bwm:mining_charge.name=矿用炸药
 tile.bwm:fertile_farmland.name=肥沃的田地
 tile.bwm:advanced_gearbox.name=高级变速箱
 tile.bwm:raw_pastry.0.name=蛋糕胚
-tile.bwm:raw_pastry.1.name=准备放进烤箱的南瓜派
+tile.bwm:raw_pastry.1.name=未烤制的南瓜派
 tile.bwm:raw_pastry.2.name=饼干面饼
 tile.bwm:raw_pastry.3.name=面粉
 tile.bwm:raw_pastry.4.name=未烤制的苹果派
@@ -347,7 +348,7 @@ tile.bwm:deadweight.intact.name=铁砧
 tile.bwm:deadweight.slightlyDamaged.name=轻微受损的铁砧
 tile.bwm:deadweight.veryDamaged.name=严重受损的铁砧
 
-tile.bwm:bucket.name=Well Bucket
+tile.bwm:bucket.name=吊桶
 
 item.bwm:material.gear.name=木齿轮
 item.bwm:material.nethercoal.name=下界煤
@@ -596,6 +597,10 @@ tooltip.chime.name=下雨，或是实体经过时候会发出红石信号。
 tooltip.gearbox.name=齿轮盒会因为风车旋转过快而过载，给予一个红石信号可以避免这种情况的发生！
 tooltip.broken_gearbox.name=齿轮盒会因为风车旋转过快而过载，给予一个红石信号可以避免这种情况的发生！
 tooltip.windmill.name=风车在雨天或者雷暴天会旋转过快，记得检查你的齿轮盒！
+tooltip.bwm_book.name=从零开始
+
+
+bwm.manual.message=你获得了一本来自BetterWithMods模组的指导手册，这个模组的玩法可能与你预想的不同。\n请认真阅读其中的介绍。
 
 bwm.manual.home=主页
 bwm.manual.blocks=方块
