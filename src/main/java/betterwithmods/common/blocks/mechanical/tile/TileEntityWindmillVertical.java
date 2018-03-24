@@ -19,10 +19,14 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
 
     public boolean isSlaveValid(int offset) {
         int airCounter = 0;
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -4; z <= 4; z++) {
+
+
+        for (int x = -getRadius(); x <= getRadius(); x++) {
+            for (int z = -getRadius(); z <= getRadius(); z++) {
                 BlockPos offPos = pos.add(x, offset, z);
-                if (x == 0 && z == 0)
+
+                double s = Math.sqrt((x * x) + (z * z));
+                if (s > 4.5 || x == 0 && z == 0)
                     continue;
                 if (getBlockWorld().isAirBlock(offPos)) {
                     airCounter++;
@@ -55,6 +59,11 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
     }
 
     @Override
+    public int getRadius() {
+        return 4;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager mgr, SPacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.getNbtCompound();
@@ -66,11 +75,8 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         if (getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWindmill)
-            return new AxisAlignedBB(x - 4, y - 4, z - 4, x + 4, y + 4, z + 4);
+            return new AxisAlignedBB(pos).grow(4, 3, 4);
         else
             return super.getRenderBoundingBox();
     }

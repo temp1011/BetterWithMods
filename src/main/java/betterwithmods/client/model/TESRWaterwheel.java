@@ -1,10 +1,12 @@
 package betterwithmods.client.model;
 
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwheel> {
     private final ModelWaterwheel waterwheel;
@@ -15,6 +17,9 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileEntityWaterwhe
 
     @Override
     public void render(TileEntityWaterwheel te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        BlockPos pos = te.getBlockPos();
+        RenderUtils.renderDebugBoundingBox(x,y,z,te.getRenderBoundingBox().offset(-pos.getX(),-pos.getY(),-pos.getZ()));
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
         this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));

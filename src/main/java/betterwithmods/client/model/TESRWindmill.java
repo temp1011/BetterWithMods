@@ -1,10 +1,12 @@
 package betterwithmods.client.model;
 
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHorizontal> {
     private final ModelWindmillShafts shafts = new ModelWindmillShafts();
@@ -12,6 +14,9 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
 
     @Override
     public void render(TileEntityWindmillHorizontal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        BlockPos pos = te.getBlockPos();
+        RenderUtils.renderDebugBoundingBox(x,y,z,te.getRenderBoundingBox().offset(-pos.getX(),-pos.getY(),-pos.getZ()));
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
         EnumFacing dir = te.getOrientation();

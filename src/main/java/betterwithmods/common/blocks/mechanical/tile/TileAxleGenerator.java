@@ -22,7 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileAxleGenerator extends TileBasic implements ITickable, IMechanicalPower {
     //Every generator will take up a single block with no extended bounding box
-    public int radius;
     protected byte power = 0;
     public byte dyeIndex = 0;
     protected float runningSpeed = 0.4F;
@@ -36,6 +35,8 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     public abstract void calculatePower();
 
     public abstract void verifyIntegrity();
+
+    public abstract int getRadius();
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {

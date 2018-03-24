@@ -1,11 +1,11 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.util.DirUtils;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -13,7 +13,6 @@ public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
 
     public TileEntityWindmillHorizontal() {
         super();
-        this.radius = 7;
         this.bladeMeta = new int[]{0, 0, 0, 0};
     }
 
@@ -41,21 +40,21 @@ public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
         isValid = valid && this.getBlockWorld().canBlockSeeSky(pos) && !isNether() && !isEnd();
     }
 
+    @Override
+    public int getRadius() {
+        return 7;
+    }
+
     //Extend the bounding box if the TESR is bigger than the occupying block.
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        if (getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWindmill) {
-            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
-            int xP = axis == EnumFacing.Axis.Z ? radius : 0;
-            int yP = radius;
-            int zP = axis == EnumFacing.Axis.X ? radius : 0;
-            return new AxisAlignedBB(x - xP - 1, y - yP - 1, z - zP - 1, x + xP + 1, y + yP + 1, z + zP + 1);
-        } else {
-            return super.getRenderBoundingBox();
-        }
+        EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        EnumFacing facing = (axis == EnumFacing.Axis.Z) ? EnumFacing.SOUTH : EnumFacing.EAST;
+        Vec3i vec = facing.getDirectionVec();
+        int xP = axis == EnumFacing.Axis.Z ? getRadius() : 0;
+        int yP = getRadius();
+        int zP = axis == EnumFacing.Axis.X ? getRadius() : 0;
+        return new AxisAlignedBB(-xP, -yP, -zP, xP, yP, zP).offset(0.5, 0.5, 0).offset(pos).expand(vec.getX(), vec.getY(), vec.getZ());
     }
 }
