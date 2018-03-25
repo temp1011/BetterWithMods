@@ -1,6 +1,8 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.BlockUnfiredPottery;
 import betterwithmods.common.blocks.tile.TileCamo;
 import betterwithmods.common.items.ItemMaterial;
@@ -11,6 +13,8 @@ import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -21,6 +25,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -50,41 +55,50 @@ public class PlaceClay extends Feature {
             }
         });
 
+        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.CLAY_BALL, (source, stack) -> dispenseBlock(source,stack,BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.BRICK)));
+        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(BWMItems.MATERIAL, (source, stack) -> stack.getMetadata() == ItemMaterial.EnumMaterial.NETHER_SLUDGE.getMetadata() ? dispenseBlock(source,stack, BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.NETHER_BRICK)) : stack);
     }
 
+    public ItemStack dispenseBlock(IBlockSource source, ItemStack stack, IBlockState stateToPlace)
+    {
+        IPosition pos = BlockBDispenser.getDispensePosition(source);
+        BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
+        World world = source.getWorld();
+        if((world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)) && stateToPlace.getBlock().canPlaceBlockAt(world,check))
+        {
+            world.setBlockState(check,stateToPlace);
+            stack.shrink(1);
+            return stack.isEmpty() ? ItemStack.EMPTY : stack;
+        }
+        return stack;
+    }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onPlaceClay(PlayerInteractEvent.RightClickBlock event) {
         if (event.isCanceled())
             return;
 
-
         if (event.getItemStack().isItemEqual(new ItemStack(Items.CLAY_BALL))) {
-            if (canPlaceAt(event.getEntityPlayer(), event.getWorld(), event.getPos())) {
-                PlayerContainer container = new PlayerContainer(event.getEntityPlayer(), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.BRICK));
-                ItemBlock item = (ItemBlock) Item.getItemFromBlock(BWMBlocks.UNFIRED_POTTERY);
-                EnumActionResult result = item.onItemUse(container, event.getWorld(), event.getPos(), event.getHand(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z);
-                if (result == EnumActionResult.SUCCESS) {
-                    if (!event.getEntityPlayer().capabilities.isCreativeMode)
-                        event.getItemStack().shrink(1);
-                    event.getEntityPlayer().swingArm(event.getHand());
-                }
-            }
+            placeClay(event, BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.BRICK));
         }
 
         if (event.getItemStack().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE))) {
-            if (canPlaceAt(event.getEntityPlayer(), event.getWorld(), event.getPos())) {
-                PlayerContainer container = new PlayerContainer(event.getEntityPlayer(), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.NETHER_BRICK));
-                ItemBlock item = (ItemBlock) Item.getItemFromBlock(BWMBlocks.UNFIRED_POTTERY);
-                EnumActionResult result = item.onItemUse(container, event.getWorld(), event.getPos(), event.getHand(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z);
-                if (result == EnumActionResult.SUCCESS) {
-                    if (!event.getEntityPlayer().capabilities.isCreativeMode)
-                        event.getItemStack().shrink(1);
-                    event.getEntityPlayer().swingArm(event.getHand());
-                }
+            placeClay(event, BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.NETHER_BRICK));
+        }
+    }
+
+    private void placeClay(PlayerInteractEvent.RightClickBlock event, ItemStack clayState) {
+        if (canPlaceAt(event.getEntityPlayer(), event.getWorld(), event.getPos())) {
+            PlayerContainer container = new PlayerContainer(event.getEntityPlayer(), clayState); //You're crazy but idk what this means so i'll keep it
+            ItemBlock item = (ItemBlock) Item.getItemFromBlock(BWMBlocks.UNFIRED_POTTERY);
+            Vec3d hitVec = event.getHitVec();
+            EnumActionResult result = item.onItemUse(container, event.getWorld(), event.getPos(), event.getHand(), event.getFace(), (float) hitVec.x, (float) hitVec.y, (float) hitVec.z);
+            if (result == EnumActionResult.SUCCESS) {
+                if (!event.getEntityPlayer().capabilities.isCreativeMode)
+                    event.getItemStack().shrink(1);
+                event.getEntityPlayer().swingArm(event.getHand());
             }
         }
-        
     }
 
     private boolean canPlaceAt(EntityPlayer player, World world, BlockPos pos) {
