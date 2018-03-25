@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations{
+public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
     public static final PropertyBool TOP = PropertyBool.create("top");
     public static double growthChance, lampModifier, fertileModifier, neighborModifier;
 
@@ -165,10 +165,12 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         ret.add(new ItemStack(this.getItemDropped(state, rand, fortune), 1, this.damageDropped(state)));
 
         if (age >= getMaxAge()) {
-            for (int i = 0; i < 1 + fortune; ++i) {
-                if (rand.nextInt(2 * getMaxAge()) <= age) {
-                    ret.add(new ItemStack(this.getSeed(), 1, 0));
-                }
+            int count = 1 + fortune;
+            if (state.getValue(TOP)) {
+                if (rand.nextInt(2 * getMaxAge()) <= age)
+                    ret.add(new ItemStack(this.getSeed(), count));
+            } else  {
+                ret.add(new ItemStack(this.getSeed(), 1));
             }
         }
         return ret;
