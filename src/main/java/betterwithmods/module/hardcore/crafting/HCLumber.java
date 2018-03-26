@@ -18,6 +18,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Objects;
@@ -103,7 +104,7 @@ public class HCLumber extends Feature {
         return true;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void harvestLog(BlockEvent.HarvestDropsEvent event) {
         if (!event.getWorld().isRemote) {
             IWood wood = BWOreDictionary.getWoodFromState(event.getState());
