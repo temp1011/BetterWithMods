@@ -59,7 +59,7 @@ public class ClientEventHandler {
             BlockPos pos = event.getTarget().getBlockPos();
             IBlockState iblockstate = world.getBlockState(pos);
 
-            if (world.getBlockState(pos.offset(side)).getMaterial().isReplaceable() && iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(pos)) {
+            if (world.mayPlace(block, pos, false, side, player) && iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(pos)) {
                 ((IRenderRotationPlacement) block).getRenderFunction().render(world, block, pos, stack, player, side, event.getTarget(), event.getPartialTicks());
             }
         }
@@ -129,12 +129,12 @@ public class ClientEventHandler {
                 min = Math.max(AABB.minX, AABB.minY);
                 max = Math.min(AABB.maxX, AABB.maxY);
                 offset = ((side == EnumFacing.SOUTH) ? AABB.maxZ : AABB.minZ) + pos.getZ();
-                buffer.pos(min + pos.getX(),  min + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
-                buffer.pos(min + pos.getX(),  min + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
-                buffer.pos(max + pos.getX(),  max + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
-                buffer.pos(max + pos.getX(),  min + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
-                buffer.pos(min + pos.getX(),  max + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
-                buffer.pos(min + pos.getX(),  max + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
+                buffer.pos(min + pos.getX(), min + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
+                buffer.pos(min + pos.getX(), min + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
+                buffer.pos(max + pos.getX(), max + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
+                buffer.pos(max + pos.getX(), min + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
+                buffer.pos(min + pos.getX(), max + pos.getY(), offset).color(0F, 0F, 0f, 0.4F).endVertex();
+                buffer.pos(min + pos.getX(), max + pos.getY(), offset).color(0F, 0F, 0f, 0.0F).endVertex();
                 break;
         }
 

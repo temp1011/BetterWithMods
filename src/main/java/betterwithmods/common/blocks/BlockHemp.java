@@ -169,7 +169,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
             if (state.getValue(TOP)) {
                 if (rand.nextInt(2 * getMaxAge()) <= age)
                     ret.add(new ItemStack(this.getSeed(), count));
-            } else  {
+            } else {
                 ret.add(new ItemStack(this.getSeed(), 1));
             }
         }
