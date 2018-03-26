@@ -1,18 +1,14 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockBeacon;
 import betterwithmods.common.blocks.BlockMushroom;
 import betterwithmods.module.Feature;
-import betterwithmods.module.hardcore.beacons.CapabilityBeacon;
-import betterwithmods.module.hardcore.beacons.EnderchestCap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -23,27 +19,34 @@ import java.util.HashSet;
 
 public class MushroomFarming extends Feature {
     public static boolean ALIAS_MUSHROOMS;
-    public static int MAX_LIGHT_LEVEL;
-    public static HashSet<String> VALID_MUSHROOMS;
+    public static boolean SPREAD_ON_MYCELLIUM;
+    public static int MAX_LIGHT_LEVEL_RED;
+    public static int MAX_LIGHT_LEVEL_BROWN;
+    public static int MAX_LIGHT_LEVEL_MISC;
+    public static HashSet<String> MISC_MUSHROOMS;
 
-    public static final Block RED_MUSHROOM = new BlockMushroom().setRegistryName("minecraft:red_mushroom");
-    public static final Block BROWN_MUSHROOM = new BlockMushroom().setRegistryName("minecraft:brown_mushroom");
+    public static Block RED_MUSHROOM;
+    public static Block BROWN_MUSHROOM;
 
     @Override
     public void setupConfig() {
-        MAX_LIGHT_LEVEL = loadPropInt("Maximum Light Level", "The highest lightlevel at which mushrooms will grow.", 0);
-        VALID_MUSHROOMS = loadPropStringHashSet("Valid Other Mushrooms","Registry names of affected mushrooms other than vanilla ones.",new String[]{});
+        MAX_LIGHT_LEVEL_BROWN = loadPropInt("Maximum Light Level Brown", "The highest lightlevel at which brown mushrooms will grow.", 0);
+        MAX_LIGHT_LEVEL_RED = loadPropInt("Maximum Light Level Red", "The highest lightlevel at which red mushrooms will grow.", 12);
+        MAX_LIGHT_LEVEL_MISC = loadPropInt("Maximum Light Level Misc", "The highest lightlevel at which other mushrooms (see Valid Other Mushrooms) will grow.", 0);
+        MISC_MUSHROOMS = loadPropStringHashSet("Valid Other Mushrooms","Registry names of affected mushrooms other than vanilla ones.",new String[]{});
+        SPREAD_ON_MYCELLIUM = loadPropBool("Spread On Mycellium","Whether mushrooms can spread on mycellium even at a higher light level",false);
         ALIAS_MUSHROOMS = loadPropBool("Alias Mushrooms","Aliases vanilla mushrooms to truly prevent them from growing. Turn this off if it causes conflicts.",true);
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         if(ALIAS_MUSHROOMS) {
-            BWMBlocks.registerBlock(RED_MUSHROOM);
-            BWMBlocks.registerBlock(BROWN_MUSHROOM);
+            RED_MUSHROOM = new BlockMushroom(MAX_LIGHT_LEVEL_RED).setRegistryName("minecraft:red_mushroom");
+            BROWN_MUSHROOM = new BlockMushroom(MAX_LIGHT_LEVEL_BROWN).setRegistryName("minecraft:brown_mushroom");
+            BWMBlocks.registerBlock(RED_MUSHROOM,null);
+            BWMBlocks.registerBlock(BROWN_MUSHROOM,null);
         }
     }
-
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -57,7 +60,7 @@ public class MushroomFarming extends Feature {
 
     @Override
     public String getFeatureDescription() {
-        return "Mushrooms can only be farmed in complete darkness.";
+        return "Brown mushrooms can only be farmed in complete darkness.";
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -89,7 +92,7 @@ public class MushroomFarming extends Feature {
     private boolean isMushroom(IBlockState state)
     {
         Block block = state.getBlock();
-        return block.getRegistryName() != null && VALID_MUSHROOMS.contains(block.getRegistryName().toString());
+        return block.getRegistryName() != null && MISC_MUSHROOMS.contains(block.getRegistryName().toString());
     }
 
     private void popOffMushroom(World world, BlockPos pos)
@@ -107,7 +110,7 @@ public class MushroomFarming extends Feature {
         int light = world.getLight(pos);
         IBlockState soil = world.getBlockState(pos.down());
 
-        return light <= MAX_LIGHT_LEVEL || isMushroomSoil(soil);
+        return light <= MAX_LIGHT_LEVEL_MISC || isMushroomSoil(soil);
     }
 
     public static boolean isMushroomSoil(IBlockState state)

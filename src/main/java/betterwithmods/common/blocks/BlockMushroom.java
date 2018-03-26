@@ -10,8 +10,11 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class BlockMushroom extends net.minecraft.block.BlockMushroom {
-    public BlockMushroom() {
+    int maxLightLevel;
+
+    public BlockMushroom(int maxLightLevel) {
         super();
+        this.maxLightLevel = maxLightLevel;
         setHardness(0.0F);
         setSoundType(SoundType.PLANT);
         setUnlocalizedName("mushroom");
@@ -19,7 +22,7 @@ public class BlockMushroom extends net.minecraft.block.BlockMushroom {
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if(worldIn.getLight(pos) < MushroomFarming.MAX_LIGHT_LEVEL)
+        if(worldIn.getLight(pos) <= maxLightLevel || MushroomFarming.SPREAD_ON_MYCELLIUM && MushroomFarming.isMushroomSoil(worldIn.getBlockState(pos.down())))
             super.updateTick(worldIn, pos, state, rand);
     }
 
@@ -33,7 +36,7 @@ public class BlockMushroom extends net.minecraft.block.BlockMushroom {
             if(MushroomFarming.isMushroomSoil(soil))
                 return true;
             else
-                return worldIn.getLight(pos) < MushroomFarming.MAX_LIGHT_LEVEL && soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), EnumFacing.UP, this);
+                return worldIn.getLight(pos) <= maxLightLevel && soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), EnumFacing.UP, this);
         }
         else
         {
