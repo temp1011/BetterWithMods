@@ -229,15 +229,16 @@ public class BWOreDictionary {
         for (ItemStack log : logs) {
             if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
                 for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?
-                    ItemStack plank = getPlankOutput(new ItemStack(log.getItem(), 1, i));
-                    if (!plank.isEmpty()) {
-                        Wood wood = new Wood(new ItemStack(log.getItem(), 1, i), plank);
+                    ItemStack subLog = new ItemStack(log.getItem(), 1, i);
+                    ItemStack plank = getPlankOutput(subLog);
+                    if (!plank.isEmpty() && !isWoodRegistered(subLog)) {
+                        Wood wood = new Wood(subLog, plank);
                         woods.add(wood);
                     }
                 }
             } else {
                 ItemStack plank = getPlankOutput(log);
-                if (!plank.isEmpty()) {
+                if (!plank.isEmpty() && !isWoodRegistered(log)) {
                     Wood wood = new Wood(log, plank);
                     woods.add(wood);
                 }
@@ -251,6 +252,11 @@ public class BWOreDictionary {
     {
         Item item = stack.getItem();
         return item != Items.COOKED_RABBIT && item != Items.COOKED_CHICKEN;
+    }
+
+    public static boolean isWoodRegistered(ItemStack stack)
+    {
+        return woods.stream().anyMatch(wood -> wood.getLog(1).isItemEqual(stack));
     }
 
     public static List<ItemStack> getOreNames(String prefix) {
