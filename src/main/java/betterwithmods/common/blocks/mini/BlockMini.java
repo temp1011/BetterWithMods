@@ -13,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -52,8 +51,6 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
-
-
         world.setBlockState(pos, state.cycleProperty(getOrientationProperty()));
     }
 
@@ -231,15 +228,17 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntityMultiType tile = getTile(worldIn, pos);
-        if (tile != null)
-            return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), tile.getOrientation());
+        if (tile != null) {
+            int o = tile.getOrientation() % getOrientationProperty().getMax();
+            return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), o);
+        }
         return state;
     }
 
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{TYPE, getOrientationProperty()});
+        return new BlockStateContainer(this, TYPE, getOrientationProperty());
     }
 
     @Override
@@ -258,7 +257,6 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
             return (TileEntityMultiType) tile;
         return null;
     }
-
 
 
     public enum EnumType {

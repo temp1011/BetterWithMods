@@ -59,7 +59,7 @@ public class ClientEventHandler {
             BlockPos pos = event.getTarget().getBlockPos();
             IBlockState iblockstate = world.getBlockState(pos);
 
-            if (world.mayPlace(block, pos, false, side, player) && iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(pos)) {
+            if (world.mayPlace(block, pos, true, side, player) && iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(pos)) {
                 ((IRenderRotationPlacement) block).getRenderFunction().render(world, block, pos, stack, player, side, event.getTarget(), event.getPartialTicks());
             }
         }
