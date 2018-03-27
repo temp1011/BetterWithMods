@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
@@ -28,6 +29,17 @@ public class PlayerDataHandler extends Feature {
     }
 
     private static final ResourceLocation PLAYER_INFO = new ResourceLocation(BWMod.MODID, "player_info");
+
+    @SubscribeEvent
+    public void clone(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            PlayerInfo o = getPlayerInfo(event.getOriginal());
+            PlayerInfo n = getPlayerInfo(event.getEntityPlayer());
+            if (o != null && n != null) {
+                n.deserializeNBT(o.serializeNBT());
+            }
+        }
+    }
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
@@ -60,6 +72,7 @@ public class PlayerDataHandler extends Feature {
         }
     }
 
+    //TODO make this extensible.
     public static class PlayerInfo implements ICapabilitySerializable<NBTTagCompound> {
         public boolean givenManual;
 
@@ -89,4 +102,6 @@ public class PlayerDataHandler extends Feature {
             givenManual = nbt.getBoolean("givenManual");
         }
     }
+
+
 }
