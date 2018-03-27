@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.event.entity.ThrowableImpactEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
@@ -23,11 +23,11 @@ import java.util.Random;
 public class EggDrops extends Feature {
 
     @SubscribeEvent
-    public void getRawEgg(ThrowableImpactEvent event) {
-        if (event.getEntityThrowable() instanceof EntityEgg) {
+    public void getRawEgg(ProjectileImpactEvent.Throwable event) {
+        if (event.getThrowable().getClass().equals(EntityEgg.class)) {
             event.setCanceled(true);
             RayTraceResult result = event.getRayTraceResult();
-            EntityThrowable egg = event.getEntityThrowable();
+            EntityThrowable egg = event.getThrowable();
             Random rand = egg.getEntityWorld().rand;
             if (result.entityHit != null) {
                 result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(egg, egg.getThrower()), 0.0F);
