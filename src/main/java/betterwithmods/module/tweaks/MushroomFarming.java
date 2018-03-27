@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
@@ -91,8 +92,10 @@ public class MushroomFarming extends Feature {
 
     private boolean isMushroom(IBlockState state)
     {
-        Block block = state.getBlock();
-        return block.getRegistryName() != null && MISC_MUSHROOMS.contains(block.getRegistryName().toString());
+        ResourceLocation loc = state.getBlock().getRegistryName();
+        if(loc == null) //WEE WOO WEE WOO
+            throw new IllegalStateException("BetterWithMods Handler ("+this.getClass().getSimpleName()+") obtained an unregistered block from a blockstate! (Block -> "+state.getBlock().getClass().getName()+")");
+        return MISC_MUSHROOMS.contains(loc.toString());
     }
 
     private void popOffMushroom(World world, BlockPos pos)
