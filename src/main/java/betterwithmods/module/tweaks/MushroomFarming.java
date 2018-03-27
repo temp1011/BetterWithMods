@@ -21,6 +21,7 @@ import java.util.HashSet;
 public class MushroomFarming extends Feature {
     public static boolean ALIAS_MUSHROOMS;
     public static boolean SPREAD_ON_MYCELLIUM;
+    public static boolean GROW_FAST_ON_DUNG;
     public static int MAX_LIGHT_LEVEL_RED;
     public static int MAX_LIGHT_LEVEL_BROWN;
     public static int MAX_LIGHT_LEVEL_MISC;
@@ -36,6 +37,7 @@ public class MushroomFarming extends Feature {
         MAX_LIGHT_LEVEL_MISC = loadPropInt("Maximum Light Level Misc", "The highest lightlevel at which other mushrooms (see Valid Other Mushrooms) will grow.", 0);
         MISC_MUSHROOMS = loadPropStringHashSet("Valid Other Mushrooms","Registry names of affected mushrooms other than vanilla ones.",new String[]{});
         SPREAD_ON_MYCELLIUM = loadPropBool("Spread On Mycellium","Whether mushrooms can spread on mycellium even at a higher light level",false);
+        GROW_FAST_ON_DUNG = loadPropBool("Grow Faster On Dung","Whether mushrooms grow faster on dung blocks",false);
         ALIAS_MUSHROOMS = loadPropBool("Alias Mushrooms","Aliases vanilla mushrooms to truly prevent them from growing. Turn this off if it causes conflicts.",true);
     }
 
