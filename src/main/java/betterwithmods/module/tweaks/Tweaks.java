@@ -34,6 +34,7 @@ public class Tweaks extends Module {
         registerFeature(new FoodPoisoning());
         registerFeature(new Notes());
         registerFeature(new MineshaftGeneration());
+        registerFeature(new VisibleStorms());
     }
 
     @Override
