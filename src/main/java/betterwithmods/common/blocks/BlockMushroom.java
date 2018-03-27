@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.tweaks.MushroomFarming;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -22,8 +23,43 @@ public class BlockMushroom extends net.minecraft.block.BlockMushroom {
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if(worldIn.getLight(pos) <= maxLightLevel || MushroomFarming.SPREAD_ON_MYCELLIUM && MushroomFarming.isMushroomSoil(worldIn.getBlockState(pos.down())))
-            super.updateTick(worldIn, pos, state, rand);
+        IBlockState soil = worldIn.getBlockState(pos.down());
+        if(worldIn.getLight(pos) <= maxLightLevel || MushroomFarming.SPREAD_ON_MYCELLIUM && MushroomFarming.isMushroomSoil(soil)) {
+            int growthChance = MushroomFarming.GROW_FAST_ON_DUNG && isDung(soil) ? 12 : 25;
+            if (rand.nextInt(growthChance) == 0) {
+                int max_mushrooms = 5;
+                int tries = 4;
+
+                for (BlockPos checkpos : BlockPos.getAllInBoxMutable(pos.add(-4, -1, -4), pos.add(4, 1, 4))) {
+                    if (worldIn.getBlockState(checkpos).getBlock() == this) {
+                        --max_mushrooms;
+
+                        if (max_mushrooms <= 0) {
+                            return;
+                        }
+                    }
+                }
+
+                BlockPos grow_pos = pos.add(rand.nextInt(3) - 1, rand.nextInt(2) - rand.nextInt(2), rand.nextInt(3) - 1);
+
+                for (int k = 0; k < tries; ++k) {
+                    if (worldIn.isAirBlock(grow_pos) && this.canBlockStay(worldIn, grow_pos, this.getDefaultState())) {
+                        pos = grow_pos;
+                    }
+
+                    grow_pos = pos.add(rand.nextInt(3) - 1, rand.nextInt(2) - rand.nextInt(2), rand.nextInt(3) - 1);
+                }
+
+                if (worldIn.isAirBlock(grow_pos) && this.canBlockStay(worldIn, grow_pos, this.getDefaultState())) {
+                    worldIn.setBlockState(grow_pos, this.getDefaultState(), 2);
+                }
+            }
+        }
+    }
+
+    private boolean isDung(IBlockState state)
+    {
+        return state.getBlock() == BWMBlocks.AESTHETIC && state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.DUNG;
     }
 
     @Override

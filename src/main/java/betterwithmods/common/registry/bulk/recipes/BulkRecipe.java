@@ -204,9 +204,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
 
     @Override
     public int compareTo(BulkRecipe other) {
-        return this.getPriority() == other.getPriority() ? 0 : this.getPriority() > other.getPriority() ? -1 : 1;
+        int priority = Integer.compare(other.getPriority(),this.getPriority());
+        return priority == 0 ? Integer.compare(other.inputs.size(),inputs.size()) : priority;
     }
-
-
-
 }

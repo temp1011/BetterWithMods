@@ -134,6 +134,8 @@ public class BWOreDictionary {
         registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
         registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_FISH, Items.COOKED_MUTTON, Items.COOKED_RABBIT, BWMItems.COOKED_MYSTERY_MEAT);
         registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+        registerOre("foodStewMeat", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_FISH, Items.COOKED_MUTTON, BWMItems.COOKED_MYSTERY_MEAT);
+        registerOre("foodStewMeat", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
 
         registerOre("tallow", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW));
 
@@ -167,8 +169,6 @@ public class BWOreDictionary {
         registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
 
         registerOre("blockSoulUrn", BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
-
-
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -243,8 +243,15 @@ public class BWOreDictionary {
                 }
             }
         }
+
+        OreDictionary.getOres("listAllmeatcooked").stream().filter(BWOreDictionary::isValidStewMeat).forEach(stack -> OreDictionary.registerOre("foodStewMeat",stack)); //TODO: Remove after moving this to Ingredient
     }
 
+    public static boolean isValidStewMeat(ItemStack stack)
+    {
+        Item item = stack.getItem();
+        return item != Items.COOKED_RABBIT && item != Items.COOKED_CHICKEN;
+    }
 
     public static List<ItemStack> getOreNames(String prefix) {
         return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).map(OreDictionary::getOres).filter(o -> !o.isEmpty()).flatMap(Collection::stream).collect(Collectors.toList());
