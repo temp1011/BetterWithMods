@@ -67,4 +67,8 @@ public class BlockCandleHolder extends BlockStickBase implements IMultiVariants 
         return new String[]{"connection=disconnected,ground=true"};
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+        return facing == EnumFacing.DOWN ? BlockFaceShape.CENTER_SMALL : (facing == EnumFacing.UP ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED);
+    }
 }

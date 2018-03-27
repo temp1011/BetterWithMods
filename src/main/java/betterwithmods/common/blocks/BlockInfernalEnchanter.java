@@ -100,9 +100,12 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
     }
 
     @Override
-    public boolean isFullBlock(IBlockState state) {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
-
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+        return false;
+    }
 }

@@ -13,6 +13,7 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -311,6 +312,13 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
         }
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        switch(state.getValue(TYPE)) {
+            case HOPPER: return face == EnumFacing.UP ? BlockFaceShape.BOWL : BlockFaceShape.UNDEFINED;
+            default: return BlockFaceShape.SOLID;
+        }
+    }
 
     public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),

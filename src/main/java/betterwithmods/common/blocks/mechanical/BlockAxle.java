@@ -98,8 +98,13 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing p_193383_4_) {
-        return BlockFaceShape.MIDDLE_POLE_THICK;
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return getAxis(state) == Y;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face.getAxis() == getAxis(state) ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -263,5 +268,4 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
             super.onBlockExploded(world, pos, explosion);
         }
     }
-
 }
