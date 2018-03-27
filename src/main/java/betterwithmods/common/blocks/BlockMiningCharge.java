@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -192,7 +193,12 @@ public class BlockMiningCharge extends BWMBlock  {
         return explode | facing;
     }
 
-//    @Override
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face != getFacing(state).getOpposite() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    //    @Override
 //    public void onIngitedByFuse(IBlockAccess world, BlockPos pos, IBlockState state) {
 //        if(world instanceof World) {
 //            this.onBlockDestroyedByPlayer((World) world, pos, state.withProperty(EXPLODE, Boolean.TRUE));

@@ -8,6 +8,7 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -112,5 +113,15 @@ public class BlockSteelAnvil extends BlockContainer {
         TileEntitySteelAnvil anvil = (TileEntitySteelAnvil) worldIn.getTileEntity(pos);
         InvUtils.ejectInventoryContents(worldIn,pos,anvil.inventory);
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face.getAxis() == EnumFacing.Axis.Y ? BlockFaceShape.CENTER_BIG : BlockFaceShape.UNDEFINED;
     }
 }

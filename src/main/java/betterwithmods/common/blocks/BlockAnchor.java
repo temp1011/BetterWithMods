@@ -9,6 +9,7 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -177,4 +178,8 @@ public class BlockAnchor extends BWMBlock implements IRopeConnector {
         return new BlockStateContainer(this, FACING, LINKED);
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face == getFacing(state).getOpposite() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
 }

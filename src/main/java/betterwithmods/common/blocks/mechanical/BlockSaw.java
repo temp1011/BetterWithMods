@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -37,6 +38,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
+import static net.minecraft.util.EnumFacing.Axis.Y;
 
 public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final float HEIGHT = 0.71875F;
@@ -368,5 +371,15 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         if (tile instanceof TileSaw)
             return (TileSaw) tile;
         return null;
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return getFacing(state) != EnumFacing.UP;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face != getFacing(state).getOpposite() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }
 }

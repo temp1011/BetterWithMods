@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -237,6 +238,20 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(TYPE).getMeta();
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        if(face != EnumFacing.UP)
+            return face == EnumFacing.DOWN ? BlockFaceShape.CENTER_BIG : BlockFaceShape.UNDEFINED;
+        switch(state.getValue(TYPE))
+        {
+            case EMPTY:
+            case WATER:
+                return BlockFaceShape.BOWL;
+            default:
+                return BlockFaceShape.SOLID;
+        }
     }
 
     public enum EnumType implements IStringSerializable {
