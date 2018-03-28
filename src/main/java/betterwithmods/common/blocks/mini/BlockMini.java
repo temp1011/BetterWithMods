@@ -132,7 +132,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
         TileEntityMultiType tile = getTile(world, pos);
         if (tile != null) {
-            tile.setOrientation((tile.getOrientation() + 1) % getOrientationProperty().getMax());
+            tile.setOrientation((tile.getOrientation() + 1) % (getOrientationProperty().getMax() + 1));
             IBlockState state = world.getBlockState(pos);
             world.setBlockState(pos, getActualState(state, world, pos));
             return true;

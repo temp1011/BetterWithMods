@@ -126,7 +126,7 @@ public class BlockPane extends BWMBlock {
     }
 
     public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        return isFenceGate(world, pos, dir) || isCompatiblePane(world, pos, dir);
+        return isFenceGate(world, pos, dir) || isCompatiblePane(world, pos, dir) || world.isSideSolid(pos,dir.getOpposite(),true);
     }
 
     @Override
