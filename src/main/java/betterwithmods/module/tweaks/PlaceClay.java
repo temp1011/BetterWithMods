@@ -92,6 +92,8 @@ public class PlaceClay extends Feature {
             PlayerContainer container = new PlayerContainer(event.getEntityPlayer(), clayState); //You're crazy but idk what this means so i'll keep it
             ItemBlock item = (ItemBlock) Item.getItemFromBlock(BWMBlocks.UNFIRED_POTTERY);
             Vec3d hitVec = event.getHitVec();
+            if(hitVec == null) //Shout-out to ya boi RWTema
+                hitVec = new Vec3d(0,0,0);
             EnumActionResult result = item.onItemUse(container, event.getWorld(), event.getPos(), event.getHand(), event.getFace(), (float) hitVec.x, (float) hitVec.y, (float) hitVec.z);
             if (result == EnumActionResult.SUCCESS) {
                 if (!event.getEntityPlayer().capabilities.isCreativeMode)
