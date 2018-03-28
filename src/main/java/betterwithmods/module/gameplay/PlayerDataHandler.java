@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
+import betterwithmods.module.ModuleLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -32,7 +33,7 @@ public class PlayerDataHandler extends Feature {
 
     @SubscribeEvent
     public void clone(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
+        if (event.isWasDeath() && ModuleLoader.isFeatureEnabled(ReadTheFingManual.class)) {
             PlayerInfo o = getPlayerInfo(event.getOriginal());
             PlayerInfo n = getPlayerInfo(event.getEntityPlayer());
             if (o != null && n != null) {
