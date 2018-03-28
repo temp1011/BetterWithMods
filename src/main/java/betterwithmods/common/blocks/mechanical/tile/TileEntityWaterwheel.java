@@ -1,9 +1,11 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -141,7 +143,11 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
+        IBlockState state = getBlockWorld().getBlockState(pos);
+        if (!(state.getBlock() instanceof BlockWaterwheel))
+            return Block.FULL_BLOCK_AABB;
+
+        EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
         EnumFacing facing = (axis == EnumFacing.Axis.Z) ? EnumFacing.SOUTH : EnumFacing.EAST;
         Vec3i vec = facing.getDirectionVec();
         int xP = axis == EnumFacing.Axis.Z ? getRadius() : 0;

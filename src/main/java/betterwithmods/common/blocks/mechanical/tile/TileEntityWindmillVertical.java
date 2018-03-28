@@ -75,7 +75,8 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        if (getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWindmill)
+        IBlockState state = getBlockWorld().getBlockState(pos);
+        if (state.getBlock() instanceof BlockWindmill)
             return new AxisAlignedBB(pos).grow(4, 3, 4);
         else
             return super.getRenderBoundingBox();

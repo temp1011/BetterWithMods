@@ -1,7 +1,10 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import betterwithmods.util.DirUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -49,6 +52,10 @@ public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
+        IBlockState state = getBlockWorld().getBlockState(pos);
+        if (!(state.getBlock() instanceof BlockWindmill))
+            return Block.FULL_BLOCK_AABB;
+
         EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
         EnumFacing facing = (axis == EnumFacing.Axis.Z) ? EnumFacing.SOUTH : EnumFacing.EAST;
         Vec3i vec = facing.getDirectionVec();
