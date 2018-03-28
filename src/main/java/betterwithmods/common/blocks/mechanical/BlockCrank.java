@@ -67,6 +67,11 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        worldIn.scheduleBlockUpdate(pos, this, tickRate(worldIn), 5);
+    }
+
+    @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.isSideSolid(pos.down(), EnumFacing.UP);
     }
