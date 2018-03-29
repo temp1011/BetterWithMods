@@ -30,16 +30,15 @@ public abstract class BlockRotate extends BWMBlock {
     }
 
     public abstract void nextState(World world, BlockPos pos, IBlockState state);
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
         boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
 
-        if (world.isRemote && emptyHands)
-            return true;
-        else if (!world.isRemote && emptyHands) {
+        if (emptyHands) {
             world.playSound(null, pos, this.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
-            nextState(world,pos,state);
+            nextState(world, pos, state);
             world.notifyNeighborsOfStateChange(pos, this, false);
             world.scheduleBlockUpdate(pos, this, 10, 5);
             return true;

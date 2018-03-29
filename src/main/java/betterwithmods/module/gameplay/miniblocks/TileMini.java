@@ -17,8 +17,7 @@ public abstract class TileMini extends TileBasic {
     public ItemStack texture;
     public BaseOrientation orientation;
 
-    public TileMini() {
-    }
+    public TileMini() { }
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -28,9 +27,9 @@ public abstract class TileMini extends TileBasic {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = super.writeToNBT(compound);
-        if(texture != null)
+        if (texture != null)
             tag.setTag("texture", texture.serializeNBT());
-        if(orientation != null)
+        if (orientation != null)
             tag.setInteger("orientation", orientation.ordinal());
         return tag;
     }
@@ -39,7 +38,8 @@ public abstract class TileMini extends TileBasic {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        texture = new ItemStack((NBTTagCompound) compound.getTag("texture"));
+        if (compound.hasKey("texture"))
+            texture = new ItemStack((NBTTagCompound) compound.getTag("texture"));
         orientation = deserializeOrientation(compound);
         super.readFromNBT(compound);
     }
@@ -57,7 +57,7 @@ public abstract class TileMini extends TileBasic {
         texture = new ItemStack(tag.getCompoundTag("texture"));
     }
 
-    private boolean changeOrientation(BaseOrientation newOrientation, boolean simulate) {
+    public boolean changeOrientation(BaseOrientation newOrientation, boolean simulate) {
         if (orientation != newOrientation) {
             if (!simulate) {
                 orientation = newOrientation;
@@ -77,5 +77,13 @@ public abstract class TileMini extends TileBasic {
     public void markBlockForUpdate() {
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, state, state, 3);
+    }
+
+    public ItemStack getTexture() {
+        return texture;
+    }
+
+    public BaseOrientation getOrientation() {
+        return orientation;
     }
 }
