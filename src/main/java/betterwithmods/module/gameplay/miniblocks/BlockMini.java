@@ -1,11 +1,13 @@
 package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.common.blocks.BWMBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,9 +24,10 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 
-public class BlockMini extends BWMBlock {
+public abstract class BlockMini extends BWMBlock {
 
     public static final IUnlistedProperty<MiniCacheInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniCacheInfo.class);
+
 
     public BlockMini() {
         super(Material.WOOD);
@@ -32,7 +35,7 @@ public class BlockMini extends BWMBlock {
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for(ItemStack material: MiniBlocks.MATERIALS) {
+        for (ItemStack material : MiniBlocks.MATERIALS) {
             ItemStack stack = new ItemStack(this);
             NBTTagCompound tag = new NBTTagCompound();
             tag.setTag("texture", material.serializeNBT());
@@ -58,10 +61,7 @@ public class BlockMini extends BWMBlock {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileMini();
-    }
-
+    public abstract TileEntity createTileEntity(World world, IBlockState state);
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -88,30 +88,23 @@ public class BlockMini extends BWMBlock {
         return false;
     }
 
-
-    private final AxisAlignedBB[] boxes = new AxisAlignedBB[] {
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D),
-            new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
-    };
-
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        int i = 0;
         TileEntity tile = source.getTileEntity(pos);
-        if(tile instanceof TileMini) {
+        if (tile instanceof TileMini) {
             TileMini mini = (TileMini) tile;
-            if(mini.orientation != null && mini.orientation.facing != null)
-                i = mini.orientation.facing.getIndex();
+            if (mini.orientation != null)
+                return mini.orientation.getBounds();
         }
-        return boxes[i];
+        return Block.FULL_BLOCK_AABB;
     }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
     }
 }

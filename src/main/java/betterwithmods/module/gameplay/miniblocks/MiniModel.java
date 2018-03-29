@@ -12,11 +12,13 @@ import net.minecraftforge.common.model.IModelState;
 
 public class MiniModel extends ModelFactory<MiniCacheInfo> {
 
-    public static final MiniModel INSTANCE = new MiniModel();
+    public static MiniModel SIDING;
+
     public IModel template;
 
-    protected MiniModel() {
+    protected MiniModel(IModel template) {
         super(BlockMini.MINI_INFO, TextureMap.LOCATION_MISSING_TEXTURE);
+        this.template = template;
     }
 
     @Override
@@ -24,9 +26,10 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
         ImmutableMap.Builder<String, String> textures = new ImmutableMap.Builder<>();
         textures.put("side", object.texture.getIconName());
         IModelState state = object.orientation.toTransformation();
-        IModel retexture = template.retexture(textures.build());
-        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter), object.texture).addDefaultBlockTransforms();
+        IModel retexture = template.retexture(textures.build()).uvlock(true);
+        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter)).addDefaultBlockTransforms().addDefaultItemTransforms();
     }
+
 
     @Override
     public MiniCacheInfo fromItemStack(ItemStack stack) {

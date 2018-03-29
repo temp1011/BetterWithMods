@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.common.blocks.tile.TileBasic;
-import betterwithmods.util.SpaceUtils;
+import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -12,10 +12,10 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class TileMini extends TileBasic {
+public abstract class TileMini extends TileBasic {
 
     public ItemStack texture;
-    public Orientation orientation;
+    public BaseOrientation orientation;
 
     public TileMini() {
     }
@@ -28,31 +28,36 @@ public class TileMini extends TileBasic {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = super.writeToNBT(compound);
-        tag.setTag("texture", texture.serializeNBT());
-        tag.setInteger("orientation", orientation.ordinal());
+        if(texture != null)
+            tag.setTag("texture", texture.serializeNBT());
+        if(orientation != null)
+            tag.setInteger("orientation", orientation.ordinal());
         return tag;
     }
+
+    public abstract BaseOrientation deserializeOrientation(NBTTagCompound tag);
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         texture = new ItemStack((NBTTagCompound) compound.getTag("texture"));
-        orientation = Orientation.getOrientation(compound.getInteger("orientation"));
+        orientation = deserializeOrientation(compound);
         super.readFromNBT(compound);
     }
 
     @Override
     public void onPlacedBy(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         loadFromStack(stack);
-
-        orientation = SpaceUtils.getOrientation(getWorld(), getPos(), placer, face, 0,0,0);
+        orientation = getOrientationFromPlacement(placer, face, stack, hitX, hitY, hitZ);
     }
+
+    public abstract BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ);
 
     public void loadFromStack(ItemStack stack) {
         NBTTagCompound tag = stack.getTagCompound();
         texture = new ItemStack(tag.getCompoundTag("texture"));
     }
 
-    private boolean changeOrientation(Orientation newOrientation, boolean simulate) {
+    private boolean changeOrientation(BaseOrientation newOrientation, boolean simulate) {
         if (orientation != newOrientation) {
             if (!simulate) {
                 orientation = newOrientation;

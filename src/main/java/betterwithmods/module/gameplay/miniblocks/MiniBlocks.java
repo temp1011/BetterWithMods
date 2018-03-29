@@ -3,7 +3,6 @@ package betterwithmods.module.gameplay.miniblocks;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.ItemBlockMeta;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -25,21 +24,21 @@ import java.util.Set;
 public class MiniBlocks extends Feature {
 
     public static final Set<ItemStack> MATERIALS = Sets.newHashSet();
-    public static Block SIDING = new BlockMini().setRegistryName("siding");
+    public static Block SIDING = new BlockSiding().setRegistryName("siding");
 
     public MiniBlocks() {
-        enabledByDefault=false;
+        enabledByDefault = false;
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        BWMBlocks.registerBlock(SIDING, new ItemBlockMeta(SIDING));
-        GameRegistry.registerTileEntity(TileMini.class, "bwm.miniblock");
+        BWMBlocks.registerBlock(SIDING, new ItemMini(SIDING));
+        GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        MATERIALS.addAll(Lists.newArrayList(new ItemStack(Blocks.PLANKS),new ItemStack(Blocks.PLANKS,1,1),new ItemStack(Blocks.PLANKS,1,2),new ItemStack(Blocks.PLANKS,1,3)));
+        MATERIALS.addAll(Lists.newArrayList(new ItemStack(Blocks.PLANKS), new ItemStack(Blocks.PLANKS, 1, 1), new ItemStack(Blocks.PLANKS, 1, 2), new ItemStack(Blocks.PLANKS, 1, 3)));
     }
 
     @Override
@@ -50,8 +49,8 @@ public class MiniBlocks extends Feature {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onPostBake(ModelBakeEvent event) {
-        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":siding", "normal"), MiniModel.INSTANCE);
-        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":siding", "inventory"), MiniModel.INSTANCE);
-        MiniModel.INSTANCE.template = RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/siding"));
+        MiniModel.SIDING = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/siding")));
+        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":siding", "normal"), MiniModel.SIDING);
+        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":siding", "inventory"), MiniModel.SIDING);
     }
 }

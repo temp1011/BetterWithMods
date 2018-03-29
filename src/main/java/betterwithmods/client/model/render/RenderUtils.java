@@ -214,7 +214,6 @@ public class RenderUtils {
         if (renderItem == null) {
             renderItem = Minecraft.getMinecraft().getRenderItem();
         }
-
         return renderItem.getItemModelWithOverrides(stack, null, null).getParticleTexture();
     }
 
