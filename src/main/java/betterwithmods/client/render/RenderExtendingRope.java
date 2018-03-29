@@ -1,6 +1,7 @@
 package betterwithmods.client.render;
 
 import betterwithmods.client.model.TESRBucket;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockBucket;
 import betterwithmods.common.blocks.tile.TileEntityBucket;
@@ -8,15 +9,16 @@ import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.util.AABBArray;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -79,32 +81,9 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
 
-        if (renderManager.isDebugBoundingBox()) {
-            renderDebugBoundingBox(entity, x, y, z, entityYaw, partialTicks);
-        }
+        RenderUtils.renderDebugBoundingBox(x,y,z,AABBArray.getParts(entity.getEntityBoundingBox().offset(-entity.posX,-entity.posY,-entity.posZ)));
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-    }
-
-    private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float entityYaw,
-                                        float partialTicks) {
-        GlStateManager.depthMask(false);
-        GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.disableBlend();
-        AxisAlignedBB axisalignedbb = entityIn.getEntityBoundingBox();
-        for (AxisAlignedBB aabb : AABBArray.getParts(axisalignedbb)) {
-            RenderGlobal.drawBoundingBox(aabb.minX - entityIn.posX + x, aabb.minY - entityIn.posY + y,
-                    aabb.minZ - entityIn.posZ + z, aabb.maxX - entityIn.posX + x, aabb.maxY - entityIn.posY + y,
-                    aabb.maxZ - entityIn.posZ + z, 0.5F, 0.5F, 1.0F, 1.0F);
-        }
-
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableLighting();
-        GlStateManager.enableCull();
-        GlStateManager.disableBlend();
-        GlStateManager.depthMask(true);
     }
 
 }

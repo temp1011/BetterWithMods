@@ -5,17 +5,18 @@ import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityWaterwheel extends TileAxleGenerator {
     public TileEntityWaterwheel() {
         super();
-        this.radius = 3;
     }
 
     @Override
@@ -142,21 +143,27 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        if (getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWaterwheel) {
-            EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
-            int xP = axis == EnumFacing.Axis.Z ? radius : 0;
-            int yP = radius;
-            int zP = axis == EnumFacing.Axis.X ? radius : 0;
-            return new AxisAlignedBB(x - xP - 1, y - yP - 1, z - zP - 1, x + xP + 1, y + yP + 1, z + zP + 1);
-        } else
-            return super.getRenderBoundingBox();
+        IBlockState state = getBlockWorld().getBlockState(pos);
+        if (!(state.getBlock() instanceof BlockWaterwheel))
+            return Block.FULL_BLOCK_AABB;
+
+        EnumFacing.Axis axis = state.getValue(DirUtils.AXIS);
+        EnumFacing facing = (axis == EnumFacing.Axis.Z) ? EnumFacing.SOUTH : EnumFacing.EAST;
+        Vec3i vec = facing.getDirectionVec();
+        int xP = axis == EnumFacing.Axis.Z ? getRadius() : 0;
+        int yP = getRadius();
+        int zP = axis == EnumFacing.Axis.X ? getRadius() : 0;
+
+        return new AxisAlignedBB(-xP, -yP, -zP, xP, yP, zP).offset(0.5, 0.5, 0.5).offset(pos).expand(vec.getX(), vec.getY(), vec.getZ());
     }
 
     @Override
     public Block getBlock() {
         return getBlockType();
+    }
+
+    @Override
+    public int getRadius() {
+        return 2;
     }
 }

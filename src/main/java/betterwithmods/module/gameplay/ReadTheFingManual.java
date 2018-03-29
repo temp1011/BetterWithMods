@@ -15,12 +15,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import java.util.Locale;
 
 public class ReadTheFingManual extends Feature {
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        CapabilityManager.INSTANCE.register(PlayerDataHandler.PlayerInfo.class, new PlayerDataHandler.CapabilityPlayerInfo(), PlayerDataHandler.PlayerInfo::new);
-    }
-
     @SubscribeEvent
     public void onCraftedEvent(PlayerEvent.ItemCraftedEvent event) {
         if (!event.player.world.isRemote && !event.crafting.isEmpty() && event.crafting.getItem() != BWMItems.MANUAL) {

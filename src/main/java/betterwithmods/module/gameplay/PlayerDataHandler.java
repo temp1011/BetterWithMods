@@ -2,6 +2,7 @@ package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
+import betterwithmods.module.ModuleLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -10,8 +11,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
@@ -28,6 +32,22 @@ public class PlayerDataHandler extends Feature {
     }
 
     private static final ResourceLocation PLAYER_INFO = new ResourceLocation(BWMod.MODID, "player_info");
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        CapabilityManager.INSTANCE.register(PlayerDataHandler.PlayerInfo.class, new PlayerDataHandler.CapabilityPlayerInfo(), PlayerDataHandler.PlayerInfo::new);
+    }
+
+    @SubscribeEvent
+    public void clone(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            PlayerInfo o = getPlayerInfo(event.getOriginal());
+            PlayerInfo n = getPlayerInfo(event.getEntityPlayer());
+            if (o != null && n != null) {
+                n.deserializeNBT(o.serializeNBT());
+            }
+        }
+    }
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
@@ -60,6 +80,7 @@ public class PlayerDataHandler extends Feature {
         }
     }
 
+    //TODO make this extensible.
     public static class PlayerInfo implements ICapabilitySerializable<NBTTagCompound> {
         public boolean givenManual;
 
@@ -89,4 +110,6 @@ public class PlayerDataHandler extends Feature {
             givenManual = nbt.getBoolean("givenManual");
         }
     }
+
+
 }

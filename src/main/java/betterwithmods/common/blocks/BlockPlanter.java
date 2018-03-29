@@ -221,6 +221,20 @@ public class BlockPlanter extends BWMBlock {
             world.setBlockState(pos, BLOCKS.get(DIRT).getDefaultState());
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        if(face != EnumFacing.UP)
+            return face == EnumFacing.DOWN ? BlockFaceShape.CENTER_BIG : BlockFaceShape.UNDEFINED;
+        switch(type)
+        {
+            case EMPTY:
+            case WATER:
+                return BlockFaceShape.BOWL;
+            default:
+                return BlockFaceShape.SOLID;
+        }
+    }
+
     public enum EnumType implements IStringSerializable {
         EMPTY("empty", new IngredientTool("shovel"), Blocks.AIR.getDefaultState(), new EnumPlantType[0]),
         FARMLAND("farmland", new IngredientTool(s -> s.getItem() instanceof ItemHoe, ItemStack.EMPTY), Blocks.DIRT.getDefaultState(), new EnumPlantType[]{EnumPlantType.Crop, EnumPlantType.Plains}),

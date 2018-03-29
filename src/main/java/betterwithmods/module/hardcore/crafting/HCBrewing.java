@@ -18,8 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionHelper;
+import net.minecraft.potion.PotionHelper.MixPredicate;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.brewing.AbstractBrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -31,9 +33,11 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class HCBrewing extends Feature {
     private static boolean removeMovementPotions;
@@ -87,13 +91,18 @@ public class HCBrewing extends Feature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event) {
         tryChangePotions = true;
 
+        List<MixPredicate<PotionType>> moddedPotions = new ArrayList<>();
+        List<MixPredicate<PotionType>> mixPredicates = new ArrayList<>();
+
         try {
-            List<PotionHelper.MixPredicate<PotionType>> mixPredicates = (List<PotionHelper.MixPredicate<PotionType>>) ReflectionHelper.findField(PotionHelper.class, "field_185213_a", "POTION_TYPE_CONVERSIONS").get(null);
-            List<PotionHelper.MixPredicate<Item>> mixItemPredicates = (List<PotionHelper.MixPredicate<Item>>) ReflectionHelper.findField(PotionHelper.class, "field_185214_b", "POTION_ITEM_CONVERSIONS").get(null);
+            mixPredicates = (List<MixPredicate<PotionType>>) ReflectionHelper.findField(PotionHelper.class, "field_185213_a", "POTION_TYPE_CONVERSIONS").get(null);
+            List<MixPredicate<Item>> mixItemPredicates = (List<MixPredicate<Item>>) ReflectionHelper.findField(PotionHelper.class, "field_185214_b", "POTION_ITEM_CONVERSIONS").get(null);
             //List<PotionHelper.ItemPredicateInstance> potionItems = (List<PotionHelper.ItemPredicateInstance>) ReflectionHelper.findField(PotionHelper.class,"field_185215_c","POTION_ITEMS").get(null);
+
+            moddedPotions = mixPredicates.stream().filter(this::isModdedPotion).collect(Collectors.toList());
 
             mixPredicates.clear();
             mixItemPredicates.clear();
@@ -198,16 +207,23 @@ public class HCBrewing extends Feature {
             PotionHelper.addMix(PotionTypes.NIGHT_VISION, inverter, PotionTypes.INVISIBILITY);
             PotionHelper.addMix(PotionTypes.LONG_NIGHT_VISION, inverter, PotionTypes.LONG_INVISIBILITY);
             PotionHelper.addMix(PotionTypes.INVISIBILITY, extender, PotionTypes.LONG_INVISIBILITY);
-        }
-    }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        if (tryChangePotions && modPotionCompat) {
+        if (modPotionCompat) {
             ItemStack extenderToReplace = new ItemStack(Items.REDSTONE);
             ItemStack strengthenerToReplace = new ItemStack(Items.GLOWSTONE_DUST);
             ItemStack inverterToReplace = new ItemStack(Items.FERMENTED_SPIDER_EYE);
             ItemStack splashToReplace = new ItemStack(Items.GUNPOWDER);
+
+            for(MixPredicate<PotionType> moddedPotion : moddedPotions)
+            {
+                if(moddedPotion.reagent.apply(extenderToReplace) && isExtended(moddedPotion.input.getEffects(),moddedPotion.output.getEffects()))
+                    moddedPotion.reagent = extender;
+                if(moddedPotion.reagent.apply(strengthenerToReplace) && isStrong(moddedPotion.input.getEffects(),moddedPotion.output.getEffects()))
+                    moddedPotion.reagent = strenthener;
+                if(moddedPotion.reagent.apply(inverterToReplace) && isInverted(moddedPotion.input.getEffects(),moddedPotion.output.getEffects()))
+                    moddedPotion.reagent = inverter;
+                mixPredicates.add(moddedPotion);
+            }
 
             try {
                 List<IBrewingRecipe> recipes = (List<IBrewingRecipe>) ReflectionHelper.findField(BrewingRecipeRegistry.class,"recipes").get(null);
@@ -245,6 +261,13 @@ public class HCBrewing extends Feature {
                 e.printStackTrace();
             }
         }
+        }
+    }
+
+    private boolean isModdedPotion(MixPredicate<PotionType> predicate) {
+        ResourceLocation registryName = predicate.output.getRegistryName();
+        //If there's no registry name it's surely modded as only modders make dumb mistakes like that
+        return registryName == null || (!registryName.getResourceDomain().toLowerCase().equals("minecraft") && !registryName.getResourceDomain().toLowerCase().equals("betterwithmods"));
     }
 
     public boolean isExtended(ItemStack potionA, ItemStack potionB)
@@ -252,13 +275,22 @@ public class HCBrewing extends Feature {
         List<PotionEffect> effectsA = PotionUtils.getEffectsFromStack(potionA);
         List<PotionEffect> effectsB = PotionUtils.getEffectsFromStack(potionB);
 
+        return isExtended(effectsA,effectsB); //Not equal because of fuse potions in Extra Alchemy
+    }
+
+    private boolean isExtended(List<PotionEffect> effectsA, List<PotionEffect> effectsB)
+    {
         if(effectsA.size() != 1 || effectsB.size() != 1)
             return false;
 
         PotionEffect effectA = effectsA.get(0);
         PotionEffect effectB = effectsB.get(0);
 
-        return effectA.getPotion().equals(effectB.getPotion()) && effectA.getDuration() != effectB.getDuration(); //Not equal because of fuse potions in Extra Alchemy
+        return isExtended(effectA, effectB);
+    }
+
+    private boolean isExtended(PotionEffect effectA, PotionEffect effectB) {
+        return effectA.getPotion().equals(effectB.getPotion()) && effectA.getDuration() != effectB.getDuration();
     }
 
     public boolean isStrong(ItemStack potionA, ItemStack potionB)
@@ -266,12 +298,21 @@ public class HCBrewing extends Feature {
         List<PotionEffect> effectsA = PotionUtils.getEffectsFromStack(potionA);
         List<PotionEffect> effectsB = PotionUtils.getEffectsFromStack(potionB);
 
+        return isStrong(effectsA, effectsB);
+    }
+
+    private boolean isStrong(List<PotionEffect> effectsA, List<PotionEffect> effectsB)
+    {
         if(effectsA.size() != 1 || effectsB.size() != 1)
             return false;
 
         PotionEffect effectA = effectsA.get(0);
         PotionEffect effectB = effectsB.get(0);
 
+        return isStrong(effectA, effectB);
+    }
+
+    private boolean isStrong(PotionEffect effectA, PotionEffect effectB) {
         return effectA.getPotion().equals(effectB.getPotion()) && effectA.getAmplifier() < effectB.getAmplifier();
     }
 
@@ -280,12 +321,21 @@ public class HCBrewing extends Feature {
         List<PotionEffect> effectsA = PotionUtils.getEffectsFromStack(potionA);
         List<PotionEffect> effectsB = PotionUtils.getEffectsFromStack(potionB);
 
+        return isInverted(effectsA, effectsB);
+    }
+
+    private boolean isInverted(List<PotionEffect> effectsA, List<PotionEffect> effectsB)
+    {
         if(effectsA.size() != 1 || effectsB.size() != 1)
             return false;
 
         PotionEffect effectA = effectsA.get(0);
         PotionEffect effectB = effectsB.get(0);
 
+        return isInverted(effectA, effectB);
+    }
+
+    private boolean isInverted(PotionEffect effectA, PotionEffect effectB) {
         return !effectA.getPotion().equals(effectB.getPotion());
     }
 

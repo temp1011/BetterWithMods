@@ -1,10 +1,16 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BlockBDispenser;
+import betterwithmods.common.blocks.BlockUnfiredPottery;
 import betterwithmods.common.blocks.tile.TileCamo;
 import betterwithmods.module.Feature;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -41,8 +47,23 @@ public class PlaceClay extends Feature {
 //            }
 //        });
 
+        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(Items.CLAY_BALL, (source, stack) -> dispenseBlock(source,stack,BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.BRICK)));
+        BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(BWMItems.MATERIAL, (source, stack) -> stack.getMetadata() == ItemMaterial.EnumMaterial.NETHER_SLUDGE.getMetadata() ? dispenseBlock(source,stack, BWMBlocks.UNFIRED_POTTERY.getDefaultState().withProperty(BlockUnfiredPottery.TYPE, BlockUnfiredPottery.EnumType.NETHER_BRICK)) : stack);
     }
 
+    public ItemStack dispenseBlock(IBlockSource source, ItemStack stack, IBlockState stateToPlace)
+    {
+        IPosition pos = BlockBDispenser.getDispensePosition(source);
+        BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
+        World world = source.getWorld();
+        if((world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)) && stateToPlace.getBlock().canPlaceBlockAt(world,check))
+        {
+            world.setBlockState(check,stateToPlace);
+            stack.shrink(1);
+            return stack.isEmpty() ? ItemStack.EMPTY : stack;
+        }
+        return stack;
+    }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onPlaceClay(PlayerInteractEvent.RightClickBlock event) {

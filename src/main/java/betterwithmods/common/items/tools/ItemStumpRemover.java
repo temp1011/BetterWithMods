@@ -41,8 +41,8 @@ public class ItemStumpRemover extends ItemAltName {
                 if (worldIn.isAirBlock(pos.up()) && HCStumping.isStump(state) && HCStumping.isRoots(below)) {
                     if (!worldIn.isRemote) {
                         worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, 1, 1);
-                        worldIn.setBlockToAir(pos);
                         state.getBlock().harvestBlock(worldIn, playerIn, pos, state, null, stack);
+                        worldIn.setBlockToAir(pos);
                     }
 
                     stack.shrink(1);

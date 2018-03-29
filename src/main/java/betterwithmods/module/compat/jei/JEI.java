@@ -135,6 +135,8 @@ public class JEI implements IModPlugin {
 
     public static void showRecipe(Ingredient ingredient) {
         ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
+        if (stack.isEmpty())
+            return;
         IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
         JEI.JEI_RUNTIME.getRecipesGui().show(focus);
     }

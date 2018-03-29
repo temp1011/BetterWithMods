@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
@@ -265,4 +266,28 @@ public class RenderUtils {
             return null;
         }
     }
+
+    public static void renderDebugBoundingBox(double x, double y, double z, AxisAlignedBB... boxes) {
+        if (!Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox())
+            return;
+
+        GlStateManager.depthMask(false);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.disableCull();
+        GlStateManager.disableBlend();
+
+        for (AxisAlignedBB box : boxes) {
+            box = box.offset(x,y,z);
+            RenderGlobal.drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 0.5F, 0.5F, 1.0F, 1.0F);
+        }
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
+        GlStateManager.depthMask(true);
+    }
+
 }
+

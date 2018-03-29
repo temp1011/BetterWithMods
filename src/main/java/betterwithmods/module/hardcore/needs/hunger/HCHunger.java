@@ -94,8 +94,7 @@ public class HCHunger extends CompatFeature {
 
     public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
     public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
-    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false)
-            .setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
+    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -105,7 +104,6 @@ public class HCHunger extends CompatFeature {
             BWMItems.registerItem(BROWN_MUSHROOM);
             BWMItems.registerItem(RED_MUSHROOM);
         }
-
     }
 
     @Override
@@ -167,6 +165,8 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_WOLF_CHOP), 15);
         FoodHelper.registerFood(new ItemStack(BWMItems.MYSTERY_MEAT), 9);
         FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_MYSTERY_MEAT), 12);
+        FoodHelper.registerFood(new ItemStack(BWMItems.BAT_WING), 3);
+        FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_BAT_WING), 6);
 
         FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 0.5f, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 9, 1.6f, true);
@@ -174,6 +174,7 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 1, true);
         FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 9, 1.6f, true);
         FoodHelper.registerFood(new ItemStack(Items.CAKE), 4, 3, true);
+        FoodHelper.registerFood(new ItemStack(Items.CHORUS_FRUIT), 3, 0f, true);
 
         ((IEdibleBlock) Blocks.CAKE).setEdibleAtMaxHunger(true);
     }
