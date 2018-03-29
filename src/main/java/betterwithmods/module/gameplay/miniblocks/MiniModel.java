@@ -27,7 +27,7 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
         textures.put("side", object.texture.getIconName());
         IModelState state = object.orientation.toTransformation();
         IModel retexture = template.retexture(textures.build()).uvlock(true);
-        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter)).addDefaultBlockTransforms().addDefaultItemTransforms();
+        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter)).addDefaultBlockTransforms();
     }
 
 
