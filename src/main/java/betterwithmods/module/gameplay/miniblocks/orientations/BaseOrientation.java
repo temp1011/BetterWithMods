@@ -29,4 +29,8 @@ public interface BaseOrientation extends IStringSerializable {
 
     TRSRTransformation toTransformation();
 
+    default BaseOrientation next() {
+        return DEFAULT;
+    }
+
 }

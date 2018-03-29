@@ -1,6 +1,6 @@
 package betterwithmods.module.gameplay.miniblocks;
 
-import betterwithmods.common.blocks.BWMBlock;
+import betterwithmods.common.blocks.BlockRotate;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockMini extends BWMBlock {
+public abstract class BlockMini extends BlockRotate {
 
     public static final IUnlistedProperty<MiniCacheInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniCacheInfo.class);
 
@@ -93,8 +94,8 @@ public abstract class BlockMini extends BWMBlock {
         TileEntity tile = source.getTileEntity(pos);
         if (tile instanceof TileMini) {
             TileMini mini = (TileMini) tile;
-            if (mini.orientation != null)
-                return mini.orientation.getBounds();
+            if (mini.getOrientation() != null)
+                return mini.getOrientation().getBounds();
         }
         return Block.FULL_BLOCK_AABB;
     }
@@ -106,5 +107,20 @@ public abstract class BlockMini extends BWMBlock {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    }
+
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        rotateBlock(world, pos, EnumFacing.UP);
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileMini) {
+            TileMini mini = (TileMini) tile;
+            return mini.changeOrientation(mini.getOrientation().next(), false);
+        }
+        return false;
     }
 }

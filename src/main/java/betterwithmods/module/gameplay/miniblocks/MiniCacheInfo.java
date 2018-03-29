@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay.miniblocks;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -24,7 +25,7 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
 
     public static MiniCacheInfo from(ItemStack mini) {
         NBTTagCompound tag = mini.getTagCompound();
-        if(tag != null && tag.hasKey("texture")) {
+        if (tag != null && tag.hasKey("texture")) {
             ItemStack texture = new ItemStack(tag.getCompoundTag("texture"));
             return new MiniCacheInfo(RenderUtils.getSprite(texture), BaseOrientation.DEFAULT, texture);
         }
@@ -48,5 +49,17 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
     @Override
     public int renderHashCode() {
         return 31 * texture.hashCode() + orientation.hashCode();
+    }
+
+    public TextureAtlasSprite getTexture() {
+        if(texture == null)
+            return RenderUtils.textureGetter.apply(TextureMap.LOCATION_MISSING_TEXTURE);
+        return texture;
+    }
+
+    public BaseOrientation getOrientation() {
+        if(orientation == null)
+            return BaseOrientation.DEFAULT;
+        return orientation;
     }
 }

@@ -28,12 +28,11 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class RenderUtils {
-    protected static final Minecraft minecraft = Minecraft.getMinecraft();
     public static final Function<ResourceLocation, TextureAtlasSprite> textureGetter = ModelLoader.defaultTextureGetter();
+    protected static final Minecraft minecraft = Minecraft.getMinecraft();
+    public static float FLUID_OFFSET = 0.005f;
     private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
-
-    public static float FLUID_OFFSET = 0.005f;
 
     public static String fromStack(ItemStack stack) {
         return stack.getItem().getRegistryName().toString() + ":" + stack.getMetadata();
@@ -211,6 +210,8 @@ public class RenderUtils {
     }
 
     public static TextureAtlasSprite getSprite(ItemStack stack) {
+        if (stack == null || stack.isEmpty())
+            return textureGetter.apply(TextureMap.LOCATION_MISSING_TEXTURE);
         if (renderItem == null) {
             renderItem = Minecraft.getMinecraft().getRenderItem();
         }
@@ -274,7 +275,7 @@ public class RenderUtils {
         GlStateManager.disableBlend();
 
         for (AxisAlignedBB box : boxes) {
-            box = box.offset(x,y,z);
+            box = box.offset(x, y, z);
             RenderGlobal.drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 0.5F, 0.5F, 1.0F, 1.0F);
         }
 
