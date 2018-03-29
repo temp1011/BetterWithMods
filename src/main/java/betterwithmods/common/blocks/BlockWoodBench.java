@@ -77,4 +77,9 @@ public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face == EnumFacing.DOWN ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED;
     }
+
+    @Override
+    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockWoodBench;
+    }
 }
