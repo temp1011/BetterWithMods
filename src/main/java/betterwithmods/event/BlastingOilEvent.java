@@ -71,7 +71,7 @@ public class BlastingOilEvent {
                     item.setDead();
                 }
             }
-            if (item.motionY > 0)
+            if (item.motionY > 0 || !highestPoint.containsKey(item))
                 highestPoint.put(item, item.posY);
         });
         toRemove.forEach(highestPoint::remove);
