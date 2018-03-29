@@ -3,6 +3,7 @@
   "defaults": {
     "textures": {
       "bottom": "blocks/planks_oak",
+      "top": "#bottom",
       "side": "#bottom",
       "particle": "#side"
     },
