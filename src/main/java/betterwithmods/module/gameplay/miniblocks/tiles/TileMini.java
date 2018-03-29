@@ -1,4 +1,4 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.tiles;
 
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;

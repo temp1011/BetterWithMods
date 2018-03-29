@@ -21,6 +21,20 @@ public class BlockMoulding extends BlockMini {
         return MOULDING_ORIENTATION;
     }
 
+    /*
+    0 west down
+    1 north down
+    2 east down
+    3 south down
+    4 west up
+    5 north up
+    6 east up
+    7 south up
+    8 north west
+    9 north east
+    10 south west
+    11 south east
+     */
 
     private final AxisAlignedBB[] bounds = new AxisAlignedBB[]{
             new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 0.5D, 1.0D),

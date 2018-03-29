@@ -17,11 +17,38 @@
  * along with Charset.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.client;
+
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
 
-public interface IStateParticleBakedModel {
-	TextureAtlasSprite getParticleTexture(IBlockState state);
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class WrappedBakedModel extends BaseBakedModel {
+    private final IBakedModel parent;
+
+    public WrappedBakedModel(IBakedModel parent) {
+        super();
+        this.parent = parent;
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return parent.isGui3d();
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return parent.getParticleTexture();
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+        return parent.getQuads(state, side, rand);
+    }
 }

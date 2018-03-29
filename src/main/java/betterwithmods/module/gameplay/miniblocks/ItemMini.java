@@ -1,5 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks;
 
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

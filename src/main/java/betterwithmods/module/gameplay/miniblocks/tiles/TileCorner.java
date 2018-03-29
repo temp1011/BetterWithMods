@@ -1,4 +1,4 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.tiles;
 
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.orientations.SidingOrientation;
@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nullable;
 
-public class TileSiding extends TileMini {
+public class TileCorner extends TileMini {
     @Override
     public BaseOrientation deserializeOrientation(NBTTagCompound tag) {
         int o = tag.getInteger("orientation");

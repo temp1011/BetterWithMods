@@ -1,6 +1,10 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.blocks;
 
 import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
+import betterwithmods.module.gameplay.miniblocks.client.MiniCacheInfo;
+import betterwithmods.module.gameplay.miniblocks.client.UnlistedPropertyGeneric;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;

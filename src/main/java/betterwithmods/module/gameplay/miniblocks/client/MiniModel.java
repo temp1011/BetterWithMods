@@ -1,6 +1,7 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.client;
 
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -12,11 +13,11 @@ import net.minecraftforge.common.model.IModelState;
 
 public class MiniModel extends ModelFactory<MiniCacheInfo> {
 
-    public static MiniModel SIDING;
+    public static MiniModel SIDING, MOULDING, CORNER;
 
     public IModel template;
 
-    protected MiniModel(IModel template) {
+    public MiniModel(IModel template) {
         super(BlockMini.MINI_INFO, TextureMap.LOCATION_MISSING_TEXTURE);
         this.template = template;
     }

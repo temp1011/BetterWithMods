@@ -1,5 +1,6 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.blocks;
 
+import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

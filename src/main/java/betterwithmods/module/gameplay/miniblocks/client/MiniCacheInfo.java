@@ -1,7 +1,8 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.module.gameplay.miniblocks.client;
 
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
