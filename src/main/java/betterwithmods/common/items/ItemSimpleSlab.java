@@ -1,10 +1,10 @@
 package betterwithmods.common.items;
 
-import betterwithmods.common.blocks.ItemBlockMeta;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author Koward
  */
-public class ItemSimpleSlab extends ItemBlockMeta {
+public class ItemSimpleSlab extends ItemBlock {
     private final Block doubleSlab;
 
     public ItemSimpleSlab(Block block, Block doubleSlab) {
@@ -34,7 +34,7 @@ public class ItemSimpleSlab extends ItemBlockMeta {
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (playerIn != null) {
             ItemStack stack = playerIn.getHeldItem(hand);
-            if (stack.getCount() != 0 && playerIn.canPlayerEdit(pos.offset(facing), facing, stack)) {
+            if (!stack.isEmpty() && playerIn.canPlayerEdit(pos.offset(facing), facing, stack)) {
                 IBlockState iblockstate = worldIn.getBlockState(pos);
 
                 if (iblockstate.getBlock() == this.block) {

@@ -3,16 +3,13 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockAesthetic;
-import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.BlockRawPastry;
-import betterwithmods.common.blocks.BlockVase;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.module.Feature;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -41,10 +38,10 @@ public class KilnRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY));
-        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.CRUCIBLE));
-        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
-        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, BlockVase.getStack(EnumDyeColor.WHITE));
+//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY));
+//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.CRUCIBLE));
+//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
+//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, BlockVase.getStack(EnumDyeColor.WHITE));
         addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE));
         addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD));

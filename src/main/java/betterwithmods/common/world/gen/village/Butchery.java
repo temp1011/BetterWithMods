@@ -1,6 +1,5 @@
 package betterwithmods.common.world.gen.village;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.hardcore.world.HCVillages;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
@@ -56,8 +55,9 @@ public class Butchery extends AbandonedVillagePiece {
 
             this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 7 - 1, 0);
         }
-        IBlockState table = this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
+
         IBlockState iblockstate = this.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getDefaultState());
+        IBlockState table = iblockstate;//this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
         IBlockState iblockstate1 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState iblockstate2 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH));
         IBlockState iblockstate3 = this.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST));

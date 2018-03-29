@@ -4,11 +4,9 @@ import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
-import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.manual.api.manual.PathProvider;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -17,9 +15,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.function.BiFunction;
-
-import static net.minecraft.block.material.Material.ROCK;
-import static net.minecraft.block.material.Material.WOOD;
 
 /**
  * Created by primetoxinz on 6/18/17.
@@ -70,14 +65,14 @@ public class DefinitionPathProvider implements PathProvider {
             return "%LANGUAGE%/blocks/wind_chime.md";
         } else if (block instanceof BlockFurniture || block instanceof BlockPane || block instanceof BlockIronWall) {
             return "%LANGUAGE%/blocks/decoration.md";
-        } else if (block instanceof BlockMini) {
+        } /*else if (block instanceof BlockMini) {
             Material mat = state.getMaterial();
             if (mat == WOOD || mat == BlockMini.MINI) {
                 return "%LANGUAGE%/blocks/minimized_wood.md";
             } else if (mat == ROCK) {
                 return "%LANGUAGE%/blocks/minimized_stone.md";
             }
-        } else if (block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
+        }*/ else if (block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
             return "%LANGUAGE%/hardcore/beacons.md";
         } else if (block instanceof BlockWindmill) {
             return "%LANGUAGE%/blocks/windmill.md";

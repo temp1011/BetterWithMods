@@ -49,6 +49,11 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return 0;
+    }
+
+    @Override
     public boolean getUseNeighborBrightness(IBlockState state) {
         return true;
     }
@@ -131,13 +136,6 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
         state = state.withProperty(SNOWY, snowy);
 
         return state;
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(this, 1, DirtSlabType.DIRT.getMetadata()));
-        list.add(new ItemStack(this, 1, DirtSlabType.GRASS.getMetadata()));
-        list.add(new ItemStack(this, 1, DirtSlabType.MYCELIUM.getMetadata()));
     }
 
     @Override

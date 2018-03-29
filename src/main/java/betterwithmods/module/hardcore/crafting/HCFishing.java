@@ -69,7 +69,6 @@ public class HCFishing extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(FishingBait.class, new CapabilityFishingRod(), FishingBait::new);
         BWMRecipes.removeRecipe(new ResourceLocation("fishing_rod"));
-
     }
 
     @Override

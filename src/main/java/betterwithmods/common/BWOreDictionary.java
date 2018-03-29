@@ -115,14 +115,14 @@ public class BWOreDictionary {
         registerOre("leather", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT));
 
 
-        registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("sidingWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("mouldingWood", new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("cornerWood", new ItemStack(BWMBlocks.WOOD_CORNER, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("sidingWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("mouldingWood", new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("cornerWood", new ItemStack(BWMBlocks.WOOD_CORNER, 1, OreDictionary.WILDCARD_VALUE));
 
-        registerOre("sidingStone", new ItemStack(BWMBlocks.STONE_SIDING, 1, 0));
-        registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, 0));
-        registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, 0));
+//        registerOre("sidingStone", new ItemStack(BWMBlocks.STONE_SIDING, 1, 0));
+//        registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, 0));
+//        registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, 0));
 
         registerOre("fiberHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_FIBERS));
         registerOre("fabricHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_CLOTH));
@@ -148,7 +148,7 @@ public class BWOreDictionary {
         registerOre("treeLeaves", new ItemStack(BWMBlocks.BLOOD_LEAVES));
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
-        registerOre("cobblestone", new ItemStack(BWMBlocks.COBBLE, 1, OreDictionary.WILDCARD_VALUE));
+
 
         //TODO all the slats and grates
         registerOre("slats", new ItemStack(BWMBlocks.OAK_SLATS));
@@ -158,12 +158,13 @@ public class BWOreDictionary {
         registerOre("blockPlanter", BlockPlanter.BLOCKS.values());
         registerOre("blockVase", BlockVase.BLOCKS.values());
         registerOre("blockCandle", BlockCandle.BLOCKS.values());
+        registerOre("cobblestone", BlockCobble.BLOCKS);
 
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
 
         registerOre("blockWindChime", BlockChime.BLOCKS);
-        registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
-        registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
+//        registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
 
         registerOre("blockSoulUrn", new ItemStack(BWMBlocks.SOUL_URN));
 

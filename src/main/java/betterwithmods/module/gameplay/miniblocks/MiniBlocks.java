@@ -2,8 +2,6 @@ package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.ItemBlockMeta;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -33,7 +31,7 @@ public class MiniBlocks extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        BWMBlocks.registerBlock(SIDING, new ItemBlockMeta(SIDING));
+//        BWMBlocks.registerBlock(SIDING, new ItemBlockLimited(SIDING));
         GameRegistry.registerTileEntity(TileMini.class, "bwm.miniblock");
     }
 

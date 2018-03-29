@@ -21,8 +21,6 @@ import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.compat.Quark;
-import betterwithmods.module.compat.bop.BiomesOPlenty;
 import betterwithmods.module.gameplay.CraftingRecipes;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
@@ -261,9 +259,6 @@ public class BWRegistry {
         replaceIRecipe(HCRedstone.class, reg);
         replaceIRecipe(HCTorches.class, reg);
         replaceIRecipe(HCFishing.class, reg);
-
-        replaceIRecipe(BiomesOPlenty.class, reg);
-        replaceIRecipe(Quark.class, reg);
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {

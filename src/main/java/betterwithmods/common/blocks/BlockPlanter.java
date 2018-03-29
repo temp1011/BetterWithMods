@@ -6,6 +6,7 @@ import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -36,14 +37,8 @@ import java.util.Random;
 import static betterwithmods.common.blocks.BlockPlanter.EnumType.*;
 
 public class BlockPlanter extends BWMBlock {
-    public static final HashMap<EnumType, BlockPlanter> BLOCKS = Maps.newHashMap();
+    public static final HashMap<EnumType, Block> BLOCKS = Maps.newHashMap();
     private final EnumType type;
-
-    public static void init() {
-        for (EnumType type : EnumType.VALUES) {
-            BLOCKS.put(type, new BlockPlanter(type));
-        }
-    }
 
     private BlockPlanter(EnumType type) {
         super(Material.ROCK);
@@ -51,7 +46,13 @@ public class BlockPlanter extends BWMBlock {
         this.setHardness(1.0F);
         this.setHarvestLevel("pickaxe", 0);
         this.type = type;
-        this.setRegistryName(String.format("planter_%s",type.getName()));
+        this.setRegistryName(String.format("planter_%s", type.getName()));
+    }
+
+    public static void init() {
+        for (EnumType type : EnumType.VALUES) {
+            BLOCKS.put(type, new BlockPlanter(type));
+        }
     }
 
     public static ItemStack getStack(EnumType type) {

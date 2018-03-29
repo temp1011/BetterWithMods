@@ -5,7 +5,6 @@ import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.mechanical.tile.TileSaw;
-import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.module.gameplay.MechanicalBreakage;
@@ -265,8 +264,6 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         IBlockState state = world.getBlockState(pos2);
         Block block = state.getBlock();
         int harvestMeta = block.damageDropped(state);
-        if (block instanceof IDamageDropped)
-            harvestMeta = ((IDamageDropped) block).damageDropped(state, world, pos2);
 
         if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
             List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);

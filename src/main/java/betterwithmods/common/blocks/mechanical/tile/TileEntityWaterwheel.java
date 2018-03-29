@@ -31,7 +31,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     public void verifyIntegrity() {
         boolean isAir = true;
         boolean hasWater = true;
-        if (getBlockWorld().getBlockState(pos) != null && getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
+        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
             EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
@@ -145,7 +145,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (getBlockWorld().getBlockState(pos).getBlock() != null && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWaterwheel) {
+        if (getBlockWorld().getBlockState(pos).getBlock() instanceof BlockWaterwheel) {
             EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int xP = axis == EnumFacing.Axis.Z ? radius : 0;
             int yP = radius;

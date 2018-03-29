@@ -1,7 +1,6 @@
 package betterwithmods.module.hardcore.world;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.world.BWMapGenVillage;
 import betterwithmods.common.world.gen.village.*;
 import betterwithmods.common.world.gen.village.field.BWField1;
@@ -82,9 +81,9 @@ public class HCVillages extends Feature {
 
 	@SubscribeEvent
 	public void biomeSpecificVillage(BiomeEvent.GetVillageBlockID event) {
-		if (event.getOriginal() == BWMBlocks.WOOD_TABLE.getDefaultState()) {
-			event.setReplacement(event.getOriginal().withProperty(BlockPlanks.VARIANT, plankFromBiome(event.getBiome())));
-		}
+//		if (event.getOriginal() == BWMBlocks.WOOD_TABLE.getDefaultState()) {
+//			event.setReplacement(event.getOriginal().withProperty(BlockPlanks.VARIANT, plankFromBiome(event.getBiome())));
+//		}
 		if (event.getOriginal() == Blocks.DIRT) {
 			if (BiomeDictionary.hasType(event.getBiome(), BiomeDictionary.Type.SANDY)) {
 				event.setReplacement(Blocks.SAND.getDefaultState());

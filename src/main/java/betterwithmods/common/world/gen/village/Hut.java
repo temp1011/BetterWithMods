@@ -1,6 +1,5 @@
 package betterwithmods.common.world.gen.village;
 
-import betterwithmods.common.BWMBlocks;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -39,6 +38,7 @@ public class Hut extends AbandonedVillagePiece {
     public Class<?> getComponentClass() {
         return Hut.class;
     }
+
     /**
      * (abstract) Helper method to write subclass data to NBT
      */
@@ -76,7 +76,7 @@ public class Hut extends AbandonedVillagePiece {
         IBlockState secondary = this.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState());
         IBlockState stair = this.getBiomeSpecificBlockState(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
         IBlockState supports = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
-        IBlockState table = this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
+        IBlockState table = primary; //this.getBiomeSpecificBlockState(BWMBlocks.WOOD_TABLE.getDefaultState());
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 1, 1, 3, 5, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 3, 0, 4, primary, primary, false);
         this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 0, 1, 2, 0, 3, Blocks.DIRT.getDefaultState(), Blocks.DIRT.getDefaultState(), false);

@@ -109,12 +109,12 @@ tile.bwm:urn.name=Urn
 tile.bwm:soul_urn.name=Soul Urn
 tile.bwm:void_urn.name=Void Urn
 
-tile.bwm:unfired_pottery.0.name=Unfired Crucible
-tile.bwm:unfired_pottery.1.name=Unfired Planter
-tile.bwm:unfired_pottery.2.name=Unfired Urn
-tile.bwm:unfired_pottery.3.name=Unfired Vase
-tile.bwm:unfired_pottery.4.name=Unfired Brick
-tile.bwm:unfired_pottery.5.name=Unfired Netherbrick
+tile.bwm:unfired_crucible.name=Unfired Crucible
+tile.bwm:unfired_planter.name=Unfired Planter
+tile.bwm:unfired_urn.name=Unfired Urn
+tile.bwm:unfired_vase.name=Unfired Vase
+tile.bwm:unfired_brick.name=Unfired Brick
+tile.bwm:unfired_nether_brick.name=Unfired Netherbrick
 
 tile.bwm:anchor.name=Anchor
 tile.bwm:rope.name=Hemp Rope
@@ -174,44 +174,21 @@ tile.bwm:stone_corner.4.name=Brick Corner
 tile.bwm:stone_corner.5.name=Sandstone Corner
 tile.bwm:stone_corner.6.name=Quartz Corner
 
-tile.bwm:wood_table.0.name=Oak Wood Table
-tile.bwm:wood_table.1.name=Spruce Wood Table
-tile.bwm:wood_table.2.name=Birch Wood Table
-tile.bwm:wood_table.3.name=Jungle Wood Table
-tile.bwm:wood_table.4.name=Acacia Wood Table
-tile.bwm:wood_table.5.name=Dark Oak Wood Table
-tile.bwm:wood_table.6.name=Blood Wood Table
-
-tile.bwm:wood_bench.0.name=Oak Wood Bench
-tile.bwm:wood_bench.1.name=Spruce Wood Bench
-tile.bwm:wood_bench.2.name=Birch Wood Bench
-tile.bwm:wood_bench.3.name=Jungle Wood Bench
-tile.bwm:wood_bench.4.name=Acacia Wood Bench
-tile.bwm:wood_bench.5.name=Dark Oak Wood Bench
-tile.bwm:wood_bench.6.name=Blood Wood Bench
-
-tile.bwm:debarked_old.0.name=Oak Debarked Log
-tile.bwm:debarked_old.1.name=Spruce Debarked Log
-tile.bwm:debarked_old.2.name=Birch Debarked Log
-tile.bwm:debarked_old.3.name=Jungle Debarked Log
-tile.bwm:debarked_new.0.name=Acacia Debarked Log
-tile.bwm:debarked_new.1.name=Dark Oak Debarked Log
-
 tile.bwm:block_dispenser.name=Block Dispenser
 tile.bwm:companion_cube.name=Companion Cube
 
-tile.bwm:bamboo_chime.0.name=Oak Bamboo Chime
-tile.bwm:bamboo_chime.1.name=Spruce Bamboo Chime
-tile.bwm:bamboo_chime.2.name=Birch Bamboo Chime
-tile.bwm:bamboo_chime.3.name=Jungle Bamboo Chime
-tile.bwm:bamboo_chime.4.name=Acacia Bamboo Chime
-tile.bwm:bamboo_chime.5.name=Dark Oak Bamboo Chime
-tile.bwm:metal_chime.0.name=Oak Wind Chime
-tile.bwm:metal_chime.1.name=Spruce Wind Chime
-tile.bwm:metal_chime.2.name=Birch Wind Chime
-tile.bwm:metal_chime.3.name=Jungle Wind Chime
-tile.bwm:metal_chime.4.name=Acacia Wind Chime
-tile.bwm:metal_chime.5.name=Dark Oak Wind Chime
+tile.bwm:bamboo_chime_oak.name=Oak Bamboo Chime
+tile.bwm:bamboo_chime_spruce.name=Spruce Bamboo Chime
+tile.bwm:bamboo_chime_birch.name=Birch Bamboo Chime
+tile.bwm:bamboo_chime_jungle.name=Jungle Bamboo Chime
+tile.bwm:bamboo_chime_acacia.name=Acacia Bamboo Chime
+tile.bwm:bamboo_chime_dark_oak.name=Dark Oak Bamboo Chime
+tile.bwm:metal_chime_oak.name=Oak Wind Chime
+tile.bwm:metal_chime_spruce.name=Spruce Wind Chime
+tile.bwm:metal_chime_birch.name=Birch Wind Chime
+tile.bwm:metal_chime_jungle.name=Jungle Wind Chime
+tile.bwm:metal_chime_acacia.name=Acacia Wind Chime
+tile.bwm:metal_chime_dark_oak.name=Dark Oak Wind Chime
 tile.bwm:immersive_axle.name=Treated Wood Axle
 tile.bwm:buddy_block.name=Buddy Block
 tile.bwm:creative_generator.name=Creative Mechanical Generator
@@ -231,9 +208,7 @@ tile.bwm:stump.2.name=Birch Stump
 tile.bwm:stump.3.name=Jungle Stump
 tile.bwm:stump.4.name=Acacia Stump
 tile.bwm:stump.5.name=Dark Oak Stump
-tile.bwm:dirt_slab.0.name=Dirt Slab
-tile.bwm:dirt_slab.1.name=Grass Slab
-tile.bwm:dirt_slab.2.name=Mycelium Slab
+tile.bwm:dirt_slab.name=Dirt Slab
 
 tile.bwm:infernal_enchanter.name=Infernal Enchanter
 tile.bwm:candle_holder.name=Candle Holder
@@ -266,73 +241,9 @@ tile.bwm:blood_sapling.name=Bloody Sapling
 
 tile.bwm:nether_clay.name=Nether Sludge Block
 
-tile.bwm:cobble.0.name=Granite Cobblestone
-tile.bwm:cobble.1.name=Diorite Cobblestone
-tile.bwm:cobble.2.name=Andesite Cobblestone
-
-
-tile.bwm:rustic_compat_siding.0.name=Olive Wood Siding
-tile.bwm:rustic_compat_siding.1.name=Ironwood Siding
-tile.bwm:rustic_compat_siding.2.name=Slate Siding
-tile.bwm:rustic_compat_moulding.0.name=Olive Wood Moulding
-tile.bwm:rustic_compat_moulding.1.name=Ironwood Moulding
-tile.bwm:rustic_compat_moulding.2.name=Slate Moulding
-tile.bwm:rustic_compat_corner.0.name=Olive Wood Corner
-tile.bwm:rustic_compat_corner.1.name=Ironwood Corner
-tile.bwm:rustic_compat_corner.2.name=Slate Corner
-
-
-
-tile.bwm:bop_compat_siding.0.name=Sacred Oak Wood Siding
-tile.bwm:bop_compat_siding.1.name=Cherry Wood Siding
-tile.bwm:bop_compat_siding.2.name=Umbran Wood Siding
-tile.bwm:bop_compat_siding.3.name=Fir Wood Siding
-tile.bwm:bop_compat_siding.4.name=Ethereal Wood Siding
-tile.bwm:bop_compat_siding.5.name=Magic Wood Siding
-tile.bwm:bop_compat_siding.6.name=Mangrove Wood Siding
-tile.bwm:bop_compat_siding.7.name=Palm Wood Siding
-tile.bwm:bop_compat_siding.8.name=Redwood Siding
-tile.bwm:bop_compat_siding.9.name=Willow Wood Siding
-tile.bwm:bop_compat_siding.10.name=Pine Wood Siding
-tile.bwm:bop_compat_siding.11.name=Hellbark Siding
-tile.bwm:bop_compat_siding.12.name=Jacaranda Siding
-tile.bwm:bop_compat_siding.13.name=Mahogany Siding
-tile.bwm:bop_compat_siding.14.name=Ebony Wood Siding
-tile.bwm:bop_compat_siding.15.name=Eucalyptus Wood Siding
-
-tile.bwm:bop_compat_moulding.0.name=Sacred Oak Wood Moulding
-tile.bwm:bop_compat_moulding.1.name=Cherry Wood Moulding
-tile.bwm:bop_compat_moulding.2.name=Umbran Wood Moulding
-tile.bwm:bop_compat_moulding.3.name=Fir Wood Moulding
-tile.bwm:bop_compat_moulding.4.name=Ethereal Wood Moulding
-tile.bwm:bop_compat_moulding.5.name=Magic Wood Moulding
-tile.bwm:bop_compat_moulding.6.name=Mangrove Wood Moulding
-tile.bwm:bop_compat_moulding.7.name=Palm Wood Moulding
-tile.bwm:bop_compat_moulding.8.name=Redwood Moulding
-tile.bwm:bop_compat_moulding.9.name=Willow Wood Moulding
-tile.bwm:bop_compat_moulding.10.name=Pine Wood Moulding
-tile.bwm:bop_compat_moulding.11.name=Hellbark Moulding
-tile.bwm:bop_compat_moulding.12.name=Jacaranda Moulding
-tile.bwm:bop_compat_moulding.13.name=Mahogany Moulding
-tile.bwm:bop_compat_moulding.14.name=Ebony Wood Moulding
-tile.bwm:bop_compat_moulding.15.name=Eucalyptus Wood Moulding
-
-tile.bwm:bop_compat_corner.0.name=Sacred Oak Wood Corner
-tile.bwm:bop_compat_corner.1.name=Cherry Wood Corner
-tile.bwm:bop_compat_corner.2.name=Umbran Wood Corner
-tile.bwm:bop_compat_corner.3.name=Fir Wood Corner
-tile.bwm:bop_compat_corner.4.name=Ethereal Wood Corner
-tile.bwm:bop_compat_corner.5.name=Magic Wood Corner
-tile.bwm:bop_compat_corner.6.name=Mangrove Wood Corner
-tile.bwm:bop_compat_corner.7.name=Palm Wood Corner
-tile.bwm:bop_compat_corner.8.name=Redwood Corner
-tile.bwm:bop_compat_corner.9.name=Willow Wood Corner
-tile.bwm:bop_compat_corner.10.name=Pine Wood Corner
-tile.bwm:bop_compat_corner.11.name=Hellbark Corner
-tile.bwm:bop_compat_corner.12.name=Jacaranda Corner
-tile.bwm:bop_compat_corner.13.name=Mahogany Corner
-tile.bwm:bop_compat_corner.14.name=Ebony Wood Corner
-tile.bwm:bop_compat_corner.15.name=Eucalyptus Wood Corner
+tile.bwm:cobblestone_granite.name=Granite Cobblestone
+tile.bwm:cobblestone_diorite.name=Diorite Cobblestone
+tile.bwm:cobblestone_andesite.name=Andesite Cobblestone
 
 tile.bwm:deadweight.name=Deadweight
 tile.bwm:deadweight.intact.name=Deadweight

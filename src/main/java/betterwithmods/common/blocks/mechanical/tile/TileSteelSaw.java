@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
-import betterwithmods.common.blocks.mini.IDamageDropped;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.util.DirUtils;
@@ -22,6 +21,8 @@ import net.minecraft.world.WorldServer;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+
 
 public class TileSteelSaw extends TileAxleMachine {
     @Override
@@ -125,8 +126,6 @@ public class TileSteelSaw extends TileAxleMachine {
             return true;
         Block block = state.getBlock();
         int harvestMeta = block.damageDropped(state);
-        if (block instanceof IDamageDropped)
-            harvestMeta = ((IDamageDropped) block).damageDropped(state, world, pos);
         if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
             if (!simulate) {
                 List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
