@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -223,10 +224,9 @@ public class BlockPlanter extends BWMBlock {
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if(face != EnumFacing.UP)
+        if (face != EnumFacing.UP)
             return face == EnumFacing.DOWN ? BlockFaceShape.CENTER_BIG : BlockFaceShape.UNDEFINED;
-        switch(type)
-        {
+        switch (type) {
             case EMPTY:
             case WATER:
                 return BlockFaceShape.BOWL;

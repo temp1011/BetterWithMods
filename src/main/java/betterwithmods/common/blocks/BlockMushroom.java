@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.tweaks.MushroomFarming;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +23,7 @@ public class BlockMushroom extends net.minecraft.block.BlockMushroom {
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         IBlockState soil = worldIn.getBlockState(pos.down());
-        if(worldIn.getLight(pos) <= maxLightLevel || MushroomFarming.SPREAD_ON_MYCELLIUM && MushroomFarming.isMushroomSoil(soil)) {
+        if (worldIn.getLight(pos) <= maxLightLevel || MushroomFarming.SPREAD_ON_MYCELLIUM && MushroomFarming.isMushroomSoil(soil)) {
             int growthChance = MushroomFarming.GROW_FAST_ON_DUNG && isDung(soil) ? 12 : 25;
             if (rand.nextInt(growthChance) == 0) {
                 int max_mushrooms = 5;
@@ -57,25 +56,20 @@ public class BlockMushroom extends net.minecraft.block.BlockMushroom {
         }
     }
 
-    private boolean isDung(IBlockState state)
-    {
-        return state.getBlock() == BWMBlocks.AESTHETIC && state.getValue(BlockAesthetic.TYPE) == BlockAesthetic.EnumType.DUNG;
+    private boolean isDung(IBlockState state) {
+        return state.getBlock() == BlockAesthetic.getVariant(BlockAesthetic.EnumType.DUNG);
     }
 
     @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (pos.getY() >= 0 && pos.getY() < 256)
-        {
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+        if (pos.getY() >= 0 && pos.getY() < 256) {
             IBlockState soil = worldIn.getBlockState(pos.down());
 
-            if(MushroomFarming.isMushroomSoil(soil))
+            if (MushroomFarming.isMushroomSoil(soil))
                 return true;
             else
                 return worldIn.getLight(pos) <= maxLightLevel && soil.getBlock().canSustainPlant(soil, worldIn, pos.down(), EnumFacing.UP, this);
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
