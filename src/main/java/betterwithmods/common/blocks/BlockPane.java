@@ -7,6 +7,7 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.BlockRenderLayer;
@@ -35,6 +36,21 @@ public class BlockPane extends BWMBlock {
 
     public BlockPane(Material material) {
         super(material);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, DirUtils.NORTH,DirUtils.SOUTH, DirUtils.EAST, DirUtils.WEST);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState();
     }
 
     @Override
@@ -142,4 +158,6 @@ public class BlockPane extends BWMBlock {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face != EnumFacing.UP && face != EnumFacing.DOWN ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
     }
+
+
 }
