@@ -19,6 +19,7 @@ public interface BaseOrientation extends IStringSerializable {
         }
     };
 
+
     default int ordinal() {
         return 0;
     }
@@ -32,5 +33,6 @@ public interface BaseOrientation extends IStringSerializable {
     default BaseOrientation next() {
         return DEFAULT;
     }
+
 
 }

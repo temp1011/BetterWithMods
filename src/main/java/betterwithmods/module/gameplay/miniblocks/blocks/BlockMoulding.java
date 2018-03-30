@@ -28,8 +28,10 @@ public class BlockMoulding extends BlockMini {
     }
 
     @Override
-    public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
-        return MouldingOrientation.getFromVec(new Vec3d(hitX, hitY, hitZ), face);
+    public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing facing, ItemStack stack, float hitX, float hitY, float hitZ) {
+        if (facing != null)
+            return MouldingOrientation.getFromVec(new Vec3d(hitX, hitY, hitZ), facing);
+        return BaseOrientation.DEFAULT;
     }
 
 }

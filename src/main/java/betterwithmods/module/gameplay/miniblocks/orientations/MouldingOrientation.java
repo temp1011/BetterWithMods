@@ -6,6 +6,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.model.TRSRTransformation;
 
+import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.*;
+
 public enum MouldingOrientation implements BaseOrientation {
 
 
@@ -23,8 +25,7 @@ public enum MouldingOrientation implements BaseOrientation {
     SOUTH_EAST("south_east", new TRSRTransformation(ModelRotation.X90_Y0.getMatrix()), new AxisAlignedBB(0.5D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D));
 
     public static final MouldingOrientation[] VALUES = values();
-    public static final double CORNER_SIZE = 0.25;
-    public static final float CENTER_OFFSET = 0.5F;
+
 
     private String name;
     private AxisAlignedBB bounds;
@@ -36,21 +37,7 @@ public enum MouldingOrientation implements BaseOrientation {
         this.bounds = bounds;
     }
 
-    private static int getCorner(double centerA, double centerB) {
-        boolean posA = centerA > 0, posB = centerB > 0;
-        double x = Math.abs(centerA), z = Math.abs(centerB);
-        if (x > CORNER_SIZE && z > CORNER_SIZE) {
-            if (posA && posB)
-                return 0;
-            else if (posA)
-                return 1;
-            else if (!posB)
-                return 2;
-            else
-                return 3;
-        }
-        return -1;
-    }
+
 
            /*
     0 west down
@@ -131,14 +118,6 @@ public enum MouldingOrientation implements BaseOrientation {
             default:
                 return MouldingOrientation.NORTH_DOWN;
         }
-    }
-
-    public static boolean isMax(double hit1, double hit2) {
-        return Math.max(Math.abs(hit1), Math.abs(hit2)) == Math.abs(hit1);
-    }
-
-    public static boolean inCenter(float hit1, float hit2, float max) {
-        return Math.abs(hit1) <= max && Math.abs(hit2) <= max;
     }
 
     @Override

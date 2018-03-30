@@ -74,8 +74,9 @@ public class ItemMini extends ItemBlock {
         NBTTagCompound tag = stack.getSubCompound("texture");
         String type = "bwm.unknown_mini";
         if (tag != null) {
-            IBlockState state = NBTUtil.readBlockState(stack.getSubCompound("texture"));
-            type = state.getBlock().getUnlocalizedName();
+            IBlockState state = NBTUtil.readBlockState(tag);
+            ItemStack block = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+            type = block.getUnlocalizedName();
         }
         return String.format("%s %s", I18n.translateToLocal(type + ".name").trim(), I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
     }

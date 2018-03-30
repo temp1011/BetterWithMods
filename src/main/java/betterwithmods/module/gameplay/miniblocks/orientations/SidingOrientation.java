@@ -3,7 +3,11 @@ package betterwithmods.module.gameplay.miniblocks.orientations;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.model.TRSRTransformation;
+
+import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.inCenter;
+import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.isMax;
 
 public enum SidingOrientation implements BaseOrientation {
     UP("up", EnumFacing.UP, new TRSRTransformation(ModelRotation.X180_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D)),
@@ -25,6 +29,47 @@ public enum SidingOrientation implements BaseOrientation {
         this.facing = facing;
         this.transformation = transformation;
         this.bounds = bounds;
+    }
+
+    public static BaseOrientation fromFace(EnumFacing facing) {
+        if (facing != null)
+            return SidingOrientation.VALUES[facing.getIndex()];
+        return BaseOrientation.DEFAULT;
+    }
+
+    public static BaseOrientation getFromVec(Vec3d hit, EnumFacing facing) {
+        float hitXFromCenter = (float) (hit.x - 0.5F);
+        float hitYFromCenter = (float) (hit.y - 0.5F);
+        float hitZFromCenter = (float) (hit.z - 0.5F);
+        switch (facing.getAxis()) {
+            case Y:
+                if (inCenter(hitXFromCenter, hitZFromCenter, 0.25f)) {
+                    return fromFace(facing);
+                } else if (isMax(hitXFromCenter, hitZFromCenter)) {
+                    return hitXFromCenter > 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
+                } else {
+                    return hitZFromCenter > 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
+                }
+            case X:
+                if (inCenter(hitYFromCenter, hitZFromCenter, 0.25f)) {
+                    return fromFace(facing);
+                } else if (isMax(hitYFromCenter, hitZFromCenter)) {
+                    return hitYFromCenter > 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
+
+                } else {
+                    return hitZFromCenter > 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
+                }
+            case Z:
+                if (inCenter(hitYFromCenter, hitXFromCenter, 0.25f)) {
+                    return fromFace(facing);
+                } else if (isMax(hitYFromCenter, hitXFromCenter)) {
+                    return hitYFromCenter > 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
+                } else {
+                    return hitXFromCenter > 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
+                }
+            default:
+                return fromFace(facing);
+        }
     }
 
     @Override
@@ -49,12 +94,6 @@ public enum SidingOrientation implements BaseOrientation {
     @Override
     public BaseOrientation next() {
         return VALUES[(this.ordinal() + 1) % (VALUES.length)];
-    }
-
-    public static BaseOrientation fromFace(EnumFacing facing) {
-        if(facing != null)
-            return SidingOrientation.VALUES[facing.getIndex()];
-        return BaseOrientation.DEFAULT;
     }
 }
 

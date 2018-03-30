@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 public class MiniModel extends ModelFactory<MiniCacheInfo> {
 
@@ -26,10 +26,12 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
     @Override
     public IBakedModel bake(MiniCacheInfo object, boolean isItem, BlockRenderLayer layer) {
         ImmutableMap.Builder<String, String> textures = new ImmutableMap.Builder<>();
+
+
         for (EnumFacing facing : EnumFacing.VALUES) {
             textures.put(facing.getName2(), RenderUtils.getTextureFromFace(object.getState(), facing).getIconName());
         }
-        IModelState state = object.getOrientation().toTransformation();
+        TRSRTransformation state = object.getOrientation().toTransformation();
         IModel retexture = template.retexture(textures.build()).uvlock(true);
         return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter)).addDefaultBlockTransforms();
     }
