@@ -202,7 +202,6 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-
         return new ItemStack(this, 1, getActualState(state, world, pos).getValue(TYPE));
     }
 
@@ -243,8 +242,8 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     }
 
     @Override
-    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
+    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, ItemStack stack, EntityLivingBase placer) {
+        return getStateForPlacement(world, pos, facing, flX, flY, flZ, stack.getMetadata(), placer).withProperty(TYPE, stack.getMetadata());
     }
 
     @Override

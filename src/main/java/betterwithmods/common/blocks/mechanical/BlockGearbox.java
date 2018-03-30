@@ -298,7 +298,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     }
 
     @Override
-    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
+    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, ItemStack stack, EntityLivingBase placer) {
         return getStateForAdvancedRotationPlacement(getDefaultState(), facing, flX, flY, flZ);
     }
 

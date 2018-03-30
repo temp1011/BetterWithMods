@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -264,10 +265,7 @@ public class RenderUtils {
         }
     }
 
-    public static void renderDebugBoundingBox(double x, double y, double z, AxisAlignedBB... boxes) {
-        if (!Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox())
-            return;
-
+    public static void renderBoundingBox(Vec3d pos, Vec3d color, AxisAlignedBB... boxes) {
         GlStateManager.depthMask(false);
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
@@ -275,8 +273,8 @@ public class RenderUtils {
         GlStateManager.disableBlend();
 
         for (AxisAlignedBB box : boxes) {
-            box = box.offset(x, y, z);
-            RenderGlobal.drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 0.5F, 0.5F, 1.0F, 1.0F);
+            box = box.offset(pos);
+            RenderGlobal.drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, (float) color.x, (float) color.y, (float) color.z, 1.0F);
         }
 
         GlStateManager.enableTexture2D();
@@ -284,6 +282,12 @@ public class RenderUtils {
         GlStateManager.enableCull();
         GlStateManager.disableBlend();
         GlStateManager.depthMask(true);
+    }
+
+    public static void renderDebugBoundingBox(double x, double y, double z, AxisAlignedBB... boxes) {
+        if (!Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox())
+            return;
+        renderBoundingBox(new Vec3d(x, y, z), new Vec3d(0.5D, 0.5D, 1.0D), boxes);
     }
 
 }

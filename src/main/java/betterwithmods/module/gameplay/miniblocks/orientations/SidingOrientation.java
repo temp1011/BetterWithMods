@@ -50,5 +50,11 @@ public enum SidingOrientation implements BaseOrientation {
     public BaseOrientation next() {
         return VALUES[(this.ordinal() + 1) % (VALUES.length)];
     }
+
+    public static BaseOrientation fromFace(EnumFacing facing) {
+        if(facing != null)
+            return SidingOrientation.VALUES[facing.getIndex()];
+        return BaseOrientation.DEFAULT;
+    }
 }
 

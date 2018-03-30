@@ -1,8 +1,10 @@
 package betterwithmods.module.gameplay.miniblocks.client;
 
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
@@ -20,15 +22,19 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
         this.block = block;
     }
 
+    public static MiniCacheInfo from(ItemStack texture, BaseOrientation orientation) {
+        return new MiniCacheInfo(RenderUtils.getSprite(texture), orientation, texture);
+    }
+
     public static MiniCacheInfo from(TileMini mini) {
-        return new MiniCacheInfo(RenderUtils.getSprite(mini.texture), mini.orientation, mini.texture);
+        return from(mini.texture, mini.orientation);
     }
 
     public static MiniCacheInfo from(ItemStack mini) {
         NBTTagCompound tag = mini.getTagCompound();
         if (tag != null && tag.hasKey("texture")) {
             ItemStack texture = new ItemStack(tag.getCompoundTag("texture"));
-            return new MiniCacheInfo(RenderUtils.getSprite(texture), BaseOrientation.DEFAULT, texture);
+            return from(texture, BaseOrientation.DEFAULT);
         }
         return null;
     }
@@ -53,14 +59,18 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
     }
 
     public TextureAtlasSprite getTexture() {
-        if(texture == null)
+        if (texture == null)
             return RenderUtils.textureGetter.apply(TextureMap.LOCATION_MISSING_TEXTURE);
         return texture;
     }
 
     public BaseOrientation getOrientation() {
-        if(orientation == null)
+        if (orientation == null)
             return BaseOrientation.DEFAULT;
         return orientation;
+    }
+
+    public IBlockState getBlock() {
+        return BWMRecipes.getStateFromStack(block);
     }
 }

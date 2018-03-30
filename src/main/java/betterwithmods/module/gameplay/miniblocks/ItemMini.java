@@ -14,9 +14,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemMini extends ItemBlock {
+
     public ItemMini(Block block) {
         super(block);
     }
@@ -64,5 +66,16 @@ public class ItemMini extends ItemBlock {
         }
 
         return true;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        NBTTagCompound tag = stack.getSubCompound("texture");
+        String type = I18n.translateToLocal("bwm.unknown_mini");
+        if (tag != null) {
+            ItemStack texture = new ItemStack(stack.getSubCompound("texture"));
+            type = texture.getUnlocalizedName();
+        }
+        return String.format("%s %s", I18n.translateToLocal(type + ".name").trim(), I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
     }
 }

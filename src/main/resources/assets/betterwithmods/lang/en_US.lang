@@ -135,6 +135,18 @@ tile.bwm:vine_trap.name=Vine Trap
 
 tile.bwm:booster.name=Mechanical Booster Rail
 
+tile.bwm:siding_rock.name=Siding
+tile.bwm:siding_wood.name=Siding
+tile.bwm:siding_iron.name=Siding
+
+tile.bwm:moulding_rock.name=Moulding
+tile.bwm:moulding_wood.name=Moulding
+tile.bwm:moulding_iron.name=Moulding
+
+tile.bwm:corner_rock.name=Corner
+tile.bwm:corner_wood.name=Corner
+tile.bwm:corner_iron.name=Corner
+
 tile.bwm:wood_siding.0.name=Oak Wood Siding
 tile.bwm:wood_siding.1.name=Spruce Wood Siding
 tile.bwm:wood_siding.2.name=Birch Wood Siding
@@ -592,7 +604,7 @@ config.sync.ok=Changes to the configs successful. If you see issues from not res
 
 tile.bed.tooRestless=You are too restless to sleep
 
-tooltip.rotate_with_hand.name=Shift-Click with an both hands empty to rotate this Block
+tooltip.rotate_with_hand.name=Shift-Click with both hands empty to rotate this Block
 tooltip.chime.name=Emits a Redstone Signal when Raining, or when an Entity passes through it.
 tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
