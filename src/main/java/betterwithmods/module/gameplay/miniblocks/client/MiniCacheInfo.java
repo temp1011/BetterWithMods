@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay.miniblocks.client;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -60,6 +61,8 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
     }
 
     public IBlockState getState() {
+        if(state == null)
+            return Blocks.AIR.getDefaultState();
         return state;
     }
 }

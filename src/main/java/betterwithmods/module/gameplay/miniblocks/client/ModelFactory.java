@@ -39,6 +39,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -151,7 +152,7 @@ public abstract class ModelFactory<T extends IRenderComparable<T>> extends BaseB
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture(IBlockState state) {
+    public TextureAtlasSprite getParticleTexture(IBlockState state, @Nullable EnumFacing facing) {
         IBakedModel model = getModel(state);
         return model != null ? model.getParticleTexture() : getParticleTexture();
     }

@@ -31,10 +31,12 @@ import java.util.List;
 
 public class WrappedBakedModel extends BaseBakedModel {
     private final IBakedModel parent;
+    private final TextureAtlasSprite particle;
 
-    public WrappedBakedModel(IBakedModel parent) {
+    public WrappedBakedModel(IBakedModel parent, TextureAtlasSprite particle) {
         super();
         this.parent = parent;
+        this.particle = particle;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class WrappedBakedModel extends BaseBakedModel {
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return parent.getParticleTexture();
+        return particle != null ? particle : parent.getParticleTexture();
     }
 
     @Override

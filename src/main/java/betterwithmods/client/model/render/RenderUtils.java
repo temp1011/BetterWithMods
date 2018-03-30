@@ -261,6 +261,10 @@ public class RenderUtils {
         return model != Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
     }
 
+    public static TextureAtlasSprite getParticleTexture(IBlockState state) {
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
+        return model.getParticleTexture();
+    }
 
     public static TextureAtlasSprite getTextureFromFace(IBlockState state, EnumFacing facing) {
         IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);

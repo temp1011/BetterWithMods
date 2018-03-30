@@ -26,14 +26,12 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
     @Override
     public IBakedModel bake(MiniCacheInfo object, boolean isItem, BlockRenderLayer layer) {
         ImmutableMap.Builder<String, String> textures = new ImmutableMap.Builder<>();
-
-
         for (EnumFacing facing : EnumFacing.VALUES) {
             textures.put(facing.getName2(), RenderUtils.getTextureFromFace(object.getState(), facing).getIconName());
         }
         TRSRTransformation state = object.getOrientation().toTransformation();
         IModel retexture = template.retexture(textures.build()).uvlock(true);
-        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter)).addDefaultBlockTransforms();
+        return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter), RenderUtils.getParticleTexture(object.getState())).addDefaultBlockTransforms();
     }
 
 
