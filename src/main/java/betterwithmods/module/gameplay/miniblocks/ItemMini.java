@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -71,10 +72,10 @@ public class ItemMini extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         NBTTagCompound tag = stack.getSubCompound("texture");
-        String type = I18n.translateToLocal("bwm.unknown_mini");
+        String type = "bwm.unknown_mini";
         if (tag != null) {
-            ItemStack texture = new ItemStack(stack.getSubCompound("texture"));
-            type = texture.getUnlocalizedName();
+            IBlockState state = NBTUtil.readBlockState(stack.getSubCompound("texture"));
+            type = state.getBlock().getUnlocalizedName();
         }
         return String.format("%s %s", I18n.translateToLocal(type + ".name").trim(), I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
     }

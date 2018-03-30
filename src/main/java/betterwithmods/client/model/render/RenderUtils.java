@@ -3,9 +3,11 @@ package betterwithmods.client.model.render;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.*;
 import betterwithmods.common.BWMBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -255,12 +257,25 @@ public class RenderUtils {
         }
     }
 
+    public static boolean isModelValid(IBakedModel model) {
+        return model != Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+    }
+
+
+    public static TextureAtlasSprite getTextureFromFace(IBlockState state, EnumFacing facing) {
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
+        if (isModelValid(model)) {
+            return model.getQuads(state, facing, 0).stream().findFirst().map(BakedQuad::getSprite)
+                    .orElse(Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state));
+        }
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+    }
+
+
     public static IModel getModel(ResourceLocation location) {
         try {
             return ModelLoaderRegistry.getModel(location);
         } catch (Exception e) {
-            BWMod.logger.error("Model " + location.toString() + " is missing! THIS WILL CAUSE A CRASH!");
-            e.printStackTrace();
             return null;
         }
     }

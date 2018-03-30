@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -69,10 +70,12 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (ItemStack material : MiniBlocks.MATERIALS.get(blockMaterial)) {
+        for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
             ItemStack stack = new ItemStack(this);
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag("texture", material.serializeNBT());
+            NBTTagCompound texture = new NBTTagCompound();
+            NBTUtil.writeBlockState(texture,state);
+            tag.setTag("texture", texture);
             stack.setTagCompound(tag);
             items.add(stack);
         }

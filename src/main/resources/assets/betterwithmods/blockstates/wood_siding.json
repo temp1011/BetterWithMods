@@ -2,8 +2,15 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
+
       "side": "blocks/planks_oak",
-      "particle": "#side"
+      "particle": "#side",
+      "north":"#side",
+      "south":"#side",
+      "east":"#side",
+      "west":"#side",
+      "up":"#side",
+      "down":"#side"
     },
     "model": "betterwithmods:mini/siding",
     "uvlock": true

@@ -43,7 +43,7 @@ public class MiniBlocks extends Feature {
     public static Set<Block> SIDINGS = Sets.newHashSet();
     public static Set<Block> MOULDINGS = Sets.newHashSet();
     public static Set<Block> CORNERS = Sets.newHashSet();
-    public static Multimap<Material, ItemStack> MATERIALS = HashMultimap.create();
+    public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
 
     private static Map<Material, String> names = Maps.newHashMap();
 
@@ -78,11 +78,11 @@ public class MiniBlocks extends Feature {
     }
 
     public static boolean isValidMini(IBlockState state) {
-        return state.isFullBlock() && state.isOpaqueCube() && !state.getBlock().hasTileEntity(state);
+        return state.isFullBlock() && state.isOpaqueCube() && !state.getBlock().hasTileEntity(state) && !state.getBlock().getTickRandomly();
     }
 
     public static boolean isValidMini(ItemStack stack) {
-        return !BWOreDictionary.hasPrefix(stack,"ore");
+        return !BWOreDictionary.hasPrefix(stack, "ore");
     }
 
 
@@ -99,13 +99,11 @@ public class MiniBlocks extends Feature {
                     continue;
                 Material material = state.getMaterial();
                 if (names.containsKey(material)) {
-                    MATERIALS.put(material, stack);
+                    MATERIALS.put(material, state);
                 }
             }
         }
 
-//        MATERIALS.putAll(Material.WOOD, Lists.newArrayList(new ItemStack(Blocks.PLANKS), new ItemStack(Blocks.PLANKS, 1, 1), new ItemStack(Blocks.PLANKS, 1, 2), new ItemStack(Blocks.PLANKS, 1, 3)));
-//        MATERIALS.putAll(Material.ROCK, Lists.newArrayList(new ItemStack(Blocks.STONE)));
     }
 
     @Override
