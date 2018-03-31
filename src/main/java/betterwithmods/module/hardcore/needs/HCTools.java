@@ -43,8 +43,8 @@ public class HCTools extends Feature {
     private static int diamondDurability;
     private static int goldDurability;
 
-    public static int noHungerThredhold;
-    public static int noDamageThredhold;
+    public static int noHungerThreshold;
+    public static int noDamageThreshold;
 
     public static boolean changeAxeRecipe;
 
@@ -99,8 +99,8 @@ public class HCTools extends Feature {
 
         changeAxeRecipe = loadRecipeCondition("changeAxeRecipe","Change Axe Recipe", "Change the axe recipes to only require 2 MATERIALS", true);
 
-        noHungerThredhold = loadPropInt("No Exhaustion Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no exhaustion is applied", Item.ToolMaterial.IRON.getHarvestLevel());
-        noDamageThredhold = loadPropInt("No Durability Damage Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no durability damage is applied", Item.ToolMaterial.DIAMOND.getHarvestLevel());
+        noHungerThreshold = loadPropInt("No Exhaustion Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no exhaustion is applied", Item.ToolMaterial.IRON.getHarvestLevel());
+        noDamageThreshold = loadPropInt("No Durability Damage Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no durability damage is applied", Item.ToolMaterial.DIAMOND.getHarvestLevel());
     }
 
     @Override
@@ -156,7 +156,7 @@ public class HCTools extends Feature {
         IBlockState state = world.getBlockState(pos);
         ItemStack stack = player.getHeldItemMainhand();
         String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < noDamageThredhold)
+        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < noDamageThreshold)
             stack.damageItem(1,player); //Make 0 hardness blocks damage tools that are not over some harvest level
     }
 

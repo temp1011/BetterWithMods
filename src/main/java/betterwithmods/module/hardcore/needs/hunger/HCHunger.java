@@ -342,7 +342,7 @@ public class HCHunger extends CompatFeature {
         IBlockState state = world.getBlockState(pos);
         ItemStack stack = player.getHeldItemMainhand();
         String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < HCTools.noHungerThredhold)
+        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < HCTools.noHungerThreshold)
             return; //doesn't consume hunger if using iron tier axes
         player.addExhaustion(blockBreakExhaustion - 0.005f);
     }
