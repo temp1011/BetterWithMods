@@ -137,7 +137,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
                         ItemStack insert = InvUtils.insert(inv.get(), stack, STACK_SIZE, false);
                         InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE - insert.getCount(), false);
                     }
-                } else if(canDropIntoBlock(pos.down())) {
+                } else if (canDropIntoBlock(pos.down())) {
                     InvUtils.consumeItemsInInventory(inventory, stack, STACK_SIZE, false);
                     InvUtils.spawnStack(world, pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, STACK_SIZE, stack);
                 }
@@ -159,8 +159,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         }
     }
 
-    private boolean canDropIntoBlock(BlockPos pos)
-    {
+    private boolean canDropIntoBlock(BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
     }
 
@@ -172,8 +171,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             if (this.power != power) {
                 this.power = power;
             }
-            getBlock().setActive(world, pos, isActive());
-
+            if (getBlock() != null)
+                getBlock().setActive(world, pos, isActive());
             if (isPowered()) {
                 extract();
             }
@@ -256,24 +255,26 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     @Nullable
     public ISoulSensitive getSoulContainer() {
         Block block = world.getBlockState(pos.down()).getBlock();
-        if(block instanceof ISoulSensitive && ((ISoulSensitive) block).isSoulSensitive(world,pos.down())) {
+        if (block instanceof ISoulSensitive && ((ISoulSensitive) block).isSoulSensitive(world, pos.down())) {
             return (ISoulSensitive) block;
         }
         return null;
     }
+
     private ISoulSensitive prevContainer;
+
     public void increaseSoulCount(int numSouls) {
         this.soulsRetained += numSouls;
         ISoulSensitive container = getSoulContainer();
-        if(container != null) {
-            if(prevContainer != container)
+        if (container != null) {
+            if (prevContainer != container)
                 soulsRetained = numSouls;
             int soulsConsumed = container.processSouls(this.getBlockWorld(), pos.down(), this.soulsRetained);
             if (container.consumeSouls(this.getBlockWorld(), pos.down(), soulsConsumed))
                 this.soulsRetained -= soulsConsumed;
 
         } else {
-            if(this.soulsRetained > 7 && !isPowered()) {
+            if (this.soulsRetained > 7 && !isPowered()) {
                 if (WorldUtils.spawnGhast(world, pos))
                     this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
                 overpower();
@@ -338,7 +339,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if(!hopper.canFilterProcessItem(stack))
+            if (!hopper.canFilterProcessItem(stack))
                 return stack;
             return super.insertItem(slot, stack, simulate);
         }
@@ -382,7 +383,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
             return CapabilityMechanicalPower.MECHANICAL_POWER.cast(this);
-        return super.getCapability(capability,facing);
+        return super.getCapability(capability, facing);
     }
 
     @Override
@@ -397,7 +398,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public BlockMechMachines getBlock() {
-        return (BlockMechMachines) getBlockType();
+        if (getBlockType() instanceof BlockMechMachines)
+            return (BlockMechMachines) getBlockType();
+        return null;
     }
 
     @Override
