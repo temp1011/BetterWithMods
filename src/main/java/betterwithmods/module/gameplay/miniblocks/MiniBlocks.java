@@ -16,7 +16,6 @@ import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -35,14 +34,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MiniBlocks extends Feature {
 
-    public static Set<Block> SIDINGS = Sets.newHashSet();
-    public static Set<Block> MOULDINGS = Sets.newHashSet();
-    public static Set<Block> CORNERS = Sets.newHashSet();
+    public static HashMap<Material, Block> SIDINGS = Maps.newHashMap();
+    public static HashMap<Material, Block> MOULDINGS = Maps.newHashMap();
+    public static HashMap<Material, Block> CORNERS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
 
     private static Map<Material, String> names = Maps.newHashMap();
@@ -56,25 +55,15 @@ public class MiniBlocks extends Feature {
     static {
         for (Material material : names.keySet()) {
             String name = names.get(material);
-            SIDINGS.add(new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
-            MOULDINGS.add(new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
-            CORNERS.add(new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
+            SIDINGS.put(material, new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
+            MOULDINGS.put(material, new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
+            CORNERS.put(material, new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
         }
     }
 
 
     public MiniBlocks() {
         enabledByDefault = false;
-    }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        SIDINGS.forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        MOULDINGS.forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        CORNERS.forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
-        GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
-        GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
     }
 
     public static boolean isValidMini(IBlockState state) {
@@ -85,6 +74,17 @@ public class MiniBlocks extends Feature {
         return !BWOreDictionary.hasPrefix(stack, "ore");
     }
 
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        SIDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        MOULDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        CORNERS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
+        GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
+        GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
+
+
+    }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
@@ -104,6 +104,14 @@ public class MiniBlocks extends Feature {
             }
         }
 
+        for (Material material : names.keySet()) {
+            Block siding = SIDINGS.get(material);
+            Block moulding = MOULDINGS.get(material);
+            Block corner = CORNERS.get(material);
+            addHardcoreRecipe(new MiniRecipe(siding, null));
+            addHardcoreRecipe(new MiniRecipe(moulding, siding));
+            addHardcoreRecipe(new MiniRecipe(corner, moulding));
+        }
     }
 
     @Override

@@ -24,6 +24,29 @@ public class ItemMini extends ItemBlock {
         super(block);
     }
 
+    public static IBlockState getState(ItemStack stack) {
+        if (stack.getItem() instanceof ItemMini) {
+            NBTTagCompound tag = stack.getSubCompound("texture");
+            if (tag != null) {
+                return NBTUtil.readBlockState(tag);
+            }
+        }
+        return null;
+    }
+
+    public static boolean matches(ItemStack a, ItemStack b) {
+        if((a == null || b == null))
+            return false;
+        if (!(a.getItem() instanceof ItemMini && b.getItem() instanceof ItemMini))
+            return false;
+
+        ItemMini miniA = (ItemMini) a.getItem(), miniB = (ItemMini) b.getItem();
+        if (miniA.getBlock() != miniB.getBlock())
+            return false;
+        IBlockState stateA = getState(a), stateB = getState(b);
+        return stateA != null & stateB != null && stateA.equals(stateB);
+    }
+
     private void setNBT(World worldIn, BlockPos pos, ItemStack stackIn) {
         MinecraftServer minecraftserver = worldIn.getMinecraftServer();
         if (minecraftserver == null)
@@ -50,7 +73,6 @@ public class ItemMini extends ItemBlock {
             }
         }
     }
-
 
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         if (!world.setBlockState(pos, newState, 11)) return false;
