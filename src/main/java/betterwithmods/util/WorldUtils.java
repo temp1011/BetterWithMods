@@ -17,6 +17,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import java.util.Calendar;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -187,6 +188,12 @@ public final class WorldUtils {
 
     public static boolean isMoonPhase(World world, MoonPhase phase) {
         return phase.ordinal() == world.provider.getMoonPhase(world.getWorldTime());
+    }
+
+    public static boolean isSpecialDay()
+    {
+        Calendar date = Calendar.getInstance();
+        return date.get(Calendar.MONTH) == Calendar.APRIL && date.get(Calendar.DAY_OF_MONTH) == 1;
     }
 
     public enum MoonPhase {
