@@ -60,19 +60,7 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
                 }
             }
         }
-        ItemStack result = ItemStack.EMPTY;
-        if (!first.isEmpty()) {
-            if (end instanceof BlockMini) {
-                result = new ItemStack(end);
-                NBTTagCompound tag = first.getTagCompound();
-                result.setTagCompound(tag);
-            } else {
-                IBlockState state = ItemMini.getState(first);
-                if (state != null)
-                    result = BWMRecipes.getStackFromState(state);
-            }
-        }
-        return result;
+        return getOutput(first);
     }
 
     @Override
@@ -84,4 +72,28 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
         return ItemStack.EMPTY;
     }
 
+    public ItemStack getStart() {
+        return new ItemStack(start);
+    }
+
+    public ItemStack getEnd() {
+        return new ItemStack(end);
+    }
+
+    public ItemStack getOutput(ItemStack input) {
+        ItemStack result = ItemStack.EMPTY;
+        if (!input.isEmpty()) {
+            if (end instanceof BlockMini) {
+                result = new ItemStack(end);
+                NBTTagCompound tag = input.getTagCompound();
+                result.setTagCompound(tag);
+            } else {
+                IBlockState state = ItemMini.getState(input);
+                if (state != null)
+                    result = BWMRecipes.getStackFromState(state);
+            }
+        }
+        return result;
+
+    }
 }

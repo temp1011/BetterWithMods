@@ -25,6 +25,7 @@ import betterwithmods.common.registry.bulk.recipes.*;
 import betterwithmods.common.registry.crafting.ToolBaseRecipe;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
+import betterwithmods.module.gameplay.miniblocks.MiniRecipe;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import mezz.jei.api.*;
@@ -53,6 +54,14 @@ public class JEI implements IModPlugin {
     public static IJeiHelpers HELPER;
 
     public static IJeiRuntime JEI_RUNTIME;
+
+    public static void showRecipe(Ingredient ingredient) {
+        ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
+        if (stack.isEmpty())
+            return;
+        IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
+        JEI.JEI_RUNTIME.getRecipesGui().show(focus);
+    }
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
@@ -91,6 +100,7 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ShapelessRecipes.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ToolBaseRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ToolBaseRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), VanillaRecipeCategoryUid.CRAFTING);
+        reg.handleRecipes(MiniRecipe.class, recipe -> new MiniRecipeWrapper(HELPER, recipe), VanillaRecipeCategoryUid.CRAFTING);
         reg.addRecipes(CauldronManager.getInstance().getRecipes(), CauldronRecipeCategory.UID);
         reg.addRecipes(StokedCauldronManager.getInstance().getRecipes(), StokedCauldronRecipeCategory.UID);
         reg.addRecipes(CrucibleManager.getInstance().getRecipes(), CrucibleRecipeCategory.UID);
@@ -102,6 +112,7 @@ public class JEI implements IModPlugin {
         reg.addRecipes(TurntableManager.INSTANCE.getRecipes(), TurntableRecipeCategory.UID);
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
+
 
         reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
@@ -137,14 +148,6 @@ public class JEI implements IModPlugin {
             reg.addAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam2));
             reg.addAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam3));
         }
-    }
-
-    public static void showRecipe(Ingredient ingredient) {
-        ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
-        if (stack.isEmpty())
-            return;
-        IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
-        JEI.JEI_RUNTIME.getRecipesGui().show(focus);
     }
 
 }
