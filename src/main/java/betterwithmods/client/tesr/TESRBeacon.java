@@ -1,4 +1,4 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
 import betterwithmods.common.blocks.tile.TileEntityBeacon;
 import net.minecraft.client.renderer.BufferBuilder;

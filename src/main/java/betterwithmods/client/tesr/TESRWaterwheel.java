@@ -1,5 +1,6 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
+import betterwithmods.client.model.ModelWaterwheel;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWaterwheel;
 import net.minecraft.client.renderer.GlStateManager;

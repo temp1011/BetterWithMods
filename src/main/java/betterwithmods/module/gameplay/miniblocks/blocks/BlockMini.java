@@ -2,10 +2,10 @@ package betterwithmods.module.gameplay.miniblocks.blocks;
 
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
+import betterwithmods.client.baking.UnlistedPropertyGeneric;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.gameplay.miniblocks.client.MiniCacheInfo;
-import betterwithmods.module.gameplay.miniblocks.client.UnlistedPropertyGeneric;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.Block;

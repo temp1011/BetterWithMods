@@ -1,4 +1,4 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.model.render.RenderUtils;

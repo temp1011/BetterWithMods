@@ -17,7 +17,7 @@
  * along with Charset.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package betterwithmods.module.gameplay.miniblocks.client;
+package betterwithmods.client.baking;
 
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;

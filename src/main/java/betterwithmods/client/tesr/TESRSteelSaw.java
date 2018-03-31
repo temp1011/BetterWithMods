@@ -1,4 +1,4 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.IBlockActive;

@@ -1,5 +1,6 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
+import betterwithmods.client.model.ModelTurntableKnob;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

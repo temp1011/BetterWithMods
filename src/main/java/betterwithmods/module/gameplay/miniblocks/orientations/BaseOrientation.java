@@ -34,5 +34,4 @@ public interface BaseOrientation extends IStringSerializable {
         return DEFAULT;
     }
 
-
 }

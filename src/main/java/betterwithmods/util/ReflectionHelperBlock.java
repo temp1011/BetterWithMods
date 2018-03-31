@@ -1,4 +1,4 @@
-package betterwithmods.module.gameplay.miniblocks;
+package betterwithmods.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,14 +18,14 @@ import java.util.Random;
 Borrowed from https://github.com/AlgorithmX2/Chisels-and-Bits
 Copyright (C) 2017 AlgorithmX2 LGPLv3.0
  */
-class ReflectionHelperBlock extends Block {
+public class ReflectionHelperBlock extends Block {
     public String MethodName;
 
     private void markMethod() {
         MethodName = new Throwable().fillInStackTrace().getStackTrace()[1].getMethodName();
     }
 
-    protected ReflectionHelperBlock() {
+    public ReflectionHelperBlock() {
         super(Material.AIR);
     }
 

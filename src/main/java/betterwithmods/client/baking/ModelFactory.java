@@ -17,7 +17,7 @@
  * along with Charset.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package betterwithmods.module.gameplay.miniblocks.client;
+package betterwithmods.client.baking;
 
 import betterwithmods.client.model.render.RenderUtils;
 import com.google.common.cache.Cache;

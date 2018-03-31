@@ -13,6 +13,7 @@ import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileCorner;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMoulding;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
+import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;

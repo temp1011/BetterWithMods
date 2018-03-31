@@ -17,36 +17,14 @@
  * along with Charset.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package betterwithmods.module.gameplay.miniblocks.client;
+package betterwithmods.client.baking;
 
-import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
 
-public class UnlistedPropertyGeneric<T> implements IUnlistedProperty<T> {
-    private final String name;
-    private final Class<T> klazz;
+import javax.annotation.Nullable;
 
-    public UnlistedPropertyGeneric(String name, Class<T> klazz) {
-        this.name = name;
-        this.klazz = klazz;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean isValid(T value) {
-        return true;
-    }
-
-    @Override
-    public Class<T> getType() {
-        return klazz;
-    }
-
-    @Override
-    public String valueToString(T value) {
-        return value != null ? value.toString() : "null";
-    }
+public interface IStateParticleBakedModel {
+	TextureAtlasSprite getParticleTexture(IBlockState state, @Nullable EnumFacing facing);
 }

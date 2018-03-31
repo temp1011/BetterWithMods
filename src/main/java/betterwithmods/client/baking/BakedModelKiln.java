@@ -1,4 +1,4 @@
-package betterwithmods.client.model;
+package betterwithmods.client.baking;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockKiln;

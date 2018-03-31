@@ -2,9 +2,9 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWParticleDigging;
+import betterwithmods.client.baking.IStateParticleBakedModel;
 import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.blocks.tile.TileBasic;
-import betterwithmods.module.gameplay.miniblocks.client.IStateParticleBakedModel;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

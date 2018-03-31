@@ -17,14 +17,9 @@
  * along with Charset.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package betterwithmods.module.gameplay.miniblocks.client;
+package betterwithmods.client.baking;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
-
-import javax.annotation.Nullable;
-
-public interface IStateParticleBakedModel {
-	TextureAtlasSprite getParticleTexture(IBlockState state, @Nullable EnumFacing facing);
+public interface IRenderComparable<T> {
+    boolean renderEquals(T other);
+    int renderHashCode();
 }

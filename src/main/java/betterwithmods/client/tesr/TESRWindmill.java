@@ -1,5 +1,7 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
+import betterwithmods.client.model.ModelWindmillSail;
+import betterwithmods.client.model.ModelWindmillShafts;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
 import net.minecraft.client.renderer.GlStateManager;

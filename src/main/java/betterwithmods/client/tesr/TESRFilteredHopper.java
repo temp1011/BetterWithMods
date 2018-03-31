@@ -1,4 +1,4 @@
-package betterwithmods.client.model;
+package betterwithmods.client.tesr;
 
 import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;

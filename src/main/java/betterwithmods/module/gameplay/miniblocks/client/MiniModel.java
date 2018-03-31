@@ -1,5 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks.client;
 
+import betterwithmods.client.baking.ModelFactory;
+import betterwithmods.client.baking.WrappedBakedModel;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import com.google.common.collect.ImmutableMap;

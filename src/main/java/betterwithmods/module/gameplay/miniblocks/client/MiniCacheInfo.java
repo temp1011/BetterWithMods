@@ -1,5 +1,6 @@
 package betterwithmods.module.gameplay.miniblocks.client;
 
+import betterwithmods.client.baking.IRenderComparable;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.state.IBlockState;
