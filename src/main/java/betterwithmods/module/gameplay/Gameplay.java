@@ -16,6 +16,7 @@ public class Gameplay extends Module {
     public static boolean kidFriendly;
     public static float cauldronNormalSpeedFactor, cauldronStokedSpeedFactor, cauldronMultipleFiresFactor;
 
+    public static boolean dropHempSeeds;
 
     @Override
     public void addFeatures() {
@@ -47,13 +48,16 @@ public class Gameplay extends Module {
         cauldronNormalSpeedFactor = (float) loadPropDouble("Cauldron normal speed factor", "Cooking speed multiplier for unstoked cauldrons.", 1.0);
         cauldronStokedSpeedFactor = (float) loadPropDouble("Cauldron stoked speed factor", "Cooking speed multiplier for stoked cauldrons and crucibles.", 1.0);
         cauldronMultipleFiresFactor = (float) loadPropDouble("Cauldron Multiple fires factor", "Sets how strongly multiple fire sources (in a 3x3 grid below the pot) affect cooking times.", 1.0);
+        dropHempSeeds = loadPropBool("Drop Hemp Seeds","Adds Hemp seeds to the grass seed drop list.", true);
         super.setupConfig();
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
+        if(dropHempSeeds) {
+            MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
+        }
     }
 
 
