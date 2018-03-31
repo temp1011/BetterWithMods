@@ -89,8 +89,6 @@ public class ClientProxy implements IProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
-        System.out.println(packs.stream().map(IResourcePack::getPackName).toString());
-
         ModuleLoader.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());

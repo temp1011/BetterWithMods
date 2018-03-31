@@ -16,15 +16,23 @@ import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -71,18 +79,23 @@ public class MiniBlocks extends Feature {
         return "Dynamically generate Siding, Mouldings and Corners for many of the blocks in the game.";
     }
 
-    public static boolean isValidMini(IBlockState state) {
+    public static boolean isValidMini(IBlockState state, ItemStack stack) {
 
+        Block blk = state.getBlock();
+        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
+        final Class<? extends Block> blkClass = blk.getClass();
 
-        return state != null
-                && state.isFullBlock()
-                && !state.getBlock().hasTileEntity(state)
-                && !state.getBlock().getTickRandomly()
-                && !BWMRecipes.getStackFromState(state).isEmpty();
-    }
+        // ignore blocks with custom collision.
+        pb.onEntityCollidedWithBlock(null, null, null, null);
+        boolean noCustomCollision = getDeclaringClass(blkClass, pb.MethodName, World.class, BlockPos.class, IBlockState.class, Entity.class) == Block.class;
+        final boolean isFullBlock = state.isFullBlock() || blkClass == BlockStainedGlass.class || blkClass == BlockGlass.class || blk == Blocks.SLIME_BLOCK || blk == Blocks.ICE;
+        final boolean hasItem = Item.getItemFromBlock(blk) != Items.AIR;
+        final boolean tickingBehavior = blk.getTickRandomly();
+        final boolean isOre = BWOreDictionary.hasPrefix(stack,"ore");
 
-    public static boolean isValidMini(ItemStack stack) {
-        return !BWOreDictionary.hasPrefix(stack, "ore");
+        boolean hasBehavior = (blk.hasTileEntity(state) || tickingBehavior) && blkClass != BlockGrass.class && blkClass != BlockIce.class;
+
+        return noCustomCollision && isFullBlock && !hasBehavior && hasItem && !isOre;
     }
 
     @Override
@@ -99,20 +112,28 @@ public class MiniBlocks extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+        final NonNullList<ItemStack> list = NonNullList.create();
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (!(item instanceof ItemBlock))
+                continue;
+            try {
+                final CreativeTabs ctab = item.getCreativeTab();
 
-        for (Block block : ForgeRegistries.BLOCKS) {
-            NonNullList<ItemStack> stacks = NonNullList.create();
-            block.getSubBlocks(null, stacks);
-
-            for (ItemStack stack : stacks) {
-                IBlockState state = BWMRecipes.getStateFromStack(stack);
-                if (!isValidMini(stack) || !isValidMini(state))
-                    continue;
-                Material material = state.getMaterial();
-                if (names.containsKey(material)) {
-                    MATERIALS.put(material, state);
+                if (ctab != null) {
+                    item.getSubItems(ctab, list);
                 }
-            }
+                for (final ItemStack stack : list) {
+                    if (!(stack.getItem() instanceof ItemBlock))
+                        continue;
+                    final IBlockState state = BWMRecipes.getStateFromStack(stack);
+                    if (state != null && isValidMini(state, stack)) {
+                        Material material = state.getMaterial();
+                        if (names.containsKey(material)) {
+                            MATERIALS.put(material, state);
+                        }
+                    }
+                }
+            } catch (Throwable ignored) { }
         }
 
         for (Material material : names.keySet()) {
@@ -148,4 +169,28 @@ public class MiniBlocks extends Feature {
             registerModel(event.getModelRegistry(), String.format("%s_%s", "corner", name), MiniModel.CORNER);
         }
     }
+
+
+    private static Class<?> getDeclaringClass(
+            final Class<?> blkClass,
+            final String methodName,
+            final Class<?>... args) {
+        try {
+            blkClass.getDeclaredMethod(methodName, args);
+            return blkClass;
+        } catch (final NoSuchMethodException | SecurityException e) {
+            // nothing here...
+        } catch (final NoClassDefFoundError e) {
+            BWMod.logger.info("Unable to determine blocks eligibility for making a miniblock, " + blkClass.getName() + " attempted to load " + e.getMessage());
+            return blkClass;
+        } catch (final Throwable t) {
+            return blkClass;
+        }
+
+        return getDeclaringClass(
+                blkClass.getSuperclass(),
+                methodName,
+                args);
+    }
+
 }
