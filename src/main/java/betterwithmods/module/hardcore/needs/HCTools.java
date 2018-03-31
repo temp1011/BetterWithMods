@@ -127,7 +127,6 @@ public class HCTools extends Feature {
             Items.WOODEN_PICKAXE.setMaxDamage(1);
             Items.STONE_PICKAXE.setMaxDamage(5);
         }
-
     }
 
     /**

@@ -46,26 +46,26 @@ public enum SidingOrientation implements BaseOrientation {
                 if (inCenter(hitXFromCenter, hitZFromCenter, 0.25f)) {
                     return fromFace(facing);
                 } else if (isMax(hitXFromCenter, hitZFromCenter)) {
-                    return hitXFromCenter > 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
+                    return hitXFromCenter < 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
                 } else {
-                    return hitZFromCenter > 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
+                    return hitZFromCenter < 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
                 }
             case X:
                 if (inCenter(hitYFromCenter, hitZFromCenter, 0.25f)) {
                     return fromFace(facing);
                 } else if (isMax(hitYFromCenter, hitZFromCenter)) {
-                    return hitYFromCenter > 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
+                    return hitYFromCenter < 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
 
                 } else {
-                    return hitZFromCenter > 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
+                    return hitZFromCenter < 0 ? fromFace(EnumFacing.SOUTH) : fromFace(EnumFacing.NORTH);
                 }
             case Z:
                 if (inCenter(hitYFromCenter, hitXFromCenter, 0.25f)) {
                     return fromFace(facing);
                 } else if (isMax(hitYFromCenter, hitXFromCenter)) {
-                    return hitYFromCenter > 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
+                    return hitYFromCenter < 0 ? fromFace(EnumFacing.UP) : fromFace(EnumFacing.DOWN);
                 } else {
-                    return hitXFromCenter > 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
+                    return hitXFromCenter < 0 ? fromFace(EnumFacing.EAST) : fromFace(EnumFacing.WEST);
                 }
             default:
                 return fromFace(facing);

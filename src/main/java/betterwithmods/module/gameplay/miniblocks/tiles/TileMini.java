@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks.tiles;
 
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,10 +56,9 @@ public abstract class TileMini extends TileBasic {
     @Override
     public void onPlacedBy(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         loadFromStack(stack);
-        orientation = getOrientationFromPlacement(placer, face, stack, hitX, hitY, hitZ);
+        if(getBlockType() instanceof BlockMini)
+            orientation = ((BlockMini) getBlockType()).getOrientationFromPlacement(placer, face, stack, hitX, hitY, hitZ);
     }
-
-    public abstract BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ);
 
     public void loadFromStack(ItemStack stack) {
         NBTTagCompound tag = stack.getSubCompound("texture");

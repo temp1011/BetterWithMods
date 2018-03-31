@@ -81,7 +81,6 @@ public class BlockBUD extends BWMBlock {
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         worldIn.scheduleUpdate(pos, state.getBlock(), 1);
-
     }
 
     @Override

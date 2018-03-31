@@ -25,11 +25,14 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +49,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class MiniBlocks extends Feature {
 
@@ -76,16 +80,18 @@ public class MiniBlocks extends Feature {
         enabledByDefault = false;
     }
 
-    @Override
-    public String getFeatureDescription() {
-        return "Dynamically generate Siding, Mouldings and Corners for many of the blocks in the game.";
-    }
-
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
 
         Block blk = state.getBlock();
         final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
+
+
+        pb.onBlockActivated(null, null, null, null, null, null, 0, 0, 0);
+        boolean noActivation = (getDeclaringClass(blkClass, pb.MethodName, World.class, BlockPos.class, IBlockState.class, EntityPlayer.class, EnumHand.class, EnumFacing.class, float.class, float.class, float.class) == Block.class);
+
+        pb.updateTick(null, null, null, null);
+        boolean noUpdate = getDeclaringClass(blkClass, pb.MethodName, World.class, BlockPos.class, IBlockState.class, Random.class) == Block.class;
 
         // ignore blocks with custom collision.
         pb.onEntityCollidedWithBlock(null, null, null, null);
@@ -97,7 +103,54 @@ public class MiniBlocks extends Feature {
 
         boolean hasBehavior = (blk.hasTileEntity(state) || tickingBehavior) && blkClass != BlockGrass.class && blkClass != BlockIce.class;
 
-        return noCustomCollision && isFullBlock && !hasBehavior && hasItem && !isOre;
+        return noUpdate && noActivation && noCustomCollision && isFullBlock && !hasBehavior && hasItem && !isOre;
+    }
+
+    public static void registerMiniOre(ItemStack stack, String base, String mini) {
+        final NonNullList<ItemStack> list = NonNullList.create();
+        final Item item = stack.getItem();
+        if (item instanceof ItemMini) {
+            final CreativeTabs ctab = item.getCreativeTab();
+            if (ctab != null) {
+                item.getSubItems(ctab, list);
+            }
+            for (final ItemStack subitem : list) {
+                IBlockState state = ItemMini.getState(subitem);
+                if (state != null) {
+                    ItemStack baseStack = BWMRecipes.getStackFromState(state);
+                    if (BWOreDictionary.isOre(baseStack, base)) {
+                        BWOreDictionary.registerOre(mini, subitem);
+                    }
+                }
+            }
+        }
+    }
+
+    private static Class<?> getDeclaringClass(
+            final Class<?> blkClass,
+            final String methodName,
+            final Class<?>... args) {
+        try {
+            blkClass.getDeclaredMethod(methodName, args);
+            return blkClass;
+        } catch (final NoSuchMethodException | SecurityException e) {
+            // nothing here...
+        } catch (final NoClassDefFoundError e) {
+            BWMod.logger.info("Unable to determine blocks eligibility for making a miniblock, " + blkClass.getName() + " attempted to load " + e.getMessage());
+            return blkClass;
+        } catch (final Throwable t) {
+            return blkClass;
+        }
+
+        return getDeclaringClass(
+                blkClass.getSuperclass(),
+                methodName,
+                args);
+    }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Dynamically generate Siding, Mouldings and Corners for many of the blocks in the game.";
     }
 
     @Override
@@ -108,8 +161,6 @@ public class MiniBlocks extends Feature {
         GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
         GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
         GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
-
-
     }
 
     @Override
@@ -150,26 +201,6 @@ public class MiniBlocks extends Feature {
         }
     }
 
-    public static void registerMiniOre(ItemStack stack, String base, String mini) {
-        final NonNullList<ItemStack> list = NonNullList.create();
-        final Item item = stack.getItem();
-        if (item instanceof ItemMini) {
-            final CreativeTabs ctab = item.getCreativeTab();
-            if (ctab != null) {
-                item.getSubItems(ctab, list);
-            }
-            for (final ItemStack subitem : list) {
-                IBlockState state = ItemMini.getState(subitem);
-                if (state != null) {
-                    ItemStack baseStack = BWMRecipes.getStackFromState(state);
-                    if (BWOreDictionary.isOre(baseStack, base)) {
-                        BWOreDictionary.registerOre(mini, subitem);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public boolean hasSubscriptions() {
         return true;
@@ -192,29 +223,6 @@ public class MiniBlocks extends Feature {
             registerModel(event.getModelRegistry(), String.format("%s_%s", "moulding", name), MiniModel.MOULDING);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "corner", name), MiniModel.CORNER);
         }
-    }
-
-
-    private static Class<?> getDeclaringClass(
-            final Class<?> blkClass,
-            final String methodName,
-            final Class<?>... args) {
-        try {
-            blkClass.getDeclaredMethod(methodName, args);
-            return blkClass;
-        } catch (final NoSuchMethodException | SecurityException e) {
-            // nothing here...
-        } catch (final NoClassDefFoundError e) {
-            BWMod.logger.info("Unable to determine blocks eligibility for making a miniblock, " + blkClass.getName() + " attempted to load " + e.getMessage());
-            return blkClass;
-        } catch (final Throwable t) {
-            return blkClass;
-        }
-
-        return getDeclaringClass(
-                blkClass.getSuperclass(),
-                methodName,
-                args);
     }
 
 }
