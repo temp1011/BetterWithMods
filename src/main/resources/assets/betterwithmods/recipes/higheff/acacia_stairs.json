@@ -4,13 +4,7 @@
       "type": "config",
       "enabled": "higheff"
     }
-  ],
-  "conditions": [
-    {
-      "type": "config",
-      "enabled": "higheff"
-    }
-  ],
+  ]
   "result": {
     "item": "minecraft:acacia_stairs"
   },

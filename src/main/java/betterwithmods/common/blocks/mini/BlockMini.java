@@ -5,6 +5,7 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.InvUtils;
@@ -277,7 +278,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
         private final int meta;
         private final String name;
         private final ItemStack block;
-
+        private final IBlockState state;
         EnumType(int metaIn, String nameIn, Block blockIn) {
             this(metaIn, nameIn, new ItemStack(blockIn));
         }
@@ -286,6 +287,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
             this.meta = metaIn;
             this.name = nameIn;
             this.block = blockIn;
+            this.state = BWMRecipes.getStateFromStack(blockIn);
         }
 
         public int getMetadata() {
@@ -298,6 +300,10 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
         public ItemStack getBlock() {
             return this.block;
+        }
+
+        public IBlockState getState() {
+            return this.state;
         }
     }
 

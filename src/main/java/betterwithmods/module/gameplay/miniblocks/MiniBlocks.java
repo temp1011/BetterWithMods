@@ -14,6 +14,7 @@ import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileCorner;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMoulding;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
@@ -31,6 +32,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -52,6 +57,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MiniBlocks extends Feature {
+    private static boolean addConversionRecipes;
 
     public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
@@ -80,6 +86,11 @@ public class MiniBlocks extends Feature {
         enabledByDefault = false;
     }
 
+    @Override
+    public void setupConfig() {
+        addConversionRecipes = loadPropBool("Add Conversion Recipes", "Add recipes to convert the old, static, mini blocks to the new ones.", true);
+    }
+
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
 
         Block blk = state.getBlock();
@@ -106,26 +117,6 @@ public class MiniBlocks extends Feature {
         return noUpdate && noActivation && noCustomCollision && isFullBlock && !hasBehavior && hasItem && !isOre;
     }
 
-    public static void registerMiniOre(ItemStack stack, String base, String mini) {
-        final NonNullList<ItemStack> list = NonNullList.create();
-        final Item item = stack.getItem();
-        if (item instanceof ItemMini) {
-            final CreativeTabs ctab = item.getCreativeTab();
-            if (ctab != null) {
-                item.getSubItems(ctab, list);
-            }
-            for (final ItemStack subitem : list) {
-                IBlockState state = ItemMini.getState(subitem);
-                if (state != null) {
-                    ItemStack baseStack = BWMRecipes.getStackFromState(state);
-                    if (BWOreDictionary.isOre(baseStack, base)) {
-                        BWOreDictionary.registerOre(mini, subitem);
-                    }
-                }
-            }
-        }
-    }
-
     private static Class<?> getDeclaringClass(
             final Class<?> blkClass,
             final String methodName,
@@ -146,6 +137,21 @@ public class MiniBlocks extends Feature {
                 blkClass.getSuperclass(),
                 methodName,
                 args);
+    }
+
+    public static ItemStack fromParent(Block mini, IBlockState state) {
+        ItemStack stack = new ItemStack(mini);
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound texture = new NBTTagCompound();
+        NBTUtil.writeBlockState(texture, state);
+        tag.setTag("texture", texture);
+        stack.setTagCompound(tag);
+        return stack;
+    }
+
+    public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
+        ItemStack output = fromParent(mini, base);
+        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old)));
     }
 
     @Override
@@ -198,6 +204,19 @@ public class MiniBlocks extends Feature {
             addHardcoreRecipe(new MiniRecipe(siding, null));
             addHardcoreRecipe(new MiniRecipe(moulding, siding));
             addHardcoreRecipe(new MiniRecipe(corner, moulding));
+        }
+        if(addConversionRecipes) {
+            for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+                addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()), SIDINGS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));
+                addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata()), MOULDINGS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));
+                addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_CORNER, 1, type.getMetadata()), CORNERS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));
+            }
+
+            for (betterwithmods.common.blocks.mini.BlockMini.EnumType type : betterwithmods.common.blocks.mini.BlockMini.EnumType.VALUES) {
+                addOldRecipeConversation(new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()), SIDINGS.get(Material.ROCK), type.getState());
+                addOldRecipeConversation(new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()), MOULDINGS.get(Material.ROCK), type.getState());
+                addOldRecipeConversation(new ItemStack(BWMBlocks.STONE_CORNER, 1, type.getMetadata()), CORNERS.get(Material.ROCK), type.getState());
+            }
         }
     }
 

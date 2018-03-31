@@ -40,7 +40,6 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
                 if (!inRecipe)
                     return false;
             }
-            System.out.println(matches);
 
         }
         return ItemMini.matches(stacks[0], stacks[1]);

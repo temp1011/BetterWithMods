@@ -19,7 +19,8 @@
       "item": "minecraft:book"
     },
     "S": {
-      "item": "#SIDING_WOOD"
+      "type": "forge:ore_dict",
+      "ore": "sidingWood"
     }
   }
 }

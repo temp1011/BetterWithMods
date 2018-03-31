@@ -20,8 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -71,13 +69,7 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
-            ItemStack stack = new ItemStack(this);
-            NBTTagCompound tag = new NBTTagCompound();
-            NBTTagCompound texture = new NBTTagCompound();
-            NBTUtil.writeBlockState(texture,state);
-            tag.setTag("texture", texture);
-            stack.setTagCompound(tag);
-            items.add(stack);
+           items.add(MiniBlocks.fromParent(this, state));
         }
     }
 
@@ -158,7 +150,6 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileMini) {
             TileMini mini = (TileMini) tile;
