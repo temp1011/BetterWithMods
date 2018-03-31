@@ -25,7 +25,7 @@ public class ItemMini extends ItemBlock {
     }
 
     public static IBlockState getState(ItemStack stack) {
-        if (stack.getItem() instanceof ItemMini) {
+        if (stack != null && stack.getItem() instanceof ItemMini) {
             NBTTagCompound tag = stack.getSubCompound("texture");
             if (tag != null) {
                 return NBTUtil.readBlockState(tag);

@@ -7,6 +7,7 @@ import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMoulding;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockSiding;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
@@ -48,9 +49,9 @@ import java.util.Map;
 
 public class MiniBlocks extends Feature {
 
-    public static HashMap<Material, Block> SIDINGS = Maps.newHashMap();
-    public static HashMap<Material, Block> MOULDINGS = Maps.newHashMap();
-    public static HashMap<Material, Block> CORNERS = Maps.newHashMap();
+    public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
+    public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
+    public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
 
     private static Map<Material, String> names = Maps.newHashMap();
@@ -64,9 +65,9 @@ public class MiniBlocks extends Feature {
     static {
         for (Material material : names.keySet()) {
             String name = names.get(material);
-            SIDINGS.put(material, new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
-            MOULDINGS.put(material, new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
-            CORNERS.put(material, new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
+            SIDINGS.put(material, (BlockMini) new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
+            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
+            CORNERS.put(material, (BlockMini) new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
         }
     }
 
@@ -92,7 +93,7 @@ public class MiniBlocks extends Feature {
         final boolean isFullBlock = state.isFullBlock() || blkClass == BlockStainedGlass.class || blkClass == BlockGlass.class || blk == Blocks.SLIME_BLOCK || blk == Blocks.ICE;
         final boolean hasItem = Item.getItemFromBlock(blk) != Items.AIR;
         final boolean tickingBehavior = blk.getTickRandomly();
-        final boolean isOre = BWOreDictionary.hasPrefix(stack,"ore");
+        final boolean isOre = BWOreDictionary.hasPrefix(stack, "ore");
 
         boolean hasBehavior = (blk.hasTileEntity(state) || tickingBehavior) && blkClass != BlockGrass.class && blkClass != BlockIce.class;
 
@@ -134,16 +135,38 @@ public class MiniBlocks extends Feature {
                         }
                     }
                 }
-            } catch (Throwable ignored) { }
+            } catch (Throwable ignored) {
+            }
         }
 
         for (Material material : names.keySet()) {
-            Block siding = SIDINGS.get(material);
-            Block moulding = MOULDINGS.get(material);
-            Block corner = CORNERS.get(material);
+            BlockMini siding = SIDINGS.get(material);
+            BlockMini moulding = MOULDINGS.get(material);
+            BlockMini corner = CORNERS.get(material);
+
             addHardcoreRecipe(new MiniRecipe(siding, null));
             addHardcoreRecipe(new MiniRecipe(moulding, siding));
             addHardcoreRecipe(new MiniRecipe(corner, moulding));
+        }
+    }
+
+    public static void registerMiniOre(ItemStack stack, String base, String mini) {
+        final NonNullList<ItemStack> list = NonNullList.create();
+        final Item item = stack.getItem();
+        if (item instanceof ItemMini) {
+            final CreativeTabs ctab = item.getCreativeTab();
+            if (ctab != null) {
+                item.getSubItems(ctab, list);
+            }
+            for (final ItemStack subitem : list) {
+                IBlockState state = ItemMini.getState(subitem);
+                if (state != null) {
+                    ItemStack baseStack = BWMRecipes.getStackFromState(state);
+                    if (BWOreDictionary.isOre(baseStack, base)) {
+                        BWOreDictionary.registerOre(mini, subitem);
+                    }
+                }
+            }
         }
     }
 

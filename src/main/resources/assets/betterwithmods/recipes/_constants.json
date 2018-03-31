@@ -25,6 +25,22 @@
         "modid": "betterwithmods"
       }
     ],
+    "name": "SIDING_WOOD",
+    "ingredient": [
+      {
+        "type": "betterwithmods:mini_blocks",
+        "baseOre": "plankWood",
+        "minitype": "siding"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
     "name": "HE_STONE",
     "ingredient": [
       {
