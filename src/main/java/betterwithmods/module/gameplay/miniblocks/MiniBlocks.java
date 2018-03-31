@@ -66,6 +66,11 @@ public class MiniBlocks extends Feature {
         enabledByDefault = false;
     }
 
+    @Override
+    public String getFeatureDescription() {
+        return "Dynamically generate Siding, Mouldings and Corners for many of the blocks in the game.";
+    }
+
     public static boolean isValidMini(IBlockState state) {
         return state.isFullBlock() && state.isOpaqueCube() && !state.getBlock().hasTileEntity(state) && !state.getBlock().getTickRandomly();
     }
