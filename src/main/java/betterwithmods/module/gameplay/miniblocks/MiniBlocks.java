@@ -72,7 +72,13 @@ public class MiniBlocks extends Feature {
     }
 
     public static boolean isValidMini(IBlockState state) {
-        return state.isFullBlock() && state.isOpaqueCube() && !state.getBlock().hasTileEntity(state) && !state.getBlock().getTickRandomly();
+
+
+        return state != null
+                && state.isFullBlock()
+                && !state.getBlock().hasTileEntity(state)
+                && !state.getBlock().getTickRandomly()
+                && !BWMRecipes.getStackFromState(state).isEmpty();
     }
 
     public static boolean isValidMini(ItemStack stack) {

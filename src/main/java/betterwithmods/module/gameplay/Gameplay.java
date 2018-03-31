@@ -36,7 +36,6 @@ public class Gameplay extends Module {
         registerFeature(new BreedingHarness());
         registerFeature(new PlayerDataHandler());
         registerFeature(new ReadTheFingManual());
-
         registerFeature(new MiniBlocks());
     }
 
