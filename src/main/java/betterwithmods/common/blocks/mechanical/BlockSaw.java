@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static net.minecraft.util.EnumFacing.Axis.Y;
-
 public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final float HEIGHT = 0.71875F;
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -381,5 +379,15 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face != getFacing(state).getOpposite() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        if(super.rotateBlock(world,pos,axis)) {
+            setActive(world,pos,false);
+            return true;
+        }
+        return false;
+
     }
 }
