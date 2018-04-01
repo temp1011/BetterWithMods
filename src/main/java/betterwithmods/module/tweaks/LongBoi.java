@@ -5,6 +5,8 @@ import betterwithmods.module.Feature;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LongBoi extends Feature {
     @Override
@@ -12,8 +14,9 @@ public class LongBoi extends Feature {
         return "Long Bois!";
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInitClient(FMLPreInitializationEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(EntityWolf.class, RenderWolf::new);
     }
 }
