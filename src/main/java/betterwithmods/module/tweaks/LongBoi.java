@@ -19,4 +19,9 @@ public class LongBoi extends Feature {
     public void preInitClient(FMLPreInitializationEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(EntityWolf.class, RenderWolf::new);
     }
+
+    @Override
+    public String[] getIncompatibleMods() {
+        return new String[]{"wolfarmor"};
+    }
 }
