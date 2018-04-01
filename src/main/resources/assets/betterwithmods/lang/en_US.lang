@@ -8,6 +8,7 @@ tile.bwm:wooden_broken_gearbox.name=Broken Wooden Gearbox
 tile.bwm:steel_broken_gearbox.name=Broken Steel Gearbox
 
 
+
 tile.bwm:single_machine.0.name=Mill Stone
 tile.bwm:single_machine.1.name=Pulley
 tile.bwm:single_machine.2.name=Filtered Hopper
@@ -620,3 +621,4 @@ bwm.manual.items=Items
 bwm.manual.mechanical=Mechanical Power
 bwm.manual.error.0=Document not found:
 bwm.manual.error.1=Please report this to
+entity.Wolf.name=Long Boi

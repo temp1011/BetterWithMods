@@ -79,6 +79,16 @@ public class ClientProxy implements IProxy {
         packs.add(resourceProxy);
     }
 
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        BWMItems.getItems().forEach(BWMItems::setInventoryModel);
+        ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
+        ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
+        ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
+        ModuleLoader.registerModels(event);
+    }
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         ModuleLoader.preInitClient(event);
@@ -105,16 +115,6 @@ public class ClientProxy implements IProxy {
     public void postInit(FMLPostInitializationEvent event) {
         ModuleLoader.postInitClient(event);
         RenderUtils.registerFilters();
-    }
-
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        BWMItems.getItems().forEach(BWMItems::setInventoryModel);
-        ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.WINDMILL, new BWStateMapper(BWMBlocks.WINDMILL.getRegistryName().toString()));
-        ModelLoader.setCustomStateMapper(BWMBlocks.WATERWHEEL, new BWStateMapper(BWMBlocks.WATERWHEEL.getRegistryName().toString()));
-        ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
-        ModuleLoader.registerModels(event);
     }
 
     private void registerRenderInformation() {
@@ -163,8 +163,36 @@ public class ClientProxy implements IProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntitySpiderWeb.class, manager -> new RenderSnowball<>(manager, Item.getItemFromBlock(Blocks.WEB), Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityJungleSpider.class, RenderJungleSpider::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityTentacle.class, RenderTentacle::new);
+
     }
 
+    @Override
+    public void addResourceOverride(String space, String dir, String file, String ext) {
+        resourceProxy.addResource(space, dir, file, ext);
+    }
+
+    @Override
+    public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
+        resourceProxy.addResource(space, domain, dir, file, ext);
+    }
+
+    @Override
+    public void syncHarness(int entityId, ItemStack harness) {
+        Entity entity = getEntityByID(entityId);
+        if (entity != null) {
+            CapabilityHarness cap = BreedingHarness.getCapability(entity);
+            if (cap != null) {
+                cap.setHarness(harness);
+            }
+        }
+    }
+
+    private Entity getEntityByID(int id) {
+        World world = Minecraft.getMinecraft().world;
+        if (world == null)
+            return null;
+        return world.getEntityByID(id);
+    }
 
     public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
 
@@ -188,35 +216,5 @@ public class ClientProxy implements IProxy {
         public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
             return location;
         }
-    }
-
-
-    @Override
-    public void addResourceOverride(String space, String dir, String file, String ext) {
-        resourceProxy.addResource(space, dir, file, ext);
-    }
-
-    @Override
-    public void addResourceOverride(String space, String domain, String dir, String file, String ext) {
-        resourceProxy.addResource(space, domain, dir, file, ext);
-    }
-
-
-    @Override
-    public void syncHarness(int entityId, ItemStack harness) {
-        Entity entity = getEntityByID(entityId);
-        if (entity != null) {
-            CapabilityHarness cap = BreedingHarness.getCapability(entity);
-            if (cap != null) {
-                cap.setHarness(harness);
-            }
-        }
-    }
-
-    private Entity getEntityByID(int id) {
-        World world = Minecraft.getMinecraft().world;
-        if (world == null)
-            return null;
-        return world.getEntityByID(id);
     }
 }
