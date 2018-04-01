@@ -28,11 +28,13 @@ import java.util.Set;
  * Created by primetoxinz on 9/11/16.
  */
 public class ContainerInfernalEnchanter extends Container {
+    public static final int INV_LAST = 1;
     public int[] enchantLevels;
     public int xpSeed;
     public int bookcaseCount;
     private TileEntityInfernalEnchanter tile;
     private SimpleStackHandler handler;
+
 
     public ContainerInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
         this.tile = tile;
@@ -58,7 +60,6 @@ public class ContainerInfernalEnchanter extends Container {
             addSlotToContainer(new SlotItemHandler(playerInv, i, 8 + i * 18, 187));
         }
     }
-
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -122,27 +123,27 @@ public class ContainerInfernalEnchanter extends Container {
     public void onContextChanged(IItemHandler handler) {
         ItemStack scroll = handler.getStackInSlot(0);
         ItemStack item = handler.getStackInSlot(1);
-
-        Enchantment enchantment = null;
-        Arrays.fill(enchantLevels, 0);
-        int enchantCount = 1;
         if (areValidItems(scroll, item)) {
-            enchantment = ItemArcaneScroll.getEnchantment(scroll);
-            enchantCount = EnchantmentHelper.getEnchantments(item).size();
-        }
-        for (int i = 1; i <= enchantLevels.length; i++) {
-            if (enchantment == null || i > enchantment.getMaxLevel()) {
-                enchantLevels[i - 1] = -1;
-            } else {
-                double max = Math.min(enchantment.getMaxLevel(), enchantLevels.length);
-                double j = i / max;
-                enchantLevels[i - 1] = (int) Math.ceil(30.0 * j) + (30 * enchantCount);
+            Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
+            int enchantCount = EnchantmentHelper.getEnchantments(item).size();
+            for (int levelIndex = 1; levelIndex <= enchantLevels.length; levelIndex++) {
+                enchantLevels[levelIndex - 1] = getEnchantCost(levelIndex, enchantment, enchantCount);
             }
+        } else {
+            Arrays.fill(enchantLevels, -1);
         }
         detectAndSendChanges();
     }
 
-    public static final int INV_LAST = 1;
+    private int getEnchantCost(int levelIndex, Enchantment enchantment, int enchantCount) {
+        if (enchantment == null || levelIndex > enchantment.getMaxLevel()) {
+            return -1;
+        } else {
+            double max = Math.min(enchantment.getMaxLevel(), enchantLevels.length);
+            double multiplier = levelIndex / max;
+            return (int) Math.ceil(30.0 * multiplier) + (30 * enchantCount);
+        }
+    }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
@@ -196,21 +197,28 @@ public class ContainerInfernalEnchanter extends Container {
         }
     }
 
-    public boolean hasLevels(EntityPlayer player, int level) {
-        return player.capabilities.isCreativeMode || (player.experienceLevel >= level && tile.getBookcaseCount() >= level);
+
+    public boolean hasLevels(EntityPlayer player, int levelIndex) {
+        return player.capabilities.isCreativeMode || player.experienceLevel >= this.enchantLevels[levelIndex];
+    }
+
+    public boolean hasBooks(int levelIndex) {
+        return tile.getBookcaseCount() >= this.enchantLevels[levelIndex];
     }
 
     @Override
-    public boolean enchantItem(EntityPlayer player, int level) {
-        if (this.enchantLevels[level] >= level && hasLevels(player, level)) {
+    public boolean enchantItem(EntityPlayer player, int levelIndex) {
+        if (hasLevels(player, levelIndex) && hasBooks(levelIndex)) {
             if (!player.world.isRemote) {
                 ItemStack item = this.handler.getStackInSlot(1);
                 ItemStack scroll = this.handler.getStackInSlot(0);
                 Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
                 if (enchantment != null) {
                     scroll.shrink(1);
-                    item.addEnchantment(enchantment, level + 1);
+                    item.addEnchantment(enchantment, levelIndex + 1);
+                    player.onEnchant(item, this.enchantLevels[levelIndex]);
                     tile.getWorld().playSound(null, tile.getPos(), SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.BLOCKS, 1.0F, tile.getWorld().rand.nextFloat() * 0.1F + 0.9F);
+                    onContextChanged(this.handler);
                 }
             }
             return true;
