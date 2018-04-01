@@ -56,7 +56,7 @@ public abstract class TileMini extends TileBasic {
     @Override
     public void onPlacedBy(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         loadFromStack(stack);
-        if(getBlockType() instanceof BlockMini)
+        if (getBlockType() instanceof BlockMini)
             orientation = ((BlockMini) getBlockType()).getOrientationFromPlacement(placer, face, stack, hitX, hitY, hitZ);
     }
 
@@ -98,13 +98,15 @@ public abstract class TileMini extends TileBasic {
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
-        ItemStack stack = new ItemStack(state.getBlock());
-        NBTTagCompound tag = new NBTTagCompound();
-        NBTTagCompound texture = new NBTTagCompound();
-        NBTUtil.writeBlockState(texture, this.state);
-        tag.setTag("texture", texture);
-        stack.setTagCompound(tag);
-        return stack;
+        if (this.state != null) {
+            ItemStack stack = new ItemStack(state.getBlock());
+            NBTTagCompound tag = new NBTTagCompound();
+            NBTTagCompound texture = new NBTTagCompound();
+            NBTUtil.writeBlockState(texture, this.state);
+            tag.setTag("texture", texture);
+            stack.setTagCompound(tag);
+        }
+        return ItemStack.EMPTY;
     }
 
 }

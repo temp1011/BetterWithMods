@@ -2,12 +2,11 @@ package betterwithmods.module.gameplay.miniblocks.orientations;
 
 public class OrientationUtils {
     public static float CENTER_OFFSET = 0.5F;
-    private static double CORNER_SIZE = 0.25;
 
-    public static int getCorner(double centerA, double centerB) {
+    public static int getCorner(double centerA, double centerB, double cornerSize) {
         boolean posA = centerA > 0, posB = centerB > 0;
         double x = Math.abs(centerA), z = Math.abs(centerB);
-        if (x > CORNER_SIZE && z > CORNER_SIZE) {
+        if (x > cornerSize && z > cornerSize) {
             if (posA && posB)
                 return 0;
             else if (posA)
@@ -18,6 +17,10 @@ public class OrientationUtils {
                 return 3;
         }
         return -1;
+    }
+
+    public static int getCorner(double centerA, double centerB) {
+        return getCorner(centerA, centerB, 0.25);
     }
 
     public static boolean isMax(double hit1, double hit2) {
