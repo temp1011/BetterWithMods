@@ -5,9 +5,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface BaseOrientation extends IStringSerializable {
     BaseOrientation DEFAULT = new BaseOrientation() {
+        @SideOnly(Side.CLIENT)
         @Override
         public TRSRTransformation toTransformation() {
             return new TRSRTransformation(EnumFacing.UP);
@@ -28,6 +31,7 @@ public interface BaseOrientation extends IStringSerializable {
         return Block.FULL_BLOCK_AABB;
     }
 
+    @SideOnly(Side.CLIENT)
     TRSRTransformation toTransformation();
 
     default BaseOrientation next() {

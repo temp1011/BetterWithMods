@@ -149,7 +149,6 @@ public class ClientEventHandler {
         }
         Block block = Block.getBlockFromItem(stack.getItem());
         if (event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && block instanceof IRenderRotationPlacement) {
-
             World world = player.getEntityWorld();
             EnumFacing side = event.getTarget().sideHit;
             BlockPos pos = event.getTarget().getBlockPos();

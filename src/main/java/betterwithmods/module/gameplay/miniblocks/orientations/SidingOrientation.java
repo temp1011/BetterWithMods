@@ -5,29 +5,32 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.inCenter;
 import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.isMax;
 
 public enum SidingOrientation implements BaseOrientation {
-    UP("up", EnumFacing.UP, new TRSRTransformation(ModelRotation.X180_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D)),
-    DOWN("down", EnumFacing.DOWN, new TRSRTransformation(ModelRotation.X0_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D)),
-    NORTH("north", EnumFacing.NORTH, new TRSRTransformation(ModelRotation.X90_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D)),
-    SOUTH("south", EnumFacing.SOUTH, new TRSRTransformation(ModelRotation.X270_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D)),
-    WEST("west", EnumFacing.WEST, new TRSRTransformation(ModelRotation.X270_Y90.getMatrix()), new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)),
-    EAST("east", EnumFacing.EAST, new TRSRTransformation(ModelRotation.X270_Y270.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D));
+    UP("up", EnumFacing.UP, 180, 0, new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D)),
+    DOWN("down", EnumFacing.DOWN, 0, 0, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D)),
+    NORTH("north", EnumFacing.NORTH, 90, 0, new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D)),
+    SOUTH("south", EnumFacing.SOUTH, 270, 0, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D)),
+    WEST("west", EnumFacing.WEST, 270, 90, new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)),
+    EAST("east", EnumFacing.EAST, 270, 270, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D));
 
     public static final SidingOrientation[] VALUES = values();
 
     private String name;
     private EnumFacing facing;
     private AxisAlignedBB bounds;
-    private TRSRTransformation transformation;
+    private int x, y;
 
-    SidingOrientation(String name, EnumFacing facing, TRSRTransformation transformation, AxisAlignedBB bounds) {
+    SidingOrientation(String name, EnumFacing facing, int x, int y, AxisAlignedBB bounds) {
         this.name = name;
         this.facing = facing;
-        this.transformation = transformation;
+        this.x = x;
+        this.y = y;
         this.bounds = bounds;
     }
 
@@ -86,9 +89,10 @@ public enum SidingOrientation implements BaseOrientation {
         return bounds;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public TRSRTransformation toTransformation() {
-        return transformation;
+        return new TRSRTransformation(ModelRotation.getModelRotation(x, y));
     }
 
     @Override

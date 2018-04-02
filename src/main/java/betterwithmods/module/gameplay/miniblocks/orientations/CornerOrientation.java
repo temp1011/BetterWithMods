@@ -5,29 +5,32 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static betterwithmods.module.gameplay.miniblocks.orientations.OrientationUtils.getCorner;
 
 public enum CornerOrientation implements BaseOrientation {
 
-    DOWN_NORTH("down_north", new TRSRTransformation(ModelRotation.X0_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.5D, 0.5D, 0.5D, 1.0D)),
-    DOWN_SOUTH("down_south", new TRSRTransformation(ModelRotation.X0_Y90.getMatrix()), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 0.5D, 0.5D)),
-    DOWN_EAST("down_east", new TRSRTransformation(ModelRotation.X0_Y270.getMatrix()), new AxisAlignedBB(0.5D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D)),
-    DOWN_WEST("down_west", new TRSRTransformation(ModelRotation.X0_Y180.getMatrix()), new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 0.5D, 0.5D)),
-    UP_NORTH("up_north", new TRSRTransformation(ModelRotation.X90_Y0.getMatrix()), new AxisAlignedBB(0.0D, 0.5D, 0.5D, 0.5D, 1.0D, 1.0D)),
-    UP_SOUTH("up_south", new TRSRTransformation(ModelRotation.X90_Y90.getMatrix()), new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 0.5D)),
-    UP_EAST("up_east", new TRSRTransformation(ModelRotation.X90_Y270.getMatrix()), new AxisAlignedBB(0.5D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D)),
-    UP_WEST("up_west", new TRSRTransformation(ModelRotation.X90_Y180.getMatrix()), new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D));
+    DOWN_NORTH("down_north", 0, 0, new AxisAlignedBB(0.0D, 0.0D, 0.5D, 0.5D, 0.5D, 1.0D)),
+    DOWN_SOUTH("down_south", 0, 90, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 0.5D, 0.5D)),
+    DOWN_EAST("down_east", 0, 270, new AxisAlignedBB(0.5D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D)),
+    DOWN_WEST("down_west", 0,180, new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 0.5D, 0.5D)),
+    UP_NORTH("up_north", 90,0, new AxisAlignedBB(0.0D, 0.5D, 0.5D, 0.5D, 1.0D, 1.0D)),
+    UP_SOUTH("up_south", 90,90, new AxisAlignedBB(0.0D, 0.5D, 0.0D, 0.5D, 1.0D, 0.5D)),
+    UP_EAST("up_east",90,270, new AxisAlignedBB(0.5D, 0.5D, 0.5D, 1.0D, 1.0D, 1.0D)),
+    UP_WEST("up_west", 90,180, new AxisAlignedBB(0.5D, 0.5D, 0.0D, 1.0D, 1.0D, 0.5D));
 
     public static final CornerOrientation[] VALUES = values();
 
     private String name;
     private AxisAlignedBB bounds;
-    private TRSRTransformation transformation;
+    private int x, y;
 
-    CornerOrientation(String name, TRSRTransformation transformation, AxisAlignedBB bounds) {
+    CornerOrientation(String name, int x, int y,AxisAlignedBB bounds) {
         this.name = name;
-        this.transformation = transformation;
+        this.x = x;
+        this.y = y;
         this.bounds = bounds;
     }
 
@@ -61,7 +64,7 @@ public enum CornerOrientation implements BaseOrientation {
                     return CornerOrientation.VALUES[corners[corner]];
                 }
             default:
-                 return fromFace(facing.getOpposite());
+                return fromFace(facing.getOpposite());
         }
     }
 
@@ -75,9 +78,10 @@ public enum CornerOrientation implements BaseOrientation {
         return bounds;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public TRSRTransformation toTransformation() {
-        return transformation;
+        return new TRSRTransformation(ModelRotation.getModelRotation(x,y));
     }
 
     @Override

@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.Module;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -36,7 +37,7 @@ public class Gameplay extends Module {
         registerFeature(new BreedingHarness());
         registerFeature(new PlayerDataHandler());
         registerFeature(new ReadTheFingManual());
-//        registerFeature(new MiniBlocks());
+        registerFeature(new MiniBlocks());
     }
 
     @Override

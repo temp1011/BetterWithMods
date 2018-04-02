@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -147,17 +146,6 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
         }
         return false;
     }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            System.out.println(mini.getOrientation().getName());
-        }
-        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
-    }
-
 
     @Override
     public RenderFunction getRenderFunction() {

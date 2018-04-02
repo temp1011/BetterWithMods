@@ -151,7 +151,7 @@ public class MiniBlocks extends Feature {
 
     public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
         ItemStack output = fromParent(mini, base);
-        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old)));
+        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old).replace("tile.","")));
     }
 
     @Override
@@ -176,8 +176,8 @@ public class MiniBlocks extends Feature {
             if (!(item instanceof ItemBlock))
                 continue;
             try {
-                final CreativeTabs ctab = item.getCreativeTab();
 
+                final CreativeTabs ctab = item.getCreativeTab();
                 if (ctab != null) {
                     item.getSubItems(ctab, list);
                 }
@@ -192,6 +192,7 @@ public class MiniBlocks extends Feature {
                         }
                     }
                 }
+                list.clear();
             } catch (Throwable ignored) {
             }
         }
@@ -225,6 +226,8 @@ public class MiniBlocks extends Feature {
         return true;
     }
 
+
+    @SideOnly(Side.CLIENT)
     private void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model) {
         registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, "normal"), model);
         registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, "inventory"), model);

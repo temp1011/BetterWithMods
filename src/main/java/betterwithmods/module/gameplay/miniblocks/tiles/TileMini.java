@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks.tiles;
 
 import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.state.IBlockState;
@@ -98,13 +99,8 @@ public abstract class TileMini extends TileBasic {
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
-        if (this.state != null) {
-            ItemStack stack = new ItemStack(state.getBlock());
-            NBTTagCompound tag = new NBTTagCompound();
-            NBTTagCompound texture = new NBTTagCompound();
-            NBTUtil.writeBlockState(texture, this.state);
-            tag.setTag("texture", texture);
-            stack.setTagCompound(tag);
+        if (this.state != null && getBlockType() instanceof BlockMini) {
+            return MiniBlocks.fromParent(getBlockType(), this.state);
         }
         return ItemStack.EMPTY;
     }
