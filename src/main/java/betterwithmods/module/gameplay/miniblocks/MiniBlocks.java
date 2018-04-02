@@ -5,6 +5,8 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
@@ -44,8 +46,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -57,19 +62,21 @@ import java.util.Map;
 import java.util.Random;
 
 public class MiniBlocks extends Feature {
-    private static boolean addConversionRecipes;
-
+    public static HashMap<MiniType, HashMap<Material, BlockMini>> MINI_MATERIL_BLOCKS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
-
+    private static boolean addConversionRecipes;
     private static Map<Material, String> names = Maps.newHashMap();
 
     static {
         names.put(Material.WOOD, "wood");
         names.put(Material.ROCK, "rock");
         names.put(Material.IRON, "iron");
+        MINI_MATERIL_BLOCKS.put(MiniType.SIDING, SIDINGS);
+        MINI_MATERIL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
+        MINI_MATERIL_BLOCKS.put(MiniType.CORNER, CORNERS);
     }
 
     static {
@@ -84,11 +91,6 @@ public class MiniBlocks extends Feature {
 
     public MiniBlocks() {
         enabledByDefault = false;
-    }
-
-    @Override
-    public void setupConfig() {
-        addConversionRecipes = loadPropBool("Add Conversion Recipes", "Add recipes to convert the old, static, mini blocks to the new ones.", true);
     }
 
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
@@ -110,7 +112,7 @@ public class MiniBlocks extends Feature {
         final boolean isFullBlock = state.isFullBlock() || blkClass == BlockStainedGlass.class || blkClass == BlockGlass.class || blk == Blocks.SLIME_BLOCK || blk == Blocks.ICE;
         final boolean hasItem = Item.getItemFromBlock(blk) != Items.AIR;
         final boolean tickingBehavior = blk.getTickRandomly();
-        final boolean isOre = BWOreDictionary.hasPrefix(stack, "ore");
+        final boolean isOre = BWOreDictionary.hasPrefix(stack, "ore") || BWOreDictionary.isOre(stack, "logWood");
 
         boolean hasBehavior = (blk.hasTileEntity(state) || tickingBehavior) && blkClass != BlockGrass.class && blkClass != BlockIce.class;
 
@@ -140,7 +142,11 @@ public class MiniBlocks extends Feature {
     }
 
     public static ItemStack fromParent(Block mini, IBlockState state) {
-        ItemStack stack = new ItemStack(mini);
+        return fromParent(mini, state, 1);
+    }
+
+    public static ItemStack fromParent(Block mini, IBlockState state, int count) {
+        ItemStack stack = new ItemStack(mini, count);
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagCompound texture = new NBTTagCompound();
         NBTUtil.writeBlockState(texture, state);
@@ -149,9 +155,15 @@ public class MiniBlocks extends Feature {
         return stack;
     }
 
+
+    @Override
+    public void setupConfig() {
+        addConversionRecipes = loadPropBool("Add Conversion Recipes", "Add recipes to convert the old, static, mini blocks to the new ones.", true);
+    }
+
     public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
         ItemStack output = fromParent(mini, base);
-        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old).replace("tile.","")));
+        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old).replace("tile.", "")));
     }
 
     @Override
@@ -169,8 +181,9 @@ public class MiniBlocks extends Feature {
         GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
     }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onItemRegister(RegistryEvent.Register<Item> event) {
         final NonNullList<ItemStack> list = NonNullList.create();
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof ItemBlock))
@@ -196,6 +209,16 @@ public class MiniBlocks extends Feature {
             } catch (Throwable ignored) {
             }
         }
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+
 
         for (Material material : names.keySet()) {
             BlockMini siding = SIDINGS.get(material);
@@ -206,7 +229,23 @@ public class MiniBlocks extends Feature {
             addHardcoreRecipe(new MiniRecipe(moulding, siding));
             addHardcoreRecipe(new MiniRecipe(corner, moulding));
         }
-        if(addConversionRecipes) {
+
+        for (IBlockState wood : MATERIALS.get(Material.WOOD)) {
+            ItemStack mini = BWMRecipes.getStackFromState(wood);
+            MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
+            MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
+            MiniBlockIngredient corner = new MiniBlockIngredient("corner", mini);
+            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), wood, 2);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), wood, 2);
+            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), wood, 2);
+            BWRegistry.WOOD_SAW.addRecipe(mini, sidingStack);
+            BWRegistry.WOOD_SAW.addRecipe(siding, mouldingStack);
+            BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
+            if (BWOreDictionary.isOre(mini, "plankWood"))
+                BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+        }
+
+        if (addConversionRecipes) {
             for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
                 addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()), SIDINGS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));
                 addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_MOULDING, 1, type.getMetadata()), MOULDINGS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));

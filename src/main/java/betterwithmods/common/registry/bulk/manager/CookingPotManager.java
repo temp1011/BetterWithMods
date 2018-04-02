@@ -2,6 +2,7 @@ package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
+import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -13,8 +14,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
-    public static final int UNSTOKED_HEAT = 1;
-    public static final int STOKED_HEAT = 2;
 
     private static final CookingPotManager instance = new CookingPotManager();
 
@@ -43,7 +42,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addStokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, STOKED_HEAT));
+        return addRecipe(new CookingPotRecipe(inputs, outputs, BWMHeatRegistry.STOKED_HEAT));
     }
 
     //Unstoked
@@ -72,7 +71,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, UNSTOKED_HEAT));
+        return addRecipe(new CookingPotRecipe(inputs, outputs, BWMHeatRegistry.UNSTOKED_HEAT));
     }
 
     public CookingPotRecipe addHeatlessRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {

@@ -28,7 +28,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -129,8 +128,10 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         withTile(world, pos).ifPresent(TileSaw::onChanged);
         if (isActive(state)) {
-            sawBlockInFront(world, pos, rand);
-            world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+            if (!world.isRemote) {
+                sawBlockInFront(world, pos, rand);
+                world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+            }
         }
     }
 
@@ -255,26 +256,9 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     }
 
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
-        if (world.isRemote || !(world instanceof WorldServer))
-            return;
-        if (world.getBlockState(pos).getBlock() != this)
-            return;
         BlockPos blockPos = pos.offset(getFacing(world, pos));
-        if (world.isAirBlock(blockPos))
-            return;
-        IBlockState state = world.getBlockState(blockPos);
-        if (BWRegistry.WOOD_SAW.canCraft(state)) {
-            InvUtils.ejectStackWithOffset(world, blockPos, BWRegistry.WOOD_SAW.craftItem(world, blockPos, state));
-            world.playSound(null, blockPos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
-        }
-        //TODO
-//        if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
-//            List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
-//            world.setBlockToAir(pos2);
-//            if (!products.isEmpty())
-//                InvUtils.ejectStackWithOffset(world, pos2, products);
-
-//        }
+        if (!world.isAirBlock(pos))
+            BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
     }
 
     @Override
@@ -331,11 +315,10 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
 
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-        if(super.rotateBlock(world,pos,axis)) {
-            setActive(world,pos,false);
+        if (super.rotateBlock(world, pos, axis)) {
+            setActive(world, pos, false);
             return true;
         }
         return false;
-
     }
 }

@@ -5,7 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.bulk.manager.CookingPotManager;
+import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.Feature;
 import betterwithmods.util.StackIngredient;
 import com.google.common.collect.Lists;
@@ -88,7 +88,7 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("foodFlour"), Ingredient.fromItem(Items.SUGAR)), Lists.newArrayList(new ItemStack(BWMItems.DONUT, 4)));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustHellfire"), Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW))), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL, 2)));
 
-        BWRegistry.CAULDRON.addHeatlessRecipe(Lists.newArrayList(StackIngredient.fromOre(8, "dustHellfire")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE)), CookingPotManager.UNSTOKED_HEAT);
+        BWRegistry.CAULDRON.addHeatlessRecipe(Lists.newArrayList(StackIngredient.fromOre(8, "dustHellfire")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE)), BWMHeatRegistry.UNSTOKED_HEAT);
 
         BWRegistry.CAULDRON.addUnstokedRecipe(new OreIngredient("blockCactus"), new ItemStack(Items.DYE, 1, 2));
 

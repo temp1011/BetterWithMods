@@ -4,7 +4,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.BlockUnfiredPottery;
-import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.blocks.tile.TileKiln;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import com.mojang.authlib.GameProfile;
@@ -102,7 +102,7 @@ public class PlaceClay extends Feature {
         if (player.isSneaking())
             return true;
         TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && !(tile instanceof TileCamo))
+        if (tile != null && !(tile instanceof TileKiln))
             return false;
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();

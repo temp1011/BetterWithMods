@@ -2,7 +2,7 @@ package betterwithmods.common.registry;
 
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.blocks.tile.TileKiln;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -41,8 +41,8 @@ public class KilnStructureManager {
             IBlockState kiln = BWMBlocks.KILN.getDefaultState();
             world.setBlockState(pos, kiln);
             TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TileCamo) {
-                ((TileCamo) tile).setCamoState(state);
+            if (tile instanceof TileKiln) {
+                ((TileKiln) tile).setCamoState(state);
                 world.notifyBlockUpdate(pos, kiln, kiln, 8);
             }
             return true;

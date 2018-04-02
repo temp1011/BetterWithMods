@@ -34,21 +34,21 @@ public abstract class BlockMetaManager<T extends BlockRecipe> {
         return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).collect(Collectors.toList());
     }
 
-    public List<T> findRecipes(IBlockState state) {
-        return recipes.stream().filter(r -> r.getInput().apply(state)).collect(Collectors.toList());
+    public List<T> findRecipes(World world, BlockPos pos, IBlockState state) {
+        return recipes.stream().filter(r -> r.getInput().apply(world,pos,state)).collect(Collectors.toList());
     }
 
-    public Optional<T> findRecipe(IBlockState state) {
-        return findRecipes(state).stream().findFirst();
+    public Optional<T> findRecipe(World world, BlockPos pos, IBlockState state) {
+        return findRecipes(world,pos,state).stream().findFirst();
     }
 
     @Nonnull
     public NonNullList<ItemStack> craftItem(World world, BlockPos pos, IBlockState state) {
-        return findRecipe(state).map(r -> r.onCraft(world, pos)).orElse(NonNullList.create());
+        return findRecipe(world,pos,state).map(r -> r.onCraft(world, pos)).orElse(NonNullList.create());
     }
 
-    public boolean canCraft(IBlockState state) {
-        return findRecipe(state).isPresent();
+    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
+        return findRecipe(world,pos,state).isPresent();
     }
 
     public boolean remove(T t) {

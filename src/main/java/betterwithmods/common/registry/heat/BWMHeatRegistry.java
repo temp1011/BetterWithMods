@@ -12,6 +12,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class BWMHeatRegistry {
+    public static final int UNSTOKED_HEAT = 1;
+    public static final int STOKED_HEAT = 2;
     private static final List<HeatSource> HEAT_SOURCES = Lists.newArrayList();
 
     public static void addHeatSource(Predicate<IBlockState> state, int heat) {

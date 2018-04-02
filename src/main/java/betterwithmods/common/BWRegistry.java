@@ -16,6 +16,7 @@ import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
@@ -80,6 +81,7 @@ public class BWRegistry {
     public static final CookingPotManager CRUCIBLE = new CookingPotManager();
     public static final MillManager MILLSTONE = new MillManager();
     public static final SawManager WOOD_SAW = new SawManager();
+    public static final KilnManager KILN_MANAGER = new KilnManager();
 
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
     public static final Potion POTION_TRUESIGHT = null;
@@ -104,8 +106,8 @@ public class BWRegistry {
         BWMBlocks.registerTileEntities();
         BWRegistry.registerEntities();
         BWRegistry.registerBlockDispenserBehavior();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default.class);
-        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default::new);
+        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default::new);
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
         KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }

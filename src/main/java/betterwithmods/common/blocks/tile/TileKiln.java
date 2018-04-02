@@ -22,7 +22,8 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileCamo extends TileBasic {
+//TODO REDO THIS.
+public class TileKiln extends TileBasic {
 
     private static final String TAG_CAMO = "camo";
     private static final String TAG_CAMO_META = "camoMeta";

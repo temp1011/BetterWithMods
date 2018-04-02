@@ -50,6 +50,6 @@ public class BlockRecipe {
     }
 
     public boolean isInvalid() {
-        return ArrayUtils.isEmpty(input.getMatchingStacks()) || outputs == null;
+        return (input.isSimple() && ArrayUtils.isEmpty(input.getMatchingStacks())) || outputs == null;
     }
 }

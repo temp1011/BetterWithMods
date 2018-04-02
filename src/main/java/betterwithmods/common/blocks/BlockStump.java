@@ -130,9 +130,9 @@ public class BlockStump extends Block implements IMultiVariants {
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            items.add(new ItemStack(this, 1, type.getMetadata()));
-        }
+//        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+//            items.add(new ItemStack(this, 1, type.getMetadata()));
+//        }
     }
 
     @Override

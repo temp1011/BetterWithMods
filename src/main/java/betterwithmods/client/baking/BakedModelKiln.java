@@ -2,7 +2,7 @@ package betterwithmods.client.baking;
 
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockKiln;
-import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.blocks.tile.TileKiln;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -116,7 +116,7 @@ public class BakedModelKiln implements IBakedModel {
         public IBlockState getBlockState(@Nonnull BlockPos pos) {
             IBlockState state = compose.getBlockState(pos);
             if(state.getBlock() instanceof BlockKiln) {
-                state = ((TileCamo) compose.getTileEntity(pos)).camoState;
+                state = ((TileKiln) compose.getTileEntity(pos)).camoState;
             }
             return state == null ? Blocks.AIR.getDefaultState() : state;
         }

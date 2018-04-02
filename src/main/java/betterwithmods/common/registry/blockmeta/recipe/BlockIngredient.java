@@ -12,6 +12,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
@@ -35,6 +37,12 @@ public class BlockIngredient extends Ingredient {
         super(0);
         this.stacks = InvUtils.asNonnullList(stacks);
     }
+
+    public BlockIngredient(Ingredient ingredient) {
+        super(0);
+        this.stacks = InvUtils.asNonnullList(ingredient.getMatchingStacks());
+    }
+
 
     @Override
     @Nonnull
@@ -88,7 +96,7 @@ public class BlockIngredient extends Ingredient {
         return input != null && this.stacks.stream().anyMatch(t -> InvUtils.matches(t, input));
     }
 
-    public boolean apply(@Nullable IBlockState state) {
+    public boolean apply(World world, BlockPos pos, @Nullable IBlockState state) {
         return state != null && getStates().stream().anyMatch(state::equals);
     }
 

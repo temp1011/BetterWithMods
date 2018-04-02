@@ -18,14 +18,13 @@ import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
-import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.common.registry.crafting.ToolBaseRecipe;
 import betterwithmods.common.registry.crafting.ToolDamageRecipe;
+import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
-import betterwithmods.module.gameplay.miniblocks.MiniRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -103,7 +102,7 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(KilnRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), KilnRecipeCategory.UID);
         reg.handleRecipes(SawRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), SawRecipeCategory.UID);
         reg.handleRecipes(SawRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), SteelSawRecipeCategory.UID);
-        reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER,recipe), TurntableRecipeCategory.UID);
+        reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER, recipe), TurntableRecipeCategory.UID);
         reg.handleRecipes(HopperInteractions.HopperRecipe.class, recipe -> recipe instanceof HopperInteractions.SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((HopperInteractions.SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe), HopperRecipeCategory.UID);
         reg.handleRecipes(ShapedAnvilRecipe.class, recipe -> new ShapedAnvilRecipeWrapper(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ShapelessAnvilRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
@@ -114,16 +113,16 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), "minecraft.crafting");
 
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == CookingPotManager.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == CookingPotManager.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
+        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
+        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
 
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == CookingPotManager.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == CookingPotManager.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
+        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
+        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
 
         reg.addRecipes(BWRegistry.MILLSTONE.getRecipes(), MillRecipeCategory.UID);
         reg.addRecipes(BWRegistry.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
 //        reg.addRecipes(Sets.union(Sets.newHashSet(SawManager.WOOD_SAW.getRecipes()), Sets.newHashSet(SawManager.STEEL_SAW.getRecipes())), SteelSawRecipeCategory.UID);
-//        reg.addRecipes(KilnManager.INSTANCE.getRecipes(), KilnRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.KILN_MANAGER.getRecipes(), KilnRecipeCategory.UID);
 //        reg.addRecipes(TurntableManager.INSTANCE.getRecipes(), TurntableRecipeCategory.UID);
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);

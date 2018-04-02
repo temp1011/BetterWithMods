@@ -1,11 +1,15 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
-import betterwithmods.common.blocks.BlockRawPastry;
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.blocks.*;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -19,34 +23,32 @@ public class KilnRecipes extends Feature {
     public KilnRecipes() {
         canDisable = false;
     }
+
     @Override
     public void init(FMLInitializationEvent event) {
-        //TODO
-//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 0, new ItemStack(BWMBlocks.COOKING_POTS, 1, BlockCookingPot.EnumType.CRUCIBLE.getMeta()));
-//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 1, new ItemStack(BWMBlocks.PLANTER));
-//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 2, new ItemStack(BWMBlocks.URN));
-//        addKilnRecipe(BWMBlocks.UNFIRED_POTTERY, 3, new ItemStack(BWMBlocks.VASE));
-//        addKilnRecipe(Blocks.CLAY, 0, new ItemStack(Blocks.HARDENED_CLAY));
-//        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE));
-//        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD));
-//        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE));
-//        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE));
-//        addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
-//        addKilnRecipe(BWMBlocks.NETHER_CLAY, new ItemStack(BWMBlocks.AESTHETIC, 1, 2));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE), BlockCookingPot.getStack(BlockCookingPot.EnumType.CRUCIBLE));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.PLANTER), BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN), BlockUrn.getStack(BlockUrn.EnumType.EMPTY, 1));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.VASE), BlockVase.getStack(EnumDyeColor.WHITE));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(new ItemStack(Blocks.CLAY), new ItemStack(Blocks.HARDENED_CLAY));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(new ItemStack(BWMBlocks.NETHER_CLAY), BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY));
+
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2));
+        BWRegistry.KILN_MANAGER.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1));
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD, 1), 0.1F);
-        //TODO make these recipes only require normal fire.
-//        KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
-//        KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2));
-//        KilnRecipes.addKilnRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1));
+
     }
 
     @SubscribeEvent
     public void formKiln(BlockEvent.NeighborNotifyEvent event) {
-        KilnStructureManager.createKiln(event.getWorld(),event.getPos());
+        KilnStructureManager.createKiln(event.getWorld(), event.getPos());
     }
 
     @SubscribeEvent
