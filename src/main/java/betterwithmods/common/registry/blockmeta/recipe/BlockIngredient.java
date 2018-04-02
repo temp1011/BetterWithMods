@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Set;
 
 public class BlockIngredient extends Ingredient {
@@ -33,6 +34,11 @@ public class BlockIngredient extends Ingredient {
         this.stacks = OreDictionary.getOres(ore);
     }
 
+    public BlockIngredient(List<ItemStack> stacks) {
+        super(0);
+        this.stacks = InvUtils.asNonnullList(stacks);
+    }
+
     public BlockIngredient(ItemStack... stacks) {
         super(0);
         this.stacks = InvUtils.asNonnullList(stacks);
@@ -42,7 +48,6 @@ public class BlockIngredient extends Ingredient {
         super(0);
         this.stacks = InvUtils.asNonnullList(ingredient.getMatchingStacks());
     }
-
 
     @Override
     @Nonnull

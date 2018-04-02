@@ -29,24 +29,24 @@ public class BWDamageSource extends DamageSource {
     public static MultiFakeSource getSteelSawDamage() {
         if (steel_saw != null)
             return steel_saw;
-        if (FakePlayerHandler.player != null)
-            return steel_saw = new MultiFakeSource("steel_saw", FakePlayerHandler.player, 1);
+        if (FakePlayerHandler.getPlayer() != null)
+            return steel_saw = new MultiFakeSource("steel_saw", FakePlayerHandler.getPlayer(), 1);
         return null;
     }
 
     public static FakeDamageSource getSawDamage() {
         if (saw != null)
             return saw;
-        if (FakePlayerHandler.player != null)
-            return saw = new FakeDamageSource("saw", FakePlayerHandler.player);
+        if (FakePlayerHandler.getPlayer() != null)
+            return saw = new FakeDamageSource("saw", FakePlayerHandler.getPlayer());
         return null;
     }
 
     public static FakeDamageSource getChoppingBlockDamage() {
         if (choppingBlock != null)
             return choppingBlock;
-        if (FakePlayerHandler.player != null)
-            return choppingBlock = new FakeDamageSource("chopping_block", FakePlayerHandler.player);
+        if (FakePlayerHandler.getPlayer() != null)
+            return choppingBlock = new FakeDamageSource("chopping_block", FakePlayerHandler.getPlayer());
         return null;
     }
 

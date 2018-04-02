@@ -257,8 +257,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
 
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
         BlockPos blockPos = pos.offset(getFacing(world, pos));
-        if (!world.isAirBlock(pos))
-            BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
+        BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
     }
 
     @Override

@@ -57,12 +57,12 @@ public class BlockKiln extends BWMBlock {
         BlockPos craftPos = pos.up();
         int currentTickRate = 20;
         IBlockState craftState = world.getBlockState(craftPos);
-        boolean canCook = BWRegistry.KILN_MANAGER.canCraft(world, craftPos, craftState);
+        boolean canCook = BWRegistry.KILN.canCraft(world, craftPos, craftState);
         if (canCook) {
             int newCookTime = oldCookTime + 1;
             if (newCookTime > 7) {
                 newCookTime = 0;
-                BWRegistry.KILN_MANAGER.craftRecipe(world, craftPos, rand, world.getBlockState(craftPos));
+                BWRegistry.KILN.craftRecipe(world, craftPos, rand, world.getBlockState(craftPos));
                 setCookCounter(world, pos, 0);
             } else {
                 if (newCookTime > 0) {
@@ -103,7 +103,7 @@ public class BlockKiln extends BWMBlock {
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
         int cookTime = getCookCounter(world, pos);
         BlockPos craftPos = pos.up();
-        if (cookTime > 0 && !BWRegistry.KILN_MANAGER.canCraft(world, craftPos, world.getBlockState(craftPos))) {
+        if (cookTime > 0 && !BWRegistry.KILN.canCraft(world, craftPos, world.getBlockState(craftPos))) {
             //Reset timer.
             world.sendBlockBreakProgress(0, craftPos, -1);
             setCookCounter(world, pos, 0);

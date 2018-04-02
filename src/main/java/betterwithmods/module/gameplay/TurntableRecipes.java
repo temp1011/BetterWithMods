@@ -1,11 +1,16 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.blocks.BlockUnfiredPottery;
 import betterwithmods.common.registry.TurntableRotationManager;
 import betterwithmods.module.Feature;
+import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -18,17 +23,15 @@ public class TurntableRecipes extends Feature {
         canDisable = false;
     }
 
-//    public static void addTurntableRecipe(Block inputBlock, int iMeta, Block outputBlock, int oMeta, ItemStack... scraps) {
-//        TurntableManager.INSTANCE.addTurntableRecipe(inputBlock, iMeta, outputBlock, oMeta, scraps);
-//    }
-
     @Override
     public void init(FMLInitializationEvent event) {
-//        addTurntableRecipe(Blocks.CLAY, 0, BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.CRUCIBLE.getMeta(), new ItemStack(Items.CLAY_BALL));
-//        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.CRUCIBLE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.PLANTER.getMeta(), ItemStack.EMPTY);
-//        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.PLANTER.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), new ItemStack(Items.CLAY_BALL));
-//        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.VASE.getMeta(), BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), new ItemStack(Items.CLAY_BALL));
-//        addTurntableRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.URN.getMeta(), null, 0, new ItemStack(Items.CLAY_BALL));
+
+        BWRegistry.TURNTABLE.addDefaultRecipe(new ItemStack(Blocks.CLAY), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE), Lists.newArrayList(new ItemStack(Items.CLAY_BALL)));
+        BWRegistry.TURNTABLE.addDefaultRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.PLANTER));
+        BWRegistry.TURNTABLE.addDefaultRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.PLANTER), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.VASE), Lists.newArrayList(new ItemStack(Items.CLAY_BALL)));
+        BWRegistry.TURNTABLE.addDefaultRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.VASE), BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN), Lists.newArrayList(new ItemStack(Items.CLAY_BALL)));
+        BWRegistry.TURNTABLE.addDefaultRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN), Blocks.AIR.getDefaultState(),Lists.newArrayList(new ItemStack(Items.CLAY_BALL)));
+
 
         TurntableRotationManager.addAttachment(b -> b instanceof BlockTorch);
         TurntableRotationManager.addAttachment(b -> b instanceof BlockLever);

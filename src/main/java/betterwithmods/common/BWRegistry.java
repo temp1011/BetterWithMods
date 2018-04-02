@@ -18,6 +18,7 @@ import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
+import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -81,7 +82,8 @@ public class BWRegistry {
     public static final CookingPotManager CRUCIBLE = new CookingPotManager();
     public static final MillManager MILLSTONE = new MillManager();
     public static final SawManager WOOD_SAW = new SawManager();
-    public static final KilnManager KILN_MANAGER = new KilnManager();
+    public static final KilnManager KILN = new KilnManager();
+    public static final TurntableManager TURNTABLE = new TurntableManager();
 
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
     public static final Potion POTION_TRUESIGHT = null;
@@ -195,7 +197,7 @@ public class BWRegistry {
                 });
         BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(Blocks.STONE, new BehaviorSilkTouch());
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityWolf.class, (world, pos, entity, stack) -> {
-            if( ((EntityAgeable)entity).isChild())
+            if (((EntityAgeable) entity).isChild())
                 return NonNullList.create();
             InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STRING, 1 + world.rand.nextInt(3)));
             world.playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);

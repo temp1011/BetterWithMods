@@ -80,8 +80,7 @@ public class BWMod {
 
     @Mod.EventHandler
     public void serverStopping(FMLServerStoppingEvent evt) {
-        if (FakePlayerHandler.player != null) {
-            FakePlayerHandler.player = null;
-        }
+        FakePlayerHandler.setPlayer(null);
+        FakePlayerHandler.setCreativePlayer(null);
     }
 }

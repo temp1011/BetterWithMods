@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.blockmeta.recipe;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -8,8 +10,30 @@ import java.util.List;
  * Created by primetoxinz on 4/20/17.
  */
 public class TurntableRecipe extends BlockRecipe {
-    public TurntableRecipe(BlockIngredient input, List<ItemStack> outputs) {
+    private int rotations;
+
+    private IBlockState productState;
+
+    public TurntableRecipe(BlockIngredient input, List<ItemStack> outputs, IBlockState productState, int rotations) {
         super(input, outputs);
+        this.rotations = rotations;
+        this.productState = productState;
+    }
+
+    public TurntableRecipe(BlockIngredient input, IBlockState productState, List<ItemStack> outputs, int rotations) {
+        super(input, outputs);
+        this.rotations = rotations;
+        this.productState = productState;
+    }
+
+    public int getRotations() {
+        return rotations;
+    }
+
+    public IBlockState getProductState() {
+        if (productState == null)
+            return Blocks.AIR.getDefaultState();
+        return productState;
     }
 
     //    private Block result;

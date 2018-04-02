@@ -4,6 +4,7 @@ import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
@@ -39,14 +40,17 @@ public class KilnManager extends BlockMetaManager<KilnRecipe> {
 
     @Override
     public boolean canCraft(World world, BlockPos pos, IBlockState state) {
-        KilnRecipe recipe = findRecipe(world,pos,state).orElse(null);
+        KilnRecipe recipe = findRecipe(world, pos, state).orElse(null);
         return recipe != null && (recipe.ignore() || KilnStructureManager.getKiln().getHeat(world, pos.down()) == recipe.getHeat());
     }
 
-    public void craftRecipe(World world, BlockPos pos, Random random, IBlockState state) {
+    public boolean craftRecipe(World world, BlockPos pos, Random random, IBlockState state) {
         if (canCraft(world, pos, state)) {
             InvUtils.ejectStackWithOffset(world, pos, craftItem(world, pos, state));
-            world.setBlockToAir(pos);
+            state.getBlock().onBlockHarvested(world, pos, state, FakePlayerHandler.getPlayer());
+            world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+            return true;
         }
+        return false;
     }
 }

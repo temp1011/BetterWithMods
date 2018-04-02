@@ -14,10 +14,22 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
 public class FakePlayerHandler {
-    public static FakePlayer player;
+    private static FakePlayer player, creative;
+
+    public static FakePlayer getCreativePlayer() {
+        return creative;
+    }
 
     public static FakePlayer getPlayer() {
         return player;
+    }
+
+    public static void setPlayer(FakePlayer player) {
+        FakePlayerHandler.player = player;
+    }
+
+    public static void setCreativePlayer(FakePlayer creative) {
+        FakePlayerHandler.creative = creative;
     }
 
     //Initializing a static fake player for saws, so spawn isn't flooded with player equipping sounds when mobs hit the saw.
@@ -28,8 +40,12 @@ public class FakePlayerHandler {
             ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
             sword.addEnchantment(Enchantment.getEnchantmentByLocation("looting"), 2);
             player.setHeldItem(EnumHand.MAIN_HAND, sword);
+
+            creative = FakePlayerFactory.get((WorldServer) evt.getWorld(), Profiles.BWMSAW_CREATIVE);
+            creative.capabilities.isCreativeMode = true;
         }
     }
+
     //Not sure if this would be needed, but can't be too safe.
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload evt) {

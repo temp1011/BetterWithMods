@@ -245,6 +245,7 @@ public class MiniBlocks extends Feature {
                 BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
         }
 
+
         if (addConversionRecipes) {
             for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
                 addOldRecipeConversation(new ItemStack(BWMBlocks.WOOD_SIDING, 1, type.getMetadata()), SIDINGS.get(Material.WOOD), Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, type));
