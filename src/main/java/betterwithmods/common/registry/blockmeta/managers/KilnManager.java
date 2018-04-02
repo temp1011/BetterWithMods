@@ -21,6 +21,11 @@ public class KilnManager extends BlockMetaManager<KilnRecipe> {
         return addRecipe(input, outputs, BWMHeatRegistry.STOKED_HEAT);
     }
 
+    public KilnRecipe addStokedRecipe(ItemStack input, List<ItemStack> outputs) {
+        return addRecipe(input, outputs, BWMHeatRegistry.STOKED_HEAT);
+    }
+
+
     public KilnRecipe addUnstokedRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
     }

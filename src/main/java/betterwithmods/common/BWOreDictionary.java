@@ -7,7 +7,6 @@ import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.Wood;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
@@ -295,11 +294,6 @@ public class BWOreDictionary {
                         } else
                             return i;
                     }
-                } else if (obj instanceof OreStack && list.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack) obj;
-                    OreStack toCheck = (OreStack) list.get(i);
-                    if (stack.getOreName().equals(toCheck.getOreName()))
-                        return i;
                 }
             }
         }
