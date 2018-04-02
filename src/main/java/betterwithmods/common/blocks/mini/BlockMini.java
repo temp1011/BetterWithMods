@@ -5,6 +5,7 @@ import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.util.InvUtils;
@@ -13,8 +14,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -52,8 +53,6 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
-
-
         world.setBlockState(pos, state.cycleProperty(getOrientationProperty()));
     }
 
@@ -134,7 +133,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
         TileEntityMultiType tile = getTile(world, pos);
         if (tile != null) {
-            tile.setOrientation((tile.getOrientation() + 1) % getOrientationProperty().getMax());
+            tile.setOrientation((tile.getOrientation() + 1) % (getOrientationProperty().getMax() + 1));
             IBlockState state = world.getBlockState(pos);
             world.setBlockState(pos, getActualState(state, world, pos));
             return true;
@@ -204,7 +203,6 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-
         return new ItemStack(this, 1, getActualState(state, world, pos).getValue(TYPE));
     }
 
@@ -231,20 +229,22 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntityMultiType tile = getTile(worldIn, pos);
-        if (tile != null)
-            return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), tile.getOrientation());
+        if (tile != null) {
+            int o = tile.getOrientation() % (getOrientationProperty().getMax() + 1);
+            return state.withProperty(TYPE, tile.getType()).withProperty(getOrientationProperty(), o);
+        }
         return state;
     }
 
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{TYPE, getOrientationProperty()});
+        return new BlockStateContainer(this, TYPE, getOrientationProperty());
     }
 
     @Override
-    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, int meta, EntityLivingBase placer) {
-        return getStateForPlacement(world, pos, facing, flX, flY, flZ, meta, placer).withProperty(TYPE, meta);
+    public IBlockState getRenderState(World world, BlockPos pos, EnumFacing facing, float flX, float flY, float flZ, ItemStack stack, EntityLivingBase placer) {
+        return getStateForPlacement(world, pos, facing, flX, flY, flZ, stack.getMetadata(), placer).withProperty(TYPE, stack.getMetadata());
     }
 
     @Override
@@ -259,7 +259,10 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
         return null;
     }
 
-
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
 
     public enum EnumType {
 
@@ -275,7 +278,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
         private final int meta;
         private final String name;
         private final ItemStack block;
-
+        private final IBlockState state;
         EnumType(int metaIn, String nameIn, Block blockIn) {
             this(metaIn, nameIn, new ItemStack(blockIn));
         }
@@ -284,6 +287,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
             this.meta = metaIn;
             this.name = nameIn;
             this.block = blockIn;
+            this.state = BWMRecipes.getStateFromStack(blockIn);
         }
 
         public int getMetadata() {
@@ -296,6 +300,10 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
         public ItemStack getBlock() {
             return this.block;
+        }
+
+        public IBlockState getState() {
+            return this.state;
         }
     }
 

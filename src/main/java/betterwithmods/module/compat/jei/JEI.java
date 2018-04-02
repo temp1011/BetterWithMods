@@ -25,6 +25,7 @@ import betterwithmods.common.registry.crafting.ToolBaseRecipe;
 import betterwithmods.common.registry.crafting.ToolDamageRecipe;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
+import betterwithmods.module.gameplay.miniblocks.MiniRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -54,6 +55,14 @@ public class JEI implements IModPlugin {
     public static IJeiHelpers HELPER;
 
     public static IJeiRuntime JEI_RUNTIME;
+
+    public static void showRecipe(Ingredient ingredient) {
+        ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
+        if (stack.isEmpty())
+            return;
+        IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
+        JEI.JEI_RUNTIME.getRecipesGui().show(focus);
+    }
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
@@ -119,6 +128,7 @@ public class JEI implements IModPlugin {
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
 
+
         reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(TURNTABLE), TurntableRecipeCategory.UID);
@@ -156,12 +166,6 @@ public class JEI implements IModPlugin {
             v.createAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam2));
             v.createAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam3));
         }
-    }
-
-    public static void showRecipe(Ingredient ingredient) {
-        ItemStack stack = Lists.newArrayList(ingredient.getMatchingStacks()).stream().findFirst().orElse(ItemStack.EMPTY);
-        IFocus<?> focus = new Focus<Object>(IFocus.Mode.OUTPUT, stack);
-        JEI.JEI_RUNTIME.getRecipesGui().show(focus);
     }
 
 }

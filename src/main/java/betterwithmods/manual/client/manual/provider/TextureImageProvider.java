@@ -4,6 +4,7 @@ import betterwithmods.manual.api.API;
 import betterwithmods.manual.api.manual.ImageProvider;
 import betterwithmods.manual.api.manual.ImageRenderer;
 import betterwithmods.manual.client.manual.segment.render.MissingItemRenderer;
+import betterwithmods.manual.client.manual.segment.render.NoImageRender;
 import betterwithmods.manual.client.manual.segment.render.TextureImageRenderer;
 import net.minecraft.util.ResourceLocation;
 
@@ -15,6 +16,9 @@ public final class TextureImageProvider implements ImageProvider {
     @Override
     @Nullable
     public ImageRenderer getImage(final String data) {
+        if (data.startsWith("http://") || data.startsWith("https://")) {
+            return new NoImageRender();
+        }
         try {
             return new TextureImageRenderer(new ResourceLocation(data));
         } catch (final Throwable t) {

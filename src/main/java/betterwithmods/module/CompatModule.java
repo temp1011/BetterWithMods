@@ -1,5 +1,6 @@
 package betterwithmods.module;
 
+import betterwithmods.BWMod;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -31,7 +32,7 @@ public class CompatModule extends Module {
         registerCompatFeature("quark", "betterwithmods.module.compat.Quark");
         registerCompatFeature("actuallyadditions", "betterwithmods.module.compat.ActuallyAdditions");
         registerCompatFeature("immersiveengineering", "betterwithmods.module.compat.immersiveengineering.ImmersiveEngineering");
-        registerCompatFeature("dynamictrees","betterwithmods.module.compat.DynamicTrees");
+        registerCompatFeature("dynamictrees", "betterwithmods.module.compat.DynamicTrees");
     }
 
     @Override
@@ -64,13 +65,13 @@ public class CompatModule extends Module {
                 registerFeature(Class.forName(classPath).asSubclass(CompatFeature.class).newInstance());
                 FMLLog.info(" [BWM] Successfully load compat for " + modId);
             } catch (ExceptionInInitializerError | InstantiationException | ClassNotFoundException | IllegalAccessException ignore) {
-                FMLLog.info(" [BWM] Compatibility class " + classPath + " could not be loaded. Report this!");
+                BWMod.logger.info(" [BWM] Compatibility class " + classPath + " could not be loaded. Report this!");
             }
         }
     }
 
     private boolean isLoaded(String modId) {
-        boolean loaded = Loader.isModLoaded(modId) && loadPropBool(modId.toLowerCase() + "_compat", "compatibility for ", true);
+        boolean loaded = loadPropBool(modId.toLowerCase() + "_compat", String.format("Requires %s to be installed" ,modId), true) && Loader.isModLoaded(modId);
         return loaded;
     }
 

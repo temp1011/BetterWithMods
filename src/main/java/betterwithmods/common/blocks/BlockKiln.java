@@ -74,7 +74,6 @@ public class BlockKiln extends BWMBlock {
                 if (newCookTime > 0) {
                     world.sendBlockBreakProgress(0, up, newCookTime + 2);
                 }
-
                 currentTickRate = calculateTickRate(world, pos);
             }
 
@@ -96,11 +95,14 @@ public class BlockKiln extends BWMBlock {
 
     private int calculateTickRate(World world, BlockPos pos) {
         int secondaryFire = 0;
+        int centerFire = BWMHeatRegistry.getHeat(world,pos);
         for (int xP = -1; xP < 2; xP++) {
             for (int zP = -1; zP < 2; zP++) {
                 if (xP != 0 || zP != 0) {
                     BlockPos bPos = pos.add(xP, -1, zP);
-                    secondaryFire += BWMHeatRegistry.getHeat(world, bPos);
+                    int currentFire = BWMHeatRegistry.getHeat(world, bPos);
+                    if(currentFire == centerFire)
+                        secondaryFire += currentFire;
                 }
             }
         }

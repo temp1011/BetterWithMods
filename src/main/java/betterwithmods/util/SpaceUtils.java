@@ -19,14 +19,11 @@
 
 package betterwithmods.util;
 
-import betterwithmods.module.gameplay.miniblocks.Orientation;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.*;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -41,6 +38,27 @@ public final class SpaceUtils {
 
     public static final byte GET_POINT_MIN = 0x0;
     public static final byte GET_POINT_MAX = 0x7;
+    private static final int[][] ROTATION_MATRIX = {
+            {0, 1, 4, 5, 3, 2},
+            {0, 1, 5, 4, 2, 3},
+            {5, 4, 2, 3, 0, 1},
+            {4, 5, 2, 3, 1, 0},
+            {2, 3, 1, 0, 4, 5},
+            {3, 2, 0, 1, 4, 5},
+            {0, 1, 2, 3, 4, 5}
+    };
+    private static final int[][] ROTATION_MATRIX_INV = new int[6][6];
+
+    static {
+        for (int axis = 0; axis < 6; axis++)
+            for (int dir = 0; dir < 6; dir++) {
+                int out = dir;
+                out = ROTATION_MATRIX[axis][out];
+                out = ROTATION_MATRIX[axis][out];
+                out = ROTATION_MATRIX[axis][out];
+                ROTATION_MATRIX_INV[axis][dir] = out;
+            }
+    }
 
     public static EnumFacing determineOrientation(EntityLivingBase player) {
         if (player.rotationPitch > 75) {
@@ -95,14 +113,18 @@ public final class SpaceUtils {
         }
     }
 
-    /** Sets the entity's position directly. Does *NOT* update the bounding box! */
+    /**
+     * Sets the entity's position directly. Does *NOT* update the bounding box!
+     */
     public static void setEntityPosition(Entity ent, Vec3d pos) {
         ent.posX = pos.x;
         ent.posY = pos.y;
         ent.posZ = pos.z;
     }
 
-    /** Sets the entity's position using its setter. Will (presumably) update the bounding box. */
+    /**
+     * Sets the entity's position using its setter. Will (presumably) update the bounding box.
+     */
     public static void setEntPos(Entity ent, Vec3d pos) {
         ent.setPosition(pos.x, pos.y, pos.z);
     }
@@ -166,13 +188,13 @@ public final class SpaceUtils {
     }
 
     /**
-     * @param box The box to be flattened
+     * @param box  The box to be flattened
      * @param face The side of the box that will remain untouched; the opposite face will be brought to it
      * @return A new box, with a volume of 0. Returns null if face is invalid.
      */
     public static AxisAlignedBB flatten(AxisAlignedBB box, EnumFacing face) {
-        byte[] lows = new byte[] { 0x2, 0x0, 0x4, 0x0, 0x1, 0x0 };
-        byte[] hghs = new byte[] { 0x7, 0x5, 0x7, 0x3, 0x7, 0x6 };
+        byte[] lows = new byte[]{0x2, 0x0, 0x4, 0x0, 0x1, 0x0};
+        byte[] hghs = new byte[]{0x7, 0x5, 0x7, 0x3, 0x7, 0x6};
         byte low = lows[face.ordinal()];
         byte high = hghs[face.ordinal()];
         assert low != high;
@@ -299,8 +321,9 @@ public final class SpaceUtils {
 
     /**
      * Return the distance between point and the line defined as passing through the origin and lineVec
+     *
      * @param lineVec The vector defining the line, relative to the origin.
-     * @param point The point being measured, relative to the origin
+     * @param point   The point being measured, relative to the origin
      * @return the distance between line defined by lineVec and point
      */
     public static double lineDistance(Vec3d lineVec, Vec3d point) {
@@ -320,91 +343,97 @@ public final class SpaceUtils {
         return EnumFacing.VALUES[ordinal];
     }
 
-    public static Orientation getOrientation(World world, BlockPos pos, EntityLivingBase placer, EnumFacing face, float hitX, float hitY, float hitZ) {
-        Vec3d hitVec = null;
-        if (face == null) {
-            RayTraceResult hit = RayTraceUtils.getCollision(world, pos, placer, Block.FULL_BLOCK_AABB, 0);
-            if (hit != null) {
-                face = hit.sideHit;
-                hitVec = hit.hitVec != null ? hit.hitVec.subtract(new Vec3d(pos)) : null;
-            }
-        } else {
-            hitVec = new Vec3d(hitX, hitY, hitZ);
-        }
-
-        if (hitVec != null) {
-            return SpaceUtils.getOrientation(placer, face.getOpposite(), hitVec);
-        } else if (face != null) {
-            return Orientation.fromDirection(face);
-        } else {
-            return Orientation.FACE_UP_POINT_NORTH;
-        }
-    }
-
-    public static Orientation getOrientation(EntityLivingBase player, EnumFacing facing, Vec3d hit) {
-        double u, v;
-        if (facing == null) {
-            facing = EnumFacing.DOWN;
-        }
-        switch (facing) {
-            default:
-            case DOWN:
-                u = 1 - hit.x;
-                v = hit.z;
-                break;
-            case UP:
-                u = hit.x;
-                v = hit.z;
-                break;
-            case NORTH:
-                u = hit.x;
-                v = hit.y;
-                break;
-            case SOUTH:
-                u = 1 - hit.x;
-                v = hit.y;
-                break;
-            case WEST:
-                u = 1 - hit.z;
-                v = hit.y;
-                break;
-            case EAST:
-                u = hit.z;
-                v = hit.y;
-                break;
-        }
-        u -= 0.5;
-        v -= 0.5;
-        double angle = Math.toDegrees(Math.atan2(v, u)) + 180;
-        angle = (angle + 45) % 360;
-        int pointy = (int) (angle/90);
-        pointy = (pointy + 1) % 4;
-
-        Orientation fo = Orientation.fromDirection(facing);
-        for (int X = 0; X < pointy; X++) {
-            fo = fo.getNextRotationOnFace();
-        }
-        EnumFacing orient = SpaceUtils.determineOrientation(player);
-        if (orient.getAxis() != EnumFacing.Axis.Y
-                && facing.getAxis() == EnumFacing.Axis.Y) {
-            facing = orient;
-            fo = orient == null ? null : Orientation.fromDirection(orient.getOpposite());
-            if (fo != null) {
-                Orientation perfect = fo.pointTopTo(EnumFacing.UP);
-                if (perfect != null) {
-                    fo = perfect;
-                }
-            }
-        }
-        double dist = Math.max(Math.abs(u), Math.abs(v));
-        if (dist < 0.33) {
-            Orientation perfect = fo.pointTopTo(EnumFacing.UP);
-            if (perfect != null) {
-                fo = perfect;
-            }
-        }
-        return fo;
-    }
+//    public static Orientation getOrientation(World world, BlockPos pos, EntityLivingBase placer, EnumFacing face, float hitX, float hitY, float hitZ) {
+//        Vec3d hitVec = null;
+//        if (face == null) {
+//            RayTraceResult hit = RayTraceUtils.getCollision(world, pos, placer, Block.FULL_BLOCK_AABB, 0);
+//            if (hit != null) {
+//                face = hit.sideHit;
+//                hitVec = hit.hitVec != null ? hit.hitVec.subtract(new Vec3d(pos)) : null;
+//            }
+//        } else {
+//            hitVec = new Vec3d(hitX, hitY, hitZ);
+//        }
+//
+//        if (hitVec != null) {
+//            return SpaceUtils.getOrientation(placer, face.getOpposite(), hitVec);
+//        } else if (face != null) {
+//            return Orientation.fromDirection(face);
+//        } else {
+//            return Orientation.FACE_UP_POINT_NORTH;
+//        }
+//    }
+//
+//    public static Orientation getOrientation(EntityLivingBase player, EnumFacing facing, Vec3d hit) {
+//        if (facing == null) {
+//            facing = EnumFacing.DOWN;
+//        }
+//        if (facing != null)
+//            return Orientation.fromDirection(facing);
+////        return Orientation.FACE_NORTH_POINT_DOWN;
+//        double u, v;
+//        if (facing == null) {
+//            facing = EnumFacing.DOWN;
+//        }
+//        switch (facing) {
+//            default:
+//            case DOWN:
+//                u = 1 - hit.x;
+//                v = hit.z;
+//                break;
+//            case UP:
+//                u = hit.x;
+//                v = hit.z;
+//                break;
+//            case NORTH:
+//                u = hit.x;
+//                v = hit.y;
+//                break;
+//            case SOUTH:
+//                u = 1 - hit.x;
+//                v = hit.y;
+//                break;
+//            case WEST:
+//                u = 1 - hit.z;
+//                v = hit.y;
+//                break;
+//            case EAST:
+//                u = hit.z;
+//                v = hit.y;
+//                break;
+//        }
+//        u -= 0.5;
+//        v -= 0.5;
+//        double angle = Math.toDegrees(Math.atan2(v, u)) + 180;
+//        angle = (angle + 45) % 360;
+//        int pointy = (int) (angle / 90);
+//        pointy = (pointy + 1) % 4;
+//
+//        Orientation fo = Orientation.fromDirection(facing);
+//        for (int X = 0; X < pointy; X++) {
+//            fo = fo.getNextRotationOnFace();
+//        }
+//        EnumFacing orient = SpaceUtils.determineOrientation(player);
+//        if (orient.getAxis() != EnumFacing.Axis.Y
+//                && facing.getAxis() == EnumFacing.Axis.Y) {
+//            facing = orient;
+//            fo = Orientation.fromDirection(orient.getOpposite());
+//            if (fo != null) {
+//                Orientation perfect = fo.pointTopTo(EnumFacing.UP);
+//                if (perfect != null) {
+//                    fo = perfect;
+//                }
+//            }
+//        }
+//        double dist = Math.max(Math.abs(u), Math.abs(v));
+//        if (dist < 0.33) {
+//            Orientation perfect = fo.pointTopTo(EnumFacing.UP);
+//            if (perfect != null) {
+//                fo = perfect;
+//            }
+//        }
+//        return fo;
+//    }
 
     public static int sign(EnumFacing dir) {
         return dir != null ? dir.getAxisDirection().getOffset() : 0;
@@ -503,13 +532,14 @@ public final class SpaceUtils {
     }
 
     public static AxisAlignedBB createBox(BlockPos at, int radius) {
-        return new AxisAlignedBB(at.add(-radius, -radius, -radius), at.add(+radius+1, +radius+1, +radius+1));
+        return new AxisAlignedBB(at.add(-radius, -radius, -radius), at.add(+radius + 1, +radius + 1, +radius + 1));
     }
 
     /**
      * Rotate the allowed direction that is nearest to the rotated dir.
-     * @param dir The original direction
-     * @param rot The rotation to apply
+     *
+     * @param dir   The original direction
+     * @param rot   The rotation to apply
      * @param allow The directions that may be used.
      * @return A novel direction
      */
@@ -535,29 +565,6 @@ public final class SpaceUtils {
         allow.remove(ret);
         allow.remove(ret.getOpposite());
         return ret;
-    }
-
-    private static final int[][] ROTATION_MATRIX = {
-            {0, 1, 4, 5, 3, 2},
-            {0, 1, 5, 4, 2, 3},
-            {5, 4, 2, 3, 0, 1},
-            {4, 5, 2, 3, 1, 0},
-            {2, 3, 1, 0, 4, 5},
-            {3, 2, 0, 1, 4, 5},
-            {0, 1, 2, 3, 4, 5}
-    };
-
-    private static final int[][] ROTATION_MATRIX_INV = new int[6][6];
-
-    static {
-        for (int axis = 0; axis < 6; axis++)
-            for (int dir = 0; dir < 6; dir++) {
-                int out = dir;
-                out = ROTATION_MATRIX[axis][out];
-                out = ROTATION_MATRIX[axis][out];
-                out = ROTATION_MATRIX[axis][out];
-                ROTATION_MATRIX_INV[axis][dir] = out;
-            }
     }
 
     public static EnumFacing rotateCounterclockwise(EnumFacing dir, EnumFacing axis) {

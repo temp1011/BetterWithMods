@@ -25,7 +25,7 @@
           "fill": {
             "model": "betterwithmods:planter_fill",
             "textures": {
-              "filltop": "blocks/farmland_wet"
+              "filltop": "blocks/dirt"
             }
           }
         }
@@ -96,6 +96,16 @@
             "model": "betterwithmods:planter_fill",
             "textures": {
               "filltop": "blocks/red_sand"
+            }
+          }
+        }
+      },
+      "farmland": {
+        "submodel": {
+          "fill": {
+            "model": "betterwithmods:planter_fill",
+            "textures": {
+              "filltop": "blocks/farmland_wet"
             }
           }
         }

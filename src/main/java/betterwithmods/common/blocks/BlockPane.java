@@ -6,6 +6,7 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.BlockRenderLayer;
@@ -125,7 +126,7 @@ public class BlockPane extends BWMBlock {
     }
 
     public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir) {
-        return isFenceGate(world, pos, dir) || isCompatiblePane(world, pos, dir);
+        return isFenceGate(world, pos, dir) || isCompatiblePane(world, pos, dir) || world.isSideSolid(pos,dir.getOpposite(),true);
     }
 
     @Override
@@ -137,4 +138,8 @@ public class BlockPane extends BWMBlock {
         return state.withProperty(DirUtils.NORTH, north).withProperty(DirUtils.EAST, east).withProperty(DirUtils.SOUTH, south).withProperty(DirUtils.WEST, west);
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face != EnumFacing.UP && face != EnumFacing.DOWN ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
+    }
 }

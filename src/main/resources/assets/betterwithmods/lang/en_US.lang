@@ -8,6 +8,7 @@ tile.bwm:wooden_broken_gearbox.name=Broken Wooden Gearbox
 tile.bwm:steel_broken_gearbox.name=Broken Steel Gearbox
 
 
+
 tile.bwm:single_machine.0.name=Mill Stone
 tile.bwm:single_machine.1.name=Pulley
 tile.bwm:single_machine.2.name=Filtered Hopper
@@ -62,14 +63,15 @@ tile.bwm:windmill.waterwheel.name=Waterwheel
 tile.bwm:windmill.windmill_vertical.name=Vertical Windmill
 
 tile.bwm:planter.0.name=Planter
-tile.bwm:planter.1.name=Dirt Planter
+tile.bwm:planter.1.name=Farmland Planter
 tile.bwm:planter.2.name=Grass Planter
 tile.bwm:planter.3.name=Soul Sand Planter
 tile.bwm:planter.4.name=Fertile Planter
-tile.bwm:planter.5.name=Sandy Planter
+tile.bwm:planter.5.name=Sand Planter
 tile.bwm:planter.6.name=Water Planter
 tile.bwm:planter.7.name=Gravel Planter
 tile.bwm:planter.8.name=Red Sand Planter
+tile.bwm:planter.9.name=Dirt Planter
 
 tile.bwm:vase.0.name=White Vase
 tile.bwm:vase.1.name=Orange Vase
@@ -133,6 +135,18 @@ tile.bwm:lens.name=Lens Focus
 tile.bwm:vine_trap.name=Vine Trap
 
 tile.bwm:booster.name=Mechanical Booster Rail
+
+tile.bwm:siding_rock.name=Siding
+tile.bwm:siding_wood.name=Siding
+tile.bwm:siding_iron.name=Siding
+
+tile.bwm:moulding_rock.name=Moulding
+tile.bwm:moulding_wood.name=Moulding
+tile.bwm:moulding_iron.name=Moulding
+
+tile.bwm:corner_rock.name=Corner
+tile.bwm:corner_wood.name=Corner
+tile.bwm:corner_iron.name=Corner
 
 tile.bwm:wood_siding.0.name=Oak Wood Siding
 tile.bwm:wood_siding.1.name=Spruce Wood Siding
@@ -444,7 +458,7 @@ item.bwm:apple_pie.name=Apple Pie
 item.bwm:bat_wing.name=Bat Wing
 item.bwm:cooked_bat_wing.name=Cooked Bat Wing
 
-item.bwm:manual.name=Book of Single
+item.bwm:manual.name=Better With Mods Manual
 
 item.bwm:axle_generator.windmill.name=Windmill
 item.bwm:axle_generator.waterwheel.name=Water Wheel
@@ -591,11 +605,15 @@ config.sync.ok=Changes to the configs successful. If you see issues from not res
 
 tile.bed.tooRestless=You are too restless to sleep
 
-tooltip.rotate_with_hand.name=Shift-Click with an Empty Hand to rotate this Block
+tooltip.rotate_with_hand.name=Shift-Click with both hands empty to rotate this Block
 tooltip.chime.name=Emits a Redstone Signal when Raining, or when an Entity passes through it.
 tooltip.gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.broken_gearbox.name=Gearboxes get overpowered when the Windmill spins too quickly, disable it with Redstone before this happen!
 tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, check your Gearboxes!
+tooltip.bwm_book.name=The Book of Single
+
+
+bwm.manual.message=You have been given a Better With Mods Manual. This mod might be different than what you are expecting.\nPlease read the Crash Course section.
 
 bwm.manual.home=Home
 bwm.manual.blocks=Block
@@ -603,3 +621,4 @@ bwm.manual.items=Items
 bwm.manual.mechanical=Mechanical Power
 bwm.manual.error.0=Document not found:
 bwm.manual.error.1=Please report this to
+entity.Wolf.name=Long Boi

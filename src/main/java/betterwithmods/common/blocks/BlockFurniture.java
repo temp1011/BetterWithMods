@@ -55,6 +55,6 @@ public abstract class BlockFurniture extends BWMBlock {
         EnumFacing opp = facing.getOpposite();
         IBlockState state1 = world.getBlockState(pos.offset(facing));
         IBlockState state2 = world.getBlockState(pos.offset(opp));
-        return state.getBlock() == state1.getBlock() && state.getBlock() == state2.getBlock();
+        return state1.getBlock().canBeConnectedTo(world,pos.offset(facing),opp) && state2.getBlock().canBeConnectedTo(world,pos.offset(opp),facing);
     }
 }

@@ -15,6 +15,7 @@ import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -300,5 +301,10 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public String[] getVariants() {
         return new String[]{"active=true,facing=north,tier=wood", "active=true,facing=north,tier=steel"};
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face != EnumFacing.DOWN && state.getValue(ACTIVE) ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }
 }

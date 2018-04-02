@@ -6,6 +6,7 @@ import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static betterwithmods.util.DirUtils.AXIS;
+import static net.minecraft.util.EnumFacing.Axis.Y;
 
 public abstract class BlockAxleGenerator extends BWMBlock implements IBlockActive {
 
@@ -97,6 +99,10 @@ public abstract class BlockAxleGenerator extends BWMBlock implements IBlockActiv
         return this.getDefaultState().withProperty(AXIS, axis);
     }
 
+    public EnumFacing.Axis getAxis(IBlockState state) {
+        return state.getValue(AXIS);
+    }
+
     @Override
     public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
         if (world.getBlockState(pos).getValue(EnumTier.TIER) == EnumTier.STEEL)
@@ -125,5 +131,14 @@ public abstract class BlockAxleGenerator extends BWMBlock implements IBlockActiv
         return Material.WOOD;
     }
 
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return getAxis(state) == Y;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face.getAxis() == getAxis(state) ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED;
+    }
 }
 

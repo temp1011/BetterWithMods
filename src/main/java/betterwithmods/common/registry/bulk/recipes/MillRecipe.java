@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -14,7 +15,7 @@ public class MillRecipe extends BulkRecipe {
 
     public MillRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int grindType) {
         super(inputs, outputs);
-        this.grindType = grindType;
+        this.grindType = WorldUtils.isSpecialDay() ? 2 : grindType;
     }
 
     public int getGrindType() {

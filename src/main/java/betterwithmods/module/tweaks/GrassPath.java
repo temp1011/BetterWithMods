@@ -25,6 +25,7 @@ import static betterwithmods.module.hardcore.needs.HCMovement.dirtpathQuality;
 
 public class GrassPath extends Feature {
     public static List<ItemStack> SHOVEL_BLACKLIST = Lists.newArrayList();
+
     public static int getShovelQuality(ItemStack stack) {
         Item item = stack.getItem();
         if (!item.getToolClasses(stack).contains("shovel"))
@@ -38,7 +39,7 @@ public class GrassPath extends Feature {
 
     @Override
     public void setupConfig() {
-        SHOVEL_BLACKLIST = loadItemStackList("Shovel Blacklist", "Blacklist an item for being able to make grass paths", new String[]{ "psi:cad"});
+        SHOVEL_BLACKLIST = loadItemStackList("Shovel Blacklist", "Blacklist an item for being able to make grass paths", new String[]{"psi:cad"});
     }
 
     @Override
@@ -80,7 +81,9 @@ public class GrassPath extends Feature {
         BlockPos blockPos = event.getPos();
         ItemStack stack = player.getHeldItem(event.getHand());
 
-        if (stack.isEmpty())
+        IBlockState iBlockState = world.getBlockState(blockPos);
+
+        if (stack.isEmpty() || !isBlockDirt(iBlockState))
             return;
 
         int quality = getShovelQuality(stack);
@@ -91,7 +94,6 @@ public class GrassPath extends Feature {
             return;
         }
 
-        IBlockState iBlockState = world.getBlockState(blockPos);
         if (world.getBlockState(blockPos.up()).getMaterial() == Material.AIR) {
             if (isBlockDirt(iBlockState)) {
                 IBlockState pathState = Blocks.GRASS_PATH.getDefaultState();

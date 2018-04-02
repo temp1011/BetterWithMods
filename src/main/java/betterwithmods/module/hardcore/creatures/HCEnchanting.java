@@ -36,7 +36,7 @@ public class HCEnchanting extends Feature {
     @Override
     public void setupConfig() {
         steelRequiresInfernal = loadPropBool("Steel Requires Infernal Enchanter", "Soulforged Steel tools can only be enchanted with the Infernal Enchanter", true);
-        dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.01);
+        dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.001);
         fuckMending = loadPropBool("Disable Mending", "Mending is a bad unbalanced pile of poo", true);
     }
 

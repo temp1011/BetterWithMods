@@ -91,7 +91,7 @@ public class BWMapGenVillage extends MapGenVillage {
     @Override
     protected StructureStart getStructureStart(int x, int z) {
         VillageStatus status = VillageStatus.getStatus(x, z);
-        if (GlobalConfig.debug || true)
+        if (GlobalConfig.debug)
             System.out.printf("%s <%s,%s> /tp %s ~ %s\n", status.name().toLowerCase(), x, z, x * 16, z * 16);
         return new AbandonedStart(this.world, this.rand, x, z, getSize(), status);
     }

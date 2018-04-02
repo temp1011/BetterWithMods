@@ -7,6 +7,8 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.registry.Wood;
 import betterwithmods.module.CompatFeature;
+import betterwithmods.module.gameplay.CauldronRecipes;
+import betterwithmods.module.gameplay.MillRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -16,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 @SuppressWarnings("unused")
 public class Harvestcraft extends CompatFeature {

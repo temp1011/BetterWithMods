@@ -52,7 +52,7 @@ public class BlastingOilEvent {
         }
     }
 
-    private final static HashMap<EntityItem, Boolean> onGround = Maps.newHashMap();
+    private final static HashMap<EntityItem, Double> highestPoint = Maps.newHashMap();
 
     @SubscribeEvent
     public static void onHitGround(TickEvent.WorldTickEvent event) {
@@ -63,7 +63,7 @@ public class BlastingOilEvent {
         HashSet<EntityItem> toRemove = new HashSet<>();
         items.forEach(item -> {
             boolean ground = item.onGround;
-            if (item.isBurning() || (ground && !onGround.getOrDefault(item, true))) {
+            if (item.isBurning() || (ground && Math.abs(item.posY - highestPoint.getOrDefault(item, item.posY)) > 2.0)) {
                 int count = item.getItem().getCount();
                 if (count > 0) {
                     world.createExplosion(item, item.posX, item.posY + item.height / 16, item.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
@@ -71,8 +71,9 @@ public class BlastingOilEvent {
                     item.setDead();
                 }
             }
-            onGround.put(item, ground);
+            if (item.motionY > 0 || !highestPoint.containsKey(item))
+                highestPoint.put(item, item.posY);
         });
-        toRemove.forEach(onGround::remove);
+        toRemove.forEach(highestPoint::remove);
     }
 }

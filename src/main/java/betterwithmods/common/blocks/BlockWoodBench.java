@@ -3,9 +3,11 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.IMultiVariants;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -69,5 +71,15 @@ public class BlockWoodBench extends BlockFurniture implements IMultiVariants {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, SUPPORTED, BlockPlanks.VARIANT);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face == EnumFacing.DOWN ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockWoodBench;
     }
 }

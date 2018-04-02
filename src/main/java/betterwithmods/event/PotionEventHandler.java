@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
@@ -94,7 +95,7 @@ public class PotionEventHandler {
         GlStateManager.depthFunc(515);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onHarvestBlock(BlockEvent.HarvestDropsEvent event) {
 
         if (event.getHarvester() != null && event.getHarvester().isPotionActive(BWRegistry.POTION_FORTUNE)) {

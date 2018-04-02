@@ -3,9 +3,11 @@ package betterwithmods.client.model.render;
 import betterwithmods.BWMod;
 import betterwithmods.client.model.filters.*;
 import betterwithmods.common.BWMBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -15,7 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -27,12 +31,11 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class RenderUtils {
-    protected static final Minecraft minecraft = Minecraft.getMinecraft();
     public static final Function<ResourceLocation, TextureAtlasSprite> textureGetter = ModelLoader.defaultTextureGetter();
+    protected static final Minecraft minecraft = Minecraft.getMinecraft();
+    public static float FLUID_OFFSET = 0.005f;
     private static HashMap<String, ModelWithResource> filterLocations = new HashMap<>();
     private static RenderItem renderItem;
-
-    public static float FLUID_OFFSET = 0.005f;
 
     public static String fromStack(ItemStack stack) {
         return stack.getItem().getRegistryName().toString() + ":" + stack.getMetadata();
@@ -210,10 +213,11 @@ public class RenderUtils {
     }
 
     public static TextureAtlasSprite getSprite(ItemStack stack) {
+        if (stack == null || stack.isEmpty())
+            return textureGetter.apply(TextureMap.LOCATION_MISSING_TEXTURE);
         if (renderItem == null) {
             renderItem = Minecraft.getMinecraft().getRenderItem();
         }
-
         return renderItem.getItemModelWithOverrides(stack, null, null).getParticleTexture();
     }
 
@@ -253,13 +257,57 @@ public class RenderUtils {
         }
     }
 
+    public static boolean isModelValid(IBakedModel model) {
+        return model != Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+    }
+
+    public static TextureAtlasSprite getParticleTexture(IBlockState state) {
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
+        return model.getParticleTexture();
+    }
+
+    public static TextureAtlasSprite getTextureFromFace(IBlockState state, EnumFacing facing) {
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state);
+        if (isModelValid(model)) {
+            return model.getQuads(state, facing, 0).stream().findFirst().map(BakedQuad::getSprite)
+                    .orElse(Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state));
+        }
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+    }
+
+
     public static IModel getModel(ResourceLocation location) {
         try {
             return ModelLoaderRegistry.getModel(location);
         } catch (Exception e) {
-            BWMod.logger.error("Model " + location.toString() + " is missing! THIS WILL CAUSE A CRASH!");
-            e.printStackTrace();
             return null;
         }
     }
+
+    public static void renderBoundingBox(Vec3d pos, Vec3d color, AxisAlignedBB... boxes) {
+        GlStateManager.depthMask(false);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.disableCull();
+        GlStateManager.disableBlend();
+
+        for (AxisAlignedBB box : boxes) {
+            box = box.offset(pos);
+            RenderGlobal.drawBoundingBox(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, (float) color.x, (float) color.y, (float) color.z, 1.0F);
+        }
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
+        GlStateManager.depthMask(true);
+    }
+
+    public static void renderDebugBoundingBox(double x, double y, double z, AxisAlignedBB... boxes) {
+        if (!Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox())
+            return;
+        renderBoundingBox(new Vec3d(x, y, z), new Vec3d(0.5D, 0.5D, 1.0D), boxes);
+    }
+
 }
+

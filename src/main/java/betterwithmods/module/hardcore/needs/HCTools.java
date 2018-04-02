@@ -43,8 +43,8 @@ public class HCTools extends Feature {
     private static int diamondDurability;
     private static int goldDurability;
 
-    public static int noHungerThredhold;
-    public static int noDamageThredhold;
+    public static int noHungerThreshold;
+    public static int noDamageThreshold;
 
     public static boolean changeAxeRecipe;
 
@@ -53,7 +53,7 @@ public class HCTools extends Feature {
      * The new values are described in {@link ToolMaterialOverride}.
      */
     private static void changeVanillaToolMaterials() {
-        // Edit materials
+        // Edit MATERIALS
         for (Item.ToolMaterial material : Item.ToolMaterial.values()) {
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(material.name());
             if (newValues == null) continue;
@@ -97,10 +97,10 @@ public class HCTools extends Feature {
         diamondDurability = loadPropInt("Hardcore Hardness Diamond Durability", "Number of usages for diamond tools.", "", 1561, 1, 1562);
         goldDurability = loadPropInt("Hardcore Hardness Gold Durability", "Number of usages for golden tools.", "", 32, 1, 33);
 
-        changeAxeRecipe = loadRecipeCondition("changeAxeRecipe","Change Axe Recipe", "Change the axe recipes to only require 2 materials", true);
+        changeAxeRecipe = loadRecipeCondition("changeAxeRecipe","Change Axe Recipe", "Change the axe recipes to only require 2 MATERIALS", true);
 
-        noHungerThredhold = loadPropInt("No Exhaustion Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no exhaustion is applied", Item.ToolMaterial.IRON.getHarvestLevel());
-        noDamageThredhold = loadPropInt("No Durability Damage Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no durability damage is applied", Item.ToolMaterial.DIAMOND.getHarvestLevel());
+        noHungerThreshold = loadPropInt("No Exhaustion Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no exhaustion is applied", Item.ToolMaterial.IRON.getHarvestLevel());
+        noDamageThreshold = loadPropInt("No Durability Damage Harvest Level", "When destroying a 0 hardness block with a tool of this harvest level or higher, no durability damage is applied", Item.ToolMaterial.DIAMOND.getHarvestLevel());
     }
 
     @Override
@@ -127,7 +127,6 @@ public class HCTools extends Feature {
             Items.WOODEN_PICKAXE.setMaxDamage(1);
             Items.STONE_PICKAXE.setMaxDamage(5);
         }
-
     }
 
     /**
@@ -157,7 +156,7 @@ public class HCTools extends Feature {
         IBlockState state = world.getBlockState(pos);
         ItemStack stack = player.getHeldItemMainhand();
         String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < noDamageThredhold)
+        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < noDamageThreshold)
             stack.damageItem(1,player); //Make 0 hardness blocks damage tools that are not over some harvest level
     }
 

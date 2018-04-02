@@ -13,10 +13,12 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -213,7 +215,9 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
                     hopper.insert(entityIn);
                 }
             }
-            entityIn.setPosition(entityIn.posX,entityIn.posY + 0.1,entityIn.posZ); //Fix to stop items being caught on this
+            if(entityIn instanceof EntityItem) {
+                entityIn.setPosition(entityIn.posX, entityIn.posY + 0.1, entityIn.posZ); //Fix to stop items being caught on this
+            }
         }
     }
 
@@ -308,6 +312,13 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
         }
     }
 
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        switch(state.getValue(TYPE)) {
+            case HOPPER: return face == EnumFacing.UP ? BlockFaceShape.BOWL : BlockFaceShape.UNDEFINED;
+            default: return BlockFaceShape.SOLID;
+        }
+    }
 
     public enum EnumType implements IStringSerializable {
         MILL(0, "mill", true),

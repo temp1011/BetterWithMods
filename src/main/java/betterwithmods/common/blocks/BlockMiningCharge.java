@@ -2,20 +2,17 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.common.entity.EntityMiningCharge;
 import betterwithmods.util.DirUtils;
+import jline.internal.Nullable;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTNT;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -29,10 +26,7 @@ import net.minecraft.world.World;
  * Created by primetoxinz on 9/5/16.
  */
 
-//@Optional.Interface(iface = "vazkii.quark.api.IFuseIgnitable",modid = "quark",striprefs = true)
-//implements IFuseIgnitable
-public class BlockMiningCharge extends BWMBlock  {
-    public static final PropertyBool EXPLODE = PropertyBool.create("explode");
+public class BlockMiningCharge extends BlockTNT {
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0, .5, 0, 1, 1, 1);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0, 0, 0, 1, .5, 1);
     private static final AxisAlignedBB N_AABB = new AxisAlignedBB(0, 0, .5, 1, 1, 1);
@@ -41,11 +35,8 @@ public class BlockMiningCharge extends BWMBlock  {
     private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0, 0, 0, .5, 1, 1);
 
     public BlockMiningCharge() {
-        super(Material.TNT);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.FALSE));
         setSoundType(SoundType.PLANT);
     }
-
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
@@ -84,7 +75,8 @@ public class BlockMiningCharge extends BWMBlock  {
         return new BlockStateContainer(this, EXPLODE, DirUtils.FACING);
     }
 
-    public void explode(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase igniter) {
+    @Override
+    public void explode(World worldIn, BlockPos pos, IBlockState state, @Nullable EntityLivingBase igniter) {
         if (!worldIn.isRemote && state.getValue(EXPLODE)) {
             EntityMiningCharge miningCharge = new EntityMiningCharge(worldIn, (double) ((float) pos.getX() + 0.5F), (double) pos.getY(), (double) ((float) pos.getZ() + 0.5F), igniter, getFacing(state));
             worldIn.spawnEntity(miningCharge);
@@ -103,14 +95,14 @@ public class BlockMiningCharge extends BWMBlock  {
 
     @Override
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-        return worldIn.isSideSolid(pos.offset(side.getOpposite()),side);
+        return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
     }
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
         if (worldIn.isBlockPowered(pos)) {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, true));
             worldIn.setBlockToAir(pos);
         }
     }
@@ -118,7 +110,7 @@ public class BlockMiningCharge extends BWMBlock  {
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos other) {
         if (worldIn.isBlockPowered(pos)) {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, true));
             worldIn.setBlockToAir(pos);
         }
     }
@@ -144,30 +136,12 @@ public class BlockMiningCharge extends BWMBlock  {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        ItemStack heldItem = playerIn.getHeldItem(hand);
-        if (!heldItem.isEmpty() && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
-            this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
-            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
-
-            if (heldItem.getItem() == Items.FLINT_AND_STEEL) {
-                heldItem.damageItem(1, playerIn);
-            } else if (!playerIn.capabilities.isCreativeMode) {
-                heldItem.shrink(1);
-            }
-
-            return true;
-        } else {
-            return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
-        }
-    }
-
-    @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote && entityIn instanceof EntityArrow) {
             EntityArrow entityarrow = (EntityArrow) entityIn;
             if (entityarrow.isBurning()) {
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, Boolean.TRUE), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+                EntityLivingBase shooter = entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null;
+                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, true), shooter);
                 worldIn.setBlockToAir(pos);
             }
         }
@@ -192,11 +166,9 @@ public class BlockMiningCharge extends BWMBlock  {
         return explode | facing;
     }
 
-//    @Override
-//    public void onIngitedByFuse(IBlockAccess world, BlockPos pos, IBlockState state) {
-//        if(world instanceof World) {
-//            this.onBlockDestroyedByPlayer((World) world, pos, state.withProperty(EXPLODE, Boolean.TRUE));
-//            ((World)world).setBlockToAir(pos);
-//        }
-//    }
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face != getFacing(state).getOpposite() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
 }

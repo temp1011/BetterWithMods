@@ -66,10 +66,14 @@ public abstract class BlockStickBase extends BWMBlock {
         return getConnections(newState, worldIn, pos);
     }
 
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
+
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing face) {
-        if (face == EnumFacing.UP)
-            return BlockFaceShape.SOLID;
-        return BlockFaceShape.CENTER_SMALL;
+        return face.getAxis() == EnumFacing.Axis.Y ? BlockFaceShape.CENTER_SMALL : BlockFaceShape.UNDEFINED;
     }
 
     @SideOnly(Side.CLIENT)

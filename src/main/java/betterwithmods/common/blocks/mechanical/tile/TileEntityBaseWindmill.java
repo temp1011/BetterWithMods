@@ -76,4 +76,5 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
+    
 }

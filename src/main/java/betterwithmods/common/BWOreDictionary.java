@@ -130,11 +130,12 @@ public class BWOreDictionary {
         registerOre("ingotDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
         registerOre("nuggetDiamond", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET));
 
-
         registerOre("listAllmeat", Items.PORKCHOP, Items.BEEF, Items.CHICKEN, Items.FISH, Items.MUTTON, BWMItems.MYSTERY_MEAT);
         registerOre("listAllmeat", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
         registerOre("listAllmeatcooked", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_FISH, Items.COOKED_MUTTON, Items.COOKED_RABBIT, BWMItems.COOKED_MYSTERY_MEAT);
         registerOre("listAllmeatcooked", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+        registerOre("foodStewMeat", Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_FISH, Items.COOKED_MUTTON, BWMItems.COOKED_MYSTERY_MEAT);
+        registerOre("foodStewMeat", new ItemStack(Items.COOKED_FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
 
         registerOre("tallow", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW));
 
@@ -237,22 +238,35 @@ public class BWOreDictionary {
         for (ItemStack log : logs) {
             if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
                 for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?
-                    ItemStack plank = getPlankOutput(new ItemStack(log.getItem(), 1, i));
-                    if (!plank.isEmpty()) {
-                        Wood wood = new Wood(new ItemStack(log.getItem(), 1, i), plank);
+                    ItemStack subLog = new ItemStack(log.getItem(), 1, i);
+                    ItemStack plank = getPlankOutput(subLog);
+                    if (!plank.isEmpty() && !isWoodRegistered(subLog)) {
+                        Wood wood = new Wood(subLog, plank);
                         woods.add(wood);
                     }
                 }
             } else {
                 ItemStack plank = getPlankOutput(log);
-                if (!plank.isEmpty()) {
+                if (!plank.isEmpty() && !isWoodRegistered(log)) {
                     Wood wood = new Wood(log, plank);
                     woods.add(wood);
                 }
             }
         }
+
+        OreDictionary.getOres("listAllmeatcooked").stream().filter(BWOreDictionary::isValidStewMeat).forEach(stack -> OreDictionary.registerOre("foodStewMeat",stack)); //TODO: Remove after moving this to Ingredient
     }
 
+    public static boolean isValidStewMeat(ItemStack stack)
+    {
+        Item item = stack.getItem();
+        return item != Items.COOKED_RABBIT && item != Items.COOKED_CHICKEN;
+    }
+
+    public static boolean isWoodRegistered(ItemStack stack)
+    {
+        return woods.stream().anyMatch(wood -> wood.getLog(1).isItemEqual(stack));
+    }
 
     public static List<ItemStack> getOreNames(String prefix) {
         return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n.startsWith(prefix)).map(OreDictionary::getOres).filter(o -> !o.isEmpty()).flatMap(Collection::stream).collect(Collectors.toList());

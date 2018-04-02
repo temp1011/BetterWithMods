@@ -16,7 +16,7 @@
           "texture": "#bottom"
         },
         "up": {
-          "texture": "#side"
+          "texture": "#top"
         },
         "north": {
           "texture": "#side"

@@ -2,6 +2,7 @@ package betterwithmods.module.hardcore.world;
 
 import betterwithmods.module.Feature;
 import betterwithmods.util.DispenserBehaviorFiniteWater;
+import betterwithmods.util.InvUtils;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
@@ -58,6 +59,8 @@ public class HCBuckets extends Feature {
     private static boolean riskyLavaBuckets;
     private static List<Integer> dimensionBlacklist;
 
+    private static List<ItemStack> bucketBlacklist;
+
     public static void editModdedFluidDispenseBehavior() {
         if (!hardcoreFluidContainer)
             return;
@@ -71,7 +74,7 @@ public class HCBuckets extends Feature {
     }
 
     private static boolean isFluidContainer(ItemStack stack) {
-        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+        return bucketBlacklist.stream().noneMatch(stack::isItemEqual) && InvUtils.isFluidContainer(stack);
     }
 
     private static boolean isNonVanillaBucket(ItemStack stack) {
@@ -116,6 +119,9 @@ public class HCBuckets extends Feature {
                 }
                 return outputStack;
             }
+        });
+        bucketBlacklist = loadItemStackList("Fluid container blacklist", "Blacklist itemstacks from being effected by HCBuckets", new String[]{
+                "thermalcultivation:watering_can"
         });
     }
 
@@ -169,6 +175,8 @@ public class HCBuckets extends Feature {
                 if (fluid == null || fluid.getFluid() == null) {
                     if (isWater(state) && state.getBlock().getMetaFromState(state) > 0) {
                         if (!player.capabilities.isCreativeMode) {
+
+
                             if (evt.getEmptyBucket().getItem() == Items.BUCKET) {
                                 evt.setFilledBucket(new ItemStack(Items.WATER_BUCKET));
                                 return;
@@ -300,6 +308,8 @@ public class HCBuckets extends Feature {
     @SubscribeEvent
     public void checkPlayerInventory(TickEvent.PlayerTickEvent e) {
         World world = e.player.getEntityWorld();
+        if (world.isRemote)
+            return;
         if (riskyLavaBuckets) {
             boolean isPlayerRisky = e.player.isSprinting() || !e.player.onGround;
             if (isPlayerRisky && world.getTotalWorldTime() % 10 == 0) {
@@ -346,7 +356,7 @@ public class HCBuckets extends Feature {
         if (disableLavaBuckets && PlayerHelper.isSurvival(e.getEntityPlayer())) {
             if (e.getEntityPlayer().isPotionActive(MobEffects.FIRE_RESISTANCE))
                 return;
-            if (e.getTarget() != null) {
+            if (e.getTarget() != null && e.getTarget().typeOfHit == RayTraceResult.Type.BLOCK) {
                 Block block = e.getWorld().getBlockState(e.getTarget().getBlockPos()).getBlock();
 
                 if (isLava(block)) {
@@ -357,7 +367,6 @@ public class HCBuckets extends Feature {
             }
         }
     }
-
 
 
     @Override

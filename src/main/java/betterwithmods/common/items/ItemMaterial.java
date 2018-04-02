@@ -149,11 +149,11 @@ public class ItemMaterial extends Item implements IMultiLocations {
 
         public final static EnumMaterial[] VALUES = values();
 
-        int getMetadata() {
+        public int getMetadata() {
             return this.ordinal();
         }
 
-        String getName() {
+        public String getName() {
             return this.name().toLowerCase();
         }
     }

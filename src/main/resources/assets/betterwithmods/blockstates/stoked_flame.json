@@ -5,17 +5,11 @@
       "particle": "betterwithmods:blocks/stoked_fire_layer_0",
       "fire": "betterwithmods:blocks/stoked_fire_layer_0"
     },
-    "model": "fire_floor"
+    "model": "betterwithmods:stoked_flame"
   },
   "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": [
-      {
-        "transform": "forge:default-block"
-      }
-    ],
+    "normal": [{}],
+    "inventory": [{ "transform": "forge:default-block" }],
     "age": {
       "0": {},
       "1": {},

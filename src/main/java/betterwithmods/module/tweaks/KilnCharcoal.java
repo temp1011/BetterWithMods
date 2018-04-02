@@ -16,7 +16,7 @@ import java.util.List;
 public class KilnCharcoal extends Feature {
 
     private static final ItemStack CHARCOAL = new ItemStack(Items.COAL, 1, 1);
-    boolean disableFurnaceCharcoal;
+    private boolean disableFurnaceCharcoal;
 
     @Override
     public void setupConfig() {

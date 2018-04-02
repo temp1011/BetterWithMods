@@ -4,5 +4,8 @@
   },
   "conditions": {
     "config": "betterwithmods.module.ConfigHelper$ConditionConfig"
+  },
+  "ingredients": {
+    "mini_type": "betterwithmods.module.gameplay.miniblocks.MiniTypeIngredient$Factory"
   }
 }

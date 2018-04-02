@@ -27,6 +27,7 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
 import betterwithmods.module.compat.bop.BiomesOPlenty;
 import betterwithmods.module.gameplay.CraftingRecipes;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import betterwithmods.module.hardcore.needs.HCTools;
@@ -271,6 +272,7 @@ public class BWRegistry {
         replaceIRecipe(HCRedstone.class, reg);
         replaceIRecipe(HCTorches.class, reg);
         replaceIRecipe(HCFishing.class, reg);
+        replaceIRecipe(MiniBlocks.class, reg);
 
         replaceIRecipe(BiomesOPlenty.class, reg);
         replaceIRecipe(Quark.class, reg);

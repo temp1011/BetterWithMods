@@ -20,6 +20,16 @@ import java.util.Map;
  * Created by primetoxinz on 9/11/16.
  */
 public class GuiInfernalEnchanter extends GuiContainer {
+    private static HashMap<Integer, String> numerals = Maps.newHashMap();
+
+    static {
+        numerals.put(22, "I");
+        numerals.put(41, "II");
+        numerals.put(60, "III");
+        numerals.put(79, "IV");
+        numerals.put(98, "V");
+    }
+
     private FontRenderer fontGalactic;
     private TileEntityInfernalEnchanter tile;
     private ContainerInfernalEnchanter container;
@@ -56,14 +66,15 @@ public class GuiInfernalEnchanter extends GuiContainer {
         EnchantmentNameParts.getInstance().reseedRandomGenerator((long) this.container.xpSeed);
 
         int x, y;
-        for (int i = 0; i < container.enchantLevels.length; i++) {
+        for (int levelIndex = 0; levelIndex < container.enchantLevels.length; levelIndex++) {
             this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/infernal_enchanter.png"));
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            int val = container.enchantLevels[i];
-            if (val > 0) {
-                String s = String.valueOf(val);
-                if (container.hasLevels(player,val)) {
-                    y = yPos + 17 + (19 * i);
+
+            int level = container.enchantLevels[levelIndex];
+            if (level > 0) {
+                String levelString = String.valueOf(level);
+                if (container.hasLevels(player, levelIndex) && container.hasBooks(levelIndex)) {
+                    y = yPos + 17 + (19 * levelIndex);
                     x = xPos + 60;
                     if (mouseX >= x && mouseX <= x + 108 && mouseY >= y && mouseY <= y + 19) {
                         drawTexturedModalRect(x, y, 108, 211, 108, 19);
@@ -71,24 +82,13 @@ public class GuiInfernalEnchanter extends GuiContainer {
                         drawTexturedModalRect(x, y, 0, 211, 108, 19);
                     }
                 }
-                String s1 = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, 86 - this.fontRenderer.getStringWidth(s));
-                fontGalactic.drawSplitString(s1, xPos + 62, yPos + 19 + 19 * i, 108, (6839882 & 16711422) >> 1);
-                fontRenderer.drawStringWithShadow(s, xPos + xSize - 10 - this.fontRenderer.getStringWidth(s), yPos + 8 + 19 * (i + 1), 0x80FF20);
-
+                String galacticText = EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, 86 - this.fontRenderer.getStringWidth(levelString));
+                fontGalactic.drawSplitString(galacticText, xPos + 62, yPos + 19 + 19 * levelIndex, 108, (6839882 & 16711422) >> 1);
+                fontRenderer.drawStringWithShadow(levelString, xPos + xSize - 10 - this.fontRenderer.getStringWidth(levelString), yPos + 8 + 19 * (levelIndex + 1), 0x80FF20);
             }
         }
 
     }
-
-    private static HashMap<Integer,String> numerals = Maps.newHashMap();
-    static {
-        numerals.put(22, "I");
-        numerals.put(41, "II");
-        numerals.put(60, "III");
-        numerals.put(79, "IV");
-        numerals.put(98, "V");
-    }
-
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
@@ -105,14 +105,14 @@ public class GuiInfernalEnchanter extends GuiContainer {
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
 
-        int x,y;
-        for(int i = 0; i < container.enchantLevels.length;i++) {
-            if(container.hasLevels(player,container.enchantLevels[i]) && container.bookcaseCount >= container.enchantLevels[i]) {
-                y = yPos + 17 + (19 * i);
+        int x, y;
+        for (int levelIndex = 0; levelIndex < container.enchantLevels.length; levelIndex++) {
+            if (container.enchantLevels[levelIndex] != -1 && container.hasLevels(player, levelIndex) && container.hasBooks(levelIndex)) {
+                y = yPos + 17 + (19 * levelIndex);
                 x = xPos + 60;
                 if (mouseX >= x && mouseX <= x + 108 && mouseY >= y && mouseY <= y + 19) {
-                    if(container.enchantItem(player,i)) {
-                        this.mc.playerController.sendEnchantPacket(this.container.windowId, i);
+                    if (container.enchantItem(player, levelIndex)) {
+                        this.mc.playerController.sendEnchantPacket(this.container.windowId, levelIndex);
                     }
                 }
             }

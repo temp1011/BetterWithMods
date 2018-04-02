@@ -1,6 +1,7 @@
 package betterwithmods.client.model;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.baking.BakedModelKiln;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;

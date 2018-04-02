@@ -18,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -36,6 +38,11 @@ public class InvUtils {
     public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
         return InventoryIterator.stream(handler).anyMatch(ingredient::apply);
     }
+
+    public static boolean isFluidContainer(ItemStack stack) {
+        return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+    }
+
     public static <T> NonNullList<T> asNonnullList(T... array) {
         NonNullList<T> nonNullList = NonNullList.create();
         if (array != null)
@@ -296,13 +303,19 @@ public class InvUtils {
     }
 
     public static boolean consumeItemsInInventory(IItemHandler inv, ItemStack toCheck, int sizeOfStack, boolean simulate) {
+        boolean extracted = false;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (InvUtils.matches(toCheck, inSlot)) {
-                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+                ItemStack container = ForgeHooks.getContainerItem(inSlot);
+                if (inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack) {
+                    extracted = true;
+                    InvUtils.insert(inv, container, false);
+                    break;
+                }
             }
         }
-        return false;
+        return extracted;
     }
 
     public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
