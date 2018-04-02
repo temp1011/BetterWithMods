@@ -272,16 +272,19 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     public int getCurrentFireIntensity() {
         int fireFactor = 0;
         if (this.fireIntensity > 0) {
+            int centerFactor = BWMHeatRegistry.getHeat(getBlockWorld().getBlockState(pos.down()));
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     int yPos = -1;
                     BlockPos target = pos.add(x, yPos, z);
-                    fireFactor += BWMHeatRegistry.getHeat(getBlockWorld().getBlockState(target));
+                    int currentFactor = BWMHeatRegistry.getHeat(getBlockWorld().getBlockState(target));
+                    if(currentFactor == centerFactor)
+                        fireFactor += currentFactor;
                 }
             }
             return Math.max(5, Math.round(fireFactor * Gameplay.cauldronMultipleFiresFactor));
         }
-        return Math.max(0,fireFactor);
+        return Math.max(0, fireFactor);
     }
 
     private void performNormalFireUpdate(int fireIntensity) {
