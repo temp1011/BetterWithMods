@@ -3,7 +3,6 @@ package betterwithmods.module.gameplay;
 import betterwithmods.api.util.IWood;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import betterwithmods.module.Feature;
@@ -12,7 +11,6 @@ import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -53,13 +51,13 @@ public class SawRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
-            addSawRecipe(Blocks.PLANKS, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
-            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
-            addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
-            addSawRecipe(Blocks.WOODEN_SLAB, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
-        }
+//        for (BlockPlanks.EnumType type : BlockPlanks.EnumType.values()) {
+//            addSawRecipe(Blocks.PLANKS, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_SIDING, 2, type.getMetadata()));
+//            addSawRecipe(BWMBlocks.WOOD_CORNER, type.getMetadata(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+//            addSawRecipe(BWMBlocks.WOOD_MOULDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_CORNER, 2, type.getMetadata()));
+//            addSawRecipe(BWMBlocks.WOOD_SIDING, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
+//            addSawRecipe(Blocks.WOODEN_SLAB, type.getMetadata(), new ItemStack(BWMBlocks.WOOD_MOULDING, 2, type.getMetadata()));
+//        }
         addSelfSawRecipe(Blocks.PUMPKIN, 0);
         addSelfSawRecipe(Blocks.VINE, 0);
         for (int i = 0; i < 9; i++)
@@ -75,7 +73,7 @@ public class SawRecipes extends Feature {
                 return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
-        addSteelSawRecipe(Blocks.STONE, 0, new ItemStack(BWMBlocks.STONE_SIDING, 2, 0));
+
     }
 
     @Override

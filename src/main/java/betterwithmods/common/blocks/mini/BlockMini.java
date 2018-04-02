@@ -18,6 +18,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -264,6 +265,11 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
         return BlockFaceShape.UNDEFINED;
     }
 
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add("This item is deprecated. It is replaced with a new version to allow more texture variants. It has a recipe to convert directly to the new version.");
+    }
+
     public enum EnumType {
 
         STONE(0, "stone", Blocks.STONE),
@@ -279,6 +285,7 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
         private final String name;
         private final ItemStack block;
         private final IBlockState state;
+
         EnumType(int metaIn, String nameIn, Block blockIn) {
             this(metaIn, nameIn, new ItemStack(blockIn));
         }
