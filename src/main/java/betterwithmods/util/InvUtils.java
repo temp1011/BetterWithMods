@@ -57,6 +57,13 @@ public class InvUtils {
         return nonNullList;
     }
 
+
+    public static void givePlayer(EntityPlayer player, EnumFacing inv, NonNullList<ItemStack> stacks) {
+        IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        if (inventory != null)
+            insert(inventory, stacks, false);
+    }
+
     public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
         return inventory != null && consumeItemsInInventoryStrict(inventory, ingredient, amount, false);
