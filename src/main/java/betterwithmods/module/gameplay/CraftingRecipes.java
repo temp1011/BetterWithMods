@@ -5,15 +5,11 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.BlockRawPastry;
-import betterwithmods.common.blocks.mini.BlockMini;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.crafting.SawingRecipe;
 import betterwithmods.module.Feature;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -54,11 +50,11 @@ public class CraftingRecipes extends Feature {
         GameRegistry.addSmelting(new ItemStack(BWMBlocks.COBBLE, 1, 1), new ItemStack(Blocks.STONE, 1, 3), 0.1F);
         GameRegistry.addSmelting(new ItemStack(BWMBlocks.COBBLE, 1, 2), new ItemStack(Blocks.STONE, 1, 5), 0.1F);
 
-        for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
-            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 2, type.getMetadata()), Ingredient.fromStacks(type.getBlock())).setRegistryName(new ResourceLocation("stone_wall." + type.getMetadata())));
-            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 2, type.getMetadata()), Ingredient.fromStacks(new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()))).setRegistryName(new ResourceLocation("stone_moulding." + type.getMetadata())));
-            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_CORNER, 2, type.getMetadata()), Ingredient.fromStacks(new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()))).setRegistryName(new ResourceLocation("stone_corner." + type.getMetadata())));
-        }
+//        for (BlockMini.EnumType type : BlockMini.EnumType.values()) {
+//            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_SIDING, 2, type.getMetadata()), Ingredient.fromStacks(type.getBlock())).setRegistryName(new ResourceLocation("stone_wall." + type.getMetadata())));
+//            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_MOULDING, 2, type.getMetadata()), Ingredient.fromStacks(new ItemStack(BWMBlocks.STONE_SIDING, 1, type.getMetadata()))).setRegistryName(new ResourceLocation("stone_moulding." + type.getMetadata())));
+//            addHardcoreRecipe(new SawingRecipe(new ItemStack(BWMBlocks.STONE_CORNER, 2, type.getMetadata()), Ingredient.fromStacks(new ItemStack(BWMBlocks.STONE_MOULDING, 1, type.getMetadata()))).setRegistryName(new ResourceLocation("stone_corner." + type.getMetadata())));
+//        }
 
         BWMRecipes.removeFurnaceRecipe(new ItemStack(Blocks.NETHERRACK));
     }
