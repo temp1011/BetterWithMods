@@ -1,7 +1,7 @@
-package betterwithmods.common.registry.blockmeta.managers;
+package betterwithmods.common.registry.block.managers;
 
-import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
-import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
+import betterwithmods.common.registry.block.recipe.SawRecipe;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class SawManager extends BlockMetaManager<SawRecipe> {
+public class SawManagerBlock extends CraftingManagerBlock<SawRecipe> {
 
     public SawRecipe addRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, Lists.newArrayList(outputs));

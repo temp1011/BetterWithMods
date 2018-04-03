@@ -16,9 +16,9 @@ import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.blockmeta.managers.KilnManager;
-import betterwithmods.common.registry.blockmeta.managers.SawManager;
-import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
+import betterwithmods.common.registry.block.managers.KiLnManagerBlock;
+import betterwithmods.common.registry.block.managers.SawManagerBlock;
+import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -81,9 +81,9 @@ public class BWRegistry {
     public static final CookingPotManager CAULDRON = new CookingPotManager();
     public static final CookingPotManager CRUCIBLE = new CookingPotManager();
     public static final MillManager MILLSTONE = new MillManager();
-    public static final SawManager WOOD_SAW = new SawManager();
-    public static final KilnManager KILN = new KilnManager();
-    public static final TurntableManager TURNTABLE = new TurntableManager();
+    public static final SawManagerBlock WOOD_SAW = new SawManagerBlock();
+    public static final KiLnManagerBlock KILN = new KiLnManagerBlock();
+    public static final TurntableManagerBlock TURNTABLE = new TurntableManagerBlock();
 
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
     public static final Potion POTION_TRUESIGHT = null;

@@ -1,9 +1,9 @@
-package betterwithmods.common.registry.blockmeta.managers;
+package betterwithmods.common.registry.block.managers;
 
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
-import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
-import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
+import betterwithmods.common.registry.block.recipe.TurntableRecipe;
 import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class TurntableManager extends BlockMetaManager<TurntableRecipe> {
+public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe> {
 
     public TurntableRecipe addDefaultRecipe(ItemStack input, ItemStack productState) {
         return addDefaultRecipe(new BlockIngredient(input), BWMRecipes.getStateFromStack(productState), Lists.newArrayList());

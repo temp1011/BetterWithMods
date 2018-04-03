@@ -1,6 +1,6 @@
 package betterwithmods.module.compat.jei.wrapper;
 
-import betterwithmods.common.registry.blockmeta.recipe.BlockRecipe;
+import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;

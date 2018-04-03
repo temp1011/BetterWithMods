@@ -1,6 +1,6 @@
 package betterwithmods.module.compat.jei.wrapper;
 
-import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
+import betterwithmods.common.registry.block.recipe.TurntableRecipe;
 import mezz.jei.api.IJeiHelpers;
 
 /**

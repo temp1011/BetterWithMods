@@ -1,6 +1,6 @@
-package betterwithmods.common.registry.blockmeta.managers;
+package betterwithmods.common.registry.block.managers;
 
-import betterwithmods.common.registry.blockmeta.recipe.BlockRecipe;
+import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @author primetoxinz
  * @version 11/11/16
  */
-public abstract class BlockMetaManager<T extends BlockRecipe> {
+public abstract class CraftingManagerBlock<T extends BlockRecipe> {
 
     private final ArrayList<T> recipes = Lists.newArrayList();
 

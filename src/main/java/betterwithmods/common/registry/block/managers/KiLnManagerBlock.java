@@ -1,8 +1,8 @@
-package betterwithmods.common.registry.blockmeta.managers;
+package betterwithmods.common.registry.block.managers;
 
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
+import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class KilnManager extends BlockMetaManager<KilnRecipe> {
+public class KiLnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
 
     public KilnRecipe addStokedRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, outputs, BWMHeatRegistry.STOKED_HEAT);

@@ -1,4 +1,4 @@
-package betterwithmods.common.registry.blockmeta.recipe;
+package betterwithmods.common.registry.block.recipe;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;

@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.registry.blockmeta.recipe.BlockIngredient;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

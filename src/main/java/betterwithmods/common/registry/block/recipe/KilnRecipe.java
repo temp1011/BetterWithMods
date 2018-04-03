@@ -1,4 +1,4 @@
-package betterwithmods.common.registry.blockmeta.recipe;
+package betterwithmods.common.registry.block.recipe;
 
 import betterwithmods.api.tile.IHeatRecipe;
 import net.minecraft.item.ItemStack;

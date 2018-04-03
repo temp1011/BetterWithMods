@@ -3,7 +3,7 @@ package betterwithmods.common.registry;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.tile.TileKiln;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
+import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
