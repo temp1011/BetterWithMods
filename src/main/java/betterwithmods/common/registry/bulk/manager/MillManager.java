@@ -12,6 +12,10 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
         return addRecipe(new MillRecipe(inputs, outputs, type));
     }
 
+    public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
+        return addRecipe(new MillRecipe(inputs, outputs, 0));
+    }
+
     public MillRecipe addMillRecipe(Ingredient input, List<ItemStack> outputs, int type) {
         return addMillRecipe(Lists.newArrayList(input), outputs, type);
     }
@@ -26,12 +30,6 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
 
     public MillRecipe addMillRecipe(ItemStack input, ItemStack output, int type) {
         return addMillRecipe(Ingredient.fromStacks(input), output, type);
-    }
-
-
-
-    public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new MillRecipe(inputs, outputs, 1));
     }
 
     public MillRecipe addMillRecipe(Ingredient input, List<ItemStack> outputs) {
@@ -49,4 +47,7 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
     public MillRecipe addMillRecipe(ItemStack input, ItemStack output) {
         return addMillRecipe(Ingredient.fromStacks(input), output);
     }
+
+
+
 }

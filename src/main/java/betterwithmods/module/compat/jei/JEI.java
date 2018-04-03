@@ -98,10 +98,10 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
         reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
 
-        reg.handleRecipes(MillRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), MillRecipeCategory.UID);
-        reg.handleRecipes(KilnRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), KilnRecipeCategory.UID);
-        reg.handleRecipes(SawRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), SawRecipeCategory.UID);
-        reg.handleRecipes(SawRecipe.class, recipe1 -> new BlockRecipeWrapper(HELPER, recipe1), SteelSawRecipeCategory.UID);
+        reg.handleRecipes(MillRecipe.class, r -> new BulkRecipeWrapper<>(HELPER, r), MillRecipeCategory.UID);
+        reg.handleRecipes(KilnRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), KilnRecipeCategory.UID);
+        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SawRecipeCategory.UID);
+        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SteelSawRecipeCategory.UID);
         reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER, recipe), TurntableRecipeCategory.UID);
         reg.handleRecipes(HopperInteractions.HopperRecipe.class, recipe -> recipe instanceof HopperInteractions.SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((HopperInteractions.SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe), HopperRecipeCategory.UID);
         reg.handleRecipes(ShapedAnvilRecipe.class, recipe -> new ShapedAnvilRecipeWrapper(HELPER, recipe), SteelCraftingCategory.UID);
@@ -123,7 +123,7 @@ public class JEI implements IModPlugin {
         reg.addRecipes(BWRegistry.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
 //        reg.addRecipes(Sets.union(Sets.newHashSet(SawManager.WOOD_SAW.getRecipes()), Sets.newHashSet(SawManager.STEEL_SAW.getRecipes())), SteelSawRecipeCategory.UID);
         reg.addRecipes(BWRegistry.KILN.getRecipes(), KilnRecipeCategory.UID);
-//        reg.addRecipes(TurntableManager.INSTANCE.getRecipes(), TurntableRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.TURNTABLE.getRecipes(), TurntableRecipeCategory.UID);
         reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
 

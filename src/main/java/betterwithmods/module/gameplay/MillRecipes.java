@@ -19,12 +19,16 @@ import net.minecraftforge.oredict.OreIngredient;
  * Created by primetoxinz on 5/16/17.
  */
 public class MillRecipes extends Feature {
+    private boolean grindingOnly;
+
+
     public MillRecipes() {
         canDisable = false;
     }
 
-
-    private boolean grindingOnly;
+    private static ItemStack getDye(EnumDyeColor color, int count) {
+        return new ItemStack(Items.DYE, count, color.getDyeDamage());
+    }
 
     @Override
     public void setupConfig() {
@@ -52,7 +56,7 @@ public class MillRecipes extends Feature {
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("netherrack"), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK)), 2);
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3), Lists.newArrayList(new ItemStack(Items.BLAZE_ROD)), 2);
 
-        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(BWMBlocks.WOLF), Lists.newArrayList(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3)));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(BWMBlocks.WOLF), Lists.newArrayList(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3)), 1);
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.REEDS), Lists.newArrayList(new ItemStack(Items.SUGAR, 2)));
 
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropHemp"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3));
@@ -86,10 +90,6 @@ public class MillRecipes extends Feature {
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropOats"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropRye"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropRice"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
-    }
-
-    private static ItemStack getDye(EnumDyeColor color, int count) {
-        return new ItemStack(Items.DYE, count, color.getDyeDamage());
     }
 }
 
