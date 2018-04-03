@@ -175,6 +175,7 @@ public class BWOreDictionary {
         registerOre("meatPork", Items.PORKCHOP, Items.COOKED_PORKCHOP);
         registerOre("meatBeef", Items.BEEF, Items.COOKED_BEEF);
         registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
+        registerOre("meatChicken", Items.CHICKEN, Items.COOKED_CHICKEN);
         registerOre("meatRotten", Items.ROTTEN_FLESH);
         registerOre("meatFish",new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
     }
@@ -253,12 +254,6 @@ public class BWOreDictionary {
             }
         }
 
-    }
-
-    public static boolean isValidStewMeat(ItemStack stack)
-    {
-        Item item = stack.getItem();
-        return item != Items.COOKED_RABBIT && item != Items.COOKED_CHICKEN;
     }
 
     public static boolean isWoodRegistered(ItemStack stack)

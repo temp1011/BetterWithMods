@@ -24,7 +24,7 @@ public class BlockRecipeWrapper implements IRecipeWrapper {
     }
 
     @Override
-    public void getIngredients(@Nonnull  IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, helpers.getStackHelper().toItemStackList(recipe.getInput()));
         ingredients.setOutputs(ItemStack.class, recipe.getOutputs());
     }

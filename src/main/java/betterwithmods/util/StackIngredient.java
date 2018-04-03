@@ -1,22 +1,34 @@
 package betterwithmods.util;
 
+import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.List;
 
 public class StackIngredient extends Ingredient {
 
+    private final int count;
+
+    protected StackIngredient(int count, Ingredient ingredient) {
+        this(count, ingredient.getMatchingStacks());
+    }
+
+
+    protected StackIngredient(int count, ItemStack... stacks) {
+        super(stacks);
+        this.count = count;
+    }
 
     public static StackIngredient fromIngredient(int count, Ingredient ingredient) {
         return new StackIngredient(count, ingredient);
     }
 
-
     public static StackIngredient fromStacks(ItemStack... stacks) {
-        return fromStacks(1,stacks);
+        return fromStacks(1, stacks);
     }
 
     public static StackIngredient fromStacks(int count, ItemStack... stacks) {
@@ -31,15 +43,8 @@ public class StackIngredient extends Ingredient {
         return fromOre(1, ore);
     }
 
-    private final int count;
-
-    protected StackIngredient(int count, Ingredient ingredient) {
-        this(count, ingredient.getMatchingStacks());
-    }
-
-    protected StackIngredient(int count, ItemStack... stacks) {
-        super(stacks);
-        this.count = count;
+    public static StackIngredient merge(List<StackIngredient> ingredients) {
+        return fromIngredient(ingredients.stream().mapToInt(StackIngredient::getCount).max().orElse(1), Ingredient.merge(Lists.newArrayList(ingredients)));
     }
 
     @Override

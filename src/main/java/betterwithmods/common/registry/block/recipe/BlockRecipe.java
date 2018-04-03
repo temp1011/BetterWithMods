@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -21,7 +22,7 @@ public class BlockRecipe {
 
     public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
         this.input = input;
-        this.outputs = outputs == null ? NonNullList.create() : InvUtils.asNonnullList(outputs);
+        this.outputs = outputs == null ? NonNullList.create() : InvUtils.asNonnullList(outputs.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList()));
     }
 
     public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
@@ -50,6 +51,6 @@ public class BlockRecipe {
     }
 
     public boolean isInvalid() {
-        return (input.isSimple() && ArrayUtils.isEmpty(input.getMatchingStacks())) || outputs == null;
+        return (input.isSimple() && ArrayUtils.isEmpty(input.getMatchingStacks())) || (outputs == null || outputs.isEmpty());
     }
 }
