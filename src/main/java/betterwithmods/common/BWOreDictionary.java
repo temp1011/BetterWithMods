@@ -253,7 +253,6 @@ public class BWOreDictionary {
             }
         }
 
-        OreDictionary.getOres("listAllmeatcooked").stream().filter(BWOreDictionary::isValidStewMeat).forEach(stack -> OreDictionary.registerOre("foodStewMeat",stack)); //TODO: Remove after moving this to Ingredient
     }
 
     public static boolean isValidStewMeat(ItemStack stack)
