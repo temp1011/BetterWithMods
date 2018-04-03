@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -55,10 +56,14 @@ public class BlockIngredient extends Ingredient {
         if (array == null || this.lastSizeA != stacks.size()) {
             if (states == null) states = Sets.newHashSet();
             NonNullList<ItemStack> lst = NonNullList.create();
-            for (ItemStack itemstack : this.stacks) {
+            Iterator<ItemStack> iter = this.stacks.iterator();
+            while(iter.hasNext()) {
+                ItemStack itemstack = iter.next();
                 Set<IBlockState> s = BWMRecipes.getStatesFromStack(itemstack);
-                if (s.isEmpty())
+                if (s.isEmpty()) {
+                    iter.remove();
                     continue;
+                }
                 states.addAll(s);
                 if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
                     itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
