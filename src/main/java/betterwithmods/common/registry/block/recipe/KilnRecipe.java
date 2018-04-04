@@ -26,7 +26,8 @@ public class KilnRecipe extends BlockRecipe implements IHeatRecipe {
         return ignoreHeat;
     }
 
-    public void setIgnoreHeat(boolean ignoreHeat) {
+    public KilnRecipe setIgnoreHeat(boolean ignoreHeat) {
         this.ignoreHeat = ignoreHeat;
+        return this;
     }
 }
