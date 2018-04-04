@@ -17,7 +17,7 @@ public class MiniTypeIngredient extends Ingredient {
     public Ingredient base;
     private MiniType type;
 
-    protected MiniTypeIngredient(String type, Ingredient base) {
+    public MiniTypeIngredient(String type, Ingredient base) {
         super();
         this.type = MiniType.fromName(type.toLowerCase());
         this.base = base;
