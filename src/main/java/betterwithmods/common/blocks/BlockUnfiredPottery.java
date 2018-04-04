@@ -13,7 +13,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +21,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -125,20 +123,6 @@ public class BlockUnfiredPottery extends BWMBlock implements IMultiVariants {
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.isSideSolid(pos.down(), EnumFacing.UP);
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        EnumType type = state.getValue(TYPE);
-        switch(type)
-        {
-            case BRICK:
-                return new ItemStack(Items.CLAY_BALL);
-            case NETHER_BRICK:
-                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
-            default:
-                return super.getPickBlock(state, target, world, pos, player);
-        }
     }
 
     @Override
