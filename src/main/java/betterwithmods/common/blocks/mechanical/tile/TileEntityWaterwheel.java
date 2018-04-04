@@ -1,22 +1,44 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
+import betterwithmods.api.block.IWaterCurrent;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockWaterwheel;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.HashMap;
+
 public class TileEntityWaterwheel extends TileAxleGenerator {
+    static HashMap<Block,IWaterCurrent> WATER_BLOCKS = new HashMap<>();
+
     public TileEntityWaterwheel() {
         super();
+    }
+
+    public static void registerWater(Block block) {
+        if(block instanceof BlockLiquid)
+            WATER_BLOCKS.put(block,IWaterCurrent.VANILLA_LIQUID);
+        else if(block instanceof BlockFluidBase)
+            WATER_BLOCKS.put(block,IWaterCurrent.FORGE_LIQUID);
+        else
+            WATER_BLOCKS.put(block,IWaterCurrent.NO_FLOW);
+    }
+
+    public static void registerWater(Block block, IWaterCurrent handler) {
+        WATER_BLOCKS.put(block,handler);
     }
 
     @Override
@@ -25,7 +47,28 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     }
 
     public boolean isWater(BlockPos pos) {
-        return world.getBlockState(pos).getBlock() == Blocks.WATER;
+        IBlockState state = world.getBlockState(pos);
+        if(isVanillaWater(state))
+            return true;
+        if(isForgeFluid(state.getBlock()))
+            return true;
+        return WATER_BLOCKS.containsKey(state.getBlock());
+    }
+
+    public IWaterCurrent getCurrentHandler(IBlockState state) {
+        if(isVanillaWater(state))
+            return IWaterCurrent.VANILLA_LIQUID;
+        if(isForgeFluid(state.getBlock()))
+            return IWaterCurrent.FORGE_LIQUID;
+        return WATER_BLOCKS.get(state.getBlock());
+    }
+
+    private boolean isVanillaWater(IBlockState state) {
+        return state.getBlock() instanceof BlockLiquid && state.getMaterial() == Material.WATER;
+    }
+
+    private boolean isForgeFluid(Block block) {
+        return block instanceof BlockFluidBase && ((BlockFluidBase) block).getFluid() == FluidRegistry.WATER;
     }
 
     @Override
@@ -34,8 +77,8 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         boolean hasWater = true;
         if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WATERWHEEL) {
             EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
-            for (int i = -2; i < 3; i++) {
-                for (int j = -2; j < 3; j++) {
+            for (int i = -2; i <= 2; i++) {
+                for (int j = -2; j <= 2; j++) {
                     int xPos = (axis == EnumFacing.Axis.Z ? i : 0);
                     int zPos = (axis == EnumFacing.Axis.X ? i : 0);
                     BlockPos offset = pos.add(xPos, j, zPos);
@@ -69,13 +112,13 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         int leftWater = 0;
         int rightWater = 0;
         boolean bottomIsUnobstructed = true;
-        for (int i = -2; i < 3; i++) {
-            int xP1 = axis == EnumFacing.Axis.Z ? -2 : 0;
-            int xP2 = axis == EnumFacing.Axis.Z ? 2 : 0;
-            int zP1 = axis == EnumFacing.Axis.X ? -2 : 0;
-            int zP2 = axis == EnumFacing.Axis.X ? 2 : 0;
-            BlockPos leftPos = pos.add(xP1, i, zP1);
-            BlockPos rightPos = pos.add(xP2, i, zP2);
+        for (int i = -2; i <= 2; i++) {
+            int xLeft = axis == EnumFacing.Axis.Z ? -2 : 0;
+            int xRight = axis == EnumFacing.Axis.Z ? 2 : 0;
+            int zLeft = axis == EnumFacing.Axis.X ? -2 : 0;
+            int zRight = axis == EnumFacing.Axis.X ? 2 : 0;
+            BlockPos leftPos = pos.add(xLeft, i, zLeft);
+            BlockPos rightPos = pos.add(xRight, i, zRight);
             if (isWater(leftPos))
                 leftWater++;
             else if (isWater(rightPos))
@@ -96,7 +139,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
     public void calculatePower() {
         byte power = 0;
         if (isValid() && isOverworld()) {
-            float[] waterMeta = {0, 0, 0};
+            Vec3d overallFlow = Vec3d.ZERO;
             EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             int leftWater = 0;
             int rightWater = 0;
@@ -105,26 +148,33 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
                 int xP = axis == EnumFacing.Axis.Z ? metaPos : 0;
                 int zP = axis == EnumFacing.Axis.X ? metaPos : 0;
                 BlockPos lowPos = pos.add(xP, -2, zP);
-                if (isWater(lowPos)) {
-                    int meta = getBlockWorld().getBlockState(lowPos).getBlock().getMetaFromState(getBlockWorld().getBlockState(lowPos));
-                    waterMeta[i] = BlockLiquid.getLiquidHeightPercent(meta);
-                }
+                IBlockState lowState = getBlockWorld().getBlockState(lowPos);
+                IWaterCurrent current = getCurrentHandler(lowState);
+                if (current != null)
+                    overallFlow = overallFlow.add(current.getFlowDirection(getBlockWorld(),lowPos,lowState));
             }
             for (int i = -1; i < 3; i++) {
-                int xP1 = axis == EnumFacing.Axis.Z ? -2 : 0;
-                int xP2 = axis == EnumFacing.Axis.Z ? 2 : 0;
-                int zP1 = axis == EnumFacing.Axis.X ? -2 : 0;
-                int zP2 = axis == EnumFacing.Axis.X ? 2 : 0;
-                BlockPos leftPos = pos.add(xP1, i, zP1);
-                BlockPos rightPos = pos.add(xP2, i, zP2);
+                int xLeft = axis == EnumFacing.Axis.Z ? -2 : 0;
+                int xRight = axis == EnumFacing.Axis.Z ? 2 : 0;
+                int zLeft = axis == EnumFacing.Axis.X ? -2 : 0;
+                int zRight = axis == EnumFacing.Axis.X ? 2 : 0;
+                BlockPos leftPos = pos.add(xLeft, i, zLeft);
+                BlockPos rightPos = pos.add(xRight, i, zRight);
                 if (isWater(leftPos))
                     leftWater++;
-                else if (isWater(rightPos))
+                if (isWater(rightPos))
                     rightWater++;
             }
-            if (leftWater > rightWater || (waterMeta[0] < waterMeta[1] && waterMeta[1] < waterMeta[2] && leftWater >= rightWater))
+            int xFlow = Math.abs(overallFlow.x) > 2 ? (int)Math.signum(overallFlow.x) : 0;
+            int zFlow = Math.abs(overallFlow.z) > 2 ? (int)Math.signum(overallFlow.z) : 0;
+            int relevantFlow = 0;
+            if(axis == EnumFacing.Axis.X)
+                relevantFlow = zFlow;
+            if(axis == EnumFacing.Axis.Z)
+                relevantFlow = xFlow;
+            if (leftWater > rightWater || (relevantFlow > 0 && leftWater >= rightWater))
                 waterMod = -1;
-            else if (rightWater > leftWater || (waterMeta[0] > waterMeta[1] && waterMeta[1] > waterMeta[2] && rightWater >= leftWater))
+            else if (rightWater > leftWater || (relevantFlow < 0 && rightWater >= leftWater))
                 waterMod = 1;
             else {
                 waterMod = 0;
