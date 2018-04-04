@@ -305,10 +305,27 @@ public class InvUtils {
         return extracted;
     }
 
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate) {
+        if(ingredient instanceof StackIngredient)
+            return consumeItemsInInventory(inv,(StackIngredient) ingredient,simulate);
+        return consumeItemsInInventory(inv,ingredient,1,simulate);
+    }
+
     public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
+                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+            }
+        }
+        return false;
+    }
+
+    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate) {
+        for (int i = 0; i < inv.getSlots(); i++) {
+            ItemStack inSlot = inv.getStackInSlot(i);
+            if (ingredient.apply(inSlot)) {
+                int sizeOfStack = ingredient.getCount(inSlot);
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
             }
         }

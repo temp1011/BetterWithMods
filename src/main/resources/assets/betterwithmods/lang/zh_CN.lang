@@ -7,10 +7,12 @@ tile.bwm:steel_gearbox.name=钢质变速箱
 tile.bwm:wooden_broken_gearbox.name=损坏的木质变速箱
 tile.bwm:steel_broken_gearbox.name=损坏的钢质变速箱
 
-tile.bwm:millstone.name=磨石
-tile.bwm:pulley.name=滑车
-tile.bwm:filtered_hopper.name=滤筛漏斗
-tile.bwm:turntable.name=螺杆旋转台
+
+
+tile.bwm:single_machine.0.name=磨石
+tile.bwm:single_machine.1.name=滑车
+tile.bwm:single_machine.2.name=滤筛漏斗
+tile.bwm:single_machine.3.name=螺杆旋转台
 tile.bwm:pane.0.name=网格栅栏
 tile.bwm:pane.1.name=板条栅栏
 tile.bwm:wicker.name=筚板
@@ -28,9 +30,9 @@ tile.bwm:slats.4.name=金合欢木板条栅栏
 tile.bwm:slats.5.name=深色橡木板条栅栏
 tile.bwm:screw_pump.name=螺杆泵
 
-tile.bwm:crucible.name=坩埚
-tile.bwm:cauldron.name=釜锅
-tile.bwm:dragon_vessel.name=神秘容器
+tile.bwm:cooking_pot.0.name=坩埚
+tile.bwm:cooking_pot.1.name=釜锅
+tile.bwm:cooking_pot.2.name=神秘容器
 
 tile.bwm:kiln.name=窑
 tile.bwm:bellows.0.name=风箱
@@ -133,6 +135,18 @@ tile.bwm:lens.name=镜头聚焦器
 tile.bwm:vine_trap.name=蔓藤陷阱
 
 tile.bwm:booster.name=机械螺杆助力轨道
+
+tile.bwm:siding_rock.name=半板
+tile.bwm:siding_wood.name=半板
+tile.bwm:siding_iron.name=半板
+
+tile.bwm:moulding_rock.name=条
+tile.bwm:moulding_wood.name=条
+tile.bwm:moulding_iron.name=条
+
+tile.bwm:corner_rock.name=边角
+tile.bwm:corner_wood.name=边角
+tile.bwm:corner_iron.name=边角
 
 tile.bwm:wood_siding.0.name=橡木木半板
 tile.bwm:wood_siding.1.name=云杉木木半板
@@ -395,7 +409,7 @@ item.bwm:material.sharpening_stone.name=锐化燧石
 item.bwm:material.knife_blade.name=刀刃
 item.bwm:material.ender_slag.name=末影渣
 item.bwm:material.soul_flux.name=灵魂助溶剂
-item.bwm:material.ender_ocular.name=单个末影目镜
+item.bwm:material.ender_ocular.name=末影目镜
 item.bwm:material.padding.name=衬垫
 item.bwm:material.armor_plate.name=熔魂钢护甲板
 item.bwm:material.broadhead.name=宽箭头
@@ -543,7 +557,7 @@ modifier.mending.desc=§o抢人头！§r\n吸收经验修复工具。
 entity.entity_sheared_creeper.name=剪过的爬行者
 entity.bwm_jungle_spider.name=丛林蜘蛛
 entity.extending_rope.name=移动平台
-
+tile.bwm:single_machine=机械装置
 
 subtitles.bwm.wood.creak=木头吱吱作响
 subtitles.bwm.stone.grind=石磨磨碎声
@@ -607,3 +621,4 @@ bwm.manual.items=物品
 bwm.manual.mechanical=机械动力
 bwm.manual.error.0=文档无法找到：
 bwm.manual.error.1=请向此处报告
+entity.Wolf.name=狼
