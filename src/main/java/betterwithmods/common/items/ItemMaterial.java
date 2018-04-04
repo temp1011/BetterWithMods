@@ -62,7 +62,7 @@ public class ItemMaterial extends Item implements IMultiLocations {
     }
 
     public static Ingredient getIngredient(EnumMaterial material, int count) {
-        return StackIngredient.fromStacks(count, getMaterial(material, count));
+        return StackIngredient.fromStacks(getMaterial(material, count));
     }
 
 

@@ -58,12 +58,12 @@ public class HCRedstone extends Feature {
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_BUTTON, "S", "R", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_button")));
             addHardcoreRecipe(new ShapedOreRecipe(null, Blocks.STONE_PRESSURE_PLATE, "SS", "RR", 'S', "stone", 'R', LATCH).setRegistryName(new ResourceLocation("betterwithmods", "stone_pressure_plate")));
         }
-        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(2, new ItemStack(Blocks.IRON_TRAPDOOR)), new ItemStack(Items.IRON_INGOT, 4));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(new ItemStack(Blocks.IRON_TRAPDOOR,2)), new ItemStack(Items.IRON_INGOT, 4));
 
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(2, new ItemStack(Blocks.IRON_TRAPDOOR)), new ItemStack(Items.IRON_INGOT, 6));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(new ItemStack(Blocks.IRON_TRAPDOOR,2)), new ItemStack(Items.IRON_INGOT, 6));
     }
 }
