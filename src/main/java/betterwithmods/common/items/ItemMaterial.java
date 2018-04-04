@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,6 +15,10 @@ import java.util.HashMap;
 
 public class ItemMaterial extends Item {
     public static HashMap<EnumMaterial, ItemMaterial> MATERIALS = Maps.newHashMap();
+
+    public static Ingredient getIngredient(EnumMaterial material) {
+        return Ingredient.fromStacks(getStack(material));
+    }
 
     public static ItemStack getStack(EnumMaterial material) {
         return getStack(material, 1);

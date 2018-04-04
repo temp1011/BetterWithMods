@@ -63,8 +63,8 @@ public class Dung extends Feature {
                 instance.deserializeNBT((NBTTagCompound) nbt);
             }
         }, DungProducer::new);
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT)));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT)));
     }
 
     @SubscribeEvent
@@ -89,7 +89,7 @@ public class Dung extends Feature {
                         EnumFacing poopDir = findSpaceForPoop(animal.world, animal.getPosition(), rand);
                         if (poopDir != null) {
                             BlockPos poopSpot = animal.getPosition().offset(poopDir);
-                            EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() + 0.5, poopSpot.getZ() + 0.5, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
+                            EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() + 0.5, poopSpot.getZ() + 0.5, ItemMaterial.getStack(ItemMaterial.EnumMaterial.DUNG));
                             item.motionX = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
                             item.motionY = 0;
                             item.motionZ = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;

@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -13,8 +15,8 @@ import net.minecraft.world.IBlockAccess;
 import java.util.Set;
 
 public class BlockCobble extends Block {
-    public static final Set<Block> BLOCKS = Sets.newHashSet();
-    private final BlockCobble.EnumType type;
+    public static final Set<BlockCobble> BLOCKS = Sets.newHashSet();
+    public final BlockCobble.EnumType type;
 
     public BlockCobble(BlockCobble.EnumType type) {
         super(Material.ROCK);
@@ -36,17 +38,23 @@ public class BlockCobble extends Block {
     }
 
     public enum EnumType implements IStringSerializable {
-        GRANITE("granite", MapColor.DIRT),
-        DIORITE("diorite", MapColor.QUARTZ),
-        ANDESITE("andesite", MapColor.STONE);
+        GRANITE("granite", new ItemStack(Blocks.STONE,1,1), MapColor.DIRT),
+        DIORITE("diorite",  new ItemStack(Blocks.STONE,1,3), MapColor.QUARTZ),
+        ANDESITE("andesite",  new ItemStack(Blocks.STONE,1,5), MapColor.STONE);
 
         private static final EnumType[] VALUES = values();
         private String name;
         private MapColor color;
+        private ItemStack stone;
 
-        EnumType(String name, MapColor color) {
+        EnumType(String name, ItemStack stone, MapColor color) {
             this.name = name;
+            this.stone = stone;
             this.color = color;
+        }
+
+        public ItemStack getStone() {
+            return stone;
         }
 
         @Override

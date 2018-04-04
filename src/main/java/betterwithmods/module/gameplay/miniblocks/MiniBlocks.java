@@ -16,7 +16,6 @@ import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileCorner;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMoulding;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
-import betterwithmods.util.InvUtils;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
@@ -34,8 +33,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.EnumFacing;
@@ -230,7 +227,7 @@ public class MiniBlocks extends Feature {
             BWRegistry.WOOD_SAW.addRecipe(siding, mouldingStack);
             BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
             if (BWOreDictionary.isOre(mini, "plankWood"))
-                BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+                BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR, 2));
         }
 
     }
