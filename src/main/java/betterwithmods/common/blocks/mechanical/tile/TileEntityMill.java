@@ -13,13 +13,9 @@ import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,10 +30,10 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     public int power;
     public int grindCounter;
-    private int grindType = 0;
+    public boolean blocked;
+    private SoundEvent grindType;
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
-    public boolean blocked;
 
     public TileEntityMill() {
         this.grindCounter = 0;
@@ -94,13 +90,10 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         if (this.containsIngredientsToGrind && isActive()) {
 
             if (!this.getBlockWorld().isRemote) {
-                if (grindType == 2) {
+                if (grindType != null) {
                     if (this.getBlockWorld().rand.nextInt(25) < 2) {
-                        getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_GHAST_HURT, SoundCategory.BLOCKS, 1F, getBlockWorld().rand.nextFloat() * 0.4F + 0.8F);
+                        getBlockWorld().playSound(null, pos, grindType, SoundCategory.BLOCKS, 1F, getBlockWorld().rand.nextFloat() * 0.4F + 0.8F);
                     }
-                } else if (grindType == 1) {
-                    if (this.getBlockWorld().rand.nextInt(20) < 2)
-                        getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.BLOCKS, 2.0F, (getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.2F + 1.0F);
                 }
             }
             this.grindCounter++;
@@ -136,17 +129,11 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         return 3;
     }
 
-    public int getGrindType() {
-        return this.grindType;
-    }
-
     @Override
     public void markDirty() {
         super.markDirty();
         validateContents();
         if (this.getBlockWorld() != null && !this.getBlockWorld().isRemote) {
-            if (grindType == 1)
-                this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_WOLF_WHINE, SoundCategory.BLOCKS, 1F, 1.0F);
             this.validateContents = true;
         }
     }
@@ -177,8 +164,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
 
     private boolean grindContents() {
         if (BWRegistry.MILLSTONE.canCraft(this, inventory)) {
-            if (grindType == 1)
-                this.getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_WOLF_DEATH, SoundCategory.BLOCKS, 1.0F, 1.0F);
             NonNullList<ItemStack> output = BWRegistry.MILLSTONE.craftItem(world, this, inventory);
             if (!output.isEmpty()) {
                 for (ItemStack anOutput : output) {
@@ -193,12 +178,12 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     private void validateContents() {
-        int oldGrindType = getGrindType();
-        int newGrindType = 0;
+        SoundEvent oldGrindType = grindType;
+        SoundEvent newGrindType = null;
         MillRecipe recipe = BWRegistry.MILLSTONE.getRecipe(this, inventory);
         if (recipe != null) {
             this.containsIngredientsToGrind = true;
-            newGrindType = recipe.getGrindType();
+            newGrindType = recipe.getSound();
         } else {
             this.grindCounter = 0;
             this.containsIngredientsToGrind = false;

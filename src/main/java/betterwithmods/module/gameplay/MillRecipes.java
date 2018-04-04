@@ -9,6 +9,7 @@ import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -53,10 +54,10 @@ public class MillRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("netherrack"), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK)), 2);
-        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3), Lists.newArrayList(new ItemStack(Items.BLAZE_ROD)), 2);
+        BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("netherrack"), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK)), SoundEvents.ENTITY_GHAST_SCREAM);
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3), Lists.newArrayList(new ItemStack(Items.BLAZE_ROD)), SoundEvents.ENTITY_GHAST_SCREAM);
 
-        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(BWMBlocks.WOLF), Lists.newArrayList(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3)), 1);
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(BWMBlocks.WOLF), Lists.newArrayList(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3)), SoundEvents.ENTITY_WOLF_WHINE);
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.REEDS), Lists.newArrayList(new ItemStack(Items.SUGAR, 2)));
 
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropHemp"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HEMP_FIBERS, 3));

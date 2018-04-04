@@ -4,31 +4,32 @@ import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.SoundEvent;
 
 import java.util.List;
 
 public class MillManager extends CraftingManagerBulk<MillRecipe> {
-    public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int type) {
-        return addRecipe(new MillRecipe(inputs, outputs, type));
+    public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs, SoundEvent type) {
+        return addRecipe(new MillRecipe(inputs, outputs).setSound(type));
     }
 
     public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new MillRecipe(inputs, outputs, 0));
+        return addRecipe(new MillRecipe(inputs, outputs));
     }
 
-    public MillRecipe addMillRecipe(Ingredient input, List<ItemStack> outputs, int type) {
+    public MillRecipe addMillRecipe(Ingredient input, List<ItemStack> outputs, SoundEvent type) {
         return addMillRecipe(Lists.newArrayList(input), outputs, type);
     }
 
-    public MillRecipe addMillRecipe(Ingredient input, ItemStack output, int type) {
+    public MillRecipe addMillRecipe(Ingredient input, ItemStack output, SoundEvent type) {
         return addMillRecipe(Lists.newArrayList(input), Lists.newArrayList(output), type);
     }
 
-    public MillRecipe addMillRecipe(ItemStack input, List<ItemStack> outputs, int type) {
+    public MillRecipe addMillRecipe(ItemStack input, List<ItemStack> outputs, SoundEvent type) {
         return addMillRecipe(Ingredient.fromStacks(input), outputs, type);
     }
 
-    public MillRecipe addMillRecipe(ItemStack input, ItemStack output, int type) {
+    public MillRecipe addMillRecipe(ItemStack input, ItemStack output, SoundEvent type) {
         return addMillRecipe(Ingredient.fromStacks(input), output, type);
     }
 
@@ -47,7 +48,6 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
     public MillRecipe addMillRecipe(ItemStack input, ItemStack output) {
         return addMillRecipe(Ingredient.fromStacks(input), output);
     }
-
 
 
 }
