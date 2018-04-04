@@ -13,8 +13,12 @@
         "ore": "plankWood"
       },
       {
-        "type": "forge:ore_dict",
-        "ore": "sidingWood"
+        "type": "betterwithmods:minitype",
+        "baseIngredient": {
+          "ore": "plankWood",
+          "type": "forge:ore_dict"
+        },
+        "minitype": "siding"
       }
     ]
   },
@@ -32,8 +36,12 @@
         "ore": "stone"
       },
       {
-        "type": "forge:ore_dict",
-        "ore": "sidingStone"
+        "type": "betterwithmods:minitype",
+        "minitype": "siding",
+        "baseIngredient": {
+          "type": "forge:ore_dict",
+          "ore": "stone"
+        }
       }
     ]
   },
@@ -47,7 +55,7 @@
     "name": "SIDING_WOOD",
     "ingredient": [
       {
-        "type": "betterwithmods:mini_type",
+        "type": "betterwithmods:minitype",
         "baseIngredient": {
           "ore": "plankWood",
           "type": "forge:ore_dict"
@@ -66,7 +74,7 @@
     "name": "MOULDING_WOOD",
     "ingredient": [
       {
-        "type": "betterwithmods:mini_type",
+        "type": "betterwithmods:minitype",
         "baseIngredient": {
           "ore": "plankWood",
           "type": "forge:ore_dict"
@@ -85,7 +93,7 @@
     "name": "CORNER_WOOD",
     "ingredient": [
       {
-        "type": "betterwithmods:mini_type",
+        "type": "betterwithmods:minitype",
         "baseIngredient": {
           "ore": "plankWood",
           "type": "forge:ore_dict"

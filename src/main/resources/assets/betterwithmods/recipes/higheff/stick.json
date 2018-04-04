@@ -10,8 +10,12 @@
   },
   "ingredients": [
     {
-      "ore": "woodMoulding",
-      "type": "forge:ore_dict"
+      "type": "betterwithmods:minitype",
+      "minitype": "moulding",
+      "baseIngredient": {
+        "type": "forge:ore_dict",
+        "ore": "plankWood"
+      }
     }
   ],
   "type": "forge:ore_shapeless"

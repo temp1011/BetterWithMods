@@ -96,7 +96,7 @@ public class MiniBlocks extends Feature {
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
 
         Block blk = state.getBlock();
-        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
+       final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
 
 

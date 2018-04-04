@@ -16,8 +16,12 @@
   "type": "forge:ore_shaped",
   "key": {
     "S": {
-      "ore": "sidingWood",
-      "type": "forge:ore_dict"
+      "type": "betterwithmods:minitype",
+      "minitype": "siding",
+      "baseIngredient": {
+        "type": "forge:ore_dict",
+        "ore": "plankWood"
+      }
     }
   }
 }

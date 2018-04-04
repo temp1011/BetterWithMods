@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "minecraft:stone_brick_stairs"
+    "item": "minecraft:stone_stairs"
   },
   "pattern": [
     "M ",
@@ -18,7 +18,7 @@
       "type": "betterwithmods:minitype",
       "minitype": "moulding",
       "baseIngredient": {
-        "item": "minecraft:stonebrick",
+        "item": "minecraft:cobblestone",
         "data": 0
       }
     }

@@ -19,8 +19,12 @@
       "item": "minecraft:book"
     },
     "S": {
-      "type": "forge:ore_dict",
-      "ore": "sidingWood"
+      "type": "betterwithmods:minitype",
+      "minitype": "siding",
+      "baseIngredient": {
+        "type": "forge:ore_dict",
+        "ore": "plankWood"
+      }
     }
   }
 }
