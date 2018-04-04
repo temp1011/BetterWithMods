@@ -209,7 +209,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     public void ejectInventory(EnumFacing facing) {
-        int index = InvUtils.getFirstOccupiedStackNotOfItem(inventory, Items.BRICK);
+        int index = InvUtils.getFirstOccupiedStackNotOfItem(inventory, new ItemStack(Items.BRICK));
         if (index >= 0 && index < inventory.getSlots()) {
             ItemStack stack = inventory.getStackInSlot(index);
             int ejectStackSize = 8;
