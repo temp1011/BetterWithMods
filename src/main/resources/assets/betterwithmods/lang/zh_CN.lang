@@ -8,6 +8,7 @@ tile.bwm:wooden_broken_gearbox.name=损坏的木质变速箱
 tile.bwm:steel_broken_gearbox.name=损坏的钢质变速箱
 
 
+
 tile.bwm:single_machine.0.name=磨石
 tile.bwm:single_machine.1.name=滑车
 tile.bwm:single_machine.2.name=滤筛漏斗
@@ -134,6 +135,18 @@ tile.bwm:lens.name=镜头聚焦器
 tile.bwm:vine_trap.name=蔓藤陷阱
 
 tile.bwm:booster.name=机械螺杆助力轨道
+
+tile.bwm:siding_rock.name=半板
+tile.bwm:siding_wood.name=半板
+tile.bwm:siding_iron.name=半板
+
+tile.bwm:moulding_rock.name=条
+tile.bwm:moulding_wood.name=条
+tile.bwm:moulding_iron.name=条
+
+tile.bwm:corner_rock.name=边角
+tile.bwm:corner_wood.name=边角
+tile.bwm:corner_iron.name=边角
 
 tile.bwm:wood_siding.0.name=橡木木半板
 tile.bwm:wood_siding.1.name=云杉木木半板
@@ -396,7 +409,7 @@ item.bwm:material.sharpening_stone.name=锐化燧石
 item.bwm:material.knife_blade.name=刀刃
 item.bwm:material.ender_slag.name=末影渣
 item.bwm:material.soul_flux.name=灵魂助溶剂
-item.bwm:material.ender_ocular.name=单个末影目镜
+item.bwm:material.ender_ocular.name=末影目镜
 item.bwm:material.padding.name=衬垫
 item.bwm:material.armor_plate.name=熔魂钢护甲板
 item.bwm:material.broadhead.name=宽箭头
@@ -608,3 +621,4 @@ bwm.manual.items=物品
 bwm.manual.mechanical=机械动力
 bwm.manual.error.0=文档无法找到：
 bwm.manual.error.1=请向此处报告
+entity.Wolf.name=狼
