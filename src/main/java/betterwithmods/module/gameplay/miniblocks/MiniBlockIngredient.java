@@ -13,18 +13,21 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class MiniBlockIngredient extends BlockIngredient {
 
     private Ingredient base;
-    private ItemStack stack;
     private MiniType type;
     private ItemStack[] cache = null;
 
-    protected MiniBlockIngredient(String type, ItemStack stack) {
+    public MiniBlockIngredient(String type, Ingredient base) {
         this.type = MiniType.fromName(type.toLowerCase());
-        this.base = Ingredient.fromStacks(stack);
-        this.stack = stack;
+        this.base = base;
+    }
+
+    public MiniBlockIngredient(String type, ItemStack stack) {
+        this(type,Ingredient.fromStacks(stack));
     }
 
     @Override
@@ -43,6 +46,12 @@ public class MiniBlockIngredient extends BlockIngredient {
     }
 
     @Override
+    protected void invalidate() {
+        super.invalidate();
+        cache = null;
+    }
+
+    @Override
     public boolean isSimple() {
         return false;
     }
@@ -51,14 +60,16 @@ public class MiniBlockIngredient extends BlockIngredient {
     @Override
     public ItemStack[] getMatchingStacks() {
         if (cache == null) {
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
-                IBlockState state = BWMRecipes.getStateFromStack(stack);
-                Material material = state.getMaterial();
-                BlockMini blockMini = MiniBlocks.MINI_MATERIL_BLOCKS.get(type).get(material);
-                cache = new ItemStack[]{MiniBlocks.fromParent(blockMini, state)};
-            } else {
-                cache = new ItemStack[0];
+            ArrayList<ItemStack> stacks = new ArrayList<>();
+            for (ItemStack stack : base.getMatchingStacks()) {
+                if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
+                    IBlockState state = BWMRecipes.getStateFromStack(stack);
+                    Material material = state.getMaterial();
+                    BlockMini blockMini = MiniBlocks.MINI_MATERIL_BLOCKS.get(type).get(material);
+                    stacks.add(MiniBlocks.fromParent(blockMini, state));
+                }
             }
+            cache = stacks.toArray(new ItemStack[stacks.size()]);
         }
         return cache;
     }
