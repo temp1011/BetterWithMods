@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -45,27 +44,27 @@ public class CauldronRecipes extends Feature {
                 StackIngredient.fromOre(4, "meatMutton"),
                 StackIngredient.fromOre(10, "meatRotten")
         ));
-        BWRegistry.CAULDRON.addStokedRecipe(meat, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW));
+        BWRegistry.CAULDRON.addStokedRecipe(meat, ItemMaterial.getStack(ItemMaterial.EnumMaterial.TALLOW));
 
         StackIngredient leather = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromStacks(new ItemStack(Items.LEATHER)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_STRAP,8)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT,2)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.LEATHER_CUT,2)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT,2)),
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_STRAP,8)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
                 StackIngredient.fromOre(2, "book")
         ));
-        BWRegistry.CAULDRON.addStokedRecipe(leather, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE));
+        BWRegistry.CAULDRON.addStokedRecipe(leather, ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE));
 
         StackIngredient wood = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre("logWood"),
                 StackIngredient.fromOre(6, "plankWood"),
                 StackIngredient.fromOre(16, "dustWood")
         ));
-        BWRegistry.CAULDRON.addStokedRecipe(wood, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH));
+        BWRegistry.CAULDRON.addStokedRecipe(wood, ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH));
 
         BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.POTASH)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)));
 
@@ -113,14 +112,14 @@ public class CauldronRecipes extends Feature {
                 StackIngredient.fromOre(8, "barkBlood")
         ));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
+                Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
                 bark
-        ), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER));
+        ), ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                StackIngredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
+                StackIngredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT,2)),
                 bark
-        ), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2));
+        ), ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2));
 
 
 
