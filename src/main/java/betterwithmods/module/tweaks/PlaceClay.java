@@ -2,7 +2,7 @@ package betterwithmods.module.tweaks;
 
 import betterwithmods.common.blocks.BlockBDispenser;
 import betterwithmods.common.blocks.BlockUnfiredPottery;
-import betterwithmods.common.blocks.tile.TileCamo;
+import betterwithmods.common.blocks.tile.TileKiln;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import com.mojang.authlib.GameProfile;
@@ -43,7 +43,7 @@ public class PlaceClay extends Feature {
 //        KilnManager.INSTANCE.addRecipe(new KilnRecipe(BWMBlocks.UNFIRED_POTTERY, BlockUnfiredPottery.EnumType.NETHER_BRICK.getMeta(), Lists.newArrayList(new ItemStack(Items.NETHERBRICK))) {
 //            @Override
 //            public ItemStack getStack() {
-//                return ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
+//                return ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHER_SLUDGE);
 //            }
 //        });
 
@@ -51,14 +51,12 @@ public class PlaceClay extends Feature {
         BlockBDispenser.BLOCK_DISPENSER_REGISTRY.putObject(ItemMaterial.getItem(ItemMaterial.EnumMaterial.NETHER_SLUDGE), (source, stack) -> dispenseBlock(source,stack, BlockUnfiredPottery.BLOCKS.get(BlockUnfiredPottery.EnumType.NETHER_BRICK).getDefaultState()));
     }
 
-    public ItemStack dispenseBlock(IBlockSource source, ItemStack stack, IBlockState stateToPlace)
-    {
+    private ItemStack dispenseBlock(IBlockSource source, ItemStack stack, IBlockState stateToPlace) {
         IPosition pos = BlockBDispenser.getDispensePosition(source);
         BlockPos check = new BlockPos(pos.getX(), pos.getY(), pos.getZ());
         World world = source.getWorld();
-        if((world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)) && stateToPlace.getBlock().canPlaceBlockAt(world,check))
-        {
-            world.setBlockState(check,stateToPlace);
+        if ((world.isAirBlock(check) || world.getBlockState(check).getBlock().isReplaceable(world, check)) && stateToPlace.getBlock().canPlaceBlockAt(world, check)) {
+            world.setBlockState(check, stateToPlace);
             stack.shrink(1);
             return stack.isEmpty() ? ItemStack.EMPTY : stack;
         }
@@ -103,7 +101,7 @@ public class PlaceClay extends Feature {
         if (player.isSneaking())
             return true;
         TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && !(tile instanceof TileCamo))
+        if (tile != null && !(tile instanceof TileKiln))
             return false;
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();

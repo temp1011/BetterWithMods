@@ -3,11 +3,11 @@ package betterwithmods.client;
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.gui.GuiStatus;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -34,37 +35,6 @@ import org.lwjgl.opengl.GL11;
 public class ClientEventHandler {
     public static Minecraft mc = Minecraft.getMinecraft();
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void putTooltip(ItemTooltipEvent e) {
-
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void onBlockHighlight(DrawBlockHighlightEvent event) {
-        EntityPlayer player = event.getPlayer();
-        ItemStack stack = ItemStack.EMPTY;
-        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() || !(player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock)) && !player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) {
-            stack = player.getHeldItem(EnumHand.OFF_HAND);
-        } else if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
-            stack = player.getHeldItem(EnumHand.MAIN_HAND);
-        }
-        Block block = Block.getBlockFromItem(stack.getItem());
-        if (event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && block instanceof IRenderRotationPlacement) {
-            World world = player.getEntityWorld();
-            EnumFacing side = event.getTarget().sideHit;
-
-            BlockPos pos = event.getTarget().getBlockPos();
-            IBlockState iblockstate = world.getBlockState(pos);
-
-            if (world.mayPlace(block, pos, true, side, player) && iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(pos)) {
-                ((IRenderRotationPlacement) block).getRenderFunction().render(world, block, pos, stack, player, side, event.getTarget(), event.getPartialTicks());
-            }
-        }
-    }
-
     public static void renderBlock(IBlockState state, BlockPos pos, World world) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
@@ -73,14 +43,6 @@ public class ClientEventHandler {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.getBlockRendererDispatcher().renderBlock(state, pos, world, buffer);
         tessellator.draw();
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void renderStatus(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
-            GuiStatus.INSTANCE.draw();
-        }
     }
 
     public static void renderBasicGrid(World world, Block block, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing side, RayTraceResult target, double partial) {
@@ -146,30 +108,62 @@ public class ClientEventHandler {
         GlStateManager.popMatrix();
     }
 
-
     public static void renderMiniBlock(World world, Block block, BlockPos pos, ItemStack stack, EntityPlayer player, EnumFacing side, RayTraceResult target, double partial) {
-        double dx = (player.lastTickPosX + (player.posX - player.lastTickPosX) * partial);
-        double dy = (player.lastTickPosY + (player.posY - player.lastTickPosY) * partial);
-        double dz = (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partial);
-        float x = (float) target.hitVec.x - pos.getX();
-        float y = (float) target.hitVec.y - pos.getY();
-        float z = (float) target.hitVec.z - pos.getZ();
-        BlockPos renderPos = pos.offset(side);
-
-        IBlockState placeState = ((IRenderRotationPlacement) block).getRenderState(world, renderPos, side, x, y, z, stack.getMetadata(), player);
-        GlStateManager.pushMatrix();
-
+        Vec3d vec = target.hitVec.addVector(-target.getBlockPos().getX(),-target.getBlockPos().getY(),-target.getBlockPos().getZ());
+        float x = (float) vec.x , y = (float) vec.y, z = (float) vec.z;
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.glLineWidth(4.0F);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
+        pos = pos.offset(side);
+        if (world.mayPlace(block,pos,true,side,player) && world.getWorldBorder().contains(pos)) {
+            double dx = (player.lastTickPosX + (player.posX - player.lastTickPosX) * partial);
+            double dy = (player.lastTickPosY + (player.posY - player.lastTickPosY) * partial);
+            double dz = (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partial);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.setTranslation(-dx, -dy, -dz);
-        renderBlock(placeState, renderPos, world);
-        buffer.setTranslation(0, 0, 0);
+            AxisAlignedBB box = ((IRenderRotationPlacement) block).getBounds(world, pos, side, x, y, z, stack, player).grow(0.002D).offset(pos).offset(-dx, -dy, -dz);
+            RenderGlobal.drawSelectionBoundingBox(box, 0.0F, 0.0F, 0.0F, 0.4F);
+        }
 
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void putTooltip(ItemTooltipEvent e) {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onBlockHighlight(DrawBlockHighlightEvent event) {
+        EntityPlayer player = event.getPlayer();
+        ItemStack stack = ItemStack.EMPTY;
+        if ((player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() || !(player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock)) && !player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) {
+            stack = player.getHeldItem(EnumHand.OFF_HAND);
+        } else if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+            stack = player.getHeldItem(EnumHand.MAIN_HAND);
+        }
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && block instanceof IRenderRotationPlacement) {
+            World world = player.getEntityWorld();
+            EnumFacing side = event.getTarget().sideHit;
+            BlockPos pos = event.getTarget().getBlockPos();
+            if (world.getWorldBorder().contains(pos)) {
+                ((IRenderRotationPlacement) block).getRenderFunction().render(world, block, pos, stack, player, side, event.getTarget(), event.getPartialTicks());
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void renderStatus(RenderGameOverlayEvent.Post event) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
+            GuiStatus.INSTANCE.draw();
+        }
     }
 }
 

@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
@@ -33,6 +34,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class InvUtils {
+
+    public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
+        return InventoryIterator.stream(handler).anyMatch(ingredient::apply);
+    }
 
     public static boolean isFluidContainer(ItemStack stack) {
         return !stack.isEmpty() && (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) || stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
@@ -52,12 +57,12 @@ public class InvUtils {
         return nonNullList;
     }
 
+
     public static void givePlayer(EntityPlayer player, EnumFacing inv, NonNullList<ItemStack> stacks) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
         if (inventory != null)
             insert(inventory, stacks, false);
     }
-
 
     public static boolean usePlayerItemStrict(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);

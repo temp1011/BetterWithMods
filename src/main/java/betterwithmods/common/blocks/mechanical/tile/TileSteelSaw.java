@@ -1,16 +1,12 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.damagesource.BWDamageSource;
-import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.util.DirUtils;
-import betterwithmods.util.InvUtils;
 import betterwithmods.util.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,8 +17,6 @@ import net.minecraft.world.WorldServer;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-
 
 public class TileSteelSaw extends TileAxleMachine {
     @Override
@@ -77,6 +71,7 @@ public class TileSteelSaw extends TileAxleMachine {
 
             for (BlockPos pos : positions) {
                 if (!pos.equals(getPos()))
+
                     saw(world, pos, world.rand, false);
             }
 
@@ -118,34 +113,37 @@ public class TileSteelSaw extends TileAxleMachine {
     }
 
     private boolean saw(World world, BlockPos pos, Random rand, boolean simulate) {
-        IBlockState state = world.getBlockState(pos);
+//        IBlockState state = world.getBlockState(pos);
 
-        if (world.isRemote || !(world instanceof WorldServer))
-            return true;
-        if (world.isAirBlock(pos))
-            return true;
-        Block block = state.getBlock();
-        int harvestMeta = block.damageDropped(state);
-        if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
-            if (!simulate) {
-                List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
-                world.setBlockToAir(pos);
-                if (!products.isEmpty())
-                    InvUtils.spawnStack(world, pos, products);
-                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
-            }
-            return true;
-        } else if (SawManager.STEEL_SAW.contains(block, harvestMeta)) {
-
-            if (!simulate) {
-                List<ItemStack> products = SawManager.STEEL_SAW.getProducts(block, harvestMeta);
-                world.setBlockToAir(pos);
-                if (!products.isEmpty())
-                    InvUtils.spawnStack(world, pos, products);
-                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
-            }
-            return true;
-        }
+//        if (world.isRemote || !(world instanceof WorldServer))
+//            return true;
+//        if (world.isAirBlock(pos))
+//            return true;
+//        Block block = state.getBlock();
+//        int harvestMeta = block.damageDropped(state);
+//        if (block instanceof IDamageDropped)
+//            harvestMeta = ((IDamageDropped) block).damageDropped(state, world, pos);
+        //TODO
+//        if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
+//            if (!simulate) {
+//                List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
+//                world.setBlockToAir(pos);
+//                if (!products.isEmpty())
+//                    InvUtils.spawnStack(world, pos, products);
+//                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
+//            }
+//            return true;
+//        } else if (SawManager.STEEL_SAW.contains(block, harvestMeta)) {
+//
+//            if (!simulate) {
+//                List<ItemStack> products = SawManager.STEEL_SAW.getProducts(block, harvestMeta);
+//                world.setBlockToAir(pos);
+//                if (!products.isEmpty())
+//                    InvUtils.spawnStack(world, pos, products);
+//                world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
+//            }
+//            return true;
+//        }
         return false;
     }
 

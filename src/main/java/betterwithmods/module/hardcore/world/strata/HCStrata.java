@@ -62,7 +62,7 @@ public class HCStrata extends Feature {
             try {
                 Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
                 Class clazz1 = Class.forName("team.chisel.ctm.api.texture.ITextureType");
-                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureContextStrata");
+                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureTypeStrata");
                 Method register = ReflectionHelper.findMethod(clazz,"register","register",String.class,clazz1);
                 register.invoke(null,"bwm_strata", clazz2.newInstance());
             } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {

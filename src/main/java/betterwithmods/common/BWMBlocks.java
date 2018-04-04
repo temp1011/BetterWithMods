@@ -250,8 +250,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
         GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
         GameRegistry.registerTileEntity(TileEntityInfernalEnchanter.class, "bwm.infernal_enchanter");
-//        GameRegistry.registerTileEntity(TileEntityMultiType.class, "bwm.multiType");
-        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
+        GameRegistry.registerTileEntity(TileKiln.class, "bwm.camo");
         GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
         GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
         GameRegistry.registerTileEntity(TileEntityBucket.class, "bwm.bucket");

@@ -13,12 +13,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCookingPot extends Container {
     private final TileEntityCookingPot tile;
-    private int lastCookCounter;
+    private int progress, heat;
 
     public ContainerCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         this.tile = tile;
-        this.lastCookCounter = 0;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -74,24 +73,47 @@ public class ContainerCookingPot extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendWindowProperty(this, 0, this.tile.scaledCookCounter);
+        listener.sendWindowProperty(this, 0, this.tile.getPercentProgress());
+        listener.sendWindowProperty(this, 1, this.tile.getHeat(tile.getWorld(), tile.getPos()));
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
-        for (IContainerListener craft : this.listeners) {
-            if (this.lastCookCounter != this.tile.scaledCookCounter)
-                craft.sendWindowProperty(this, 0, this.tile.scaledCookCounter);
+        int p = this.tile.getPercentProgress();
+        if (progress != p) {
+            progress = p;
+            for (IContainerListener craft : this.listeners) {
+                craft.sendWindowProperty(this, 0, progress);
+            }
         }
-        this.lastCookCounter = this.tile.scaledCookCounter;
+
+        int h = this.tile.getHeat(tile.getWorld(), tile.getPos());
+        if (heat != h) {
+            heat = h;
+            for (IContainerListener craft : this.listeners) {
+                craft.sendWindowProperty(this, 1, heat);
+            }
+        }
     }
 
     @Override
     public void updateProgressBar(int index, int value) {
-        if (index == 0)
-            this.tile.scaledCookCounter = value;
+        switch (index) {
+            case 0:
+                progress = value;
+                break;
+            case 1:
+                heat = value;
+                break;
+        }
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
+    public int getHeat() {
+        return heat;
+    }
 }

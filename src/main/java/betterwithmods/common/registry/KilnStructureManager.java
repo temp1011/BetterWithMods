@@ -1,8 +1,9 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileCamo;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
+import betterwithmods.common.blocks.tile.TileKiln;
+import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -40,8 +41,8 @@ public class KilnStructureManager {
             IBlockState kiln = BWMBlocks.KILN.getDefaultState();
             world.setBlockState(pos, kiln);
             TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TileCamo) {
-                ((TileCamo) tile).setCamoState(state);
+            if (tile instanceof TileKiln) {
+                ((TileKiln) tile).setCamoState(state);
                 world.notifyBlockUpdate(pos, kiln, kiln, 8);
             }
             return true;
@@ -50,14 +51,17 @@ public class KilnStructureManager {
     }
 
     //@Param BlockPos pos - the position of the kiln block
-    public static int getHeat(IBlockAccess world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos.down());
-        return BWMHeatRegistry.getHeat(state);
+    public static int getHeat(World world, BlockPos pos) {
+        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(world,pos.down());
+        return source.getHeat();
     }
 
-    public static boolean isValidRecipe(IBlockAccess world, BlockPos pos, KilnRecipe recipe) {
-        int heat = getHeat(world, pos);
-        return (heat <= recipe.getMaxHeat() && heat >= recipe.getMinHeat());
+    public static IHeated getKiln() {
+        return KilnStructureManager::getHeat;
+    }
+
+    public static boolean isValidRecipe(World world, BlockPos pos, KilnRecipe recipe) {
+        return recipe.canCraft(getKiln(),world, pos);
     }
 
     public static boolean isValidKiln(IBlockAccess world, BlockPos pos) {

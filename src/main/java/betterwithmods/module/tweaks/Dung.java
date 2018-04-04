@@ -1,12 +1,15 @@
 package betterwithmods.module.tweaks;
 
 import betterwithmods.BWMod;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -21,12 +24,11 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
-
-import static betterwithmods.module.gameplay.CauldronRecipes.addCauldronRecipe;
 
 /**
  * Created by primetoxinz on 4/20/17.
@@ -58,11 +60,11 @@ public class Dung extends Feature {
 
             @Override
             public void readNBT(Capability<DungProducer> capability, DungProducer instance, EnumFacing side, NBTBase nbt) {
-                instance.deserializeNBT((NBTTagCompound)nbt);
+                instance.deserializeNBT((NBTTagCompound) nbt);
             }
-        },DungProducer::new);
-        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER), "dung"});
-        addCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2), "dung"});
+        }, DungProducer::new);
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER_CUT, 2)), new OreIngredient("dung")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT)));
     }
 
     @SubscribeEvent
@@ -71,92 +73,81 @@ public class Dung extends Feature {
             return;
         if (evt.getEntityLiving() instanceof EntityAnimal) {
             EntityAnimal animal = (EntityAnimal) evt.getEntityLiving();
-            if(wolvesOnly && !(animal instanceof EntityWolf))
+            if (wolvesOnly && !(animal instanceof EntityWolf))
                 return;
-            if(!animal.hasCapability(DUNG_PRODUCER_CAP,null))
+            if (!animal.hasCapability(DUNG_PRODUCER_CAP, null))
                 return;
-            DungProducer dungProducer = animal.getCapability(DUNG_PRODUCER_CAP,null);
-            if(animal.isInLove() && dungProducer.nextPoop < 0)
-            {
-                dungProducer.nextPoop = 12000;
-            }
-            else if(dungProducer.nextPoop > 0)
-            {
-                Random rand = animal.getRNG();
-                int light = animal.getEntityWorld().getLight(animal.getPosition());
-                dungProducer.nextPoop = Math.max(0,dungProducer.nextPoop - (rand.nextInt(16) < light ? 1 : 2));
-                if(dungProducer.nextPoop == 0)
-                {
-                    EnumFacing poopDir = findSpaceForPoop(animal.world,animal.getPosition(),rand);
-                    if(poopDir != null) {
-                        BlockPos poopSpot = animal.getPosition().offset(poopDir);
-                        EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() +  0.5, poopSpot.getZ() + 0.5, ItemMaterial.getStack(ItemMaterial.EnumMaterial.DUNG));
-                        item.motionX = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
-                        item.motionY = 0;
-                        item.motionZ = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
-                        item.setDefaultPickupDelay();
-                        animal.world.spawnEntity(item);
+            DungProducer dungProducer = animal.getCapability(DUNG_PRODUCER_CAP, null);
+            if (dungProducer != null) {
+                if (animal.isInLove() && dungProducer.nextPoop < 0) {
+                    dungProducer.nextPoop = 12000;
+                } else if (dungProducer.nextPoop > 0) {
+                    Random rand = animal.getRNG();
+                    int light = animal.getEntityWorld().getLight(animal.getPosition());
+                    dungProducer.nextPoop = Math.max(0, dungProducer.nextPoop - (rand.nextInt(16) < light ? 1 : 2));
+                    if (dungProducer.nextPoop == 0) {
+                        EnumFacing poopDir = findSpaceForPoop(animal.world, animal.getPosition(), rand);
+                        if (poopDir != null) {
+                            BlockPos poopSpot = animal.getPosition().offset(poopDir);
+                            EntityItem item = new EntityItem(animal.world, poopSpot.getX() + 0.5, poopSpot.getY() + 0.5, poopSpot.getZ() + 0.5, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DUNG));
+                            item.motionX = poopDir.getFrontOffsetX() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
+                            item.motionY = 0;
+                            item.motionZ = poopDir.getFrontOffsetZ() == 0 ? rand.nextDouble() * 0.25 - 0.125 : 0.7;
+                            item.setDefaultPickupDelay();
+                            animal.world.spawnEntity(item);
+                        }
+                        dungProducer.nextPoop = -1;
                     }
-                    dungProducer.nextPoop = -1;
                 }
             }
         }
     }
 
-    private EnumFacing findSpaceForPoop(World world, BlockPos pos, Random random)
-    {
+    private EnumFacing findSpaceForPoop(World world, BlockPos pos, Random random) {
         int dir = random.nextInt(4);
-        for(int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             EnumFacing checkFacing = EnumFacing.getHorizontal((dir + i) % 4);
             BlockPos checkPos = pos.offset(checkFacing);
-            if(world.isAirBlock(checkPos) || world.getBlockState(checkPos).getBlock().isReplaceable(world,checkPos))
+            if (world.isAirBlock(checkPos) || world.getBlockState(checkPos).getBlock().isReplaceable(world, checkPos))
                 return checkFacing;
         }
         return null;
     }
 
-    public static class DungProducer implements ICapabilitySerializable<NBTTagCompound>
-    {
+    public static class DungProducer implements ICapabilitySerializable<NBTTagCompound> {
         public int nextPoop = -1;
 
         @Override
-        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-        {
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
             return capability == DUNG_PRODUCER_CAP;
         }
 
         @Nullable
         @Override
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-        {
-            return hasCapability(capability, facing) ? (T) this : null;
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+            return hasCapability(capability, facing) ? DUNG_PRODUCER_CAP.cast(this) : null;
         }
 
         @Override
-        public NBTTagCompound serializeNBT()
-        {
+        public NBTTagCompound serializeNBT() {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("NextPoop", nextPoop);
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt)
-        {
+        public void deserializeNBT(NBTTagCompound nbt) {
             nextPoop = nbt.getInteger("NextPoop");
         }
     }
 
     @SubscribeEvent
-    public void dungCapabilityEvent(AttachCapabilitiesEvent<Entity> event)
-    {
+    public void dungCapabilityEvent(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
-        if(entity instanceof EntityAnimal)
-        {
-            if(wolvesOnly && !(entity instanceof EntityWolf))
+        if (entity instanceof EntityAnimal) {
+            if (wolvesOnly && !(entity instanceof EntityWolf))
                 return;
-            event.addCapability(DUNG_PRODUCER,new DungProducer());
+            event.addCapability(DUNG_PRODUCER, new DungProducer());
         }
     }
 

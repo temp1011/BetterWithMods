@@ -16,12 +16,18 @@ import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.block.managers.KiLnManagerBlock;
+import betterwithmods.common.registry.block.managers.SawManagerBlock;
+import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.bulk.manager.CookingPotManager;
+import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.CraftingRecipes;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import betterwithmods.module.hardcore.needs.HCTools;
@@ -69,6 +75,14 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
+
+    public static final CookingPotManager CAULDRON = new CookingPotManager();
+    public static final CookingPotManager CRUCIBLE = new CookingPotManager();
+    public static final MillManager MILLSTONE = new MillManager();
+    public static final SawManagerBlock WOOD_SAW = new SawManagerBlock();
+    public static final KiLnManagerBlock KILN = new KiLnManagerBlock();
+    public static final TurntableManagerBlock TURNTABLE = new TurntableManagerBlock();
+
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
     public static final Potion POTION_TRUESIGHT = null;
     @GameRegistry.ObjectHolder("betterwithmods:fortune")
@@ -92,8 +106,8 @@ public class BWRegistry {
         BWMBlocks.registerTileEntities();
         BWRegistry.registerEntities();
         BWRegistry.registerBlockDispenserBehavior();
-        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default.class);
-        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default.class);
+        CapabilityManager.INSTANCE.register(IMechanicalPower.class, new CapabilityMechanicalPower.Impl(), CapabilityMechanicalPower.Default::new);
+        CapabilityManager.INSTANCE.register(IAxle.class, new CapabilityAxle.Impl(), CapabilityAxle.Default::new);
         KilnStructureManager.registerKilnBlock(Blocks.BRICK_BLOCK.getDefaultState());
         KilnStructureManager.registerKilnBlock(Blocks.NETHER_BRICK.getDefaultState());
     }
@@ -181,7 +195,7 @@ public class BWRegistry {
                 });
         BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(Blocks.STONE, new BehaviorSilkTouch());
         BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityWolf.class, (world, pos, entity, stack) -> {
-            if( ((EntityAgeable)entity).isChild())
+            if (((EntityAgeable) entity).isChild())
                 return NonNullList.create();
             InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STRING, 1 + world.rand.nextInt(3)));
             world.playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
@@ -230,8 +244,9 @@ public class BWRegistry {
 
 
     public static void registerHeatSources() {
-        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 3);
-        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 8);
+        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 1);
+        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 2);
+        BWMHeatRegistry.addHeatSource(Blocks.BARRIER, 10);
     }
 
     @SubscribeEvent
@@ -259,6 +274,7 @@ public class BWRegistry {
         replaceIRecipe(HCRedstone.class, reg);
         replaceIRecipe(HCTorches.class, reg);
         replaceIRecipe(HCFishing.class, reg);
+        replaceIRecipe(MiniBlocks.class, reg);
     }
 
     private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {

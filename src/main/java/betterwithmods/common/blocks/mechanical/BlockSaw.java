@@ -2,11 +2,12 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IOverpower;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.mechanical.tile.TileSaw;
 import betterwithmods.common.damagesource.BWDamageSource;
-import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
@@ -27,7 +28,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,8 +36,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
-import static net.minecraft.util.EnumFacing.Axis.Y;
 
 public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final float HEIGHT = 0.71875F;
@@ -130,15 +128,17 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         withTile(world, pos).ifPresent(TileSaw::onChanged);
         if (isActive(state)) {
-            sawBlockInFront(world, pos, rand);
-            world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+            if (!world.isRemote) {
+                sawBlockInFront(world, pos, rand);
+                world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+            }
         }
     }
 
     @Override
     public void onChangeActive(World world, BlockPos pos, boolean newValue) {
         Random rand = world.rand;
-        emitSawParticles(world, pos, rand);
+        emitSawParticles(world, pos, rand, EnumParticleTypes.SMOKE_NORMAL, 5);
         if (newValue) {
             world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
             world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + rand.nextFloat() * 0.1F, 1.5F + rand.nextFloat() * 0.1F);
@@ -205,7 +205,8 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         world.setBlockToAir(pos);
     }
 
-    public void emitSawParticles(World world, BlockPos pos, Random rand) {
+
+    public void emitSawParticles(World world, BlockPos pos, Random rand, EnumParticleTypes type, int amount) {
         EnumFacing facing = getFacing(world, pos);
         float xPos = pos.getX();
         float yPos = pos.getY();
@@ -247,96 +248,28 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
                 xPos += 1.0F;
                 zExtent = 1.0F;
         }
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < amount; i++) {
             float smokeX = xPos + (rand.nextFloat() - 0.5F) * xExtent;
             float smokeY = yPos + rand.nextFloat() * 0.1F;
             float smokeZ = zPos + (rand.nextFloat() - 0.5F) * zExtent;
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(type, smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
     }
 
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
-        if (world.isRemote || !(world instanceof WorldServer))
-            return;
-        if (world.getBlockState(pos).getBlock() != this)
-            return;
-        BlockPos pos2 = pos.offset(getFacing(world, pos));
-        if (world.isAirBlock(pos2))
-            return;
-        IBlockState state = world.getBlockState(pos2);
-        Block block = state.getBlock();
-        int harvestMeta = block.damageDropped(state);
-
-        if (SawManager.WOOD_SAW.contains(block, harvestMeta)) {
-            List<ItemStack> products = SawManager.WOOD_SAW.getProducts(block, harvestMeta);
-            world.setBlockToAir(pos2);
-            if (!products.isEmpty())
-                InvUtils.ejectStackWithOffset(world, pos2, products);
-            world.playSound(null, pos2, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
-        }
+        BlockPos blockPos = pos.offset(getFacing(world, pos));
+        BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         if (isActive(state)) {
-            emitSawParticles(world, pos, rand);
+            emitSawParticles(world, pos, rand, EnumParticleTypes.SMOKE_NORMAL, 5);
 
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-            if (!entities.isEmpty() && entities.size() > 0)
-                emitBloodParticles(world, pos);
-        }
-    }
-
-    private void emitBloodParticles(World world, BlockPos pos) {
-        EnumFacing facing = getFacing(world, pos);
-        float xPos = pos.getX();
-        float yPos = pos.getY();
-        float zPos = pos.getZ();
-        float xExtent = 0.0F;
-        float zExtent = 0.0F;
-
-        switch (facing) {
-            case DOWN:
-                xPos += 0.5F;
-                zPos += 0.5F;
-                xExtent = 1.0F;
-                break;
-            case UP:
-                xPos += 0.5F;
-                zPos += 0.5F;
-                yPos += 1.0F;
-                xExtent = 1.0F;
-                break;
-            case NORTH:
-                xPos += 0.5F;
-                yPos += 0.5F;
-                xExtent = 1.0F;
-                break;
-            case SOUTH:
-                xPos += 0.5F;
-                yPos += 0.5F;
-                zPos += 1.0F;
-                xExtent = 1.0F;
-                break;
-            case WEST:
-                yPos += 0.5F;
-                zPos += 0.5F;
-                zExtent = 1.0F;
-                break;
-            default:
-                yPos += 0.5F;
-                zPos += 0.5F;
-                xPos += 1.0F;
-                zExtent = 1.0F;
-        }
-
-        for (int i = 0; i < 20; i++) {
-            float smokeX = xPos + (world.rand.nextFloat() - 0.5F) * xExtent;
-            float smokeY = yPos + world.rand.nextFloat() * 0.1F;
-            float smokeZ = zPos + (world.rand.nextFloat() - 0.5F) * zExtent;
-            world.spawnParticle(EnumParticleTypes.REDSTONE, smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
+            if (!entities.isEmpty())
+                emitSawParticles(world, pos, rand, EnumParticleTypes.REDSTONE, 20);
         }
     }
 
@@ -378,5 +311,14 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face != getFacing(state).getOpposite() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        if (super.rotateBlock(world, pos, axis)) {
+            setActive(world, pos, false);
+            return true;
+        }
+        return false;
     }
 }

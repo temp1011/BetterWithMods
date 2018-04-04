@@ -1,7 +1,7 @@
 package betterwithmods.client.render;
 
-import betterwithmods.client.model.TESRBucket;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.client.tesr.TESRBucket;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockBucket;
 import betterwithmods.common.blocks.tile.TileEntityBucket;

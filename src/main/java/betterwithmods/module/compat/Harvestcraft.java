@@ -1,7 +1,9 @@
 package betterwithmods.module.compat;
 
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.registry.Wood;
 import betterwithmods.module.CompatFeature;
@@ -48,16 +50,16 @@ public class Harvestcraft extends CompatFeature {
         Item boiledEgg = getItem(new ResourceLocation(modid, "boiledeggitem"));
         Item dough = getItem(new ResourceLocation(modid, "doughitem"));
 
-        MillRecipes.addMillRecipe(new ItemStack(cornmeal), new ItemStack[]{new ItemStack(corn)});
-        MillRecipes.addMillRecipe(new ItemStack(pepper), new ItemStack[]{new ItemStack(peppercorn)});
-        MillRecipes.addMillRecipe(new ItemStack(cocoa), new Object[]{new ItemStack(Items.DYE, 1, 3)});
-        MillRecipes.addMillRecipe(new ItemStack(cinnamonPowder), new Object[]{new ItemStack(cinnamon)});
-        MillRecipes.addMillRecipe(new ItemStack(nutmegPowder), new ItemStack[]{new ItemStack(nutmeg)});
-        MillRecipes.addMillRecipe(new ItemStack(curryPowder), new ItemStack[]{new ItemStack(curry)});
-        CauldronRecipes.addCauldronRecipe(new ItemStack(boiledEgg), new Object[]{new ItemStack(Items.EGG)});
-        CauldronRecipes.addCauldronRecipe(new ItemStack(Items.BREAD), new Object[]{new ItemStack(dough)});
-        OreDictionary.registerOre("foodDonut", new ItemStack(BWMItems.DONUT));
-//        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(corn), new ItemStack(cornmeal));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(peppercorn), new ItemStack(pepper));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(cocoa));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(cinnamon), new ItemStack(cinnamonPowder));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(nutmeg), new ItemStack(nutmegPowder));
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(curry), new ItemStack(curryPowder));
+
+        BWRegistry.CAULDRON.addUnstokedRecipe(new ItemStack(Items.EGG), new ItemStack(boiledEgg));
+
+        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
 
         BWOreDictionary.woods.add(new Wood(new ItemStack(logMaple),new ItemStack(Blocks.PLANKS,1, BlockPlanks.EnumType.SPRUCE.getMetadata()), ItemBark.getStack("spruce",1)));
         BWOreDictionary.woods.add(new Wood(new ItemStack(logCinnamon),new ItemStack(Blocks.PLANKS,1, BlockPlanks.EnumType.JUNGLE.getMetadata()), ItemBark.getStack("jungle",1)));

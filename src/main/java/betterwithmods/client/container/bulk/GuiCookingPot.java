@@ -12,10 +12,11 @@ public class GuiCookingPot extends GuiContainer {
     private static final int fireHeight = 12;
     private static final int stokedHeight = 28;
     private final TileEntityCookingPot tile;
-
+    private final ContainerCookingPot container;
 
     public GuiCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
         super(new ContainerCookingPot(player, tile));
+        this.container = (ContainerCookingPot) this.inventorySlots;
         this.ySize = 193;
         this.tile = tile;
     }
@@ -39,15 +40,14 @@ public class GuiCookingPot extends GuiContainer {
                                                    int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/cauldron.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/cooking_pot.png"));
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
         drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
 
-        if (this.tile.isCooking()) {
-            int iconHeight = this.tile.getFireIntensity() > 5 ? GuiCookingPot.stokedHeight : GuiCookingPot.fireHeight;
-            int scaledIconHeight = this.tile.getCookingProgressScaled(12);
-
+        if (container.getProgress() > 0) {
+            int scaledIconHeight = (int) (14*(container.getProgress()/100d));
+            int iconHeight = container.getHeat() > 1 ? stokedHeight : fireHeight;
             drawTexturedModalRect(xPos + 81, yPos + 19 + 12 - scaledIconHeight, 176, iconHeight - scaledIconHeight, 14, scaledIconHeight + 2);
         }
     }

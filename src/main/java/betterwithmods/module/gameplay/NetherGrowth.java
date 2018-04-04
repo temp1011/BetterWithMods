@@ -1,13 +1,15 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.module.Feature;
+import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-
-import static betterwithmods.module.gameplay.CauldronRecipes.addCauldronRecipe;
+import net.minecraftforge.oredict.OreIngredient;
 
 /**
  * Created by primetoxinz on 6/25/17.
@@ -16,14 +18,16 @@ public class NetherGrowth extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addCauldronRecipe(new ItemStack(BWMBlocks.NETHER_GROWTH), new ItemStack[]{
-                new ItemStack(Blocks.BROWN_MUSHROOM),
-                new ItemStack(Blocks.RED_MUSHROOM),
-                new ItemStack(Blocks.MYCELIUM),
-                new ItemStack(Items.NETHER_WART),
-                new ItemStack(Items.ROTTEN_FLESH),
-                new ItemStack(BWMBlocks.SOUL_URN)
-        });
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
+                Ingredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM)),
+                Ingredient.fromStacks(new ItemStack(Blocks.RED_MUSHROOM)),
+                Ingredient.fromStacks(new ItemStack(Blocks.MYCELIUM)),
+                Ingredient.fromStacks(new ItemStack(Items.NETHER_WART)),
+                Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH)),
+                new OreIngredient("cropNetherWart"),
+                new OreIngredient("blockSoulUrn")
+
+        ), Lists.newArrayList(new ItemStack(BWMBlocks.NETHER_GROWTH)));
     }
 
     @Override

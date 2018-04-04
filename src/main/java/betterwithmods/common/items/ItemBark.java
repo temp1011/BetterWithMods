@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ItemBark extends Item implements IMultiLocations {
 
-    private final static int[] sizes = new int[]{5, 3, 2, 4, 2, 8};
     public static List<String> barks = Lists.newArrayList("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "bloody");
 
     public ItemBark() {
@@ -31,12 +30,6 @@ public class ItemBark extends Item implements IMultiLocations {
 
     public static ItemStack getStack(String wood, int amount) {
         return new ItemStack(BWMItems.BARK, amount, barks.indexOf(wood));
-    }
-
-    public static int getTanningStackSize(int meta) {
-        if (meta > sizes.length || meta < 0)
-            return 8;
-        return sizes[meta];
     }
 
     @Override

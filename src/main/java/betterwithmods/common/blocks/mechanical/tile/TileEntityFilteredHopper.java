@@ -171,8 +171,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             if (this.power != power) {
                 this.power = power;
             }
-            getBlock().setActive(world, pos, isActive());
-
+            if (getBlock() != null)
+                getBlock().setActive(world, pos, isActive());
             if (isPowered()) {
                 extract();
             }
@@ -398,7 +398,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public BlockMechMachine getBlock() {
-        return (BlockMechMachine) getBlockType();
+        if (getBlockType() instanceof BlockMechMachine)
+            return (BlockMechMachine) getBlockType();
+        return null;
     }
 
     @Override

@@ -1,12 +1,15 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.oredict.OreIngredient;
 
 /**
  * Created by primetoxinz on 5/10/17.
@@ -25,18 +28,15 @@ public class HarderSteelRecipe extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)});
-        KilnRecipes.addKilnRecipe(Blocks.END_STONE, 0, BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG));
-        CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCarbon", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX)});
-
-
+        BWRegistry.CRUCIBLE.addStokedRecipe(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX)));
+        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon"), Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX))), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0)));
+        BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
-        CauldronRecipes.addStokedCauldronRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE), new Object[]{ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)});
-        KilnRecipes.addKilnRecipe(Blocks.END_STONE, 0, BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE));
-        CrucibleRecipes.addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new ItemStack(BWMBlocks.URN, 1, 0), new Object[]{"dustCarbon", new ItemStack(BWMBlocks.URN, 1, 8), "ingotIron"});
-
+        BWRegistry.CRUCIBLE.addStokedRecipe(Ingredient.fromStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG)), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
+        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new ItemStack(BWMBlocks.URN, 1, 0)));
+        BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), Lists.newArrayList(new ItemStack(BWMBlocks.AESTHETIC, 1, 7), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
     }
 }

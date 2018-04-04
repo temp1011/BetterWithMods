@@ -12,11 +12,11 @@ public class ShapedAnvilRecipeWrapper extends ShapelessRecipeWrapper<ShapedAnvil
 
     @Override
     public int getWidth() {
-        return recipe.getWidth();
+        return recipe.getRecipeWidth();
     }
 
     @Override
     public int getHeight() {
-        return recipe.getHeight();
+        return recipe.getRecipeHeight();
     }
 }

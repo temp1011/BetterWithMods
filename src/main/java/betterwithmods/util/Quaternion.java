@@ -19,7 +19,6 @@
 
 package betterwithmods.util;
 
-import betterwithmods.module.gameplay.miniblocks.Orientation;
 import com.google.common.io.ByteArrayDataOutput;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.renderer.GlStateManager;
@@ -207,14 +206,6 @@ public class Quaternion {
         return this;
     }
 
-    /**
-     * I think this is broken? Use Quaternion.fromOrientation
-     */
-    @Deprecated
-    public static Quaternion getRotationQuaternion(Orientation orient) {
-        return getRotationQuaternionRadians(Math.toRadians(orient.getRotation()*90), orient.facing);
-    }
-    
     public static Quaternion getRotationQuaternionRadians(double angle, Vec3d axis) {
         double halfAngle = angle/2;
         double sin = Math.sin(halfAngle);
@@ -234,59 +225,59 @@ public class Quaternion {
     }
     
     private static Quaternion[] quat_cache = new Quaternion[25 /*Orientation.values().length recursive reference, bleh*/];
-    /***
-     * @param orient An {@link Orientation}
-     * @return A {@link Quaternion} that should not be mutated.
-     */
-    public static Quaternion fromOrientation(final Orientation orient) {
-        final int ord = orient.ordinal();
-        if (quat_cache[ord] != null) {
-            return quat_cache[ord];
-        }
-        if (orient == null) {
-            return quat_cache[ord] = new Quaternion();
-        }
-        final Quaternion q1;
-        final double quart = Math.toRadians(90);
-        int rotation = orient.getRotation();
-        switch (orient.facing) {
-        case UP: {
-            q1 = Quaternion.getRotationQuaternionRadians(0*quart, EnumFacing.WEST);
-            rotation = 5 - rotation;
-            break;
-        }
-        case DOWN: {
-            q1 = Quaternion.getRotationQuaternionRadians(2*quart, EnumFacing.WEST);
-            rotation = 3 - rotation;
-            break;
-        }
-        case NORTH: {
-            q1 = Quaternion.getRotationQuaternionRadians(1*quart, EnumFacing.WEST);
-            rotation = 5 - rotation;
-            break;
-        }
-        case SOUTH: {
-            q1 = Quaternion.getRotationQuaternionRadians(-1*quart, EnumFacing.WEST);
-            rotation = 3 - rotation;
-            break;
-        }
-        case EAST: {
-            q1 = Quaternion.getRotationQuaternionRadians(1*quart, EnumFacing.NORTH);
-            //rotation = 3 - rotation;
-            rotation += Math.abs(orient.top.getDirectionVec().getZ())*2;
-            break;
-        }
-        case WEST: {
-            q1 = Quaternion.getRotationQuaternionRadians(-1*quart, EnumFacing.NORTH);
-            rotation += Math.abs(orient.top.getDirectionVec().getY())*2;
-            break;
-        }
-        default: return quat_cache[ord] = new Quaternion(); //Won't happen
-        }
-        final Quaternion q2 = Quaternion.getRotationQuaternionRadians(rotation*quart, orient.facing);
-        q2.incrMultiply(q1);
-        return quat_cache[ord] = q2;
-    }
+//    /***
+//     * @param orient An {@link Orientation}
+//     * @return A {@link Quaternion} that should not be mutated.
+//     */
+//    public static Quaternion fromOrientation(final Orientation orient) {
+//        final int ord = orient.ordinal();
+//        if (quat_cache[ord] != null) {
+//            return quat_cache[ord];
+//        }
+//        if (orient == null) {
+//            return quat_cache[ord] = new Quaternion();
+//        }
+//        final Quaternion q1;
+//        final double quart = Math.toRadians(90);
+//        int rotation = orient.getRotation();
+//        switch (orient.facing) {
+//        case UP: {
+//            q1 = Quaternion.getRotationQuaternionRadians(0*quart, EnumFacing.WEST);
+//            rotation = 5 - rotation;
+//            break;
+//        }
+//        case DOWN: {
+//            q1 = Quaternion.getRotationQuaternionRadians(2*quart, EnumFacing.WEST);
+//            rotation = 3 - rotation;
+//            break;
+//        }
+//        case NORTH: {
+//            q1 = Quaternion.getRotationQuaternionRadians(1*quart, EnumFacing.WEST);
+//            rotation = 5 - rotation;
+//            break;
+//        }
+//        case SOUTH: {
+//            q1 = Quaternion.getRotationQuaternionRadians(-1*quart, EnumFacing.WEST);
+//            rotation = 3 - rotation;
+//            break;
+//        }
+//        case EAST: {
+//            q1 = Quaternion.getRotationQuaternionRadians(1*quart, EnumFacing.NORTH);
+//            //rotation = 3 - rotation;
+//            rotation += Math.abs(orient.top.getDirectionVec().getZ())*2;
+//            break;
+//        }
+//        case WEST: {
+//            q1 = Quaternion.getRotationQuaternionRadians(-1*quart, EnumFacing.NORTH);
+//            rotation += Math.abs(orient.top.getDirectionVec().getY())*2;
+//            break;
+//        }
+//        default: return quat_cache[ord] = new Quaternion(); //Won't happen
+//        }
+//        final Quaternion q2 = Quaternion.getRotationQuaternionRadians(rotation*quart, orient.facing);
+//        q2.incrMultiply(q1);
+//        return quat_cache[ord] = q2;
+//    }
 
     @SideOnly(Side.CLIENT)
     public void glRotate() {
@@ -439,10 +430,7 @@ public class Quaternion {
         update(nw, nx, ny, nz);
         return this;
     }
-    
-    /** 
-     * Acts like {@link incrMultiply}, but the argument gets incremented instead of this.
-     */
+
     public void incrToOtherMultiply(Quaternion other) {
         double nw, nx, ny, nz;
         nw = w*other.w - x*other.x - y*other.y - z*other.z;

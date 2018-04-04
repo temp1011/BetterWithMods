@@ -35,6 +35,7 @@ public class Tweaks extends Module {
         registerFeature(new Notes());
         registerFeature(new MineshaftGeneration());
         registerFeature(new VisibleStorms());
+        registerFeature(new LongBoi());
     }
 
     @Override

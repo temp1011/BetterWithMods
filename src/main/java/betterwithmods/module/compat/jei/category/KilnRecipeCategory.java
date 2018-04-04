@@ -2,7 +2,7 @@ package betterwithmods.module.compat.jei.category;
 
 
 import betterwithmods.BWMod;
-import betterwithmods.module.compat.jei.wrapper.BlockMetaWrapper;
+import betterwithmods.module.compat.jei.wrapper.BlockRecipeWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class KilnRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
+public class KilnRecipeCategory implements IRecipeCategory<BlockRecipeWrapper> {
 
     public static final int width = 145;
     public static final int height = 80;
@@ -61,7 +61,7 @@ public class KilnRecipeCategory implements IRecipeCategory<BlockMetaWrapper> {
 
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockMetaWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockRecipeWrapper wrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 20, 31);
         guiItemStacks.init(1, false, 94, 31);

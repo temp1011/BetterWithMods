@@ -3,7 +3,13 @@
   "defaults": {
     "textures": {
       "side": "blocks/planks_oak",
-      "particle": "#side"
+      "particle": "#side",
+      "north":"#side",
+      "south":"#side",
+      "east":"#side",
+      "west":"#side",
+      "up":"#side",
+      "down":"#side"
     },
     "model": "betterwithmods:mini/corner",
     "uvlock": true

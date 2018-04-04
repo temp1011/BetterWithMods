@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -107,12 +106,15 @@ public final class BWMRecipes {
 
     public static IBlockState getStateFromStack(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemBlock) {
-            return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
+            final ItemBlock itemBlock = ((ItemBlock) stack.getItem());
+            return itemBlock.getBlock().getStateFromMeta(itemBlock.getMetadata(stack));
         }
-        return Blocks.AIR.getDefaultState();
+        return null;
     }
 
     public static ItemStack getStackFromState(IBlockState state) {
+        if(state == null)
+            return ItemStack.EMPTY;
         Block block = state.getBlock();
         int meta = block.damageDropped(state);
         return new ItemStack(block, 1, meta);

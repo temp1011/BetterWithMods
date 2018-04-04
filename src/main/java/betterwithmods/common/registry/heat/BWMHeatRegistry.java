@@ -1,56 +1,47 @@
 package betterwithmods.common.registry.heat;
 
-import betterwithmods.common.registry.blockmeta.recipe.BlockMeta;
+import betterwithmods.api.tile.IHeatSource;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class BWMHeatRegistry {
+    public static final int UNSTOKED_HEAT = 1;
+    public static final int STOKED_HEAT = 2;
     private static final List<HeatSource> HEAT_SOURCES = Lists.newArrayList();
 
+    public static void addHeatSource(Predicate<IBlockState> state, int heat) {
+        HEAT_SOURCES.add(new BlockStateHeatSource(state, heat));
+    }
+
     public static void addHeatSource(Block block, int heat) {
-        addHeatSource(block, OreDictionary.WILDCARD_VALUE, heat);
+        HEAT_SOURCES.add(new BlockStateHeatSource(state -> state.getBlock().equals(block), heat));
     }
 
-    public static void addHeatSource(Block block, int meta, int heat) {
-        HEAT_SOURCES.add(new HeatSource(block, meta, heat));
-    }
 
-    public static void addHeatSource(ItemStack stack, int heat) {
-        HEAT_SOURCES.add(new HeatSource(stack, heat));
-    }
-
-    public static int getHeat(IBlockState state) {
-        HeatSource source = get(state);
+    public static int getHeat(World world, BlockPos pos) {
+        HeatSource source = get(world, pos);
         if (source != null)
             return source.getHeat();
         return 0;
     }
 
-    public static HeatSource get(IBlockState state) {
-        Block block = state.getBlock();
-        int meta = block.getMetaFromState(state);
-        return get(block, meta);
+    public static HeatSource get(World world, BlockPos pos) {
+        return HEAT_SOURCES.stream().filter(bm -> bm.matches(world, pos)).findFirst().orElse(null);
     }
 
-    public static HeatSource get(Block block, int meta) {
-        return HEAT_SOURCES.stream().filter(bm -> bm.equals(block, meta)).findFirst().orElse(null);
-    }
+    public static class HeatSource implements IHeatSource {
+        private BiPredicate<World, BlockPos> predicate;
+        private int heat;
 
-    public static class HeatSource extends BlockMeta {
-        int heat;
-
-        public HeatSource(Block block, int meta, int heat) {
-            super(block, meta);
-            this.heat = heat;
-        }
-
-        public HeatSource(ItemStack stack, int heat) {
-            super(stack);
+        public HeatSource(BiPredicate<World, BlockPos> predicate, int heat) {
+            this.predicate = predicate;
             this.heat = heat;
         }
 
@@ -58,14 +49,14 @@ public class BWMHeatRegistry {
             return heat;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (o instanceof ItemStack) {
-                return super.equals(o);
-            } else if (o instanceof HeatSource) {
-                return super.equals(o) && heat == ((HeatSource) o).heat;
-            }
-            return false;
+        public boolean matches(World world, BlockPos pos) {
+            return predicate.test(world, pos);
+        }
+    }
+
+    public static class BlockStateHeatSource extends HeatSource {
+        public BlockStateHeatSource(Predicate<IBlockState> predicate, int heat) {
+            super((world, pos) -> predicate.test(world.getBlockState(pos)), heat);
         }
     }
 }

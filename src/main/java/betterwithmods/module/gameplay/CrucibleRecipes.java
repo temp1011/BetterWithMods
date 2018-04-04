@@ -1,16 +1,15 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.OreStack;
-import betterwithmods.common.registry.bulk.manager.CrucibleManager;
-import betterwithmods.common.registry.bulk.manager.StokedCrucibleManager;
 import betterwithmods.module.Feature;
+import betterwithmods.util.StackIngredient;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 
 /**
  * Created by primetoxinz on 5/16/17.
@@ -22,33 +21,19 @@ public class CrucibleRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.DIAMOND_INGOT), new Object[]{new OreStack("nuggetDiamond", 9)});
-        addStokedCrucibleRecipe(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new Object[]{new OreStack("nuggetSoulforgedSteel", 9)});
-        addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS), new Object[]{new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE)});
-        addStokedCrucibleRecipe(new ItemStack(Blocks.GLASS, 3), new Object[]{new ItemStack(Blocks.GLASS_PANE, 8)});
-        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE), new Object[]{new ItemStack(Blocks.COBBLESTONE)});
-        addStokedCrucibleRecipe(BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCK), new Object[]{BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD)});
-        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1)});
-        addCrucibleRecipe(new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Items.WATER_BUCKET), new Object[]{new ItemStack(Blocks.SPONGE, 1, 1), new ItemStack(Items.BUCKET)});
-        //TODO
-//        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 1), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 0)});
-//        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 3), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 1)});
-//        addStokedCrucibleRecipe(new ItemStack(Blocks.STONE, 1, 5), new Object[] {new ItemStack(BWMBlocks.COBBLE, 1, 2)});
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.STONE));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromOre(9, "nuggetDiamond"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_INGOT));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromOre(9, "nuggetSoulforgedSteel"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new OreIngredient("sand"), new ItemStack(Blocks.GLASS));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(8, new ItemStack(Blocks.GLASS_PANE)), new ItemStack(Blocks.GLASS));
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 7), new ItemStack(BWMBlocks.AESTHETIC, 1, 6));
+
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMBlocks.COBBLE, 1, 0), new ItemStack(Blocks.STONE,1,1));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMBlocks.COBBLE, 1, 1), new ItemStack(Blocks.STONE,1,3));
+        BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMBlocks.COBBLE, 1, 2), new ItemStack(Blocks.STONE,1,5));
     }
 
-    public static void addCrucibleRecipe(ItemStack output, Object[] inputs) {
-        CrucibleManager.getInstance().addRecipe(output, ItemStack.EMPTY, inputs);
-    }
-
-    public static void addCrucibleRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        CrucibleManager.getInstance().addRecipe(output, secondary, inputs);
-    }
-
-    public static void addStokedCrucibleRecipe(ItemStack output, Object[] inputs) {
-        StokedCrucibleManager.getInstance().addRecipe(output, inputs);
-    }
-
-    public static void addStokedCrucibleRecipe(ItemStack output, ItemStack secondary, Object[] inputs) {
-        StokedCrucibleManager.getInstance().addRecipe(output, secondary, inputs);
-    }
 }

@@ -4,18 +4,16 @@ import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.TurntableRotationManager;
-import betterwithmods.common.registry.blockmeta.managers.TurntableManager;
-import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +30,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     private static final int[] ticksToRotate = {10, 20, 40, 80};
     private int timerPos = 0;
     private int potteryRotation = 0;
-    private boolean potteryRotated = false;
     private double[] offsets = {0.25D, 0.375D, 0.5D, 0.625D};
     private boolean asynchronous = false;
     private int rotationTime = 0;
@@ -130,8 +127,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
 
     public void rotateTurntable() {
         Rotation rotation = BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
-
-        this.potteryRotated = false;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
 
         for (int i = 1; i < height; i++) {
@@ -145,9 +140,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
             if (!handler.canTransmitVertically(world, pos))
                 break;
         }
-
-        if (!potteryRotated)
-            potteryRotation = 0;
 
         getBlockWorld().neighborChanged(pos, getBlock(), pos);
     }
@@ -171,12 +163,9 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     private TurntableRotationManager.IRotation rotateBlock(BlockPos pos, Rotation rotation) {
         if (getBlockWorld().isAirBlock(pos))
             return null;
-        IBlockState state = getBlockWorld().getBlockState(pos);
-        ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
-
-        if (TurntableManager.INSTANCE.contains(stack) && TurntableManager.INSTANCE.getRecipe(stack) != null) {
-            rotateCraftable(state, TurntableManager.INSTANCE.getRecipe(stack), pos);
-            this.potteryRotated = true;
+        IBlockState input = getBlockWorld().getBlockState(pos);
+        if (BWRegistry.TURNTABLE.canCraft(world, pos, input)) {
+            rotateCraftable(world, pos, input);
         }
         return TurntableRotationManager.rotate(world, pos, rotation);
     }
@@ -185,21 +174,12 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
     }
 
-    private void rotateCraftable(IBlockState input, TurntableRecipe craft, BlockPos pos) {
-        Block block = input.getBlock();
+    private void rotateCraftable(World world, BlockPos pos, IBlockState input) {
         this.potteryRotation++;
-        if (this.potteryRotation > 7) {
-            if (!craft.getOutputs().isEmpty() && craft.getOutputs().size() > 0) {
-                for (ItemStack scrap : craft.getOutputs()) {
-                    InvUtils.ejectStackWithOffset(getBlockWorld(), pos.up(), scrap.copy());
-                }
-            }
-            getBlockWorld().setBlockState(pos, BWMRecipes.getStateFromStack(craft.getResult()));
+        if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
             this.potteryRotation = 0;
-
-        }
+        world.playSound(null, pos, input.getBlock().getSoundType(input, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.8F);
         spawnParticles(input);
-        this.getBlockWorld().playSound(null, pos, block.getSoundType(input, this.getBlockWorld(), pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
     }
 
     @Override
@@ -242,7 +222,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         return super.hasCapability(capability, facing);
     }
 
-    @Nonnull
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
         if (capability == CapabilityMechanicalPower.MECHANICAL_POWER)
@@ -263,6 +242,10 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     @Override
     public Block getBlock() {
         return getBlockType();
+    }
+
+    public int getPotteryRotation() {
+        return potteryRotation;
     }
 
     @Override

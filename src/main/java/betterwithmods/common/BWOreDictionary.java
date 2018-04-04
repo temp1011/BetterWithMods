@@ -5,7 +5,6 @@ import betterwithmods.api.util.IWoodProvider;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.OreStack;
 import betterwithmods.common.registry.Wood;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
@@ -164,10 +163,18 @@ public class BWOreDictionary {
 
         registerOre("stickWood", new ItemStack(BWMBlocks.SHAFT));
         registerOre("blockWindChime", BlockChime.BLOCKS);
-//        registerOre("blockWoodTable", new ItemStack(BWMBlocks.WOOD_TABLE, 1, OreDictionary.WILDCARD_VALUE));
-//        registerOre("blockWoodBench", new ItemStack(BWMBlocks.WOOD_BENCH, 1, OreDictionary.WILDCARD_VALUE));
-
         registerOre("blockSoulUrn", new ItemStack(BWMBlocks.SOUL_URN));
+
+        registerOre("dustBlaze", new ItemStack(Items.BLAZE_POWDER));
+
+        registerOre("foodDonut", BWMItems.DONUT);
+
+        registerOre("meatPork", Items.PORKCHOP, Items.COOKED_PORKCHOP);
+        registerOre("meatBeef", Items.BEEF, Items.COOKED_BEEF);
+        registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
+        registerOre("meatChicken", Items.CHICKEN, Items.COOKED_CHICKEN);
+        registerOre("meatRotten", Items.ROTTEN_FLESH);
+        registerOre("meatFish",new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -249,13 +256,6 @@ public class BWOreDictionary {
             }
         }
 
-        OreDictionary.getOres("listAllmeatcooked").stream().filter(BWOreDictionary::isValidStewMeat).forEach(stack -> OreDictionary.registerOre("foodStewMeat",stack)); //TODO: Remove after moving this to Ingredient
-    }
-
-    public static boolean isValidStewMeat(ItemStack stack)
-    {
-        Item item = stack.getItem();
-        return item != Items.COOKED_RABBIT && item != Items.COOKED_CHICKEN;
     }
 
     public static boolean isWoodRegistered(ItemStack stack)
@@ -290,11 +290,6 @@ public class BWOreDictionary {
                         } else
                             return i;
                     }
-                } else if (obj instanceof OreStack && list.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack) obj;
-                    OreStack toCheck = (OreStack) list.get(i);
-                    if (stack.getOreName().equals(toCheck.getOreName()))
-                        return i;
                 }
             }
         }
@@ -355,7 +350,6 @@ public class BWOreDictionary {
             super(ore);
             this.prefix = prefix;
             this.ore = ore;
-
         }
 
         public List<ItemStack> getOres() {
@@ -373,5 +367,6 @@ public class BWOreDictionary {
         public String getSuffix() {
             return ore.substring(getPrefix().length());
         }
+
     }
 }

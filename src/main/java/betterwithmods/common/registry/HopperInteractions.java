@@ -27,10 +27,6 @@ public class HopperInteractions {
         RECIPES.add(recipe);
     }
 
-    static {
-
-    }
-
     public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
         for (HopperRecipe recipe : RECIPES) {
             if (recipe.isRecipe(filterType, input)) {
