@@ -7,6 +7,7 @@ import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.miniblocks.MiniBlockIngredient;
 import betterwithmods.util.StackIngredient;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
@@ -62,9 +63,15 @@ public class CauldronRecipes extends Feature {
         StackIngredient wood = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre("logWood"),
                 StackIngredient.fromOre(6, "plankWood"),
+                StackIngredient.fromIngredient(12,new MiniBlockIngredient("siding",new OreIngredient("plankWood"))),
+                StackIngredient.fromIngredient(24,new MiniBlockIngredient("moulding",new OreIngredient("plankWood"))),
+                StackIngredient.fromIngredient(48,new MiniBlockIngredient("corner",new OreIngredient("plankWood"))),
                 StackIngredient.fromOre(16, "dustWood")
         ));
         BWRegistry.CAULDRON.addStokedRecipe(wood, ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH));
+
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING),new ItemStack(Items.STICK)));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.COMPOSITE_BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING),new ItemStack(Items.BONE)));
 
         BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.POTASH)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)));
 

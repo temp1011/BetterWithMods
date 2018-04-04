@@ -35,7 +35,7 @@ public class ImprovedFlee extends Feature {
     public void addEntityAI(EntityJoinWorldEvent evt) {
         if (evt.getEntity() instanceof EntityLiving) {
             EntityLiving entity = (EntityLiving) evt.getEntity();
-            if (entity instanceof EntityAnimal && !(entity instanceof EntityTameable)) {
+            if (entity instanceof EntityAnimal && !(entity instanceof EntityTameable) && EntityUtils.hasAI(entity, EntityAIPanic.class)) {
                 float speed = 1.25F;
                 if (entity instanceof EntityCow)
                     speed = 2.0F;

@@ -15,8 +15,12 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "M": {
-      "item": "betterwithmods:stone_moulding",
-      "data": 3
+      "type": "betterwithmods:minitype",
+      "minitype": "moulding",
+      "baseIngredient": {
+        "item": "minecraft:nether_brick",
+        "data": 0
+      }
     }
   }
 }

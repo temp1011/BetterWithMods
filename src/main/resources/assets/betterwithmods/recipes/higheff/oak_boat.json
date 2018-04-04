@@ -15,8 +15,12 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "S": {
-      "item": "betterwithmods:wood_siding",
-      "data": 0
+      "type": "betterwithmods:minitype",
+      "minitype": "siding",
+      "baseIngredient": {
+        "item": "minecraft:planks",
+        "data": 0
+      }
     },
     "P": {
       "item": "#BOAT_SHOVEL"

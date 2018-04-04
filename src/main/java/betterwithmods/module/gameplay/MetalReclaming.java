@@ -60,7 +60,6 @@ public class MetalReclaming extends Feature {
 
         if (reclaimCount > 0) {
             BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMItems.STEEL_HOE, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 2));
-            BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 2));
             BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMItems.STEEL_SWORD, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 3));
             BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMItems.STEEL_PICKAXE, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, 3));
             BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMItems.STEEL_AXE, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT, axe_amt));

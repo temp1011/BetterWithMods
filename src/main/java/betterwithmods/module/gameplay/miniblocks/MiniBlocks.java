@@ -59,7 +59,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MiniBlocks extends Feature {
-    public static HashMap<MiniType, HashMap<Material, BlockMini>> MINI_MATERIL_BLOCKS = Maps.newHashMap();
+    public static HashMap<MiniType, HashMap<Material, BlockMini>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
@@ -70,9 +70,9 @@ public class MiniBlocks extends Feature {
         names.put(Material.WOOD, "wood");
         names.put(Material.ROCK, "rock");
         names.put(Material.IRON, "iron");
-        MINI_MATERIL_BLOCKS.put(MiniType.SIDING, SIDINGS);
-        MINI_MATERIL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
-        MINI_MATERIL_BLOCKS.put(MiniType.CORNER, CORNERS);
+        MINI_MATERIAL_BLOCKS.put(MiniType.SIDING, SIDINGS);
+        MINI_MATERIAL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
+        MINI_MATERIAL_BLOCKS.put(MiniType.CORNER, CORNERS);
     }
 
     static {
@@ -92,7 +92,7 @@ public class MiniBlocks extends Feature {
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
 
         Block blk = state.getBlock();
-        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
+       final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
 
 
