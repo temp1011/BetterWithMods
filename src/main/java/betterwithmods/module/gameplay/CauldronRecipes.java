@@ -8,7 +8,6 @@ import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.miniblocks.MiniBlockIngredient;
-import betterwithmods.module.gameplay.miniblocks.MiniTypeIngredient;
 import betterwithmods.util.StackIngredient;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
@@ -23,7 +22,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
