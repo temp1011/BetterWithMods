@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class KiLnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
+public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
 
     public KilnRecipe addStokedRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, outputs, BWMHeatRegistry.STOKED_HEAT);

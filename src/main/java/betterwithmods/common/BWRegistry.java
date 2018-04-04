@@ -16,7 +16,7 @@ import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.block.managers.KiLnManagerBlock;
+import betterwithmods.common.registry.block.managers.KilnManagerBlock;
 import betterwithmods.common.registry.block.managers.SawManagerBlock;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
@@ -82,7 +82,7 @@ public class BWRegistry {
     public static final CookingPotManager CRUCIBLE = new CookingPotManager();
     public static final MillManager MILLSTONE = new MillManager();
     public static final SawManagerBlock WOOD_SAW = new SawManagerBlock();
-    public static final KiLnManagerBlock KILN = new KiLnManagerBlock();
+    public static final KilnManagerBlock KILN = new KilnManagerBlock();
     public static final TurntableManagerBlock TURNTABLE = new TurntableManagerBlock();
 
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")
