@@ -13,6 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,9 +60,9 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
 
     private boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
         containItems.addAll(defaultRecipeGetRemainingItems(inventory));
-        for (Ingredient ingredient : inputs) {
-            int count = ingredient instanceof StackIngredient ? ((StackIngredient) ingredient).getCount() : 1;
-            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, count, false))
+        HashSet<Ingredient> toConsume = new HashSet<>(inputs);
+        for (Ingredient ingredient : toConsume) {
+            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false))
                 return false;
         }
         return true;

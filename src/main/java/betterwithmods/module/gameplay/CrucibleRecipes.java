@@ -26,7 +26,7 @@ public class CrucibleRecipes extends Feature {
         BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromOre(9, "nuggetSoulforgedSteel"), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL));
 
         BWRegistry.CRUCIBLE.addStokedRecipe(new OreIngredient("sand"), new ItemStack(Blocks.GLASS));
-        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(8, new ItemStack(Blocks.GLASS_PANE)), new ItemStack(Blocks.GLASS));
+        BWRegistry.CRUCIBLE.addStokedRecipe(StackIngredient.fromStacks(new ItemStack(Blocks.GLASS_PANE,8)), new ItemStack(Blocks.GLASS));
 
         BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(BWMBlocks.AESTHETIC, 1, 7), new ItemStack(BWMBlocks.AESTHETIC, 1, 6));
 
