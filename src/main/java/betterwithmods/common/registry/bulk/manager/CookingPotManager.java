@@ -15,12 +15,6 @@ import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
 
-    private static final CookingPotManager instance = new CookingPotManager();
-
-    public static CookingPotManager getInstance() {
-        return instance;
-    }
-
     public CookingPotRecipe addStokedRecipe(ItemStack input, ItemStack... output) {
         return addStokedRecipe(Lists.newArrayList(Ingredient.fromStacks(input.copy())), Lists.newArrayList(output));
     }
