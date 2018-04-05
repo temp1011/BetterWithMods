@@ -76,10 +76,13 @@ public class InvUtils {
 
     public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        boolean result = false;
         if (inventory != null) {
-            return consumeItemsInInventory(inventory, ingredient, amount, false);
+            ItemStack container = ItemStack.EMPTY;
+            result = consumeItemsInInventory(inventory, ingredient, amount, false, container);
+            givePlayer(player,inv,InvUtils.asNonnullList(container));
         }
-        return false;
+        return result;
     }
 
     public static Optional<IItemHandler> getItemHandler(World world, BlockPos pos, EnumFacing facing) {
@@ -253,7 +256,8 @@ public class InvUtils {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                if (ItemStack.areItemsEqual(toCheck, stack) ||
+                (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)){
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
                             itemCount += stack.getCount();
@@ -325,27 +329,29 @@ public class InvUtils {
         return extracted;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate) {
-        if(ingredient instanceof StackIngredient)
-            return consumeItemsInInventory(inv,(StackIngredient) ingredient,simulate);
-        return consumeItemsInInventory(inv,ingredient,1,simulate);
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate, ItemStack container) {
+        if (ingredient instanceof StackIngredient)
+            return consumeItemsInInventory(inv, (StackIngredient) ingredient, simulate, container);
+        return consumeItemsInInventory(inv, ingredient, 1, simulate, container);
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate, ItemStack container) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
+                container = ForgeHooks.getContainerItem(inSlot);
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
             }
         }
         return false;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate, ItemStack container) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
                 int sizeOfStack = ingredient.getCount(inSlot);
+                container = ForgeHooks.getContainerItem(inSlot);
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
             }
         }

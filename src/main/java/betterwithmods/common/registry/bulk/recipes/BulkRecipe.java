@@ -1,13 +1,11 @@
 package betterwithmods.common.registry.bulk.recipes;
 
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.StackIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -42,14 +40,6 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return NonNullList.create();
     }
 
-    private static NonNullList<ItemStack> defaultRecipeGetRemainingItems(ItemStackHandler inv) {
-        NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSlots(), ItemStack.EMPTY);
-        for (int i = 0; i < inv.getSlots(); i++) {
-            ret.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));
-        }
-        return ret;
-    }
-
     public List<ItemStack> getOutputs() {
         return outputs.stream().map(ItemStack::copy).collect(Collectors.toList());
     }
@@ -59,11 +49,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     private boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
-        containItems.addAll(defaultRecipeGetRemainingItems(inventory));
         HashSet<Ingredient> toConsume = new HashSet<>(inputs);
         for (Ingredient ingredient : toConsume) {
-            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false))
+            ItemStack container = ItemStack.EMPTY;
+            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false,container))
                 return false;
+            containItems.add(container);
         }
         return true;
     }

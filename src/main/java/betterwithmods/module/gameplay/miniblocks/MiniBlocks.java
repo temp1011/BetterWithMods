@@ -8,6 +8,7 @@ import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMoulding;
@@ -19,6 +20,7 @@ import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.*;
@@ -243,6 +245,20 @@ public class MiniBlocks extends Feature {
             BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
             if (BWOreDictionary.isOre(mini, "plankWood"))
                 BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
+        }
+
+
+        for(IBlockState parent: Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
+            ItemStack mini = BWMRecipes.getStackFromState(parent);
+            MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
+            MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
+            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), parent, 8);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), parent, 8);
+            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), parent, 8);
+
+            AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
+            AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
+            AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
         }
 
 
