@@ -602,7 +602,7 @@ public class InvUtils {
         while (oneIterator.hasNext()) {
             ItemStack one = oneIterator.next();
             Optional<ItemStack> two = twoList.stream().filter(test -> matches(one, test)).findFirst();
-            if (!two.isPresent()) {
+            if (two.isPresent()) {
                 oneIterator.remove();
                 twoList.remove(two.get());
             }
