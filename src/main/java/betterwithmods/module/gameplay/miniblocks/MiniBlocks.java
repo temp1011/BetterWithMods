@@ -246,10 +246,6 @@ public class MiniBlocks extends Feature {
             BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
             if (BWOreDictionary.isOre(mini, "plankWood"))
                 BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GEAR, 2));
-            OreDictionary.registerOre("slabWood",MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), wood, 1));
-            OreDictionary.registerOre("sidingWood",MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), wood, 1));
-            OreDictionary.registerOre("mouldingWood",MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), wood, 1));
-            OreDictionary.registerOre("cornerWood",MiniBlocks.fromParent(CORNERS.get(Material.WOOD), wood, 1));
         }
 
 
