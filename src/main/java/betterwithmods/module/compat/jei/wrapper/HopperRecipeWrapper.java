@@ -1,16 +1,15 @@
 package betterwithmods.module.compat.jei.wrapper;
 
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockUrn;
-import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Purpose:
@@ -32,21 +31,20 @@ public class HopperRecipeWrapper implements IRecipeWrapper {
         if (!recipe.getSecondaryOutput().isEmpty()) {
             this.outputs.addAll(recipe.getSecondaryOutput());
         }
-        this.filter = HopperFilters.getFilter(recipe.getFilterType());
+        this.filter = Lists.newArrayList(BWRegistry.HOPPER_FILTERS.getFilter(recipe.getFilterType()).getFilter().getMatchingStacks());
     }
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, Stream.concat(filter.stream(), input.stream()).collect(Collectors.toList()));
+        ingredients.setInputs(ItemStack.class, Lists.newArrayList(Iterables.concat(filter, input)));
         ingredients.setOutputs(ItemStack.class, outputs);
-
     }
 
     public static class SoulUrn extends HopperRecipeWrapper {
         public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
             super(recipe);
-            if(!recipe.getSecondaryOutput().isEmpty()) {
-                this.input.add(BlockUrn.getStack(BlockUrn.EnumType.EMPTY,1));
+            if (!recipe.getSecondaryOutput().isEmpty()) {
+                this.input.add(BlockUrn.getStack(BlockUrn.EnumType.EMPTY, 1));
             }
         }
     }

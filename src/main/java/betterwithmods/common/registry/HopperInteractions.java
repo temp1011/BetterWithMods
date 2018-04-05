@@ -27,9 +27,9 @@ public class HopperInteractions {
         RECIPES.add(recipe);
     }
 
-    public static boolean attemptToCraft(int filterType, World world, BlockPos pos, EntityItem input) {
+    public static boolean attemptToCraft(String filterName, World world, BlockPos pos, EntityItem input) {
         for (HopperRecipe recipe : RECIPES) {
-            if (recipe.isRecipe(filterType, input)) {
+            if (recipe.isRecipe(filterName, input)) {
                 if (recipe.canCraft(world, pos)) {
                     recipe.craft(input, world, pos);
                     return true;
@@ -41,7 +41,7 @@ public class HopperInteractions {
 
     public static class SoulUrnRecipe extends HopperRecipe {
         public SoulUrnRecipe(ItemStack input, ItemStack output, ItemStack... created) {
-            super(6, input, output, created);
+            super("betterwithmods:soulsand", input, output, created);
         }
 
         @Override
@@ -66,14 +66,14 @@ public class HopperInteractions {
 
         public ItemStack getInput() {
             ItemStack i = input.copy();
-            if(!secondaryOutput.isEmpty())
+            if (!secondaryOutput.isEmpty())
                 i.setCount(8);
             return i;
         }
 
         public ItemStack getOutput() {
             ItemStack o = output.copy();
-            if(!secondaryOutput.isEmpty())
+            if (!secondaryOutput.isEmpty())
                 o.setCount(8);
             return o;
         }
@@ -83,19 +83,19 @@ public class HopperInteractions {
     public static abstract class HopperRecipe {
         public final ItemStack input;
         public final ItemStack output;
+        private final String filterName;
         public List<ItemStack> secondaryOutput = Lists.newArrayList();
-        private final int filterType;
 
-        public HopperRecipe(int filterType, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
-            this.filterType = filterType;
+        public HopperRecipe(String filterName, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
+            this.filterName = filterName;
             this.input = input;
             this.output = output;
             if (secondaryOutput != null)
                 this.secondaryOutput = Lists.newArrayList(secondaryOutput);
         }
 
-        public boolean isRecipe(int filterType, EntityItem inputStack) {
-            if (filterType == this.filterType) {
+        public boolean isRecipe(String filterName, EntityItem inputStack) {
+            if (filterName.equals(this.filterName)) {
                 if (inputStack != null) {
                     ItemStack i = inputStack.getItem();
                     return InvUtils.matches(i, input);
@@ -118,8 +118,8 @@ public class HopperInteractions {
                 item.setDead();
         }
 
-        public int getFilterType() {
-            return filterType;
+        public String getFilterType() {
+            return filterName;
         }
 
         public ItemStack getInput() {
@@ -136,13 +136,15 @@ public class HopperInteractions {
 
         public boolean canCraft(World world, BlockPos pos) {
             TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-            ItemStackHandler inventory = tile.inventory;
             boolean flag = true;
-            if (!secondaryOutput.isEmpty()) {
-                for (ItemStack stack : secondaryOutput) {
-                    if (!InvUtils.insert(inventory, stack, true).isEmpty()) {
-                        flag = false;
-                        break;
+            if (tile != null) {
+                ItemStackHandler inventory = tile.inventory;
+                if (!secondaryOutput.isEmpty()) {
+                    for (ItemStack stack : secondaryOutput) {
+                        if (!InvUtils.insert(inventory, stack, true).isEmpty()) {
+                            flag = false;
+                            break;
+                        }
                     }
                 }
             }

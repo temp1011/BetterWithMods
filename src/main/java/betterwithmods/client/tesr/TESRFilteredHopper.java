@@ -4,6 +4,7 @@ import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.registry.HopperFilter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -15,11 +16,9 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
     @Override
     public void render(TileEntityFilteredHopper te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
-            if (te.getSubtype() > 0) {
+            if (te.getHopperFilter() != HopperFilter.NONE) {
                 model = te.getModel();
-
-
-                if (model == null && te.filterType > 0) {
+                if (model == null) {
                     if (!te.getFilterStack().isEmpty()) {
                         model = new ModelTransparent(RenderUtils.getResourceLocation(te.getFilterStack()));
                     }

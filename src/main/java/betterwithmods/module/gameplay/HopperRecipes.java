@@ -1,27 +1,30 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.common.blocks.BlockRope;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.HopperFilters;
+import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.SoulsandFilter;
+import betterwithmods.common.registry.block.recipe.IngredientSpecial;
 import betterwithmods.module.Feature;
 import betterwithmods.util.InvUtils;
-import net.minecraft.block.*;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 
 /**
  * Created by primetoxinz on 6/23/17.
@@ -33,58 +36,57 @@ public class HopperRecipes extends Feature {
         canDisable = false;
     }
 
+
     @Override
     public void setupConfig() {
         brimstoneFiltering = loadPropBool("Glowstone Filtering", "Passing glowstone through a soulsand filter makes brimstone.", false);
     }
 
-    private static boolean isItem(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof ItemBlock) {
-            Block block = ((ItemBlock) item).getBlock();
-            return block instanceof BlockRope || block instanceof BlockBush || block instanceof BlockTorch || block instanceof BlockSand || block instanceof BlockGravel || BWOreDictionary.isOre(stack, "treeSapling");
-        }
-        return true;
-    }
-
-    private static boolean isDust(ItemStack stack) {
-        return BWOreDictionary.listContains(stack, OreDictionary.getOres("sand")) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("listAllseeds")) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("foodFlour")) ||
-                BWOreDictionary.listContains(stack, BWOreDictionary.getItems(BWOreDictionary.dustNames)) ||
-                BWOreDictionary.listContains(stack, OreDictionary.getOres("pile"));
-    }
-
-    private static boolean isFlat(ItemStack stack) {
-        Item item = stack.getItem();
-        int meta = stack.getMetadata();
-        if (item == BWMItems.MATERIAL) {
-            return meta == 1 || meta == 4 || (meta > 5 && meta < 10) || (meta > 31 && meta < 35);
-        }
-        return item == Item.getItemFromBlock(Blocks.WOOL) || item == Item.getItemFromBlock(Blocks.CARPET) || item == Items.LEATHER || item == Items.MAP || item == Items.FILLED_MAP || BWOreDictionary.listContains(stack, OreDictionary.getOres("string")) || BWOreDictionary.listContains(stack, OreDictionary.getOres("paper"));
-    }
-
     @Override
     public void init(FMLInitializationEvent event) {
 
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":ladder", Ingredient.fromStacks(new ItemStack(Blocks.LADDER)), Lists.newArrayList(
+                new IngredientSpecial(stack -> !(stack.getItem() instanceof ItemBlock)),
+                new OreIngredient("treeSapling")
+        )));
 
-        HopperFilters.addFilter(1, Blocks.LADDER, 0, HopperRecipes::isItem);
-        HopperFilters.addFilter(2, Blocks.TRAPDOOR, 0, stack -> !isItem(stack));
-        HopperFilters.addFilter(3, BWMBlocks.GRATE, OreDictionary.WILDCARD_VALUE, stack -> stack.getMaxStackSize() == 1);
-        HopperFilters.addFilter(4, BWMBlocks.SLATS, OreDictionary.WILDCARD_VALUE, HopperRecipes::isFlat);
-        HopperFilters.addFilter(5, new ItemStack(BWMBlocks.WICKER, 1), HopperRecipes::isDust);
-        HopperFilters.addFilter(7, Blocks.IRON_BARS, 0, stack -> stack.getMaxStackSize() > 1);
-        HopperFilters.addFilter(6, Blocks.SOUL_SAND, 0, stack -> stack.isItemEqual(new ItemStack(Blocks.SOUL_SAND)));
+        BWRegistry.HOPPER_FILTERS.addFilter(new SoulsandFilter(Ingredient.fromStacks(new ItemStack(Blocks.SOUL_SAND)), Lists.newArrayList(Ingredient.fromStacks(new ItemStack(Blocks.SOUL_SAND)))));
 
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK,1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":wicker", Ingredient.fromStacks(new ItemStack(BWMBlocks.WICKER)), Lists.newArrayList(
+                new OreIngredient("sand"),
+                new OreIngredient("listAllseeds"),
+                new OreIngredient("foodFlour"),
+                new OreIngredient("pile"),
+                new IngredientSpecial(stack -> BWOreDictionary.dustNames.stream().anyMatch(ore -> ore.apply(stack)))
+        )));
+
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":trapdoor", Ingredient.fromStacks(new ItemStack(Blocks.TRAPDOOR)), Lists.newArrayList(
+                new IngredientSpecial(stack -> stack.getItem() instanceof ItemBlock)
+        )));
+
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":grates", new OreIngredient("grates"), Lists.newArrayList(
+                new IngredientSpecial(stack -> stack.getMaxStackSize() == 1)
+        )));
+
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":iron_bar", Ingredient.fromStacks(new ItemStack(Blocks.IRON_BARS)), Lists.newArrayList(
+                new IngredientSpecial(stack -> stack.getMaxStackSize() > 1)
+        )));
+
+        BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":slats", new OreIngredient("slats"), Lists.newArrayList(
+                //TODO flat items
+                new IngredientSpecial(stack -> true)
+        )));
+
+
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST,1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST,1),new ItemStack(BWMBlocks.URN, 1, 8)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
-        if(brimstoneFiltering) {
+        if (brimstoneFiltering) {
             HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
             HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
         }
-        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(5, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
+        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
                 InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
@@ -98,7 +100,7 @@ public class HopperRecipes extends Feature {
                 onCraft(world, pos, inputStack);
             }
         });
-        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(6, new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
+        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":soul_sand", new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
             @Override
             public boolean canCraft(World world, BlockPos pos) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);

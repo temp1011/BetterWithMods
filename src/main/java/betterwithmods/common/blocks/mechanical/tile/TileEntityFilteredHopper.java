@@ -3,14 +3,14 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IHopperFilter;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
-import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
-import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.WorldUtils;
@@ -34,22 +34,22 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechSubtype, IMechanicalPower {
-
-    public SimpleStackHandler filter;
+public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechanicalPower {
 
     private final int STACK_SIZE = 8;
-    public int filterType;
+    public SimpleStackHandler filter;
+    public IHopperFilter hopperFilter;
+
     public int soulsRetained;
+    public byte power;
     private int ejectCounter, ejectXPCounter;
     private int experienceCount, maxExperienceCount = 1000;
-    public byte power;
+    private ISoulSensitive prevContainer;
 
     public TileEntityFilteredHopper() {
         this.ejectCounter = 0;
         this.experienceCount = 0;
         this.ejectXPCounter = 10;
-        this.filterType = 0;
         this.soulsRetained = 0;
         this.occupiedSlots = 0;
         this.hasCapability = facing -> facing == EnumFacing.DOWN || facing == EnumFacing.UP;
@@ -64,8 +64,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             this.ejectCounter = tag.getInteger("EjectCounter");
         if (tag.hasKey("XPCount"))
             this.experienceCount = tag.getInteger("XPCount");
-        if (tag.hasKey("FilterType"))
-            this.filterType = tag.getShort("FilterType");
         if (tag.hasKey("Souls"))
             this.soulsRetained = tag.getInteger("Souls");
         this.power = tag.getByte("power");
@@ -79,7 +77,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         NBTTagCompound t = super.writeToNBT(tag);
         t.setInteger("EjectCounter", this.ejectCounter);
         t.setInteger("XPCount", this.experienceCount);
-        t.setShort("FilterType", (short) this.filterType);
         t.setInteger("Souls", this.soulsRetained);
         t.setByte("power", power);
         if (!filter.getStackInSlot(0).isEmpty()) {
@@ -101,7 +98,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     public void insert(Entity entity) {
         if (!InvUtils.isFull(inventory) && entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (HopperInteractions.attemptToCraft(filterType, getBlockWorld(), getBlockPos(), item)) {
+            if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item)) {
                 this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
             if (canFilterProcessItem(item.getItem())) {
@@ -110,20 +107,8 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
 
-        if (entity instanceof EntityXPOrb && !isXPFull() && filterType == 6) {
-            EntityXPOrb orb = (EntityXPOrb) entity;
-            int remaining = maxExperienceCount - experienceCount;
-            int value = orb.getXpValue();
-            if (remaining > 0) {
-                if (value <= remaining) {
-                    this.experienceCount += value;
-                    orb.setDead();
-                    return;
-                }
-                orb.xpValue -= remaining;
-                this.experienceCount = maxExperienceCount;
-            }
-        }
+        hopperFilter.onInsert(world,pos,this, entity);
+
     }
 
     private void extract() {
@@ -201,9 +186,10 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private boolean validateInventory() {
         boolean stateChanged = false;
-        int currentFilter = getFilterType();
-        if (currentFilter != this.filterType) {
-            this.filterType = currentFilter;
+        ItemStack filter = getFilterStack();
+        IHopperFilter newFilter = BWRegistry.HOPPER_FILTERS.getFilter(filter);
+        if (this.hopperFilter != newFilter) {
+            this.hopperFilter = newFilter;
             stateChanged = true;
         }
         byte slotsOccupied = (byte) InvUtils.getOccupiedStacks(inventory, 0, 17);
@@ -219,26 +205,13 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return stateChanged;
     }
 
-    private int getFilterType() {
-        ItemStack filter = getFilterStack();
-        if (filter.isEmpty()) {
-            return -1;
-        } else {
-            return (short) HopperFilters.getFilterType(filter);
-        }
+    public IHopperFilter getHopperFilter() {
+        return hopperFilter;
     }
 
     private boolean canFilterProcessItem(ItemStack stack) {
         validateInventory();
-        if (this.filterType == -1)
-            return true;
-        else if (this.filterType == 0)
-            return this.getFilterStack().isItemEqual(stack);
-        if (this.filterType > 0) {
-            if (HopperFilters.getAllowedItems(filterType) != null)
-                return HopperFilters.getAllowedItems(filterType).test(stack);
-        }
-        return true;
+        return hopperFilter.allow(stack);
     }
 
     private void spawnEntityXPOrb(int value) {
@@ -260,8 +233,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         }
         return null;
     }
-
-    private ISoulSensitive prevContainer;
 
     public void increaseSoulCount(int numSouls) {
         this.soulsRetained += numSouls;
@@ -299,16 +270,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     @Override
-    public int getSubtype() {
-        return this.filterType;
-    }
-
-    @Override
-    public void setSubtype(int type) {
-        this.filterType = (short) Math.min(type, 7);
-    }
-
-    @Override
     public int getMaxVisibleSlots() {
         return 18;
     }
@@ -319,35 +280,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     public ItemStack getFilterStack() {
         return filter.getStackInSlot(0);
-    }
-
-    private class HopperHandler extends SimpleStackHandler {
-        TileEntityFilteredHopper hopper;
-
-        public HopperHandler(int size, TileEntityFilteredHopper hopper) {
-            super(size, hopper);
-            this.hopper = hopper;
-        }
-
-        @Override
-        public void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            world.markBlockRangeForRenderUpdate(pos, pos);
-            getBlockWorld().notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-        }
-
-        @Nonnull
-        @Override
-        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            if (!hopper.canFilterProcessItem(stack))
-                return stack;
-            return super.insertItem(slot, stack, simulate);
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return slot == 18 ? 1 : super.getSlotLimit(slot);
-        }
     }
 
     @Override
@@ -408,6 +340,48 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         super.onBreak();
         InvUtils.ejectInventoryContents(world, pos, filter);
     }
+
+    public int getExperienceCount() {
+        return experienceCount;
+    }
+
+    public int getMaxExperienceCount() {
+        return maxExperienceCount;
+    }
+
+    public void setExperienceCount(int experienceCount) {
+        this.experienceCount = experienceCount;
+    }
+
+    private class HopperHandler extends SimpleStackHandler {
+        TileEntityFilteredHopper hopper;
+
+        public HopperHandler(int size, TileEntityFilteredHopper hopper) {
+            super(size, hopper);
+            this.hopper = hopper;
+        }
+
+        @Override
+        public void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            world.markBlockRangeForRenderUpdate(pos, pos);
+            getBlockWorld().notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            if (!hopper.canFilterProcessItem(stack))
+                return stack;
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return slot == 18 ? 1 : super.getSlotLimit(slot);
+        }
+    }
+
 
 
 }

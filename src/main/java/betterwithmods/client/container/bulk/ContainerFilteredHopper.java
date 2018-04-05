@@ -1,8 +1,8 @@
 package betterwithmods.client.container.bulk;
 
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
-import betterwithmods.common.registry.HopperFilters;
-import betterwithmods.util.InvUtils;
+import betterwithmods.common.registry.HopperFilter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -65,7 +65,7 @@ public class ContainerFilteredHopper extends Container {
     }
 
     public boolean isItemFilter(ItemStack stack) {
-        return HopperFilters.filterTypes.keySet().stream().anyMatch( s -> InvUtils.matches(s, stack));
+        return BWRegistry.HOPPER_FILTERS.getFilter(stack) != HopperFilter.NONE;
     }
 
     @Override
