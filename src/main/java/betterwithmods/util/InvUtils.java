@@ -597,6 +597,20 @@ public class InvUtils {
         return false;
     }
 
+    public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
+        ListIterator<ItemStack> oneIterator = oneList.listIterator();
+        while(oneIterator.hasNext()) {
+            ItemStack one = oneIterator.next();
+            Optional<ItemStack> two = twoList.stream().filter(test -> matches(one,test)).findFirst();
+            if(!two.isPresent())
+            {
+                oneIterator.remove();
+                twoList.remove(two.get());
+            }
+        }
+        return oneList.isEmpty() && twoList.isEmpty();
+    }
+
     public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes)
     {
         ArrayList<List<T>> splitStacks = new ArrayList<>();
