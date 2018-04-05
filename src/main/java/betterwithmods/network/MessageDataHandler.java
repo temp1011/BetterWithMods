@@ -1,13 +1,12 @@
 package betterwithmods.network;
 
+import com.google.common.primitives.Primitives;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -40,8 +39,7 @@ public class MessageDataHandler<DataType> {
     private BiConsumer<ByteBuf, DataType> writer;
     private Class typeClass;
 
-
-    public MessageDataHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
+    private MessageDataHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
         this.reader = reader;
         this.writer = writer;
         this.typeClass = typeClass;
@@ -55,15 +53,19 @@ public class MessageDataHandler<DataType> {
         writer.accept(buf, data);
     }
 
-    public boolean typeMatches(Class clazz) {
+    private boolean typeMatches(Class clazz) {
+        if(Primitives.isWrapperType(clazz)) {
+            clazz = Primitives.unwrap(clazz);
+        }
+
         return clazz.equals(typeClass) || clazz.isAssignableFrom(typeClass);
     }
 
-    public static <DataType> void addHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
+    private static <DataType> void addHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
         handlers.add(new MessageDataHandler(typeClass, reader, writer));
     }
 
-    public static MessageDataHandler getHandlerForField(Field field) {
-        return handlers.stream().filter(handler -> handler.typeMatches(field.getType())).findFirst().orElse(null);
+    public static <DataType> MessageDataHandler<DataType> getHandlerType(DataType type) {
+        return handlers.stream().filter(handler -> handler.typeMatches(type.getClass())).findFirst().orElse(null);
     }
 }

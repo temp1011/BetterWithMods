@@ -1,6 +1,7 @@
 package betterwithmods.network;
 
 import betterwithmods.client.gui.GuiHunger;
+import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -13,4 +14,10 @@ public class MessageGuiShake extends NetworkMessage {
         GuiHunger.INSTANCE.shake();
         return super.handleMessage(context);
     }
+
+    @Override
+    public void fromBytes(ByteBuf buf) {}
+
+    @Override
+    public void toBytes(ByteBuf buf) {}
 }
