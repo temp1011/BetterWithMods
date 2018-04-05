@@ -42,6 +42,10 @@ public class BlockAesthetic extends BWMBlock implements IMultiVariants {
         return new ItemStack(BWMBlocks.AESTHETIC, 1, type.getMeta());
     }
 
+    public static ItemStack getStack(EnumType type, int amount) {
+        return new ItemStack(BWMBlocks.AESTHETIC, amount, type.getMeta());
+    }
+
     @Override
     public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
         return state.getValue(TYPE).getHardness();

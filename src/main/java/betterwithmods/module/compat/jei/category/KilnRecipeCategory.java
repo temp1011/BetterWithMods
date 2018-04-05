@@ -3,6 +3,7 @@ package betterwithmods.module.compat.jei.category;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.compat.jei.wrapper.BlockRecipeWrapper;
+import betterwithmods.util.InvUtils;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -23,6 +24,8 @@ public class KilnRecipeCategory implements IRecipeCategory<BlockRecipeWrapper> {
     public static final int width = 145;
     public static final int height = 80;
     public static final String UID = "bwm.kiln";
+
+    int outputSlot = 1;
 
     @Nonnull
     private final IDrawable background;
@@ -61,11 +64,15 @@ public class KilnRecipeCategory implements IRecipeCategory<BlockRecipeWrapper> {
 
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull BlockRecipeWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         guiItemStacks.init(0, true, 20, 31);
-        guiItemStacks.init(1, false, 94, 31);
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 2; j++)
+                guiItemStacks.init(outputSlot + i*2 + j, false, 94+j*18, 22+i*18);
         guiItemStacks.set(0, ingredients.getInputs(ItemStack.class).get(0));
-        guiItemStacks.set(1, ingredients.getOutputs(ItemStack.class).stream().flatMap(List::stream).collect(Collectors.toList()));
+        int index = 0;
+        for (List<ItemStack> outputStacks : InvUtils.splitIntoBoxes(ingredients.getOutputs(ItemStack.class).get(0),2))
+            guiItemStacks.set(outputSlot + index++, outputStacks);
     }
 }

@@ -27,11 +27,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class InvUtils {
 
@@ -599,4 +597,13 @@ public class InvUtils {
         return false;
     }
 
+    public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes)
+    {
+        ArrayList<List<T>> splitStacks = new ArrayList<>();
+        for (int i = 0; i < boxes; i++) {
+            final int finalI = i;
+            splitStacks.add(IntStream.range(0,stacks.size()).filter(index -> index % boxes == finalI).mapToObj(stacks::get).collect(Collectors.toList()));
+        }
+        return splitStacks;
+    }
 }
