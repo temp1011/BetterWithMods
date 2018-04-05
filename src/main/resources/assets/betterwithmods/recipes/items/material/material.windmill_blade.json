@@ -15,7 +15,8 @@
       "type": "forge:ore_dict"
     },
     "W": {
-      "item": "HE_SLAB"
+      "ore": "slabWood",
+      "type": "forge:ore_dict"
     }
   }
 }
