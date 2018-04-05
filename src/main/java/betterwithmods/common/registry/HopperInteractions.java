@@ -41,7 +41,7 @@ public class HopperInteractions {
 
     public static class SoulUrnRecipe extends HopperRecipe {
         public SoulUrnRecipe(ItemStack input, ItemStack output, ItemStack... created) {
-            super("betterwithmods:soulsand", input, output, created);
+            super("betterwithmods:soul_sand", input, output, created);
         }
 
         @Override
