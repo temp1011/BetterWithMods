@@ -15,8 +15,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "S": {
-      "ore": "sidingStone",
-      "type": "forge:ore_dict"
+      "item": "#SIDING_STONE"
     },
     "R": {
       "ore": "dustRedstone",

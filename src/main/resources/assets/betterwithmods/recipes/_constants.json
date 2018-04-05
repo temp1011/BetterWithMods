@@ -29,6 +29,29 @@
         "modid": "betterwithmods"
       }
     ],
+    "name": "HE_SLAB",
+    "ingredient": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "slabWood"
+      },
+      {
+        "type": "betterwithmods:minitype",
+        "baseIngredient": {
+          "ore": "plankWood",
+          "type": "forge:ore_dict"
+        },
+        "minitype": "siding"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
     "name": "HE_STONE",
     "ingredient": [
       {

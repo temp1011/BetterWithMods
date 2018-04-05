@@ -15,8 +15,7 @@
       "type": "forge:ore_dict"
     },
     "W": {
-      "item": "betterwithmods:wood_siding",
-      "data": 32767
+      "item": "#SIDING_WOOD"
     }
   }
 }

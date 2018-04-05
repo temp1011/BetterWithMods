@@ -22,8 +22,7 @@
       "type": "forge:ore_dict"
     },
     "L": {
-      "ore": "sidingWood",
-      "type": "forge:ore_dict"
+      "item": "#SIDING_WOOD"
     }
   }
 }
