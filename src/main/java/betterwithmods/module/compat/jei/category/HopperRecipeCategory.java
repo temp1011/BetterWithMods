@@ -7,15 +7,19 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Purpose:
@@ -66,31 +70,37 @@ public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper
     @SideOnly(Side.CLIENT)
     @Override
     public void drawExtras(Minecraft minecraft) {
-        int l = minecraft.fontRenderer.getStringWidth("Throw");
-        minecraft.fontRenderer.drawString("Throw", width / 2 - l + 5, -11, 0x808080);
-        minecraft.fontRenderer.drawString("Filter", width / 2 - 50, 16, 0x808080);
-        minecraft.fontRenderer.drawString("Outputs", width / 2 + 10, -11, 0x808080);
+        String throwText = Translator.translateToLocal("inv.hopper.throw");
+        int l = minecraft.fontRenderer.getStringWidth(throwText);
+        int textColor = 0x808080;
+        minecraft.fontRenderer.drawString(throwText, width / 2 - l + 5, -11, textColor);
+        minecraft.fontRenderer.drawString(Translator.translateToLocal("inv.hopper.filter"), width / 2 - 50, 16, textColor);
+        minecraft.fontRenderer.drawString(Translator.translateToLocal("inv.hopper.outputs"), width / 2 + 10, -11, textColor);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull HopperRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull HopperRecipeWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         int x = width / 2 - 18, y = 0;
 
-        guiItemStacks.init(0, true, x - 27, y + 27); //filter
-        guiItemStacks.init(1, true, x, y); //inputs item
-
-        guiItemStacks.init(2, false, x + 28, y); //main output
-        guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
-        guiItemStacks.init(4, false, x, y + 27); //hopper
-        if (wrapper instanceof HopperRecipeWrapper.SoulUrn) {
-            if (!wrapper.recipe.secondaryOutput.isEmpty()) {
-                guiItemStacks.init(5, false, x, y + 45); //urn
+        guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
+            @Override
+            public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+                if(slotIndex == 2 && !tooltip.isEmpty())
+                    tooltip.add(1, TextFormatting.LIGHT_PURPLE+""+TextFormatting.BOLD+Translator.translateToLocal("inv.hopper.place"));
             }
-        }
-        guiItemStacks.set(ingredients);
-        guiItemStacks.set(4, BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER));
+        });
 
+        guiItemStacks.init(0, true, x, y); //inputs item
+        guiItemStacks.init(1, true, x - 27, y + 27); //filter
+        guiItemStacks.init(2, true, x, y + 45); //urn
+
+        guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
+        guiItemStacks.init(4, false, x + 28, y); //main output
+        guiItemStacks.init(5, false, x, y + 27); //hopper
+
+        guiItemStacks.set(ingredients);
+        guiItemStacks.set(5, BlockMechMachines.getStack(BlockMechMachines.EnumType.HOPPER));
     }
 }
 

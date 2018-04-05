@@ -234,6 +234,11 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return null;
     }
 
+    public void decreaseSoulCount(int numSouls) {
+        this.soulsRetained = Math.max(soulsRetained - numSouls,0);
+        markDirty();
+    }
+
     public void increaseSoulCount(int numSouls) {
         this.soulsRetained += numSouls;
         ISoulSensitive container = getSoulContainer();
@@ -252,6 +257,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             }
         }
         prevContainer = container;
+        markDirty();
     }
 
     @Override

@@ -479,6 +479,10 @@ inv.turntable.name=Turntable
 inv.steel_anvil.name=Soulforged Steel Anvil
 
 inv.hopper.name=Hopper Recipes
+inv.hopper.throw=Throw
+inv.hopper.filter=Filter
+inv.hopper.outputs=Outputs
+inv.hopper.place=Place underneath the Hopper
 inv.hopper.soul_urn.name=Hopper Soul Urn Recipes
 
 itemGroup.bwm:bwTab=Better With Mods

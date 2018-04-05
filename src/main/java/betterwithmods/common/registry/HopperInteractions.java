@@ -1,11 +1,14 @@
 package betterwithmods.common.registry;
 
+import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,6 +16,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -40,14 +44,14 @@ public class HopperInteractions {
     }
 
     public static class SoulUrnRecipe extends HopperRecipe {
-        public SoulUrnRecipe(ItemStack input, ItemStack output, ItemStack... created) {
-            super("betterwithmods:soul_sand", input, output, created);
+        private boolean hasUrn = true;
+
+        public SoulUrnRecipe(Ingredient input, ItemStack output, ItemStack... secondaryOutput) {
+            super("betterwithmods:soul_sand", input, output, secondaryOutput);
         }
 
-        @Override
-        public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
-            onCraft(world, pos, inputStack);
+        public SoulUrnRecipe(Ingredient input, List<ItemStack> output, List<ItemStack> secondaryOutput) {
+            super("betterwithmods:soul_sand", input, output, secondaryOutput);
         }
 
         @Override
@@ -60,45 +64,74 @@ public class HopperInteractions {
         }
 
         @Override
-        public boolean canCraft(World world, BlockPos pos) {
-            return true;
+        public List<ItemStack> getContainers() {
+            return Lists.newArrayList(BlockUrn.getStack(BlockUrn.EnumType.EMPTY,1));
         }
 
-        public ItemStack getInput() {
-            ItemStack i = input.copy();
-            if (!secondaryOutput.isEmpty())
-                i.setCount(8);
-            return i;
+        private int getCraftsPerUrn() { //Futureproofing if soul count per craft is ever >1
+            return hasUrn ? 8 : 1;
         }
 
-        public ItemStack getOutput() {
-            ItemStack o = output.copy();
-            if (!secondaryOutput.isEmpty())
-                o.setCount(8);
-            return o;
+        @Override
+        public List<ItemStack> getInputs() {
+            return super.getInputs().stream().map(stack -> {
+                ItemStack newStack = stack.copy();
+                newStack.setCount(getCraftsPerUrn());
+                return newStack;
+            }).collect(Collectors.toList());
         }
 
+        @Override
+        public List<ItemStack> getOutputs() {
+            return super.getOutputs().stream().map(stack -> {
+                ItemStack newStack = stack.copy();
+                newStack.setCount(getCraftsPerUrn());
+                return newStack;
+            }).collect(Collectors.toList());
+        }
+
+        @Override
+        public List<ItemStack> getSecondaryOutputs() {
+            return super.getSecondaryOutputs().stream().map(stack -> {
+                ItemStack newStack = stack.copy();
+                newStack.setCount(getCraftsPerUrn());
+                return newStack;
+            }).collect(Collectors.toList());
+        }
+
+        public SoulUrnRecipe withoutUrn() {
+            SoulUrnRecipe recipe = new SoulUrnRecipe(input,outputs,secondaryOutputs);
+            recipe.hasUrn = false;
+            return recipe;
+        }
+
+        public boolean hasUrn() {
+            return hasUrn;
+        }
     }
 
     public static abstract class HopperRecipe {
-        public final ItemStack input;
-        public final ItemStack output;
-        private final String filterName;
-        public List<ItemStack> secondaryOutput = Lists.newArrayList();
+        protected final String filterName;
+        protected final Ingredient input;
+        protected List<ItemStack> outputs = new ArrayList<>(); //This goes in
+        protected List<ItemStack> secondaryOutputs = new ArrayList<>(); //This stays on top
 
-        public HopperRecipe(String filterName, ItemStack input, ItemStack output, ItemStack... secondaryOutput) {
-            this.filterName = filterName;
-            this.input = input;
-            this.output = output;
-            if (secondaryOutput != null)
-                this.secondaryOutput = Lists.newArrayList(secondaryOutput);
+        public HopperRecipe(String filterName, Ingredient input, ItemStack output, ItemStack... secondaryOutput) {
+            this(filterName,input,Lists.newArrayList(output),Lists.newArrayList(secondaryOutput));
         }
 
-        public boolean isRecipe(String filterName, EntityItem inputStack) {
+        public HopperRecipe(String filterName, Ingredient input, List<ItemStack> output, List<ItemStack> secondaryOutput) {
+            this.filterName = filterName;
+            this.input = input;
+            this.outputs = output;
+            this.secondaryOutputs = secondaryOutput;
+        }
+
+        public boolean isRecipe(String filterName, EntityItem entity) {
             if (filterName.equals(this.filterName)) {
-                if (inputStack != null) {
-                    ItemStack i = inputStack.getItem();
-                    return InvUtils.matches(i, input);
+                if (entity != null) {
+                    ItemStack stack = entity.getItem();
+                    return input.apply(stack);
                 }
                 return false;
             }
@@ -106,9 +139,14 @@ public class HopperInteractions {
         }
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
-            for (int i = 0; i < inputStack.getItem().getCount(); i++)
-                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutput);
+            TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            SimpleStackHandler inventory = hopper.inventory;
+            for (ItemStack output : outputs) {
+                ItemStack remainder = InvUtils.insert(inventory, output, false);
+                if (!remainder.isEmpty())
+                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
+            }
+            InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutputs);
             onCraft(world, pos, inputStack);
         }
 
@@ -122,33 +160,27 @@ public class HopperInteractions {
             return filterName;
         }
 
-        public ItemStack getInput() {
-            return input;
+        public List<ItemStack> getContainers() { return Lists.newArrayList(); } //For showing that it needs urns
+
+        public List<ItemStack> getInputs() {
+            return Lists.newArrayList(input.getMatchingStacks());
         }
 
-        public ItemStack getOutput() {
-            return output;
+        public List<ItemStack> getOutputs() {
+            return outputs;
         }
 
-        public List<ItemStack> getSecondaryOutput() {
-            return secondaryOutput;
+        public List<ItemStack> getSecondaryOutputs() {
+            return secondaryOutputs;
         }
 
         public boolean canCraft(World world, BlockPos pos) {
             TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-            boolean flag = true;
             if (tile != null) {
                 ItemStackHandler inventory = tile.inventory;
-                if (!secondaryOutput.isEmpty()) {
-                    for (ItemStack stack : secondaryOutput) {
-                        if (!InvUtils.insert(inventory, stack, true).isEmpty()) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                }
+                return !outputs.stream().anyMatch(stack -> !InvUtils.insert(inventory, stack, true).isEmpty());
             }
-            return flag;
+            return true;
         }
     }
 }

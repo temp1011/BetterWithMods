@@ -23,29 +23,31 @@ public class HopperRecipeWrapper implements IRecipeWrapper {
     protected final List<ItemStack> input;
     protected final List<ItemStack> filter;
     protected final List<ItemStack> outputs;
+    protected final List<ItemStack> secondaryOutputs;
+    protected final List<ItemStack> container;
 
     public HopperRecipeWrapper(HopperInteractions.HopperRecipe recipe) {
         this.recipe = recipe;
-        this.input = Lists.newArrayList(recipe.getInput());
-        this.outputs = Lists.newArrayList(recipe.getOutput());
-        if (!recipe.getSecondaryOutput().isEmpty()) {
-            this.outputs.addAll(recipe.getSecondaryOutput());
-        }
+        this.input = recipe.getInputs();
+        this.outputs = recipe.getOutputs();
+        this.secondaryOutputs = recipe.getSecondaryOutputs();
         this.filter = Lists.newArrayList(BWRegistry.HOPPER_FILTERS.getFilter(recipe.getFilterType()).getFilter().getMatchingStacks());
+        this.container = recipe.getContainers();
     }
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, Lists.newArrayList(Iterables.concat(filter, input)));
-        ingredients.setOutputs(ItemStack.class, outputs);
+        ingredients.setInputLists(ItemStack.class, Lists.newArrayList(input,filter,container));
+        ingredients.setOutputLists(ItemStack.class, Lists.newArrayList(outputs,secondaryOutputs));
     }
 
     public static class SoulUrn extends HopperRecipeWrapper {
         public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
             super(recipe);
-            if (!recipe.getSecondaryOutput().isEmpty()) {
-                this.input.add(BlockUrn.getStack(BlockUrn.EnumType.EMPTY, 1));
-            }
+            if(recipe.hasUrn())
+                secondaryOutputs.add(BlockUrn.getStack(BlockUrn.EnumType.FULL,1));
+            else
+                container.clear();
         }
     }
 }

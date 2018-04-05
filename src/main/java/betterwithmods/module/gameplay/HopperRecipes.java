@@ -5,6 +5,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
@@ -78,29 +79,24 @@ public class HopperRecipes extends Feature {
         )));
 
 
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
-        if (brimstoneFiltering) {
-            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST, 1), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE, 1), new ItemStack(BWMBlocks.URN, 1, 8)));
-            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new ItemStack(Items.GLOWSTONE_DUST), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
-        }
-        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)) {
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustNetherrack"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustSoul"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
+        if (brimstoneFiltering)
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustGlowstone"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", Ingredient.fromStacks(new ItemStack(Blocks.GRAVEL)), Lists.newArrayList(new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)), Lists.newArrayList(new ItemStack(Items.FLINT))) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), output.copy());
-                TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                assert tile != null;
-                ItemStackHandler inventory = tile.inventory;
-                ItemStack sand = secondaryOutput.get(world.rand.nextInt(secondaryOutput.size())).copy();
-                if (!InvUtils.insert(inventory, sand, false).isEmpty()) {
-                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), sand);
-                }
+                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+                SimpleStackHandler inventory = hopper.inventory;
+                ItemStack sand = secondaryOutputs.get(world.rand.nextInt(secondaryOutputs.size())).copy();
+                ItemStack remainder = InvUtils.insert(inventory, sand, false);
+                if (!remainder.isEmpty())
+                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
+                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutputs);
                 onCraft(world, pos, inputStack);
             }
         });
-        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":soul_sand", new ItemStack(Blocks.SAND, 1, OreDictionary.WILDCARD_VALUE), ItemStack.EMPTY) {
+        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":soul_sand", new OreIngredient("sand"), ItemStack.EMPTY, new ItemStack(Blocks.SOUL_SAND)) {
             @Override
             public boolean canCraft(World world, BlockPos pos) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
@@ -109,30 +105,10 @@ public class HopperRecipes extends Feature {
             }
 
             @Override
-            public ItemStack getOutput() {
-                return new ItemStack(Blocks.SOUL_SAND);
-            }
-
-            @Override
-            public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                onCraft(world, pos, inputStack);
-            }
-
-            @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                int stackSize = hopper.soulsRetained;
-                if (stackSize > item.getItem().getCount())
-                    stackSize = item.getItem().getCount();
-                hopper.soulsRetained -= stackSize;
-                item.getItem().shrink(stackSize);
-                EntityItem soul = new EntityItem(world, item.lastTickPosX, item.lastTickPosY, item.lastTickPosZ, new ItemStack(Blocks.SOUL_SAND, stackSize));
-                if (!InvUtils.insert(hopper.inventory, soul.getItem(), false).isEmpty()) {
-                    soul.setDefaultPickupDelay();
-                    world.spawnEntity(soul);
-                }
-                if (item.getItem().getCount() < 1)
-                    item.setDead();
+                hopper.decreaseSoulCount(1);
+                super.onCraft(world,pos,item);
             }
         });
     }
