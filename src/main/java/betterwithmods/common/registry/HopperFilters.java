@@ -21,7 +21,7 @@ public class HopperFilters {
     }
 
     public IHopperFilter getFilter(String name) {
-        return FILTERS.get(name);
+        return FILTERS.getOrDefault(name,HopperFilter.NONE);
     }
 
     public IHopperFilter getFilter(ItemStack stack) {
