@@ -51,10 +51,8 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     private boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
         HashSet<Ingredient> toConsume = new HashSet<>(inputs);
         for (Ingredient ingredient : toConsume) {
-            ItemStack container = ItemStack.EMPTY;
-            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false,container))
+            if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false, containItems))
                 return false;
-            containItems.add(container);
         }
         return true;
     }

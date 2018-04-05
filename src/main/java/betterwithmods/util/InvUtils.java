@@ -74,13 +74,14 @@ public class InvUtils {
         return inventory != null && consumeItemsInInventory(inventory, stack, amount, false);
     }
 
-    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
+    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
         boolean result = false;
+
         if (inventory != null) {
-            ItemStack container = ItemStack.EMPTY;
-            result = consumeItemsInInventory(inventory, ingredient, amount, false, container);
-            givePlayer(player,inv,InvUtils.asNonnullList(container));
+            NonNullList<ItemStack> containers = NonNullList.create();
+            result = consumeItemsInInventory(inventory, ingredient, false, containers);
+            givePlayer(player, inv, containers);
         }
         return result;
     }
@@ -114,7 +115,6 @@ public class InvUtils {
                 inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
-
     }
 
     public static void copyTags(ItemStack destStack, ItemStack sourceStack) {
@@ -257,7 +257,7 @@ public class InvUtils {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
                 if (ItemStack.areItemsEqual(toCheck, stack) ||
-                (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)){
+                        (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
                             itemCount += stack.getCount();
@@ -329,29 +329,32 @@ public class InvUtils {
         return extracted;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate, ItemStack container) {
-        if (ingredient instanceof StackIngredient)
-            return consumeItemsInInventory(inv, (StackIngredient) ingredient, simulate, container);
-        return consumeItemsInInventory(inv, ingredient, 1, simulate, container);
-    }
-
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate, ItemStack container) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate, NonNullList<ItemStack> containers) {
+        int count;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
-                container = ForgeHooks.getContainerItem(inSlot);
-                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+                ItemStack container = ForgeHooks.getContainerItem(inSlot);
+                if (!container.isEmpty())
+                    containers.add(container);
+                if (ingredient instanceof StackIngredient)
+                    count = ((StackIngredient) ingredient).getCount(inSlot);
+                else
+                    count = 1;
+                return inv.extractItem(i, count, simulate).getCount() >= count;
             }
         }
         return false;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate, ItemStack container) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate, NonNullList<ItemStack> containers) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
                 int sizeOfStack = ingredient.getCount(inSlot);
-                container = ForgeHooks.getContainerItem(inSlot);
+                ItemStack container = ForgeHooks.getContainerItem(inSlot);
+                if (!container.isEmpty())
+                    containers.add(container);
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
             }
         }
