@@ -13,8 +13,7 @@
       "item": "betterwithmods:wicker"
     },
     "M": {
-      "ore": "plankWood",
-      "type": "forge:ore_dict"
+      "item": "#HE_PLANKS_MOULDING"
     }
   }
 }
