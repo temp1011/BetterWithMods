@@ -496,9 +496,9 @@ public class InvUtils {
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack stack) {
         if (stack.isEmpty())
             return;
-        float xOff = world.rand.nextFloat() * 0.7F + 0.15F;
-        float yOff = world.rand.nextFloat() * 0.2F + 0.1F;
-        float zOff = world.rand.nextFloat() * 0.7F + 0.15F;
+        float xOff = world.rand.nextFloat() * 0.5F + 0.25F;
+        float yOff = world.rand.nextFloat() * 0.5F + 0.25F;
+        float zOff = world.rand.nextFloat() * 0.5F + 0.25F;
         ejectStack(world, (double) ((float) pos.getX() + xOff), (double) ((float) pos.getY() + yOff), (double) ((float) pos.getZ() + zOff), stack, 10);
     }
 
@@ -599,11 +599,10 @@ public class InvUtils {
 
     public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
         ListIterator<ItemStack> oneIterator = oneList.listIterator();
-        while(oneIterator.hasNext()) {
+        while (oneIterator.hasNext()) {
             ItemStack one = oneIterator.next();
-            Optional<ItemStack> two = twoList.stream().filter(test -> matches(one,test)).findFirst();
-            if(!two.isPresent())
-            {
+            Optional<ItemStack> two = twoList.stream().filter(test -> matches(one, test)).findFirst();
+            if (!two.isPresent()) {
                 oneIterator.remove();
                 twoList.remove(two.get());
             }
@@ -611,12 +610,11 @@ public class InvUtils {
         return oneList.isEmpty() && twoList.isEmpty();
     }
 
-    public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes)
-    {
+    public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes) {
         ArrayList<List<T>> splitStacks = new ArrayList<>();
         for (int i = 0; i < boxes; i++) {
             final int finalI = i;
-            splitStacks.add(IntStream.range(0,stacks.size()).filter(index -> index % boxes == finalI).mapToObj(stacks::get).collect(Collectors.toList()));
+            splitStacks.add(IntStream.range(0, stacks.size()).filter(index -> index % boxes == finalI).mapToObj(stacks::get).collect(Collectors.toList()));
         }
         return splitStacks;
     }

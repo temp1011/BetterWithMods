@@ -23,8 +23,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
 /**
@@ -87,13 +85,15 @@ public class HopperRecipes extends Feature {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                SimpleStackHandler inventory = hopper.inventory;
-                ItemStack sand = secondaryOutputs.get(world.rand.nextInt(secondaryOutputs.size())).copy();
-                ItemStack remainder = InvUtils.insert(inventory, sand, false);
-                if (!remainder.isEmpty())
-                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
-                InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutputs);
-                onCraft(world, pos, inputStack);
+                if (hopper != null) {
+                    SimpleStackHandler inventory = hopper.inventory;
+                    ItemStack sand = secondaryOutputs.get(world.rand.nextInt(secondaryOutputs.size())).copy();
+                    ItemStack remainder = InvUtils.insert(inventory, sand, false);
+                    if (!remainder.isEmpty())
+                        InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
+                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutputs);
+                    onCraft(world, pos, inputStack);
+                }
             }
         });
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":soul_sand", new OreIngredient("sand"), ItemStack.EMPTY, new ItemStack(Blocks.SOUL_SAND)) {
@@ -107,8 +107,9 @@ public class HopperRecipes extends Feature {
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
-                hopper.decreaseSoulCount(1);
-                super.onCraft(world,pos,item);
+                if (hopper != null)
+                    hopper.decreaseSoulCount(1);
+                super.onCraft(world, pos, item);
             }
         });
     }
