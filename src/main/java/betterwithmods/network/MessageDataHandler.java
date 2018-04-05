@@ -45,6 +45,14 @@ public class MessageDataHandler<DataType> {
         this.typeClass = typeClass;
     }
 
+    private static <DataType> void addHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
+        handlers.add(new MessageDataHandler(typeClass, reader, writer));
+    }
+
+    public static <DataType> MessageDataHandler<DataType> getHandlerType(DataType type) {
+        return handlers.stream().filter(handler -> handler.typeMatches(type.getClass())).findFirst().orElse(null);
+    }
+
     public DataType read(ByteBuf buf) {
         return reader.apply(buf);
     }
@@ -54,18 +62,10 @@ public class MessageDataHandler<DataType> {
     }
 
     private boolean typeMatches(Class clazz) {
-        if(Primitives.isWrapperType(clazz)) {
+        if (Primitives.isWrapperType(clazz)) {
             clazz = Primitives.unwrap(clazz);
         }
 
         return clazz.equals(typeClass) || clazz.isAssignableFrom(typeClass);
-    }
-
-    private static <DataType> void addHandler(Class typeClass, Function<ByteBuf, DataType> reader, BiConsumer<ByteBuf, DataType> writer) {
-        handlers.add(new MessageDataHandler(typeClass, reader, writer));
-    }
-
-    public static <DataType> MessageDataHandler<DataType> getHandlerType(DataType type) {
-        return handlers.stream().filter(handler -> handler.typeMatches(type.getClass())).findFirst().orElse(null);
     }
 }
