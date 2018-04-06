@@ -61,6 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
@@ -72,6 +73,8 @@ public class MiniBlocks extends Feature {
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static boolean addConversionRecipes;
     private static Map<Material, String> names = Maps.newHashMap();
+    private static boolean autoGeneration;
+    private static HashSet<String> whitelist = new HashSet<>();
 
     static {
         names.put(Material.WOOD, "wood");
@@ -96,12 +99,19 @@ public class MiniBlocks extends Feature {
         enabledByDefault = false;
     }
 
+    public static boolean isValidMini(IBlockState state) {
+        Material material = state.getMaterial();
+        return names.containsKey(material) && MATERIALS.get(material).contains(state);
+    }
+
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
+        ResourceLocation resloc = stack.getItem().getRegistryName();
+        if(!autoGeneration && resloc != null && !whitelist.contains(resloc.toString()) && !whitelist.contains(resloc.toString()+":"+stack.getMetadata()))
+            return BWOreDictionary.hasPrefix(stack, "plankWood"); //Specifically planks are a-okay
 
         Block blk = state.getBlock();
        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
-
 
         pb.onBlockActivated(null, null, null, null, null, null, 0, 0, 0);
         boolean noActivation = (getDeclaringClass(blkClass, pb.MethodName, World.class, BlockPos.class, IBlockState.class, EntityPlayer.class, EnumHand.class, EnumFacing.class, float.class, float.class, float.class) == Block.class);
@@ -158,10 +168,26 @@ public class MiniBlocks extends Feature {
         return stack;
     }
 
+    public static void addWhitelistedBlock(ResourceLocation resloc) {
+        whitelist.add(resloc.toString());
+    }
+
+    public static void addWhitelistedBlock(ResourceLocation resloc, int meta) { //Delete this in 1.13
+        whitelist.add(resloc.toString()+":"+meta);
+    }
 
     @Override
     public void setupConfig() {
+        autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
         addConversionRecipes = loadPropBool("Add Conversion Recipes", "Add recipes to convert the old, static, mini blocks to the new ones.", true);
+        whitelist = loadPropStringHashSet("Whitelist","Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)",new String[]{});
+        whitelist.add("minecraft:stone:0");
+        whitelist.add("minecraft:stonebrick");
+        whitelist.add("minecraft:sandstone");
+        whitelist.add("minecraft:brick_block");
+        whitelist.add("minecraft:nether_brick");
+        whitelist.add("minecraft:quartz_block");
+        whitelist.add("betterwithmods:aesthetic:6");
     }
 
     public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
