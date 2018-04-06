@@ -597,17 +597,22 @@ public class InvUtils {
         return false;
     }
 
+    public static boolean matchesSize(ItemStack one, ItemStack two) {
+        return one.getCount() == two.getCount() && matches(one,two);
+    }
+
     public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
-        ListIterator<ItemStack> oneIterator = oneList.listIterator();
-        while (oneIterator.hasNext()) {
-            ItemStack one = oneIterator.next();
-            Optional<ItemStack> two = twoList.stream().filter(test -> matches(one, test)).findFirst();
-            if (two.isPresent()) {
-                oneIterator.remove();
-                twoList.remove(two.get());
-            }
+        if(oneList.size() != twoList.size())
+            return false; //trivial case
+        HashSet<ItemStack> alreadyMatched = new HashSet<>();
+        for(ItemStack one : oneList) {
+            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matchesSize(one,two)).findFirst();
+            if(found.isPresent())
+                alreadyMatched.add(found.get()); //Don't match twice
+            else
+                return false; //This itemstack doesn't match, thus the two lists don't match
         }
-        return oneList.isEmpty() && twoList.isEmpty();
+        return true;
     }
 
     public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes) {
