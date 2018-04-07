@@ -3,6 +3,7 @@ package betterwithmods.common.registry.block.recipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,5 +42,10 @@ public class TurntableRecipe extends BlockRecipe {
 
     public IBlockState getProductState() {
         return Optional.ofNullable(productState).orElse(Blocks.AIR.getDefaultState());
+    }
+
+    @Override
+    public boolean isInvalid() {
+        return getInput().isSimple() && ArrayUtils.isEmpty(getInput().getMatchingStacks());
     }
 }
