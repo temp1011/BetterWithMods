@@ -1,5 +1,6 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.module.Feature;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;
@@ -10,6 +11,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,6 +30,7 @@ public class MossGeneration extends Feature {
 
     private static int RADIUS;
     private static int RATE;
+    private static boolean DISABLE_VINE_RECIPES;
 
     public static void addBlockConversion(Block block, IBlockState mossyState) { //TODO: Could be the new block meta ingredient possibly
         CONVERTED_BLOCKS.put(block,mossyState);
@@ -37,6 +40,15 @@ public class MossGeneration extends Feature {
     public void setupConfig() {
         RADIUS = loadPropInt("Moss radius from the mob spawner", "", 5);
         RATE = loadPropInt("Moss grow rate", "1 out of this rate will cause a moss to try to generate", 100);
+        DISABLE_VINE_RECIPES = loadPropBool("Disable Vine Recipes","Disables the mossy cobblestone and mossy brick recipes involving vines.",true);
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        if(DISABLE_VINE_RECIPES) {
+            BWMRecipes.removeRecipe("minecraft:mossy_cobblestone");
+            BWMRecipes.removeRecipe("minecraft:mossy_stonebrick");
+        }
     }
 
     @Override
