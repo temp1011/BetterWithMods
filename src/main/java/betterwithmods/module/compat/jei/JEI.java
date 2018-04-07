@@ -27,6 +27,8 @@ import betterwithmods.common.registry.crafting.ToolDamageRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -37,9 +39,11 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.gui.Focus;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
@@ -90,6 +94,22 @@ public class JEI implements IModPlugin {
                 new HopperRecipeCategory(guiHelper),
                 new SteelAnvilRecipeCategory(guiHelper)
         );
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+        getAllMiniBlocks().forEach(item -> subtypeRegistry.registerSubtypeInterpreter(item, (ISubtypeRegistry.ISubtypeInterpreter) itemStack -> {
+            NBTTagCompound compound = itemStack.getSubCompound("texture");
+            return compound != null ? compound.toString() : "";
+        }));
+    }
+
+    private List<Item> getAllMiniBlocks() {
+        ArrayList<Item> list = new ArrayList<>();
+        MiniBlocks.SIDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.MOULDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.CORNERS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        return list;
     }
 
     @Override
