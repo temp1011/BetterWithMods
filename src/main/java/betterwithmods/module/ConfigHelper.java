@@ -10,6 +10,7 @@
  */
 package betterwithmods.module;
 
+import betterwithmods.BWMod;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
@@ -53,13 +54,13 @@ public class ConfigHelper {
     }
 
     public static int[] loadPropIntList(String propName, String category, String comment, int[] default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_, comment);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_, comment);
         setNeedsRestart(prop);
         return prop.getIntList();
     }
 
     public static int loadPropInt(String propName, String category, String desc, String comment, int default_, int min, int max) {
-        Property prop = ModuleLoader.config.get(category, propName, default_, comment, min, max);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_, comment, min, max);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -67,7 +68,7 @@ public class ConfigHelper {
     }
 
     public static int loadPropInt(String propName, String category, String desc, int default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -75,7 +76,7 @@ public class ConfigHelper {
     }
 
     public static double loadPropDouble(String propName, String category, String desc, double default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -83,7 +84,7 @@ public class ConfigHelper {
     }
 
     public static double loadPropDouble(String propName, String category, String desc, double default_, double min, double max) {
-        Property prop = ModuleLoader.config.get(category, propName, default_, desc, min, max);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_, desc, min, max);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -91,7 +92,7 @@ public class ConfigHelper {
     }
 
     public static boolean loadPropBool(String propName, String category, String desc, boolean default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -99,7 +100,7 @@ public class ConfigHelper {
     }
 
     public static String loadPropString(String propName, String category, String desc, String default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
 
@@ -107,7 +108,7 @@ public class ConfigHelper {
     }
 
     public static String[] loadPropStringList(String propName, String category, String desc, String[] default_) {
-        Property prop = ModuleLoader.config.get(category, propName, default_);
+        Property prop = BWMod.MODULE_LOADER.config.get(category, propName, default_);
         prop.setComment(desc);
         setNeedsRestart(prop);
         return prop.getStringList();

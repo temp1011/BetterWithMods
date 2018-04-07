@@ -1,7 +1,7 @@
 package betterwithmods.module.hardcore.world;
 
+import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.Entity;
@@ -63,7 +63,7 @@ public class HCBoating extends Feature {
             int speed = defaultSpeed;
             if (!stack.isEmpty())
                 speed = SPEED_ITEMS.entrySet().stream().filter(e -> e.getKey().apply(stack)).mapToInt(Map.Entry::getValue).findAny().orElse(defaultSpeed);
-            if (ModuleLoader.isFeatureEnabled(Quark.class)) {
+            if (BWMod.MODULE_LOADER.isFeatureEnabled(Quark.class)) {
                 int quarkCompat = quarkCompatSpeed((EntityBoat) riding);
                 if (quarkCompat > 0)
                     speed = quarkCompat;

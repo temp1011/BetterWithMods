@@ -1,7 +1,7 @@
 package betterwithmods.module.hardcore.needs;
 
+import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.StackMap;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.EntityLiving;
@@ -38,7 +38,7 @@ public class HCArmor extends Feature {
     public static boolean shieldRebalance;
 
     public static float getWeight(ItemStack stack) {
-        if (!ModuleLoader.isFeatureEnabled(HCArmor.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCArmor.class))
             return 0;
         return weights.get(stack);
     }

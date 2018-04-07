@@ -1,9 +1,9 @@
 package betterwithmods.util.player;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.HCArmor;
 import betterwithmods.module.hardcore.needs.HCGloom;
 import betterwithmods.module.hardcore.needs.HCInjury;
@@ -82,7 +82,7 @@ public final class PlayerHelper {
 
 
     public static GloomPenalty getGloomPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCGloom.class))
             return GloomPenalty.NO_PENALTY;
         int gloom = HCGloom.getGloomTime(player);
         GloomPenalty penalty = GloomPenalty.NO_PENALTY;
@@ -103,7 +103,7 @@ public final class PlayerHelper {
     }
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCHunger.class))
             return HungerPenalty.NO_PENALTY;
         int level = player.getFoodStats().getFoodLevel();
         if (level > 24) return HungerPenalty.NO_PENALTY;
@@ -115,7 +115,7 @@ public final class PlayerHelper {
     }
 
     public static FatPenalty getFatPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCHunger.class))
             return FatPenalty.NO_PENALTY;
         int level = (int) player.getFoodStats().getSaturationLevel();
         if (level < 36) return FatPenalty.NO_PENALTY;
@@ -126,7 +126,7 @@ public final class PlayerHelper {
     }
 
     public static HealthPenalty getHealthPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCInjury.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCInjury.class))
             return HealthPenalty.NO_PENALTY;
         double max = player.getMaxHealth();
         double level = player.getHealth();
@@ -210,7 +210,7 @@ public final class PlayerHelper {
     }
 
     public static float getGloomExhaustionModifier(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
+        if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCGloom.class))
             return 1.0f;
         GloomPenalty gloom = getGloomPenalty(player);
         if (gloom != null)

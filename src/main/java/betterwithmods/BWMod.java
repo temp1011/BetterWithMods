@@ -4,11 +4,18 @@ import betterwithmods.client.BWGuiHandler;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.event.FakePlayerHandler;
+import betterwithmods.module.CompatModule;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.network.*;
+import betterwithmods.module.gameplay.Gameplay;
+import betterwithmods.module.hardcore.Hardcore;
+import betterwithmods.module.industry.Industry;
+import betterwithmods.module.tweaks.Tweaks;
+import betterwithmods.network.MessageFat;
+import betterwithmods.network.MessageGuiShake;
+import betterwithmods.network.MessageHarnessSync;
+import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
 import net.minecraftforge.common.ForgeModContainer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
@@ -32,6 +39,17 @@ public class BWMod {
     @Mod.Instance(BWMod.MODID)
     public static BWMod instance;
 
+    public static ModuleLoader MODULE_LOADER = new ModuleLoader() {
+        @Override
+        public void registerModules() {
+            registerModule(Gameplay.class);
+            registerModule(Hardcore.class);
+            registerModule(Tweaks.class);
+            registerModule(CompatModule.class);
+            registerModule(Industry.class);
+        }
+    };
+
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
         ForgeModContainer.fullBoundingBoxLadders = true;
@@ -40,7 +58,7 @@ public class BWMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
-        ModuleLoader.preInit(evt);
+        MODULE_LOADER.preInit(evt);
         BWRegistry.preInit();
         NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
         NetworkHandler.register(MessageFat.class, Side.CLIENT);
@@ -51,7 +69,7 @@ public class BWMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent evt) {
         BWRegistry.init();
-        ModuleLoader.init(evt);
+        MODULE_LOADER.init(evt);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new BWGuiHandler());
         proxy.init(evt);
     }
@@ -60,7 +78,7 @@ public class BWMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
-        ModuleLoader.postInit(evt);
+        MODULE_LOADER.postInit(evt);
 
         proxy.postInit(evt);
         BWRegistry.postPostInit();
@@ -73,7 +91,7 @@ public class BWMod {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
-        ModuleLoader.serverStarting(evt);
+        MODULE_LOADER.serverStarting(evt);
     }
 
     @Mod.EventHandler

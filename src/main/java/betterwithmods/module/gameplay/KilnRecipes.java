@@ -1,16 +1,14 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
-import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.HCCooking;
-import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -20,7 +18,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,7 +42,7 @@ public class KilnRecipes extends Feature {
         BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.CLAY), new ItemStack(Blocks.HARDENED_CLAY));
         BWRegistry.KILN.addStokedRecipe(new ItemStack(BWMBlocks.NETHER_CLAY), BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY));
 
-        int foodModifier = ModuleLoader.isFeatureEnabled(HCCooking.class) ? 1 : 2;
+        int foodModifier = BWMod.MODULE_LOADER.isFeatureEnabled(HCCooking.class) ? 1 : 2;
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0,foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD,foodModifier));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8*foodModifier));

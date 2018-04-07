@@ -1,8 +1,8 @@
 package betterwithmods.module.hardcore.needs;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWSounds;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import betterwithmods.util.player.HealthPenalty;
 import betterwithmods.util.player.PlayerHelper;
@@ -45,7 +45,7 @@ public class HCInjury extends Feature {
             if (!PlayerHelper.isSurvival(player))
                 return;
             if (player != null) {
-                if (!ModuleLoader.isFeatureEnabled(HCHunger.class)) {
+                if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCHunger.class)) {
                     PlayerHelper.changeSpeed(player, "Health speed penalty", PlayerHelper.getHealthPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
                 }
                 HealthPenalty healthPenalty = PlayerHelper.getHealthPenalty(player);

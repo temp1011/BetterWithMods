@@ -26,7 +26,6 @@ import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.compat.Quark;
 import betterwithmods.module.compat.bop.BiomesOPlenty;
 import betterwithmods.module.gameplay.CraftingRecipes;
@@ -298,7 +297,7 @@ public class BWRegistry {
     }
 
     private static void replaceIRecipe(Class<? extends Feature> clazz, IForgeRegistry<IRecipe> reg) {
-        if (ModuleLoader.isFeatureEnabled(clazz)) {
+        if (BWMod.MODULE_LOADER.isFeatureEnabled(clazz)) {
             List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
             if (recipes != null) {
                 recipes.forEach(reg::register);

@@ -1,10 +1,10 @@
 package betterwithmods.module.hardcore.world.strata;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.ToolsManager;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -73,7 +73,7 @@ public class HCStrata extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        ENABLED = ModuleLoader.isFeatureEnabled(HCStrata.class);
+        ENABLED = BWMod.MODULE_LOADER.isFeatureEnabled(HCStrata.class);
         for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
             for (ItemStack stack : ore.getOres()) {
                 if (stack.getItem() instanceof ItemBlock) {

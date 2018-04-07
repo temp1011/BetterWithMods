@@ -132,6 +132,44 @@
         "modid": "betterwithmods"
       }
     ],
+    "name": "SIDING_STONE",
+    "ingredient": [
+      {
+        "type": "betterwithmods:minitype",
+        "baseIngredient": {
+          "item": "minecraft:stone",
+          "data": 0
+        },
+        "minitype": "siding"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
+    "name": "CORNER_STONE",
+    "ingredient": [
+      {
+        "type": "betterwithmods:minitype",
+        "baseIngredient": {
+          "item": "minecraft:stone",
+          "data": 0
+        },
+        "minitype": "corner"
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "betterwithmods"
+      }
+    ],
     "name": "HE_PLANKS_MOULDING",
     "ingredient": [
       {
