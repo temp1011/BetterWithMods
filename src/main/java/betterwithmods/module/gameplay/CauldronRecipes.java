@@ -85,7 +85,11 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 3));
         BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GLUE, 2));
 
-
+        BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.SUGAR),
+                StackIngredient.fromOre(4, "meatRotten"),
+                StackIngredient.fromStacks(new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()))
+        ), Lists.newArrayList(new ItemStack(BWMItems.KIBBLE, 2)));
     }
 
     private void unstoked() {
@@ -183,12 +187,6 @@ public class CauldronRecipes extends Feature {
                 Ingredient.fromItem(Items.BOWL),
                 StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM, 3))
         ), new ItemStack(Items.MUSHROOM_STEW));
-
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                Ingredient.fromItem(Items.SUGAR),
-                StackIngredient.fromOre(4, "meatRotten"),
-                StackIngredient.fromStacks(new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()))
-        ), new ItemStack(BWMItems.KIBBLE, 2));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 Ingredient.fromItem(Items.BOWL),
