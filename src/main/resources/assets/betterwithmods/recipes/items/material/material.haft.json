@@ -18,8 +18,7 @@
       "type": "forge:ore_dict"
     },
     "X": {
-      "ore": "mouldingWood",
-      "type": "forge:ore_dict"
+      "item": "#MOULDING_WOOD"
     }
   }
 }

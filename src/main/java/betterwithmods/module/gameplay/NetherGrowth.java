@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.module.Feature;
+import betterwithmods.util.StackIngredient;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,10 +23,9 @@ public class NetherGrowth extends Feature {
                 Ingredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM)),
                 Ingredient.fromStacks(new ItemStack(Blocks.RED_MUSHROOM)),
                 Ingredient.fromStacks(new ItemStack(Blocks.MYCELIUM)),
-                Ingredient.fromStacks(new ItemStack(Items.NETHER_WART)),
-                Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH)),
                 new OreIngredient("cropNetherWart"),
-                new OreIngredient("blockSoulUrn")
+                Ingredient.fromStacks(new ItemStack(Items.ROTTEN_FLESH)),
+                StackIngredient.fromOre(8,"blockSoulUrn")
 
         ), Lists.newArrayList(new ItemStack(BWMBlocks.NETHER_GROWTH)));
     }

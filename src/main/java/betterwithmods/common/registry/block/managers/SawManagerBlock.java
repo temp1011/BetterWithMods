@@ -39,8 +39,8 @@ public class SawManagerBlock extends CraftingManagerBlock<SawRecipe> {
     public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {
         if (canCraft(world, pos, state)) {
             List<ItemStack> output = craftItem(world, pos, state);
-            InvUtils.ejectStackWithOffset(world, pos, output);
             world.setBlockToAir(pos);
+            InvUtils.ejectStackWithOffset(world, pos, output);
             world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.5F + rand.nextFloat() * 0.1F, 2.0F + rand.nextFloat() * 0.1F);
             return true;
         }

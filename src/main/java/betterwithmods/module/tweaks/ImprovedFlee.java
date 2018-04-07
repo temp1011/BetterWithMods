@@ -6,10 +6,7 @@ import betterwithmods.util.EntityUtils;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -35,7 +32,7 @@ public class ImprovedFlee extends Feature {
     public void addEntityAI(EntityJoinWorldEvent evt) {
         if (evt.getEntity() instanceof EntityLiving) {
             EntityLiving entity = (EntityLiving) evt.getEntity();
-            if (entity instanceof EntityAnimal && !(entity instanceof EntityTameable) && EntityUtils.hasAI(entity, EntityAIPanic.class)) {
+            if (entity instanceof EntityAnimal && EntityUtils.hasAI(entity, EntityAIPanic.class)) {
                 float speed = 1.25F;
                 if (entity instanceof EntityCow)
                     speed = 2.0F;
@@ -55,8 +52,7 @@ public class ImprovedFlee extends Feature {
         if (event.getPlayer() != null) {
             AxisAlignedBB box = event.getPlacedBlock().getBoundingBox(event.getWorld(), event.getPos()).offset(event.getPos()).grow(10);
             for (EntityAnimal animal : event.getWorld().getEntitiesWithinAABB(EntityAnimal.class, box)) {
-                if (animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
-                    continue;
+                if (cantBeScared(animal)) continue;
                 animal.setRevengeTarget(event.getPlayer());
             }
         }
@@ -69,8 +65,7 @@ public class ImprovedFlee extends Feature {
         if (event.getPlayer() != null && !event.getState().getMaterial().isReplaceable()) {
             AxisAlignedBB box = event.getState().getBoundingBox(event.getWorld(), event.getPos()).offset(event.getPos()).grow(10);
             for (EntityAnimal animal : event.getWorld().getEntitiesWithinAABB(EntityAnimal.class, box)) {
-                if (animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
-                    continue;
+                if (cantBeScared(animal)) continue;
                 animal.setRevengeTarget(event.getPlayer());
             }
         }
@@ -84,11 +79,18 @@ public class ImprovedFlee extends Feature {
             EntityAnimal a = (EntityAnimal) event.getEntityLiving();
             AxisAlignedBB box = new AxisAlignedBB(a.posX, a.posY, a.posZ, a.posX + 1, a.posY + 1, a.posZ + 1).grow(10);
             for (EntityAnimal animal : a.getEntityWorld().getEntitiesWithinAABB(EntityAnimal.class, box, entity -> entity != null && entity != a && entity.getRevengeTarget() == null)) {
-                if (animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
-                    continue;
+                if (cantBeScared(animal)) continue;
                 animal.setRevengeTarget(event.getTarget());
             }
         }
+    }
+
+    private boolean cantBeScared(EntityAnimal animal) {
+        if (animal instanceof EntityTameable && ((EntityTameable) animal).isTamed())
+            return true;
+        if (animal instanceof AbstractHorse && ((AbstractHorse) animal).isTame())
+            return true;
+        return false;
     }
 
     @Override

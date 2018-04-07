@@ -24,7 +24,7 @@ public class MillRecipe extends BulkRecipe {
     }
 
     public MillRecipe setSound(String sound) {
-        SoundEvent s = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(sound));
+        SoundEvent s = sound != null ? ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(sound)) : null;
         return setSound(s);
     }
 

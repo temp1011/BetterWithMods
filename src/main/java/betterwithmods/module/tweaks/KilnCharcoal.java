@@ -1,9 +1,16 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -37,16 +44,16 @@ public class KilnCharcoal extends Feature {
         List<ItemStack> logs = Lists.newArrayList();
         logs.addAll(OreDictionary.getOres("logWood"));
 
-//        for (ItemStack stack : logs) {
-//            if (stack.getItem() instanceof ItemBlock) {
-//                Item item = stack.getItem();
-//                Block block = ((ItemBlock) item).getBlock();
-//                int meta = stack.getItemDamage();
-//                if (disableFurnaceCharcoal)
-//                    BWMRecipes.removeFurnaceRecipe(stack);
-//                addKilnRecipe(block, meta, CHARCOAL);
-//            }
-//        }
+        for (ItemStack stack : logs) {
+            if (stack.getItem() instanceof ItemBlock) {
+                ItemStack charcoalOutput = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
+                if (charcoalOutput.isEmpty())
+                    continue;
+                if (disableFurnaceCharcoal)
+                    BWMRecipes.removeFurnaceRecipe(stack);
+                BWRegistry.KILN.addStokedRecipe(stack,charcoalOutput);
+            }
+        }
     }
 
 

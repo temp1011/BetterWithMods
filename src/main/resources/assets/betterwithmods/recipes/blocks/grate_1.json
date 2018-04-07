@@ -15,8 +15,12 @@
       "type": "forge:ore_dict"
     },
     "W": {
-      "item": "betterwithmods:wood_moulding",
-      "data": 1
+      "type": "betterwithmods:minitype",
+      "minitype": "moulding",
+      "baseIngredient": {
+        "item": "minecraft:planks",
+        "data": 1
+      }
     }
   }
 }

@@ -71,8 +71,10 @@ public class MiniBlockIngredient extends BlockIngredient {
                 if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
                     IBlockState state = BWMRecipes.getStateFromStack(stack);
                     Material material = state.getMaterial();
-                    BlockMini blockMini = MiniBlocks.MINI_MATERIAL_BLOCKS.get(type).get(material);
-                    stacks.add(MiniBlocks.fromParent(blockMini, state));
+                    if(MiniBlocks.isValidMini(state)) {
+                        BlockMini blockMini = MiniBlocks.MINI_MATERIAL_BLOCKS.get(type).get(material);
+                        stacks.add(MiniBlocks.fromParent(blockMini, state));
+                    }
                 }
             }
             cache = stacks.toArray(new ItemStack[stacks.size()]);

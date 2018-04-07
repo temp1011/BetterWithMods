@@ -42,7 +42,6 @@ public class BWMod {
         logger = evt.getModLog();
         ModuleLoader.preInit(evt);
         BWRegistry.preInit();
-        NetworkHandler.register(MessageSyncModule.class, Side.CLIENT);
         NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
         NetworkHandler.register(MessageFat.class, Side.CLIENT);
         NetworkHandler.register(MessageHarnessSync.class, Side.CLIENT);
@@ -62,8 +61,7 @@ public class BWMod {
     public void postInit(FMLPostInitializationEvent evt) {
         BWRegistry.postInit();
         ModuleLoader.postInit(evt);
-        if (evt.getSide().isServer())
-            MinecraftForge.EVENT_BUS.register(new ModuleSync());
+
         proxy.postInit(evt);
         BWRegistry.postPostInit();
     }

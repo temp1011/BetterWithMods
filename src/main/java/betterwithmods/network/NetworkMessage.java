@@ -18,12 +18,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class NetworkMessage<REQ extends NetworkMessage> implements IMessage, IMessageHandler<REQ, IMessage> {
 
@@ -34,76 +30,18 @@ public abstract class NetworkMessage<REQ extends NetworkMessage> implements IMes
         return null;
     }
 
+    protected static <DataType> DataType readData(ByteBuf buf, DataType data) {
+        return MessageDataHandler.getHandlerType(data).read(buf);
+    }
+
+    protected static <DataType> void writeData(ByteBuf buf, DataType data) {
+        MessageDataHandler handler = MessageDataHandler.getHandlerType(data);
+        handler.write(buf, data);
+    }
+
     @Override
     public final IMessage onMessage(REQ message, MessageContext context) {
         FMLCommonHandler.instance().getWorldThread(context.netHandler).addScheduledTask(() -> message.handleMessage(context));
         return null;
     }
-
-    @Override
-    public final void fromBytes(ByteBuf buf) {
-        try {
-            getAcceptableFields().forEach(field -> setFieldData(field, MessageDataHandler.getHandlerForField(field).read(buf)));
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading message " + this, e);
-        }
-    }
-
-    @Override
-    public final void toBytes(ByteBuf buf) {
-        try {
-            getAcceptableFields().forEach(field -> {
-                MessageDataHandler.getHandlerForField(field).write(buf, getFieldData(field));
-            });
-        } catch (Exception e) {
-            throw new RuntimeException("Error writing message " + this, e);
-        }
-    }
-
-    private static List<Field> getClassFields(Class<?> clazz) {
-
-        if (fieldCache.containsValue(clazz)) {
-            return fieldCache.get(clazz);
-        } else {
-            List<Field> fields = Arrays.asList(clazz.getDeclaredFields());
-            fields.sort(Comparator.comparing(Field::getName));
-            fields.forEach(field -> field.setAccessible(true));
-            fieldCache.put(clazz, fields);
-            return fields;
-        }
-    }
-
-    public void setFieldData(Field field, Object data) {
-        try {
-            field.set(this, data);
-        } catch (Exception e) {
-            throw new RuntimeException("Error setting field  " + field.getName() + " for message "  + this, e);
-        }
-
-    }
-
-    public Object getFieldData(Field field) {
-        try {
-            return field.get(this);
-        } catch(Exception e) {
-            throw new RuntimeException("Error getting field  " + field.getName() + " for message "  + this, e);
-        }
-    }
-
-    private static boolean canAcceptField(Field field) throws RuntimeException {
-
-        int mods = field.getModifiers();
-        boolean accept = !(Modifier.isFinal(mods) || Modifier.isStatic(mods) || Modifier.isTransient(mods)) && MessageDataHandler.getHandlerForField(field) != null;
-
-        if(!accept) {
-            throw new RuntimeException("Cannot process field " + field.getName());
-        }
-
-        return accept;
-    }
-
-    private List<Field> getAcceptableFields() {
-        return getClassFields(getClass()).stream().filter(field -> canAcceptField(field)).collect(Collectors.toList());
-    }
-
 }

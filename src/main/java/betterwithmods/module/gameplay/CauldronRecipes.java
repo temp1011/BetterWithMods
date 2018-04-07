@@ -63,15 +63,15 @@ public class CauldronRecipes extends Feature {
         StackIngredient wood = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre("logWood"),
                 StackIngredient.fromOre(6, "plankWood"),
-                StackIngredient.fromIngredient(12,new MiniBlockIngredient("siding",new OreIngredient("plankWood"))),
-                StackIngredient.fromIngredient(24,new MiniBlockIngredient("moulding",new OreIngredient("plankWood"))),
-                StackIngredient.fromIngredient(48,new MiniBlockIngredient("corner",new OreIngredient("plankWood"))),
+                StackIngredient.fromIngredient(12, new MiniBlockIngredient("siding", new OreIngredient("plankWood"))),
+                StackIngredient.fromIngredient(24, new MiniBlockIngredient("moulding", new OreIngredient("plankWood"))),
+                StackIngredient.fromIngredient(48, new MiniBlockIngredient("corner", new OreIngredient("plankWood"))),
                 StackIngredient.fromOre(16, "dustWood")
         ));
         BWRegistry.CAULDRON.addStokedRecipe(wood, ItemMaterial.getStack(ItemMaterial.EnumMaterial.POTASH));
 
-        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING),new ItemStack(Items.STICK)));
-        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.COMPOSITE_BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING),new ItemStack(Items.BONE)));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(Items.BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING), new ItemStack(Items.STICK)));
+        BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.COMPOSITE_BOW, 1, OreDictionary.WILDCARD_VALUE), Lists.newArrayList(new ItemStack(Items.STRING), new ItemStack(Items.BONE)));
 
         BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getIngredient(ItemMaterial.EnumMaterial.POTASH)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOAP)));
 
@@ -85,10 +85,19 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_PANTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 3));
         BWRegistry.CAULDRON.addStokedRecipe(new ItemStack(BWMItems.LEATHER_TANNED_BOOTS, 1, OreDictionary.WILDCARD_VALUE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.GLUE, 2));
 
-
+        BWRegistry.CAULDRON.addStokedRecipe(Lists.newArrayList(
+                Ingredient.fromItem(Items.SUGAR),
+                StackIngredient.fromOre(4, "meatRotten"),
+                StackIngredient.fromStacks(new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()))
+        ), Lists.newArrayList(new ItemStack(BWMItems.KIBBLE, 2)));
     }
 
     private void unstoked() {
+        StackIngredient cord = StackIngredient.mergeStacked(Lists.newArrayList(
+                StackIngredient.fromOre(1, "string"),
+                StackIngredient.fromOre(1, "fiberHemp")
+        ));
+
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustPotash"), StackIngredient.fromOre(4, "dustHellfire")),
                 Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8)));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustHellfire"), new OreIngredient("dustCarbon")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL, 4)));
@@ -100,14 +109,8 @@ public class CauldronRecipes extends Feature {
 
         BWRegistry.CAULDRON.addUnstokedRecipe(new OreIngredient("blockCactus"), new ItemStack(Items.DYE, 1, 2));
 
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("string"), new OreIngredient("dustGlowstone"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT)));
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("fiberHemp"), new OreIngredient("dustGlowstone"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT)));
-
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("string"), new OreIngredient("dustBlaze"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT)));
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("fiberHemp"), new OreIngredient("dustBlaze"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT)));
-
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)), StackIngredient.fromOre(8, "barkBlood")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER)));
-
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(cord, new OreIngredient("dustGlowstone"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FILAMENT)));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(cord, new OreIngredient("dustBlaze"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ELEMENT)));
 
         StackIngredient bark = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre(5, "barkOak"),
@@ -129,7 +132,6 @@ public class CauldronRecipes extends Feature {
         ), ItemMaterial.getStack(ItemMaterial.EnumMaterial.TANNED_LEATHER_CUT, 2));
 
 
-
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 new OreIngredient("dustSulfur"),
                 new OreIngredient("dustSaltpeter"),
@@ -137,26 +139,26 @@ public class CauldronRecipes extends Feature {
                 new ItemStack(Items.GUNPOWDER, 2));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 new OreIngredient("gunpowder"),
-                new OreIngredient("string")),
+                cord),
                 ItemMaterial.getStack(ItemMaterial.EnumMaterial.FUSE));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                Ingredient.fromStacks(BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD)),
+                Ingredient.fromStacks(BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD, 4)),
                 new OreIngredient("soap")),
-                BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCKBLOOD));
+                BlockAesthetic.getStack(BlockAesthetic.EnumType.CHOPBLOCK, 4));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                StackIngredient.fromStacks(new ItemStack(Blocks.STICKY_PISTON,4)),
+                StackIngredient.fromStacks(new ItemStack(Blocks.STICKY_PISTON, 4)),
                 new OreIngredient("soap")),
                 new ItemStack(Blocks.PISTON, 4));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 new OreIngredient("meatFish"),
                 Ingredient.fromItem(Items.MILK_BUCKET),
-                StackIngredient.fromStacks(new ItemStack(Items.BOWL,2))),
+                StackIngredient.fromStacks(new ItemStack(Items.BOWL, 2))),
                 new ItemStack(BWMItems.CHOWDER, 2));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 new OreIngredient("meatChicken"),
-                new OreIngredient("cropCarrot"),
-                new OreIngredient("cropPotato"),
-                StackIngredient.fromStacks(new ItemStack(Items.BOWL,3))),
+                new OreIngredient("cookedCarrot"),
+                new OreIngredient("cookedPotato"),
+                StackIngredient.fromStacks(new ItemStack(Items.BOWL, 3))),
                 new ItemStack(BWMItems.CHICKEN_SOUP, 3));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 new OreIngredient("foodCocoapowder"),
@@ -174,36 +176,30 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 stewMeats,
                 new OreIngredient("foodFlour"),
-                new OreIngredient("cropCarrot"),
-                new OreIngredient("cropPotato"),
-                StackIngredient.fromStacks(new ItemStack(Items.BOWL,5)),
-                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM,3))
+                new OreIngredient("cookedCarrot"),
+                new OreIngredient("cookedPotato"),
+                StackIngredient.fromStacks(new ItemStack(Items.BOWL, 5)),
+                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM, 3))
         ), new ItemStack(BWMItems.HEARTY_STEW, 5));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 Ingredient.fromItem(Items.MILK_BUCKET),
                 Ingredient.fromItem(Items.BOWL),
-                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM,3))
+                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM, 3))
         ), new ItemStack(Items.MUSHROOM_STEW));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
-                Ingredient.fromItem(Items.SUGAR),
-                StackIngredient.fromOre(4, "meatRotten"),
-                StackIngredient.fromStacks(new ItemStack(Items.DYE, 4, EnumDyeColor.WHITE.getDyeDamage()))
-        ), new ItemStack(BWMItems.KIBBLE, 2));
-
-        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 Ingredient.fromItem(Items.BOWL),
-                StackIngredient.fromStacks(new ItemStack(Items.BEETROOT,6))
+                StackIngredient.fromStacks(new ItemStack(Items.BEETROOT, 6))
         ), new ItemStack(Items.BEETROOT_SOUP));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 Ingredient.fromItem(Items.COOKED_RABBIT),
-                new OreIngredient("cropCarrot"),
-                new OreIngredient("cropPotato"),
+                new OreIngredient("cookedCarrot"),
+                new OreIngredient("cookedPotato"),
                 StackIngredient.fromOre("foodFlour"),
-                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM,3)),
-                StackIngredient.fromStacks(new ItemStack(Items.BOWL,5))
+                StackIngredient.fromStacks(new ItemStack(Blocks.BROWN_MUSHROOM, 3)),
+                StackIngredient.fromStacks(new ItemStack(Items.BOWL, 5))
         ), new ItemStack(Items.RABBIT_STEW, 5));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(

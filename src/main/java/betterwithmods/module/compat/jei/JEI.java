@@ -10,6 +10,8 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.HopperInteractions.HopperRecipe;
+import betterwithmods.common.registry.HopperInteractions.SoulUrnRecipe;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
@@ -23,6 +25,8 @@ import betterwithmods.common.registry.crafting.ToolDamageRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
+import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -33,12 +37,15 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.gui.Focus;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +91,22 @@ public class JEI implements IModPlugin {
     }
 
     @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+        getAllMiniBlocks().forEach(item -> subtypeRegistry.registerSubtypeInterpreter(item, (ISubtypeRegistry.ISubtypeInterpreter) itemStack -> {
+            NBTTagCompound compound = itemStack.getSubCompound("texture");
+            return compound != null ? compound.toString() : "";
+        }));
+    }
+
+    private List<Item> getAllMiniBlocks() {
+        ArrayList<Item> list = new ArrayList<>();
+        MiniBlocks.SIDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.MOULDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.CORNERS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        return list;
+    }
+
+    @Override
     public void register(@Nonnull IModRegistry reg) {
         HELPER = reg.getJeiHelpers();
         reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
@@ -97,7 +120,7 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SawRecipeCategory.UID);
         reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SteelSawRecipeCategory.UID);
         reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER, recipe), TurntableRecipeCategory.UID);
-        reg.handleRecipes(HopperInteractions.HopperRecipe.class, recipe -> recipe instanceof HopperInteractions.SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((HopperInteractions.SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe), HopperRecipeCategory.UID);
+        reg.handleRecipes(HopperRecipe.class, recipe -> recipe instanceof SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe), HopperRecipeCategory.UID);
         reg.handleRecipes(ShapedAnvilRecipe.class, recipe -> new ShapedAnvilRecipeWrapper(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ShapelessAnvilRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ShapelessOreRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
@@ -118,7 +141,13 @@ public class JEI implements IModPlugin {
 //        reg.addRecipes(Sets.union(Sets.newHashSet(SawManager.WOOD_SAW.getRecipes()), Sets.newHashSet(SawManager.STEEL_SAW.getRecipes())), SteelSawRecipeCategory.UID);
         reg.addRecipes(BWRegistry.KILN.getRecipes(), KilnRecipeCategory.UID);
         reg.addRecipes(BWRegistry.TURNTABLE.getRecipes(), TurntableRecipeCategory.UID);
-        reg.addRecipes(HopperInteractions.RECIPES, HopperRecipeCategory.UID);
+        ArrayList<HopperRecipe> hopperRecipes = new ArrayList<>();
+        HopperInteractions.RECIPES.stream().forEach(recipe -> {
+            if(recipe instanceof SoulUrnRecipe)
+                hopperRecipes.add(((SoulUrnRecipe)recipe).withoutUrn());
+            hopperRecipes.add(recipe);
+        });
+        reg.addRecipes(hopperRecipes, HopperRecipeCategory.UID);
         reg.addRecipes(AnvilCraftingManager.ANVIL_CRAFTING, SteelCraftingCategory.UID);
 
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.MILLSTONE), MillRecipeCategory.UID);

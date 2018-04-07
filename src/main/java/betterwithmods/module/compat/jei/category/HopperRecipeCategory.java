@@ -3,20 +3,24 @@ package betterwithmods.module.compat.jei.category;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.compat.jei.wrapper.HopperRecipeWrapper;
+import betterwithmods.util.InvUtils;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Purpose:
@@ -28,7 +32,8 @@ public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper
     public static final int width = 145;
     public static final int height = 80;
     public static final String UID = "bwm.hopper";
-
+    int outputSlot = 3;
+    int secondaryOutputSlot = 5;
 
     @Nonnull
     private final IDrawable background;
@@ -67,31 +72,47 @@ public class HopperRecipeCategory implements IRecipeCategory<HopperRecipeWrapper
     @SideOnly(Side.CLIENT)
     @Override
     public void drawExtras(Minecraft minecraft) {
-        int l = minecraft.fontRenderer.getStringWidth("Throw");
-        minecraft.fontRenderer.drawString("Throw", width / 2 - l + 5, -11, 0x808080);
-        minecraft.fontRenderer.drawString("Filter", width / 2 - 50, 16, 0x808080);
-        minecraft.fontRenderer.drawString("Outputs", width / 2 + 10, -11, 0x808080);
+        String throwText = Translator.translateToLocal("inv.hopper.throw");
+        int l = minecraft.fontRenderer.getStringWidth(throwText);
+        int textColor = 0x808080;
+        minecraft.fontRenderer.drawString(throwText, width / 2 - l + 5, -11, textColor);
+        minecraft.fontRenderer.drawString(Translator.translateToLocal("inv.hopper.filter"), width / 2 - 50, 16, textColor);
+        minecraft.fontRenderer.drawString(Translator.translateToLocal("inv.hopper.outputs"), width / 2 + 10, -11, textColor);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull HopperRecipeWrapper wrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull HopperRecipeWrapper wrapper, @Nonnull IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = layout.getItemStacks();
         int x = width / 2 - 18, y = 0;
 
-        guiItemStacks.init(0, true, x - 27, y + 27); //filter
-        guiItemStacks.init(1, true, x, y); //inputs item
+        guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+            if(slotIndex == 2 && !tooltip.isEmpty())
+                tooltip.add(1, TextFormatting.LIGHT_PURPLE+""+TextFormatting.BOLD+Translator.translateToLocal("inv.hopper.place"));
+        });
 
-        guiItemStacks.init(2, false, x + 28, y); //main output
-        guiItemStacks.init(3, false, x + 28, y + 27); //inventory result
-        guiItemStacks.init(4, false, x, y + 27); //hopper
-        if (wrapper instanceof HopperRecipeWrapper.SoulUrn) {
-            if (!wrapper.recipe.secondaryOutput.isEmpty()) {
-                guiItemStacks.init(5, false, x, y + 45); //urn
-            }
+        guiItemStacks.init(0, true, x, y); //inputs item
+        guiItemStacks.init(1, true, x - 27, y + 27); //filter
+        guiItemStacks.init(2, true, x, y + 45); //urn
+
+        for(int i = 0; i < 2; i++) {
+            guiItemStacks.init(outputSlot+i, false, x + 28 + i*18, y + 27); //inventory result
+            guiItemStacks.init(secondaryOutputSlot+i, false, x + 28 + i*18, y); //main output
         }
-        guiItemStacks.set(ingredients);
-        guiItemStacks.set(4, new ItemStack(BWMBlocks.FILTERED_HOPPER));
+        guiItemStacks.init(7, false, x, y + 27); //hopper
 
+        List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+        List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
+
+        guiItemStacks.set(0, inputs.get(0));
+        guiItemStacks.set(1, inputs.get(1));
+        guiItemStacks.set(2, inputs.get(2));
+        int index = 0;
+        for (List<ItemStack> outputStacks : InvUtils.splitIntoBoxes(outputs.get(0),2))
+            guiItemStacks.set(outputSlot + index++, outputStacks);
+        index = 0;
+        for (List<ItemStack> outputStacks : InvUtils.splitIntoBoxes(outputs.get(1),2))
+            guiItemStacks.set(secondaryOutputSlot + index++, outputStacks);
+        guiItemStacks.set(7, new ItemStack(BWMBlocks.FILTERED_HOPPER));
     }
 }
 

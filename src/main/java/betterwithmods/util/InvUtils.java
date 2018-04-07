@@ -26,11 +26,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class InvUtils {
 
@@ -73,12 +71,16 @@ public class InvUtils {
         return inventory != null && consumeItemsInInventory(inventory, stack, amount, false);
     }
 
-    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient, int amount) {
+    public static boolean usePlayerItem(EntityPlayer player, EnumFacing inv, Ingredient ingredient) {
         IItemHandlerModifiable inventory = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inv);
+        boolean result = false;
+
         if (inventory != null) {
-            return consumeItemsInInventory(inventory, ingredient, amount, false);
+            NonNullList<ItemStack> containers = NonNullList.create();
+            result = consumeItemsInInventory(inventory, ingredient, false, containers);
+            givePlayer(player, inv, containers);
         }
-        return false;
+        return result;
     }
 
     public static Optional<IItemHandler> getItemHandler(World world, BlockPos pos, EnumFacing facing) {
@@ -110,7 +112,6 @@ public class InvUtils {
                 inv.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
-
     }
 
     public static void copyTags(ItemStack destStack, ItemStack sourceStack) {
@@ -252,7 +253,8 @@ public class InvUtils {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                if (ItemStack.areItemsEqual(toCheck, stack) || (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
+                if (ItemStack.areItemsEqual(toCheck, stack) ||
+                        (toCheck.getItem() == stack.getItem() && toCheck.getItemDamage() == OreDictionary.WILDCARD_VALUE)) {
                     if (toCheck.hasTagCompound()) {
                         if (ItemStack.areItemStackTagsEqual(toCheck, stack))
                             itemCount += stack.getCount();
@@ -305,27 +307,32 @@ public class InvUtils {
         return extracted;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate) {
-        if(ingredient instanceof StackIngredient)
-            return consumeItemsInInventory(inv,(StackIngredient) ingredient,simulate);
-        return consumeItemsInInventory(inv,ingredient,1,simulate);
-    }
-
-    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, int sizeOfStack, boolean simulate) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, Ingredient ingredient, boolean simulate, NonNullList<ItemStack> containers) {
+        int count;
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
-                return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
+                ItemStack container = ForgeHooks.getContainerItem(inSlot);
+                if (!container.isEmpty())
+                    containers.add(container);
+                if (ingredient instanceof StackIngredient)
+                    count = ((StackIngredient) ingredient).getCount(inSlot);
+                else
+                    count = 1;
+                return inv.extractItem(i, count, simulate).getCount() >= count;
             }
         }
         return false;
     }
 
-    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate) {
+    public static boolean consumeItemsInInventory(IItemHandler inv, StackIngredient ingredient, boolean simulate, NonNullList<ItemStack> containers) {
         for (int i = 0; i < inv.getSlots(); i++) {
             ItemStack inSlot = inv.getStackInSlot(i);
             if (ingredient.apply(inSlot)) {
                 int sizeOfStack = ingredient.getCount(inSlot);
+                ItemStack container = ForgeHooks.getContainerItem(inSlot);
+                if (!container.isEmpty())
+                    containers.add(container);
                 return inv.extractItem(i, sizeOfStack, simulate).getCount() >= sizeOfStack;
             }
         }
@@ -409,9 +416,9 @@ public class InvUtils {
     public static void ejectStackWithOffset(World world, BlockPos pos, ItemStack stack) {
         if (stack.isEmpty())
             return;
-        float xOff = world.rand.nextFloat() * 0.7F + 0.15F;
-        float yOff = world.rand.nextFloat() * 0.2F + 0.1F;
-        float zOff = world.rand.nextFloat() * 0.7F + 0.15F;
+        float xOff = world.rand.nextFloat() * 0.5F + 0.25F;
+        float yOff = world.rand.nextFloat() * 0.5F + 0.25F;
+        float zOff = world.rand.nextFloat() * 0.5F + 0.25F;
         ejectStack(world, (double) ((float) pos.getX() + xOff), (double) ((float) pos.getY() + yOff), (double) ((float) pos.getZ() + zOff), stack, 10);
     }
 
@@ -510,4 +517,30 @@ public class InvUtils {
         return false;
     }
 
+    public static boolean matchesSize(ItemStack one, ItemStack two) {
+        return one.getCount() == two.getCount() && matches(one,two);
+    }
+
+    public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
+        if(oneList.size() != twoList.size())
+            return false; //trivial case
+        HashSet<ItemStack> alreadyMatched = new HashSet<>();
+        for(ItemStack one : oneList) {
+            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matchesSize(one,two)).findFirst();
+            if(found.isPresent())
+                alreadyMatched.add(found.get()); //Don't match twice
+            else
+                return false; //This itemstack doesn't match, thus the two lists don't match
+        }
+        return true;
+    }
+
+    public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes) {
+        ArrayList<List<T>> splitStacks = new ArrayList<>();
+        for (int i = 0; i < boxes; i++) {
+            final int finalI = i;
+            splitStacks.add(IntStream.range(0, stacks.size()).filter(index -> index % boxes == finalI).mapToObj(stacks::get).collect(Collectors.toList()));
+        }
+        return splitStacks;
+    }
 }

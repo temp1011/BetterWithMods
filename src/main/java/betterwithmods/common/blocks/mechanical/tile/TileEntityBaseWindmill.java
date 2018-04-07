@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.DimensionType;
 
 public abstract class TileEntityBaseWindmill extends TileAxleGenerator implements IColor {
     protected int[] bladeMeta;
@@ -58,12 +59,16 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     public void calculatePower() {
         byte power = 0;
         if (isValid()) {
-            if (world.isThundering())
-                power = 3;
-            else if (world.isRaining())
-                power = 2;
-            else
+            if (world.provider.getDimensionType() == DimensionType.OVERWORLD) {
+                if (world.isThundering())
+                    power = 3;
+                else if (world.isRaining())
+                    power = 2;
+                else
+                    power = 1;
+            } else {
                 power = 1;
+            }
         }
 
         if (power != this.power) {
@@ -76,5 +81,5 @@ public abstract class TileEntityBaseWindmill extends TileAxleGenerator implement
     public int getMinimumInput(EnumFacing facing) {
         return 0;
     }
-    
+
 }

@@ -15,8 +15,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "C": {
-      "ore": "cornerStone",
-      "type": "forge:ore_dict"
+      "item": "#CORNER_STONE"
     },
     "R": {
       "ore": "dustRedstone",

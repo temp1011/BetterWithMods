@@ -13,12 +13,10 @@
       "item": "minecraft:wooden_pressure_plate"
     },
     "C": {
-      "ore": "cornerWood",
-      "type": "forge:ore_dict"
+      "item": "#CORNER_WOOD"
     },
     "S": {
-      "ore": "sidingWood",
-      "type": "forge:ore_dict"
+      "item": "#SIDING_WOOD"
     },
     "G": {
       "ore": "gearWood",

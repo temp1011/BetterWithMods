@@ -174,7 +174,20 @@ public class BWOreDictionary {
         registerOre("meatMutton", Items.MUTTON, Items.COOKED_MUTTON);
         registerOre("meatChicken", Items.CHICKEN, Items.COOKED_CHICKEN);
         registerOre("meatRotten", Items.ROTTEN_FLESH);
-        registerOre("meatFish",new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+        registerOre("meatFish", new ItemStack(Items.FISH, 1, ItemFishFood.FishType.SALMON.getMetadata()));
+
+        registerOre("cookedPotato", Items.BAKED_POTATO);
+        registerOre("cookedCarrot", Items.CARROT);
+
+        registerOre("listAllExplosives", new ItemStack(Blocks.TNT));
+        registerOre("listAllExplosives", new ItemStack(Items.GUNPOWDER));
+        registerOre("listAllExplosives", new ItemStack(BWMItems.DYNAMITE));
+        registerOre("listAllExplosives", new ItemStack(BWMBlocks.MINING_CHARGE));
+        registerOre("listAllExplosives", new ItemStack(BWMBlocks.AESTHETIC, 1, BlockAesthetic.EnumType.HELLFIRE.getMeta()));
+        registerOre("listAllExplosives", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL));
+        registerOre("listAllExplosives", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST));
+        registerOre("listAllExplosives", ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE));
+
     }
 
     private static ItemStack getPlankOutput(ItemStack log) {
@@ -258,8 +271,7 @@ public class BWOreDictionary {
 
     }
 
-    public static boolean isWoodRegistered(ItemStack stack)
-    {
+    public static boolean isWoodRegistered(ItemStack stack) {
         return woods.stream().anyMatch(wood -> wood.getLog(1).isItemEqual(stack));
     }
 

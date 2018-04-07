@@ -47,6 +47,10 @@ public class BlockAesthetic extends BWMBlock {
         return new ItemStack(BLOCKS.get(type));
     }
 
+    public static ItemStack getStack(EnumType type, int amount) {
+        return new ItemStack(BWMBlocks.AESTHETIC, amount, type.getMeta());
+    }
+
     @Override
     public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
         return type.getHardness();

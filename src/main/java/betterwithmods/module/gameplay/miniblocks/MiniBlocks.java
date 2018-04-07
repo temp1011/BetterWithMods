@@ -8,6 +8,7 @@ import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMoulding;
@@ -18,6 +19,7 @@ import betterwithmods.module.gameplay.miniblocks.tiles.TileMoulding;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.*;
@@ -53,8 +55,10 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
@@ -65,6 +69,8 @@ public class MiniBlocks extends Feature {
     public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static Map<Material, String> names = Maps.newHashMap();
+    private static boolean autoGeneration;
+    private static HashSet<String> whitelist = new HashSet<>();
 
     static {
         names.put(Material.WOOD, "wood");
@@ -89,12 +95,19 @@ public class MiniBlocks extends Feature {
         enabledByDefault = false;
     }
 
+    public static boolean isValidMini(IBlockState state) {
+        Material material = state.getMaterial();
+        return names.containsKey(material) && MATERIALS.get(material).contains(state);
+    }
+
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
+        ResourceLocation resloc = stack.getItem().getRegistryName();
+        if(!autoGeneration && resloc != null && !whitelist.contains(resloc.toString()) && !whitelist.contains(resloc.toString()+":"+stack.getMetadata()))
+            return BWOreDictionary.hasPrefix(stack, "plankWood"); //Specifically planks are a-okay
 
         Block blk = state.getBlock();
        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
-
 
         pb.onBlockActivated(null, null, null, null, null, null, 0, 0, 0);
         boolean noActivation = (getDeclaringClass(blkClass, pb.MethodName, World.class, BlockPos.class, IBlockState.class, EntityPlayer.class, EnumHand.class, EnumFacing.class, float.class, float.class, float.class) == Block.class);
@@ -149,6 +162,32 @@ public class MiniBlocks extends Feature {
         tag.setTag("texture", texture);
         stack.setTagCompound(tag);
         return stack;
+    }
+
+    public static void addWhitelistedBlock(ResourceLocation resloc) {
+        whitelist.add(resloc.toString());
+    }
+
+    public static void addWhitelistedBlock(ResourceLocation resloc, int meta) { //Delete this in 1.13
+        whitelist.add(resloc.toString()+":"+meta);
+    }
+
+    @Override
+    public void setupConfig() {
+        autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
+        whitelist = loadPropStringHashSet("Whitelist","Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)",new String[]{});
+        whitelist.add("minecraft:stone:0");
+        whitelist.add("minecraft:stonebrick");
+        whitelist.add("minecraft:sandstone");
+        whitelist.add("minecraft:brick_block");
+        whitelist.add("minecraft:nether_brick");
+        whitelist.add("minecraft:quartz_block");
+        whitelist.add("betterwithmods:aesthetic:6");
+    }
+
+    public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
+        ItemStack output = fromParent(mini, base);
+        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old).replace("tile.", "")));
     }
 
     @Override
@@ -228,6 +267,20 @@ public class MiniBlocks extends Feature {
             BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
             if (BWOreDictionary.isOre(mini, "plankWood"))
                 BWRegistry.WOOD_SAW.addRecipe(corner, ItemMaterial.getStack(ItemMaterial.EnumMaterial.WOOD_GEAR, 2));
+        }
+
+
+        for(IBlockState parent: Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
+            ItemStack mini = BWMRecipes.getStackFromState(parent);
+            MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
+            MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
+            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), parent, 8);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), parent, 8);
+            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), parent, 8);
+
+            AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
+            AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
+            AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
         }
 
     }
