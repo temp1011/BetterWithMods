@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.util.DirUtils;
 import com.google.common.collect.Maps;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class BlockLens extends BlockRotate implements IMultiVariants{
+public class BlockLens extends BlockRotate {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     public static final int RANGE = 256;
 
@@ -33,10 +32,9 @@ public class BlockLens extends BlockRotate implements IMultiVariants{
         super(Material.IRON);
         this.setHardness(3.5F);
         this.setTickRandomly(true);
-        this.setDefaultState(this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.NORTH));
+        this.setDefaultState(this.getDefaultState().withProperty(DirUtils.FACING, EnumFacing.NORTH).withProperty(LIT, false));
         this.setHarvestLevel("pickaxe", 0);
     }
-
 
 
     @Override
@@ -101,12 +99,12 @@ public class BlockLens extends BlockRotate implements IMultiVariants{
 
                 AxisAlignedBB bb = FULL_BLOCK_AABB.offset(pos);
                 int mod = dir.getAxisDirection().getOffset();
-                switch(dir.getAxis()) {
+                switch (dir.getAxis()) {
                     case X:
-                        bb = bb.expand(mod * currentRange,0,0);
+                        bb = bb.expand(mod * currentRange, 0, 0);
                         break;
                     case Y:
-                        bb = bb.expand(0, mod * currentRange,0);
+                        bb = bb.expand(0, mod * currentRange, 0);
                         break;
                     case Z:
                         bb = bb.expand(0, 0, mod * currentRange);
@@ -310,11 +308,6 @@ public class BlockLens extends BlockRotate implements IMultiVariants{
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
         world.setBlockState(pos, state.withProperty(LIT, false).cycleProperty(DirUtils.FACING));
-    }
-
-    @Override
-    public String[] getVariants() {
-        return new String[]{"facing=north,lit=false"};
     }
 
 }

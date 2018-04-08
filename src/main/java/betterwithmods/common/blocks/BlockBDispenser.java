@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.tile.dispenser.IBehaviorCollect;
 import betterwithmods.api.tile.dispenser.IBehaviorEntity;
 import betterwithmods.client.BWCreativeTabs;
@@ -27,14 +26,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryDefaulted;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBDispenser extends BlockDispenser implements IMultiVariants {
+public class BlockBDispenser extends BlockDispenser  {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<>(new BehaviorDefaultDispenseBlock());
     public static final RegistryDefaulted<Block, IBehaviorCollect> BLOCK_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorBreakBlock());
     public static final RegistryDefaulted<Class<? extends Entity>, IBehaviorEntity> ENTITY_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorEntity());
@@ -44,11 +42,7 @@ public class BlockBDispenser extends BlockDispenser implements IMultiVariants {
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
         this.setHarvestLevel("pickaxe", 0);
-    }
-
-    @Override
-    public String[] getVariants() {
-        return new String[]{"facing=north,triggered=false"};
+        this.setDefaultState(getDefaultState().withProperty(FACING,EnumFacing.NORTH).withProperty(TRIGGERED,false));
     }
 
     @Override

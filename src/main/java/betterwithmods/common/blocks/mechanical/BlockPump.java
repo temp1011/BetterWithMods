@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
@@ -19,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -32,7 +30,7 @@ import java.util.Random;
  * @author mrebhan
  */
 
-public class BlockPump extends BlockRotate implements IBlockActive, IMultiVariants, IOverpower {
+public class BlockPump extends BlockRotate implements IBlockActive, IOverpower {
 
     public BlockPump() {
         super(Material.WOOD);
@@ -50,13 +48,9 @@ public class BlockPump extends BlockRotate implements IBlockActive, IMultiVarian
         IBlockState sourceState = world.getBlockState(source);
         Block block = sourceState.getBlock();
         Material mat = block.getMaterial(state);
-        return (block instanceof BlockFluidBase && ((BlockFluidBase)block).getFluid() == FluidRegistry.WATER) || (block instanceof BlockLiquid && mat == Material.WATER);
+        return (block instanceof BlockFluidBase && ((BlockFluidBase) block).getFluid() == FluidRegistry.WATER) || (block instanceof BlockLiquid && mat == Material.WATER);
     }
 
-    @Override
-    public String[] getVariants() {
-        return new String[]{"active=false,facing=north"};
-    }
 
     @Override
     public int tickRate(World world) {
@@ -111,12 +105,12 @@ public class BlockPump extends BlockRotate implements IBlockActive, IMultiVarian
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        withTile(worldIn,pos).ifPresent(TilePump::onChanged);
+        withTile(worldIn, pos).ifPresent(TilePump::onChanged);
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        withTile(world,pos).ifPresent(TilePump::onChanged);
+        withTile(world, pos).ifPresent(TilePump::onChanged);
         if (isActive(state)) {
             if (world.isAirBlock(pos.up()) && hasWaterToPump(world, pos)) {
                 world.setBlockState(pos.up(), BWMBlocks.TEMP_LIQUID_SOURCE.getDefaultState());

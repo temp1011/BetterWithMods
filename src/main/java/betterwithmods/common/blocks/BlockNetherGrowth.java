@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.IMultiLocations;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.common.items.tools.ItemSoulforgeArmor;
@@ -40,8 +39,9 @@ import java.util.Random;
 /**
  * Created by primetoxinz on 6/25/17.
  */
-public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
+public class BlockNetherGrowth extends BWMBlock {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
+    private final Ingredient urn = new OreIngredient("blockSoulUrn");
 
     public BlockNetherGrowth() {
         super(Material.GRASS);
@@ -55,8 +55,6 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
     public int getAge(IBlockState state) {
         return state.getValue(AGE);
     }
-
-    private final Ingredient urn = new OreIngredient("blockSoulUrn");
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -162,12 +160,6 @@ public class BlockNetherGrowth extends BWMBlock implements IMultiLocations {
     @Override
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
         return SoundType.SLIME;
-    }
-
-
-    @Override
-    public String[] getLocations() {
-        return new String[]{"nether_spore"};
     }
 
     @Override

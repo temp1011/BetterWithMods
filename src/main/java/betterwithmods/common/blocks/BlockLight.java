@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -18,20 +17,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockLight extends BWMBlock implements IMultiVariants {
+public class BlockLight extends BWMBlock {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockLight() {
         super(Material.GLASS);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, true));
         this.setSoundType(SoundType.GLASS);
         ToolsManager.setPickaxesAsEffectiveAgainst(this);
-    }
-
-    @Override
-    public String[] getVariants() {
-        return new String[]{"active=true"};
     }
 
     @Override

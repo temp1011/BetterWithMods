@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.BWMAPI;
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
@@ -30,7 +29,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
+public class BlockCrank extends BWMBlock implements IOverpower {
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 7);
     public static final float BASE_HEIGHT = 0.25F;
     private static final int TICK_RATE = 3;
@@ -49,11 +48,6 @@ public class BlockCrank extends BWMBlock implements IMultiVariants, IOverpower {
     @Override
     public int tickRate(World worldIn) {
         return TICK_RATE;
-    }
-
-    @Override
-    public String[] getVariants() {
-        return new String[]{"stage=0"};
     }
 
     @Override

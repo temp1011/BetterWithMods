@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -14,10 +13,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class BlockWoodTable extends BlockFurniture implements IMultiVariants {
+public class BlockWoodTable extends BlockFurniture {
     public BlockWoodTable() {
         super(Material.WOOD);
     }
@@ -33,14 +31,6 @@ public class BlockWoodTable extends BlockFurniture implements IMultiVariants {
         return FULL_BLOCK_AABB;
     }
 
-    @Override
-    public String[] getVariants() {
-        ArrayList<String> variants = new ArrayList<>();
-        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values()) {
-            variants.add("supported=false,variant=" + blockplanks$enumtype.getName());
-        }
-        return variants.toArray(new String[variants.size()]);
-    }
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean pass) {

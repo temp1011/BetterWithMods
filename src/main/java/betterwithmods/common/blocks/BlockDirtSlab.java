@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.block.IMultiVariants;
 import betterwithmods.common.BWMItems;
 import betterwithmods.module.tweaks.GrassPath;
 import betterwithmods.util.WorldUtils;
@@ -36,7 +35,7 @@ import static net.minecraft.block.BlockDirt.SNOWY;
 /**
  * @author Koward
  */
-public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
+public class BlockDirtSlab extends BlockSimpleSlab {
     public static final PropertyEnum<DirtSlabType> VARIANT = PropertyEnum.create("variant", BlockDirtSlab.DirtSlabType.class);
     private static final EnumFacing[] CHECKED_FACINGS_FOR_SNOW = new EnumFacing[]{EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST};
 
@@ -167,15 +166,6 @@ public class BlockDirtSlab extends BlockSimpleSlab implements IMultiVariants {
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @Override
-    public String[] getVariants() {
-        ArrayList<String> variants = new ArrayList<>();
-        for (DirtSlabType enumtype : DirtSlabType.values()) {
-            variants.add("snowy=false,variant=" + enumtype.getName());
-        }
-        return variants.toArray(new String[DirtSlabType.values().length]);
     }
 
     @Override

@@ -94,9 +94,8 @@ public final class BWMBlocks {
     public static final Block PUMP = new BlockPump().setRegistryName("screw_pump");
     public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
     public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater().setRegistryName("temporary_water");
-    public static final Block RAW_PASTRY = new BlockRawPastry().setRegistryName("raw_pastry");
     public static final Block STEEL_ANVIL = new BlockSteelAnvil().setRegistryName("steel_anvil");
-//    public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
+    //    public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
 //    public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
 //    public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
@@ -129,6 +128,8 @@ public final class BWMBlocks {
         BlockChime.init();
         BlockCobble.init();
         BlockUnfiredPottery.init();
+        BlockRawPastry.init();
+
     }
 
     public static List<Block> getBlocks() {
@@ -143,6 +144,7 @@ public final class BWMBlocks {
         registerBlocks(BlockChime.BLOCKS);
         registerBlocks(BlockCobble.BLOCKS);
         registerBlocks(BlockUnfiredPottery.BLOCKS.values());
+        registerBlocks(BlockRawPastry.BLOCKS.values());
         registerBlock(ANCHOR);
         registerBlock(ROPE);
         registerBlock(FILTERED_HOPPER);
