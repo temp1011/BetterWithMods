@@ -9,14 +9,9 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.AnvilRecipes;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMoulding;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockSiding;
+import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileCorner;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileMoulding;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
+import betterwithmods.module.gameplay.miniblocks.tiles.*;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
@@ -46,7 +41,6 @@ import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -66,6 +60,8 @@ public class MiniBlocks extends Feature {
     public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
     public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
+    public static HashMap<Material, BlockMini> COLUMNS = Maps.newHashMap();
+    public static HashMap<Material, BlockMini> PEDESTALS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static Map<Material, String> names = Maps.newHashMap();
     private static boolean autoGeneration;
@@ -78,6 +74,8 @@ public class MiniBlocks extends Feature {
         MINI_MATERIAL_BLOCKS.put(MiniType.SIDING, SIDINGS);
         MINI_MATERIAL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
         MINI_MATERIAL_BLOCKS.put(MiniType.CORNER, CORNERS);
+        MINI_MATERIAL_BLOCKS.put(MiniType.COLUMN, COLUMNS);
+        MINI_MATERIAL_BLOCKS.put(MiniType.PEDESTAL, PEDESTALS);
     }
 
     static {
@@ -86,6 +84,8 @@ public class MiniBlocks extends Feature {
             SIDINGS.put(material, (BlockMini) new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
             MOULDINGS.put(material, (BlockMini) new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
             CORNERS.put(material, (BlockMini) new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
+            COLUMNS.put(material, (BlockMini) new BlockColumn(material).setRegistryName(String.format("%s_%s", "column", name)));
+            PEDESTALS.put(material, (BlockMini) new BlockPedestals(material).setRegistryName(String.format("%s_%s", "pedestal", name)));
         }
     }
 
@@ -101,11 +101,11 @@ public class MiniBlocks extends Feature {
 
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
         ResourceLocation resloc = stack.getItem().getRegistryName();
-        if(!autoGeneration && resloc != null && !whitelist.contains(resloc.toString()) && !whitelist.contains(resloc.toString()+":"+stack.getMetadata()))
+        if (!autoGeneration && resloc != null && !whitelist.contains(resloc.toString()) && !whitelist.contains(resloc.toString() + ":" + stack.getMetadata()))
             return BWOreDictionary.hasPrefix(stack, "plankWood"); //Specifically planks are a-okay
 
         Block blk = state.getBlock();
-       final ReflectionHelperBlock pb = new ReflectionHelperBlock();
+        final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
 
         pb.onBlockActivated(null, null, null, null, null, null, 0, 0, 0);
@@ -168,13 +168,13 @@ public class MiniBlocks extends Feature {
     }
 
     public static void addWhitelistedBlock(ResourceLocation resloc, int meta) { //Delete this in 1.13
-        whitelist.add(resloc.toString()+":"+meta);
+        whitelist.add(resloc.toString() + ":" + meta);
     }
 
     @Override
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
-        whitelist = loadPropStringHashSet("Whitelist","Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)",new String[]{});
+        whitelist = loadPropStringHashSet("Whitelist", "Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)", new String[]{});
         whitelist.add("minecraft:stone:0");
         whitelist.add("minecraft:stonebrick");
         whitelist.add("minecraft:sandstone");
@@ -195,9 +195,13 @@ public class MiniBlocks extends Feature {
         SIDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
         MOULDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
         CORNERS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        COLUMNS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        PEDESTALS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
         GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
         GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
         GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
+        GameRegistry.registerTileEntity(TileColumn.class, "bwm.column");
+        GameRegistry.registerTileEntity(TilePedestal.class, "bwm.pedestal");
     }
 
 
@@ -231,13 +235,7 @@ public class MiniBlocks extends Feature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
-
-    }
-
-    @Override
     public void postInit(FMLPostInitializationEvent event) {
-
 
         for (Material material : names.keySet()) {
             BlockMini siding = SIDINGS.get(material);
@@ -265,17 +263,23 @@ public class MiniBlocks extends Feature {
         }
 
 
-        for(IBlockState parent: Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
+        for (IBlockState parent : Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
             ItemStack mini = BWMRecipes.getStackFromState(parent);
+            Material material = parent.getMaterial();
             MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
             MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
-            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), parent, 8);
-            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), parent, 8);
-            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), parent, 8);
+            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(material), parent, 8);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(material), parent, 8);
+            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(material), parent, 8);
+            ItemStack columnStack = MiniBlocks.fromParent(COLUMNS.get(material), parent, 8);
+            ItemStack pedestalStack = MiniBlocks.fromParent(PEDESTALS.get(material), parent, 8);
 
             AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
             AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
             AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
+
+            AnvilRecipes.addSteelShapedRecipe(columnStack.getItem().getRegistryName(), columnStack, "XX","XX","XX","XX", 'X', moulding);
+            AnvilRecipes.addSteelShapedRecipe(pedestalStack.getItem().getRegistryName(), pedestalStack, " XX ","BBBB","BBBB","BBBB", 'X', siding, 'B', mini);
         }
 
     }
@@ -298,11 +302,15 @@ public class MiniBlocks extends Feature {
         MiniModel.SIDING = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/siding")));
         MiniModel.MOULDING = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/moulding")));
         MiniModel.CORNER = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/corner")));
+        MiniModel.COLUMN = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/column")));
+        MiniModel.PEDESTAL = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/pedestal")));
         for (Material material : names.keySet()) {
             String name = names.get(material);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "siding", name), MiniModel.SIDING);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "moulding", name), MiniModel.MOULDING);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "corner", name), MiniModel.CORNER);
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "column", name), MiniModel.COLUMN);
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "pedestal", name), MiniModel.PEDESTAL);
         }
     }
 

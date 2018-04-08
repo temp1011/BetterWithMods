@@ -30,7 +30,7 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
         NBTTagCompound tag = mini.getTagCompound();
         if (tag != null && tag.hasKey("texture")) {
             IBlockState texture = NBTUtil.readBlockState(tag.getCompoundTag("texture"));
-            return from(texture, BaseOrientation.DEFAULT);
+            return from(texture, null);
         }
         return null;
     }
@@ -62,7 +62,7 @@ public class MiniCacheInfo implements IRenderComparable<MiniCacheInfo> {
     }
 
     public IBlockState getState() {
-        if(state == null)
+        if (state == null)
             return Blocks.AIR.getDefaultState();
         return state;
     }

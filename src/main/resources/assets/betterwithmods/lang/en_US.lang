@@ -138,53 +138,13 @@ tile.bwm:corner_rock.name=Corner
 tile.bwm:corner_wood.name=Corner
 tile.bwm:corner_iron.name=Corner
 
-tile.bwm:wood_siding.0.name=Oak Wood Siding
-tile.bwm:wood_siding.1.name=Spruce Wood Siding
-tile.bwm:wood_siding.2.name=Birch Wood Siding
-tile.bwm:wood_siding.3.name=Jungle Wood Siding
-tile.bwm:wood_siding.4.name=Acacia Wood Siding
-tile.bwm:wood_siding.5.name=Dark Oak Wood Siding
-tile.bwm:wood_siding.6.name=Blood Wood Siding
+tile.bwm:column_rock.name=Column
+tile.bwm:column_wood.name=Column
+tile.bwm:column_iron.name=Column
 
-tile.bwm:wood_moulding.0.name=Oak Wood Moulding
-tile.bwm:wood_moulding.1.name=Spruce Wood Moulding
-tile.bwm:wood_moulding.2.name=Birch Wood Moulding
-tile.bwm:wood_moulding.3.name=Jungle Wood Moulding
-tile.bwm:wood_moulding.4.name=Acacia Wood Moulding
-tile.bwm:wood_moulding.5.name=Dark Oak Wood Moulding
-tile.bwm:wood_moulding.6.name=Blood Wood Moulding
-
-tile.bwm:wood_corner.0.name=Oak Wood Corner
-tile.bwm:wood_corner.1.name=Spruce Wood Corner
-tile.bwm:wood_corner.2.name=Birch Wood Corner
-tile.bwm:wood_corner.3.name=Jungle Wood Corner
-tile.bwm:wood_corner.4.name=Acacia Wood Corner
-tile.bwm:wood_corner.5.name=Dark Oak Wood Corner
-tile.bwm:wood_corner.6.name=Blood Wood Corner
-
-tile.bwm:stone_siding.0.name=Stone Siding
-tile.bwm:stone_siding.1.name=Stone Brick Siding
-tile.bwm:stone_siding.2.name=White Stone Siding
-tile.bwm:stone_siding.3.name=Nether Brick Siding
-tile.bwm:stone_siding.4.name=Brick Siding
-tile.bwm:stone_siding.5.name=Sandstone Siding
-tile.bwm:stone_siding.6.name=Quartz Siding
-
-tile.bwm:stone_moulding.0.name=Stone Moulding
-tile.bwm:stone_moulding.1.name=Stone Brick Moulding
-tile.bwm:stone_moulding.2.name=White Stone Moulding
-tile.bwm:stone_moulding.3.name=Nether Brick Moulding
-tile.bwm:stone_moulding.4.name=Brick Moulding
-tile.bwm:stone_moulding.5.name=Sandstone Moulding
-tile.bwm:stone_moulding.6.name=Quartz Moulding
-
-tile.bwm:stone_corner.0.name=Stone Corner
-tile.bwm:stone_corner.1.name=Stone Brick Corner
-tile.bwm:stone_corner.2.name=White Stone Corner
-tile.bwm:stone_corner.3.name=Nether Brick Corner
-tile.bwm:stone_corner.4.name=Brick Corner
-tile.bwm:stone_corner.5.name=Sandstone Corner
-tile.bwm:stone_corner.6.name=Quartz Corner
+tile.bwm:pedestal_rock.name=Pedestal
+tile.bwm:pedestal_wood.name=Pedestal
+tile.bwm:pedestal_iron.name=Pedestal
 
 tile.bwm:block_dispenser.name=Block Dispenser
 tile.bwm:companion_cube.name=Companion Cube
@@ -232,18 +192,6 @@ tile.bwm:stake.name=Stake
 
 tile.bwm:iron_wall.name=Iron Wall
 tile.bwm:nether_growth.name=Nether Growth Spore
-
-tile.bwm:ie_siding.0.name=Horizontal Treated Wood Siding
-tile.bwm:ie_moulding.0.name=Horizontal Treated Wood Moulding
-tile.bwm:ie_corner.0.name=Horizontal Treated Wood Corner
-
-tile.bwm:ie_siding.1.name=Vertical Treated Wood Siding
-tile.bwm:ie_moulding.1.name=Vertical Treated Wood Moulding
-tile.bwm:ie_corner.1.name=Vertical Treated Wood Corner
-
-tile.bwm:ie_siding.2.name=Packaged Treated Wood Siding
-tile.bwm:ie_moulding.2.name=Packaged Treated Wood Moulding
-tile.bwm:ie_corner.2.name=Packaged Treated Wood Corner
 
 tile.bwm:steel_saw.name=Soulforged Steel Saw
 

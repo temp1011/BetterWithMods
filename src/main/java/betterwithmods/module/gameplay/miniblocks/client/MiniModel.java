@@ -16,7 +16,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 
 public class MiniModel extends ModelFactory<MiniCacheInfo> {
 
-    public static MiniModel SIDING, MOULDING, CORNER;
+    public static MiniModel SIDING, MOULDING, CORNER, COLUMN, PEDESTAL;
 
     public IModel template;
 

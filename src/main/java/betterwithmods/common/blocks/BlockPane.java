@@ -36,6 +36,7 @@ public class BlockPane extends BWMBlock {
 
     public BlockPane(Material material) {
         super(material);
+        setDefaultState(getDefaultState().withProperty(DirUtils.NORTH,true).withProperty(DirUtils.SOUTH,true));
     }
 
     @Override

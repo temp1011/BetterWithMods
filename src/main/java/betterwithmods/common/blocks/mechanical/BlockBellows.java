@@ -38,7 +38,7 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         super(Material.WOOD);
         this.setTickRandomly(true);
         this.setHardness(2.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, false));
+        this.setDefaultState(getDefaultState().withProperty(DirUtils.HORIZONTAL, EnumFacing.SOUTH).withProperty(ACTIVE, true));
         this.setSoundType(SoundType.WOOD);
     }
 

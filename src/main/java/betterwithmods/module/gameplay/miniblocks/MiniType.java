@@ -1,9 +1,6 @@
 package betterwithmods.module.gameplay.miniblocks;
 
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockCorner;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMoulding;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockSiding;
+import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
@@ -12,6 +9,8 @@ public enum MiniType {
     SIDING(BlockSiding.class, "siding"),
     MOULDING(BlockMoulding.class, "moulding"),
     CORNER(BlockCorner.class, "corner"),
+    COLUMN(BlockColumn.class, "column"),
+    PEDESTAL(BlockPedestals.class, "pedestal"),
     UNKNOWN(null, "");
     public static MiniType[] VALUES = values();
 

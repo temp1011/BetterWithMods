@@ -142,7 +142,6 @@ public abstract class ModelFactory<T extends IRenderComparable<T>> extends BaseB
                 return model.getQuads(state, side, rand);
             }
         }
-
         return ImmutableList.of();
     }
 
