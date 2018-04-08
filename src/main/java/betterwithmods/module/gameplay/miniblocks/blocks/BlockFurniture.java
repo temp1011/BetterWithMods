@@ -3,14 +3,18 @@ package betterwithmods.module.gameplay.miniblocks.blocks;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.blocks.camo.CamoInfo;
 import betterwithmods.common.blocks.camo.TileCamo;
+import betterwithmods.common.entity.EntitySitMount;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -28,7 +32,7 @@ public abstract class BlockFurniture extends BlockCamo {
 
     public BlockFurniture(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
-        setDefaultState(getDefaultState().withProperty(SUPPORTED,true));
+        setDefaultState(getDefaultState().withProperty(SUPPORTED, true));
     }
 
     @Nullable
@@ -39,7 +43,7 @@ public abstract class BlockFurniture extends BlockCamo {
 
     @Override
     public IBlockState fromTile(IExtendedBlockState state, TileCamo tile) {
-        return state.withProperty(CAMO_INFO,new CamoInfo(tile));
+        return state.withProperty(CAMO_INFO, new CamoInfo(tile));
     }
 
     @Override
@@ -72,6 +76,40 @@ public abstract class BlockFurniture extends BlockCamo {
 
     @Override
     public abstract boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing);
-//        return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockFurniture;
-//    }
+
+    public boolean canSit() {
+        return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (canSit() && worldIn.getEntitiesWithinAABB(EntitySitMount.class, getBoundingBox(state, worldIn, pos).offset(pos)).isEmpty()) {
+
+            EntitySitMount mount = new EntitySitMount(worldIn, getOffset());
+            mount.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+            worldIn.spawnEntity(mount);
+            playerIn.startRiding(mount);
+        }
+
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+    }
+
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+        AxisAlignedBB box = getBoundingBox(state, worldIn, pos);
+        worldIn.getEntitiesWithinAABB(EntitySitMount.class, box).forEach(EntitySitMount::dismountRidingEntity);
+    }
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+        AxisAlignedBB box = getBoundingBox(state, world, pos).offset(pos).grow(1);
+        world.getEntitiesWithinAABB(EntitySitMount.class, box).forEach(EntitySitMount::dismountRidingEntity);
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
+    }
+
+    public double getOffset() {
+        return 0;
+    }
 }

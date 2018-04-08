@@ -18,11 +18,21 @@ public class BlockBench extends BlockFurniture {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0,0,0,0,0.5,0);
+        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     }
 
     @Override
     public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockBench;
+    }
+
+    @Override
+    public boolean canSit() {
+        return true;
+    }
+
+    @Override
+    public double getOffset() {
+        return 0;
     }
 }

@@ -49,7 +49,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
 
@@ -279,9 +278,9 @@ public class MiniBlocks extends Feature {
             AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
             AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
             AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
-
-            addHardcoreRecipe(new ShapedOreRecipe(tableStack.getItem().getRegistryName(), tableStack, "SSS"," M ", " M ", 'S', siding, 'M', moulding));
-            addHardcoreRecipe(new ShapedOreRecipe(benchStack.getItem().getRegistryName(), benchStack, "SSS"," M ", 'S', siding, 'M', moulding));
+            //TODO
+//            addHardcoreRecipe(new ShapedOreRecipe(tableStack.getItem().getRegistryName(), tableStack, "SSS"," M ", " M ", 'S', siding, 'M', moulding));
+//            addHardcoreRecipe(new ShapedOreRecipe(benchStack.getItem().getRegistryName(), benchStack, "SSS"," M ", 'S', siding, 'M', moulding));
         }
 
     }

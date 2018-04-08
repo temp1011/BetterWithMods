@@ -172,6 +172,7 @@ public class BWRegistry {
         BWRegistry.registerEntity(EntityHCFishHook.class, "bwm_fishing_hook", 64, 20, true);
         BWRegistry.registerEntity(EntityJungleSpider.class, "bwm_jungle_spider", 64, 1, true);
         BWRegistry.registerEntity(EntityTentacle.class, "bwm_tentacle", 64, 1, true);
+        BWRegistry.registerEntity(EntitySitMount.class, "bwm_sit_mount", 64, 20, false);
 
 
         EntityRegistry.registerEgg(new ResourceLocation(BWMod.MODID, "bwm_jungle_spider"), new Color(60, 100, 50).getRGB(), new Color(100, 140, 80).getRGB());
