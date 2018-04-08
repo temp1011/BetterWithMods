@@ -5,7 +5,6 @@ import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.baking.UnlistedPropertyGeneric;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.blocks.camo.TileCamo;
-import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.gameplay.miniblocks.client.MiniInfo;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
@@ -14,16 +13,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -31,42 +26,15 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.Collection;
+import java.util.function.Function;
 
 public abstract class BlockMini extends BlockCamo implements IRenderRotationPlacement {
 
     public static final IUnlistedProperty<MiniInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniInfo.class);
 
-    public BlockMini(Material material, Set<IBlockState> subtypes) {
+    public BlockMini(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
-    }
-
-
-    @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getState().getBlockHardness(worldIn, pos);
-        }
-        return super.getBlockHardness(blockState, worldIn, pos);
-    }
-
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion);
-        }
-        return super.getExplosionResistance(world, pos, exploder, explosion);
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
-            items.add(MiniBlocks.fromParent(this, state));
-        }
     }
 
     @Override

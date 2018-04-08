@@ -10,13 +10,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.Collection;
+import java.util.function.Function;
 
 public class BlockColumn extends BlockMini {
 
-    public BlockColumn(Material material, Set<IBlockState> subtypes) {
+
+    public BlockColumn(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
     }
+
     @Override
     public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         if (face != null)

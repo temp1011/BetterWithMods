@@ -13,6 +13,7 @@ public enum MiniType {
     COLUMN(BlockColumn.class, "column"),
     PEDESTAL(BlockPedestals.class, "pedestal"),
     TABLE(BlockTable.class, "table"),
+    BENCH(BlockBench.class, "bench"),
     UNKNOWN(null, "");
     public static MiniType[] VALUES = values();
 

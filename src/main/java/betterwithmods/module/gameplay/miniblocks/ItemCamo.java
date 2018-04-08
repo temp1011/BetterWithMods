@@ -22,6 +22,7 @@ public class ItemCamo extends ItemBlock {
 
     public ItemCamo(Block block) {
         super(block);
+        setHasSubtypes(true);
     }
 
     public static IBlockState getState(ItemStack stack) {

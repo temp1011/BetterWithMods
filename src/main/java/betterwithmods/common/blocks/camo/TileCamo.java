@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class TileCamo extends TileBasic {
+public class TileCamo extends TileBasic {
 
     public IBlockState state;
 

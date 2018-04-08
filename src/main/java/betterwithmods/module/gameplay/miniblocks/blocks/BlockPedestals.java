@@ -10,11 +10,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.Collection;
+import java.util.function.Function;
 
 public class BlockPedestals extends BlockMini {
 
-    public BlockPedestals(Material material, Set<IBlockState> subtypes) {
+
+    public BlockPedestals(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
     }
 

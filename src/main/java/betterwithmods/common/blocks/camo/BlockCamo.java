@@ -29,14 +29,15 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.Collection;
+import java.util.function.Function;
 
 public abstract class BlockCamo extends BWMBlock {
 
     public static final IUnlistedProperty<CamoInfo> CAMO_INFO = new UnlistedPropertyGeneric<>("camo", CamoInfo.class);
-    private final Set<IBlockState> subtypes;
+    private final Function<Material, Collection<IBlockState>> subtypes;
 
-    public BlockCamo(Material material, Set<IBlockState> subtypes) {
+    public BlockCamo(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material);
         this.subtypes = subtypes;
         setCreativeTab(BWCreativeTabs.MINI_BLOCKS);
@@ -64,7 +65,7 @@ public abstract class BlockCamo extends BWMBlock {
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (IBlockState state : subtypes) {
+        for (IBlockState state : subtypes.apply(blockMaterial)) {
             items.add(MiniBlocks.fromParent(this, state));
         }
     }

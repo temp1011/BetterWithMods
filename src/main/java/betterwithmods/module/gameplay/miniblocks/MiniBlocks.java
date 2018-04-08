@@ -7,13 +7,14 @@ import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.camo.BlockCamo;
+import betterwithmods.common.blocks.camo.TileCamo;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
+import betterwithmods.module.gameplay.miniblocks.client.CamoModel;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileTable;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.*;
 import net.minecraft.block.*;
@@ -48,6 +49,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
 
@@ -70,12 +72,13 @@ public class MiniBlocks extends Feature {
     static {
         for (Material material : names.keySet()) {
             String name = names.get(material);
-            Set<IBlockState> states = Sets.newHashSet(MATERIALS.get(material));
-            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, states).setRegistryName(String.format("%s_%s", "siding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, states).setRegistryName(String.format("%s_%s", "moulding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, states).setRegistryName(String.format("%s_%s", "corner", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, states).setRegistryName(String.format("%s_%s", "column", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, states).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "siding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "moulding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "corner", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "column", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).put(material, (BlockCamo) new BlockTable(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "table", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).put(material, (BlockCamo) new BlockBench(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "bench", name)));
         }
     }
 
@@ -188,7 +191,7 @@ public class MiniBlocks extends Feature {
             }
         }
         GameRegistry.registerTileEntity(TileMini.class, "bwm.mini");
-        GameRegistry.registerTileEntity(TileTable.class, "bwm.table");
+        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
     }
 
 
@@ -270,10 +273,15 @@ public class MiniBlocks extends Feature {
             ItemStack sidingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(material), parent, 8);
             ItemStack mouldingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(material), parent, 8);
             ItemStack cornerStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).get(material), parent, 8);
+            ItemStack tableStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).get(material), parent, 1);
+            ItemStack benchStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).get(material), parent, 1);
 
             AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
             AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
             AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
+
+            addHardcoreRecipe(new ShapedOreRecipe(tableStack.getItem().getRegistryName(), tableStack, "SSS"," M ", " M ", 'S', siding, 'M', moulding));
+            addHardcoreRecipe(new ShapedOreRecipe(benchStack.getItem().getRegistryName(), benchStack, "SSS"," M ", 'S', siding, 'M', moulding));
         }
 
     }
@@ -286,9 +294,16 @@ public class MiniBlocks extends Feature {
 
     @SideOnly(Side.CLIENT)
     private void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model) {
-        registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, "normal"), model);
-        registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, "inventory"), model);
+        registerModel(registry, name, model, Sets.newHashSet("normal", "inventory"));
     }
+
+    @SideOnly(Side.CLIENT)
+    private void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model, Set<String> variants) {
+        for (String variant : variants) {
+            registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, variant), model);
+        }
+    }
+
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -298,6 +313,12 @@ public class MiniBlocks extends Feature {
         MiniModel.CORNER = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/corner")));
         MiniModel.COLUMN = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/column")));
         MiniModel.PEDESTAL = new MiniModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/mini/pedestal")));
+        CamoModel.TABLE_SUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/table_supported")));
+        CamoModel.TABLE_UNSUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/table_unsupported")));
+
+        CamoModel.BENCH_SUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/bench_supported")));
+        CamoModel.BENCH_UNSUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/bench_unsupported")));
+
         for (Material material : names.keySet()) {
             String name = names.get(material);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "siding", name), MiniModel.SIDING);
@@ -305,6 +326,10 @@ public class MiniBlocks extends Feature {
             registerModel(event.getModelRegistry(), String.format("%s_%s", "corner", name), MiniModel.CORNER);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "column", name), MiniModel.COLUMN);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "pedestal", name), MiniModel.PEDESTAL);
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "table", name), CamoModel.TABLE_SUPPORTED, Sets.newHashSet("normal", "inventory", "supported=true"));
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "table", name), CamoModel.TABLE_UNSUPPORTED, Sets.newHashSet("supported=false"));
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "bench", name), CamoModel.BENCH_SUPPORTED, Sets.newHashSet("normal", "inventory", "supported=true"));
+            registerModel(event.getModelRegistry(), String.format("%s_%s", "bench", name), CamoModel.BENCH_UNSUPPORTED, Sets.newHashSet("supported=false"));
         }
     }
 
