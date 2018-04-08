@@ -2,7 +2,6 @@ package betterwithmods.common.blocks.camo;
 
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
-import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,8 +36,6 @@ public abstract class TileCamo extends TileBasic {
         }
         return tag;
     }
-
-    public abstract BaseOrientation deserializeOrientation(NBTTagCompound tag);
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {

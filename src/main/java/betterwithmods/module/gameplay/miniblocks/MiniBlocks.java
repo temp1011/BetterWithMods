@@ -13,10 +13,7 @@ import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
 import betterwithmods.module.gameplay.miniblocks.tiles.*;
 import betterwithmods.util.ReflectionHelperBlock;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -50,10 +47,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class MiniBlocks extends Feature {
     public static HashMap<MiniType, HashMap<Material, BlockMini>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
@@ -81,11 +75,12 @@ public class MiniBlocks extends Feature {
     static {
         for (Material material : names.keySet()) {
             String name = names.get(material);
-            SIDINGS.put(material, (BlockMini) new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
-            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
-            CORNERS.put(material, (BlockMini) new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
-            COLUMNS.put(material, (BlockMini) new BlockColumn(material).setRegistryName(String.format("%s_%s", "column", name)));
-            PEDESTALS.put(material, (BlockMini) new BlockPedestals(material).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            Set<IBlockState> states = Sets.newHashSet(MATERIALS.get(material));
+            SIDINGS.put(material, (BlockMini) new BlockSiding(material,states).setRegistryName(String.format("%s_%s", "siding", name)));
+            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material,states).setRegistryName(String.format("%s_%s", "moulding", name)));
+            CORNERS.put(material, (BlockMini) new BlockCorner(material,states).setRegistryName(String.format("%s_%s", "corner", name)));
+            COLUMNS.put(material, (BlockMini) new BlockColumn(material,states).setRegistryName(String.format("%s_%s", "column", name)));
+            PEDESTALS.put(material, (BlockMini) new BlockPedestals(material,states).setRegistryName(String.format("%s_%s", "pedestal", name)));
         }
     }
 

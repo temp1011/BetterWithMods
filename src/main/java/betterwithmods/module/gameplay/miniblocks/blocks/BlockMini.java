@@ -31,15 +31,17 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public abstract class BlockMini extends BlockCamo implements IRenderRotationPlacement {
 
     public static final IUnlistedProperty<MiniInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniInfo.class);
 
 
-    public BlockMini(Material material) {
-        super(material);
+    public BlockMini(Material material, Set<IBlockState> subtypes) {
+        super(material,subtypes);
     }
+
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {

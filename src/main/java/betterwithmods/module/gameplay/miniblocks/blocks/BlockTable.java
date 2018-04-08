@@ -1,30 +1,31 @@
 package betterwithmods.module.gameplay.miniblocks.blocks;
 
-import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
+import betterwithmods.common.blocks.camo.BlockCamo;
+import betterwithmods.common.blocks.camo.TileCamo;
+import betterwithmods.common.blocks.mechanical.tile.TileTable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
-public class BlockTable extends BlockMini {
+public class BlockTable extends BlockCamo {
 
-    public BlockTable(Material material) {
-        super(material);
+    public BlockTable(Material material, Set<IBlockState> subtypes) {
+        super(material, subtypes);
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return null;
+        return new TileTable();
     }
 
     @Override
-    public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
+    public IBlockState fromTile(IExtendedBlockState state, TileCamo tile) {
         return null;
     }
 

@@ -13,11 +13,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class BlockColumn extends BlockMini {
 
-    public BlockColumn(Material material) {
-        super(material);
+    public BlockColumn(Material material, Set<IBlockState> subtypes) {
+        super(material, subtypes);
     }
 
     @Nullable

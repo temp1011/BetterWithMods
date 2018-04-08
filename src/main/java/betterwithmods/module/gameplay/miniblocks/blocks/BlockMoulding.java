@@ -13,14 +13,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class BlockMoulding extends BlockMini {
 
 
-    public BlockMoulding(Material material) {
-        super(material);
+    public BlockMoulding(Material material, Set<IBlockState> subtypes) {
+        super(material, subtypes);
     }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {

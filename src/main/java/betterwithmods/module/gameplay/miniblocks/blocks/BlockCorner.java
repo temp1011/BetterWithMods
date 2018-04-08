@@ -13,13 +13,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class BlockCorner extends BlockMini {
 
-    public BlockCorner(Material material) {
-        super(material);
+    public BlockCorner(Material material, Set<IBlockState> subtypes) {
+        super(material, subtypes);
     }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {

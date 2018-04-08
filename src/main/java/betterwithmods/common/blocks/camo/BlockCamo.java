@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.camo;
 
-import betterwithmods.api.block.IRenderRotationPlacement;
+import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.baking.UnlistedPropertyGeneric;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
@@ -29,13 +29,17 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
-public abstract class BlockCamo extends BWMBlock implements IRenderRotationPlacement {
+public abstract class BlockCamo extends BWMBlock {
 
     public static final IUnlistedProperty<CamoInfo> CAMO_INFO = new UnlistedPropertyGeneric<>("camo", CamoInfo.class);
+    private final Set<IBlockState> subtypes;
 
-    public BlockCamo(Material material) {
+    public BlockCamo(Material material, Set<IBlockState> subtypes) {
         super(material);
+        this.subtypes = subtypes;
+        setCreativeTab(BWCreativeTabs.MINI_BLOCKS);
     }
 
     @Override
@@ -60,7 +64,7 @@ public abstract class BlockCamo extends BWMBlock implements IRenderRotationPlace
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
+        for (IBlockState state : subtypes) {
             items.add(MiniBlocks.fromParent(this, state));
         }
     }
@@ -94,7 +98,7 @@ public abstract class BlockCamo extends BWMBlock implements IRenderRotationPlace
         TileCamo tile = (TileCamo) world.getTileEntity(pos);
         IExtendedBlockState extendedBS = (IExtendedBlockState) super.getExtendedState(state, world, pos);
         if (tile != null) {
-            return fromTile(extendedBS,tile);
+            return fromTile(extendedBS, tile);
         }
         return extendedBS;
     }
