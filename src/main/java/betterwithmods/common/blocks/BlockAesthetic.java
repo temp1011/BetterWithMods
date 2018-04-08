@@ -44,11 +44,11 @@ public class BlockAesthetic extends BWMBlock {
     }
 
     public static ItemStack getStack(EnumType type) {
-        return new ItemStack(BLOCKS.get(type));
+        return getStack(type,1);
     }
 
-    public static ItemStack getStack(EnumType type, int amount) {
-        return new ItemStack(BWMBlocks.AESTHETIC, amount, type.getMeta());
+    public static ItemStack getStack(EnumType type, int count) {
+        return new ItemStack(BLOCKS.get(type), count);
     }
 
     @Override

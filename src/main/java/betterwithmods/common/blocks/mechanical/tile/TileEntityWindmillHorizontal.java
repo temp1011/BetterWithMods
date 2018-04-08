@@ -22,7 +22,7 @@ public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
     @Override
     public void verifyIntegrity() {
         boolean valid = true;
-        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.HORIZONTAL_WINDMILL) {
             EnumFacing.Axis axis = getBlockWorld().getBlockState(pos).getValue(DirUtils.AXIS);
             for (int vert = -6; vert <= 6; vert++) {
                 for (int i = -6; i <= 6; i++) {

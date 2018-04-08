@@ -85,9 +85,6 @@ public abstract class BlockAxleGenerator extends BWMBlock implements IBlockActiv
     }
 
     @Override
-    public abstract ItemStack getItem(World worldIn, BlockPos pos, IBlockState state);
-
-    @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(BWMBlocks.WOODEN_AXLE));

@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.api.IMultiLocations;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.items.ItemMaterial;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
+public class BlockHemp extends BlockCrops implements IPlantable {
     public static final PropertyBool TOP = PropertyBool.create("top");
     public static double growthChance, lampModifier, fertileModifier, neighborModifier;
 
@@ -33,11 +32,6 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
-    }
-
-    @Override
-    public String[] getLocations() {
-        return new String[]{"hemp_seed"};
     }
 
     @Override

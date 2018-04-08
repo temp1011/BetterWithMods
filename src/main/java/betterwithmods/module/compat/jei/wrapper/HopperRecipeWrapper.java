@@ -1,9 +1,8 @@
 package betterwithmods.module.compat.jei.wrapper;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.registry.HopperInteractions;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -37,15 +36,15 @@ public class HopperRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputLists(ItemStack.class, Lists.newArrayList(input,filter,container));
-        ingredients.setOutputLists(ItemStack.class, Lists.newArrayList(outputs,secondaryOutputs));
+        ingredients.setInputLists(ItemStack.class, Lists.newArrayList(input, filter, container));
+        ingredients.setOutputLists(ItemStack.class, Lists.newArrayList(outputs, secondaryOutputs));
     }
 
     public static class SoulUrn extends HopperRecipeWrapper {
         public SoulUrn(HopperInteractions.SoulUrnRecipe recipe) {
             super(recipe);
-            if(recipe.hasUrn())
-                secondaryOutputs.add(BlockUrn.getStack(BlockUrn.EnumType.FULL,1));
+            if (recipe.hasUrn())
+                secondaryOutputs.add(new ItemStack(BWMBlocks.SOUL_URN));
             else
                 container.clear();
         }

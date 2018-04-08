@@ -1,6 +1,6 @@
 package betterwithmods.common.registry;
 
-import betterwithmods.common.blocks.BlockUrn;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.util.InvUtils;
@@ -65,7 +65,7 @@ public class HopperInteractions {
 
         @Override
         public List<ItemStack> getContainers() {
-            return Lists.newArrayList(BlockUrn.getStack(BlockUrn.EnumType.EMPTY,1));
+            return Lists.newArrayList(new ItemStack(BWMBlocks.URN));
         }
 
         private int getCraftsPerUrn() { //Futureproofing if soul count per craft is ever >1

@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,15 +20,20 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
 
     public boolean isSlaveValid(int offset) {
         int airCounter = 0;
-
-
         for (int x = -getRadius(); x <= getRadius(); x++) {
             for (int z = -getRadius(); z <= getRadius(); z++) {
                 BlockPos offPos = pos.add(x, offset, z);
 
                 double s = Math.sqrt((x * x) + (z * z));
-                if (s > 4.5 || x == 0 && z == 0)
+                if (s > 4.5) {
                     continue;
+                }
+                if (x == 0 && z == 0) {
+                    IBlockState state = getBlockWorld().getBlockState(offPos);
+                    if (!(state.getBlock() instanceof BlockAxle))
+                        return false;
+                    continue;
+                }
                 if (getBlockWorld().isAirBlock(offPos)) {
                     airCounter++;
                 } else {
@@ -42,7 +48,7 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
     @Override
     public void verifyIntegrity() {
         boolean valid = false;
-        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.WINDMILL) {
+        if (getBlockWorld().getBlockState(pos).getBlock() == BWMBlocks.VERTICAL_WINDMILL) {
             for (int i = -3; i <= 3; i++) {
                 if (i != 0) {
                     if (isSlaveValid(i)) {

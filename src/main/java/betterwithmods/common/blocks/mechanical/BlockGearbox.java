@@ -57,7 +57,7 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float flX, float flY, float flZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getStateForAdvancedRotationPlacement(getDefaultState(), placer.isSneaking() ? side : side.getOpposite(), flX, flY, flZ);
+        return getStateForAdvancedRotationPlacement(getDefaultState(), placer.isSneaking() ? side.getOpposite() : side, flX, flY, flZ);
     }
 
     @Override

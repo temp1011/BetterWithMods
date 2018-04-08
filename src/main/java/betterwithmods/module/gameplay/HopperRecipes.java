@@ -77,10 +77,10 @@ public class HopperRecipes extends Feature {
         )));
 
 
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustNetherrack"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
-        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustSoul"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustNetherrack"), ItemStack.EMPTY, ItemMaterial.getStack(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
+        HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustSoul"), ItemStack.EMPTY, ItemMaterial.getStack(ItemMaterial.EnumMaterial.SAWDUST)));
         if (brimstoneFiltering)
-            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustGlowstone"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE)));
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustGlowstone"), ItemStack.EMPTY, ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", Ingredient.fromStacks(new ItemStack(Blocks.GRAVEL)), Lists.newArrayList(new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)), Lists.newArrayList(new ItemStack(Items.FLINT))) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {

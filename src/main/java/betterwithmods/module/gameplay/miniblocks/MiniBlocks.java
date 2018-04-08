@@ -55,7 +55,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -185,10 +184,6 @@ public class MiniBlocks extends Feature {
         whitelist.add("betterwithmods:aesthetic:6");
     }
 
-    public void addOldRecipeConversation(ItemStack old, Block mini, IBlockState base) {
-        ItemStack output = fromParent(mini, base);
-        addHardcoreRecipe(new ShapelessRecipes("mini_conversion", output, InvUtils.asNonnullList(Ingredient.fromStacks(old))).setRegistryName(BWMod.MODID + ":" + old.getItem().getUnlocalizedName(old).replace("tile.", "")));
-    }
 
     @Override
     public String getFeatureDescription() {

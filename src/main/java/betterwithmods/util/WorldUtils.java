@@ -30,6 +30,11 @@ public final class WorldUtils {
     private WorldUtils() {
     }
 
+
+    public static Iterable<BlockPos> getPosInBox(AxisAlignedBB box) {
+        return BlockPos.getAllInBox(new BlockPos(box.minX, box.minY, box.minZ), new BlockPos(box.maxX, box.maxY, box.maxZ));
+    }
+
     /**
      * Based on {@link World#getLightFromNeighbors(BlockPos)} build 2185
      */
@@ -105,8 +110,8 @@ public final class WorldUtils {
     }
 
     public static double getDistance(BlockPos pos1, BlockPos pos2) {
-        assert(pos1!=null);
-        assert(pos2!=null);
+        assert (pos1 != null);
+        assert (pos2 != null);
         return new Vec3d(pos1).distanceTo(new Vec3d(pos2));
     }
 
@@ -114,9 +119,9 @@ public final class WorldUtils {
         EntityGhast ghast = new EntityGhast(world);
         double failures = 1;
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
             double yPos = pos.getY() + failures;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
             AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));
@@ -190,8 +195,7 @@ public final class WorldUtils {
         return phase.ordinal() == world.provider.getMoonPhase(world.getWorldTime());
     }
 
-    public static boolean isSpecialDay()
-    {
+    public static boolean isSpecialDay() {
         Calendar date = Calendar.getInstance();
         return date.get(Calendar.MONTH) == Calendar.APRIL && date.get(Calendar.DAY_OF_MONTH) == 1;
     }

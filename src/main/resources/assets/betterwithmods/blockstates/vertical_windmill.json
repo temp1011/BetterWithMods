@@ -14,11 +14,7 @@
     "normal": [
       {}
     ],
-    "inventory": [
-      {
-        "transform": "forge:default-block"
-      }
-    ],
+    "inventory": [],
     "axis": {
       "x": {
         "x": 90,

@@ -38,7 +38,6 @@ public final class BWMItems {
         ItemMaterial.init();
     }
 
-    public static final Item AXLE_GENERATOR = new ItemAxleGenerator().setRegistryName("axle_generator");
     public static final Item BARK = new ItemBark().setRegistryName("bark");
     public static final Item DONUT = new ItemFood(2, 0.25f, false).setCreativeTab(CreativeTabs.FOOD).setRegistryName("donut");
     public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
@@ -105,7 +104,6 @@ public final class BWMItems {
 
     public static void registerItems() {
         ItemMaterial.MATERIALS.values().forEach(BWMItems::registerItem);
-        registerItem(AXLE_GENERATOR);
         registerItem(BARK);
         registerItem(DONUT);
         registerItem(DYNAMITE);

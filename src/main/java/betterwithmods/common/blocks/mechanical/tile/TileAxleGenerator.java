@@ -74,6 +74,7 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
         if (tick % 20 == 0 && getBlockWorld().getBlockState(pos).getBlock() instanceof BlockAxleGenerator) {
             verifyIntegrity();
             calculatePower();
+            tick = 0;
         }
 
         if (isValid()) {

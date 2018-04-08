@@ -31,7 +31,7 @@ public class HarderSteelRecipe extends Feature {
     public void init(FMLInitializationEvent event) {
         BWRegistry.CRUCIBLE.addStokedRecipe(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX)));
         BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon"), Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX))), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new ItemStack(BWMBlocks.URN, 1, 0)));
-        BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG));
+        BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), Lists.newArrayList(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)));
     }
 
     @Override

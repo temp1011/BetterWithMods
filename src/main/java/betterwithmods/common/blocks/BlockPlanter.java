@@ -11,7 +11,6 @@ import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,7 +19,10 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -208,12 +210,6 @@ public class BlockPlanter extends BWMBlock {
         BlockPos up = pos.up();
         EnumPlantType plantType = plant.getPlantType(world, up);
         return dir == EnumFacing.UP && type.isType(plantType);
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (EnumType type : EnumType.VALUES)
-            items.add(getStack(type));
     }
 
     @Override

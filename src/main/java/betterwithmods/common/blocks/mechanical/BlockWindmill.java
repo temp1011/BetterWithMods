@@ -1,11 +1,9 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.IColor;
-import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillVertical;
 import betterwithmods.util.ColorUtils;
-import betterwithmods.util.DirUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,13 +16,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockWindmill extends BlockAxleGenerator {
-    public BlockWindmill() {
+    private EnumFacing.Axis axis;
+
+    public BlockWindmill(EnumFacing.Axis axis) {
         super(Material.WOOD);
+        this.axis = axis;
     }
 
+    //TODO coloring
     @Override
-    public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-        return new ItemStack(BWMItems.AXLE_GENERATOR, 1, state.getValue(DirUtils.AXIS) == EnumFacing.Axis.Y ? 2 : 0);
+    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+        return super.recolorBlock(world, pos, side, color);
     }
 
     @Override
@@ -36,8 +38,8 @@ public class BlockWindmill extends BlockAxleGenerator {
         if (color != null) {
             if (world.isRemote)
                 return true;
-            if(tile instanceof IColor) {
-                if(((IColor) tile).dye(color)) {
+            if (tile instanceof IColor) {
+                if (((IColor) tile).dye(color)) {
                     if (!player.capabilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
@@ -54,9 +56,8 @@ public class BlockWindmill extends BlockAxleGenerator {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        if (state.getValue(DirUtils.AXIS) == EnumFacing.Axis.Y)
+        if(axis == EnumFacing.Axis.Y)
             return new TileEntityWindmillVertical();
-        else
-            return new TileEntityWindmillHorizontal();
+        return new TileEntityWindmillHorizontal();
     }
 }
