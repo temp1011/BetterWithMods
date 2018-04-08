@@ -7,7 +7,7 @@ import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.tile.TileGearbox;
 import betterwithmods.util.DirUtils;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpower, IAdvancedRotationPlacement, IRenderRotationPlacement {
+public class BlockGearbox extends BWMBlock implements IBlockActive, IOverpower, IAdvancedRotationPlacement, IRenderRotationPlacement {
     private final int maxPower;
     private EnumTier type;
 
@@ -305,5 +305,10 @@ public class BlockGearbox extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public RenderFunction getRenderFunction() {
         return ClientEventHandler::renderBasicGrid;
+    }
+
+    @Override
+    public boolean rotates() {
+        return true;
     }
 }

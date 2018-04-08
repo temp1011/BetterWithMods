@@ -32,4 +32,9 @@ public class BlockColumn extends BlockMini {
             return ColumnOrientation.getFromVec(new Vec3d(hitX, hitY, hitZ), face);
         return BaseOrientation.DEFAULT;
     }
+
+    @Override
+    public boolean rotates() {
+        return false;
+    }
 }

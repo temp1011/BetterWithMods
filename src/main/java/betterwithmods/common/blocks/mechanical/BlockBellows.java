@@ -3,7 +3,7 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileBellows;
 import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.util.DirUtils;
@@ -32,7 +32,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockBellows extends BlockRotate implements IBlockActive, IOverpower {
+public class BlockBellows extends BWMBlock implements IBlockActive, IOverpower {
+
+    private final float scale = 1 / 4f;
+    private final AxisAlignedBB lift = new AxisAlignedBB(0, 0.6875F, 0, 1, 1, 1);
 
     public BlockBellows() {
         super(Material.WOOD);
@@ -123,8 +126,6 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
         }
     }
 
-    private final float scale = 1 / 4f;
-
     public void blowItem(BlockPos pos, EnumFacing facing, EntityItem item) {
         double x = 0, z = 0;
 
@@ -180,8 +181,6 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
             world.setBlockToAir(pos);
         }
     }
-
-    private final AxisAlignedBB lift = new AxisAlignedBB(0, 0.6875F, 0, 1, 1, 1);
 
     private void liftCollidingEntities(World world, BlockPos pos) {
         List<Entity> list = world.getEntitiesWithinAABB(Entity.class, lift.offset(pos));
@@ -240,5 +239,10 @@ public class BlockBellows extends BlockRotate implements IBlockActive, IOverpowe
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return face != EnumFacing.DOWN && state.getValue(ACTIVE) ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    @Override
+    public boolean rotates() {
+        return true;
     }
 }

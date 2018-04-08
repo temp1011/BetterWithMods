@@ -15,11 +15,14 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -30,8 +33,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public abstract class BWMBlock extends Block {
+public abstract class BWMBlock extends Block implements IRotate {
 
     private Class<? extends TileEntity> tileClass;
 
@@ -113,8 +117,6 @@ public abstract class BWMBlock extends Block {
         this.tileClass = tileClass;
         return this;
     }
-
-
 
 
     @Override
@@ -216,5 +218,15 @@ public abstract class BWMBlock extends Block {
 
     public int getParticleTintIndex() {
         return -1;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        IRotate.super.addInformation(stack, player, tooltip, advanced);
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return IRotate.super.onBlockActivated(this,worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 }

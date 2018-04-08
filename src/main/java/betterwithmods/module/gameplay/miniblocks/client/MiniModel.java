@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-public class MiniModel extends ModelFactory<MiniCacheInfo> {
+public class MiniModel extends ModelFactory<MiniInfo> {
 
     public static MiniModel SIDING, MOULDING, CORNER, COLUMN, PEDESTAL;
 
@@ -26,7 +26,7 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
     }
 
     @Override
-    public IBakedModel bake(MiniCacheInfo object, boolean isItem, BlockRenderLayer layer) {
+    public IBakedModel bake(MiniInfo object, boolean isItem, BlockRenderLayer layer) {
         ImmutableMap.Builder<String, String> textures = new ImmutableMap.Builder<>();
         for (EnumFacing facing : EnumFacing.VALUES) {
             textures.put(facing.getName2(), RenderUtils.getTextureFromFace(object.getState(), facing).getIconName());
@@ -38,7 +38,7 @@ public class MiniModel extends ModelFactory<MiniCacheInfo> {
 
 
     @Override
-    public MiniCacheInfo fromItemStack(ItemStack stack) {
-        return MiniCacheInfo.from(stack);
+    public MiniInfo fromItemStack(ItemStack stack) {
+        return new MiniInfo(stack);
     }
 }

@@ -18,8 +18,7 @@
     ],
     "inventory": [
       {
-        "transform": "forge:default-block",
-        "model": "betterwithmods:saw_inv"
+        "transform": "forge:default-block"
       }
     ],
     "facing": {

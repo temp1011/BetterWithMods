@@ -1,0 +1,93 @@
+package betterwithmods.common.blocks.camo;
+
+import betterwithmods.common.blocks.tile.TileBasic;
+import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
+import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+
+public abstract class TileCamo extends TileBasic {
+
+    public IBlockState state;
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        NBTTagCompound tag = super.writeToNBT(compound);
+
+        if (state != null) {
+            NBTTagCompound texture = new NBTTagCompound();
+            NBTUtil.writeBlockState(texture, state);
+            tag.setTag("texture", texture);
+        }
+        return tag;
+    }
+
+    public abstract BaseOrientation deserializeOrientation(NBTTagCompound tag);
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        if (compound.hasKey("texture"))
+            state = NBTUtil.readBlockState(compound.getCompoundTag("texture"));
+        super.readFromNBT(compound);
+    }
+
+    @Override
+    public void onPlacedBy(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
+        loadFromStack(stack);
+    }
+
+    public void loadFromStack(ItemStack stack) {
+        NBTTagCompound tag = stack.getSubCompound("texture");
+        if (tag != null) {
+            state = NBTUtil.readBlockState(tag);
+        }
+    }
+
+    public void markBlockForRenderUpdate() {
+        world.markBlockRangeForRenderUpdate(pos, pos);
+    }
+
+    public void markBlockForUpdate() {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+    }
+
+    public IBlockState getState() {
+        return state;
+    }
+
+    public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
+        if (this.state != null && getBlockType() instanceof BlockMini) {
+            return fromParent(getBlockType(), this.state, 1);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private ItemStack fromParent(Block mini, IBlockState state, int count) {
+        ItemStack stack = new ItemStack(mini, count);
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound texture = new NBTTagCompound();
+        NBTUtil.writeBlockState(texture, state);
+        tag.setTag("texture", texture);
+        stack.setTagCompound(tag);
+        return stack;
+    }
+
+
+}

@@ -3,7 +3,7 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TilePump;
 import betterwithmods.util.DirUtils;
 import net.minecraft.block.Block;
@@ -30,7 +30,7 @@ import java.util.Random;
  * @author mrebhan
  */
 
-public class BlockPump extends BlockRotate implements IBlockActive, IOverpower {
+public class BlockPump extends BWMBlock implements IBlockActive, IOverpower {
 
     public BlockPump() {
         super(Material.WOOD);
@@ -149,5 +149,10 @@ public class BlockPump extends BlockRotate implements IBlockActive, IOverpower {
         if (tile instanceof TilePump)
             return (TilePump) tile;
         return null;
+    }
+
+    @Override
+    public boolean rotates() {
+        return true;
     }
 }

@@ -169,17 +169,12 @@ tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge
 tile.bwm:fertile_farmland.name=Fertile Farmland
 tile.bwm:advanced_gearbox.name=Advanced Gearbox
-tile.bwm:raw_pastry.0.name=Cake Batter
-tile.bwm:raw_pastry.1.name=Oven Ready Pumpkin Pie
-tile.bwm:raw_pastry.2.name=Raw Cookie Dough
-tile.bwm:raw_pastry.3.name=Flour
-tile.bwm:raw_pastry.4.name=Oven Ready Apple Pie
-tile.bwm:stump.0.name=Oak Stump
-tile.bwm:stump.1.name=Spruce Stump
-tile.bwm:stump.2.name=Birch Stump
-tile.bwm:stump.3.name=Jungle Stump
-tile.bwm:stump.4.name=Acacia Stump
-tile.bwm:stump.5.name=Dark Oak Stump
+
+tile.bwm:raw_cake.name=Cake Batter
+tile.bwm:raw_pumpkin_pie.name=Oven Ready Pumpkin Pie
+tile.bwm:raw_cookie.name=Raw Cookie Dough
+tile.bwm:raw_flour.3.name=Flour
+tile.bwm:raw_apple_pie.4.name=Oven Ready Apple Pie
 tile.bwm:dirt_slab.name=Dirt Slab
 
 tile.bwm:infernal_enchanter.name=Infernal Enchanter

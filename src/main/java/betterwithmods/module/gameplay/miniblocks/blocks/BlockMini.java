@@ -3,9 +3,10 @@ package betterwithmods.module.gameplay.miniblocks.blocks;
 import betterwithmods.api.block.IRenderRotationPlacement;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.baking.UnlistedPropertyGeneric;
-import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.camo.BlockCamo;
+import betterwithmods.common.blocks.camo.TileCamo;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.gameplay.miniblocks.client.MiniCacheInfo;
+import betterwithmods.module.gameplay.miniblocks.client.MiniInfo;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.Block;
@@ -14,19 +15,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -36,9 +32,9 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockMini extends BlockRotate implements IRenderRotationPlacement {
+public abstract class BlockMini extends BlockCamo implements IRenderRotationPlacement {
 
-    public static final IUnlistedProperty<MiniCacheInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniCacheInfo.class);
+    public static final IUnlistedProperty<MiniInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniInfo.class);
 
 
     public BlockMini(Material material) {
@@ -68,7 +64,7 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
-           items.add(MiniBlocks.fromParent(this, state));
+            items.add(MiniBlocks.fromParent(this, state));
         }
     }
 
@@ -97,13 +93,8 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     }
 
     @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
-        IExtendedBlockState extendedBS = (IExtendedBlockState) super.getExtendedState(state, world, pos);
-        if (tile != null) {
-            return extendedBS.withProperty(MINI_INFO, MiniCacheInfo.from(tile));
-        }
-        return extendedBS;
+    public IBlockState fromTile(IExtendedBlockState state, TileCamo tile) {
+        return state.withProperty(MINI_INFO, new MiniInfo((TileMini) tile));
     }
 
     @Override
@@ -130,11 +121,6 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    }
-
-    @Override
-    public void nextState(World world, BlockPos pos, IBlockState state) {
-        rotateBlock(world, pos, EnumFacing.UP);
     }
 
     @Override
@@ -174,86 +160,13 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
         return new ItemStack(this);
     }
 
-
     @Override
-    public final void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        getDrops(drops, world, pos, state, null, fortune, false);
-    }
-
-
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-        player.addStat(StatList.getBlockStats(this));
-        player.addExhaustion(0.005F);
-        int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
-        boolean silkTouch = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
-
-        NonNullList<ItemStack> items = NonNullList.create();
-        getDrops(items, worldIn, pos, state, te, 0, false);
-        float chance = net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, state, fortuneLevel, 1.0f, silkTouch, player);
-
-        harvesters.set(player);
-
-        if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) {
-            for (ItemStack item : items)
-                if (chance >= 1.0f || worldIn.rand.nextFloat() <= chance)
-                    spawnAsEntity(worldIn, pos, item);
-        }
-
-        harvesters.set(null);
-    }
-
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, @Nullable TileEntity te, int fortune, boolean silkTouch) {
-        if (te instanceof TileMini) {
-            drops.add(((TileMini) te).getPickBlock(null, null, state));
-        } else {
-            super.getDrops(drops, world, pos, state, fortune);
-        }
-    }
-
-
-
-    @Override
-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
-        if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) {
-            NonNullList<ItemStack> drops = NonNullList.create();
-            getDrops(drops, worldIn, pos, state, worldIn.getTileEntity(pos), fortune, false);
-            chance = net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(drops, worldIn, pos, state, fortune, chance, false, harvesters.get());
-
-            for (ItemStack drop : drops) {
-                if (worldIn.rand.nextFloat() <= chance) {
-                    spawnAsEntity(worldIn, pos, drop);
-                }
-            }
-        }
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        rotateBlock(world, pos, null);
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getPickBlock(player, target, state);
-        }
-        return new ItemStack(this);
-    }
-
-    @Override
-    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFireSpreadSpeed(world,pos,face);
-        }
-        return 5;
-    }
-
-    @Override
-    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFlammability(world,pos,face);
-        }
-        return 10;
+    public boolean rotates() {
+        return true;
     }
 }

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockDetector extends BlockRotate {
+public class BlockDetector extends BWMBlock {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockDetector() {
@@ -35,6 +35,8 @@ public class BlockDetector extends BlockRotate {
         this.setTickRandomly(true);
         this.setHarvestLevel("pickaxe", 0);
     }
+
+
 
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
@@ -194,5 +196,10 @@ public class BlockDetector extends BlockRotate {
     @Override
     public void nextState(World world, BlockPos pos, IBlockState state) {
         world.setBlockState(pos, state.withProperty(ACTIVE, false).cycleProperty(DirUtils.FACING));
+    }
+
+    @Override
+    public boolean rotates() {
+        return true;
     }
 }

@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class BlockLens extends BlockRotate {
+public class BlockLens extends BWMBlock {
     public static final PropertyBool LIT = PropertyBool.create("lit");
     public static final int RANGE = 256;
 
@@ -310,4 +310,8 @@ public class BlockLens extends BlockRotate {
         world.setBlockState(pos, state.withProperty(LIT, false).cycleProperty(DirUtils.FACING));
     }
 
+    @Override
+    public boolean rotates() {
+        return true;
+    }
 }

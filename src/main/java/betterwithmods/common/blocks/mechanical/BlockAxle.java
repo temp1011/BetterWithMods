@@ -3,7 +3,7 @@ package betterwithmods.common.blocks.mechanical;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.BlockRotate;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.EnumTier;
 import betterwithmods.common.blocks.mechanical.tile.TileAxle;
 import betterwithmods.util.DirUtils;
@@ -39,7 +39,7 @@ import java.util.Random;
 import static betterwithmods.util.DirUtils.AXIS;
 import static net.minecraft.util.EnumFacing.Axis.Y;
 
-public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
+public class BlockAxle extends BWMBlock implements IOverpower, IBlockActive {
 
     private static final AxisAlignedBB X_AABB = new AxisAlignedBB(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
     private static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
@@ -267,5 +267,10 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
         if (type != EnumTier.STEEL) {
             super.onBlockExploded(world, pos, explosion);
         }
+    }
+
+    @Override
+    public boolean rotates() {
+        return true;
     }
 }
