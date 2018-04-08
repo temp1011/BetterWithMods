@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 public class MossGeneration extends Feature {
     private static HashMap<Block,IBlockState> CONVERTED_BLOCKS = new HashMap<>();
 
-    private static int RADIUS;
-    private static int RATE;
-    private static boolean DISABLE_VINE_RECIPES;
+    public static int RADIUS;
+    public static int RATE;
+    public static boolean DISABLE_VINE_RECIPES;
 
     public static void addBlockConversion(Block block, IBlockState mossyState) { //TODO: Could be the new block meta ingredient possibly
         CONVERTED_BLOCKS.put(block,mossyState);
