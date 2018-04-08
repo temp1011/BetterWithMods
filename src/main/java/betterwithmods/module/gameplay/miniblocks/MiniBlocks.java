@@ -58,7 +58,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -276,12 +275,13 @@ public class MiniBlocks extends Feature {
 
 
         for(IBlockState parent: Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
+            Material material = parent.getMaterial();
             ItemStack mini = BWMRecipes.getStackFromState(parent);
             MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
             MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
-            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), parent, 8);
-            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), parent, 8);
-            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), parent, 8);
+            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(material), parent, 8);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(material), parent, 8);
+            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(material), parent, 8);
 
             AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
             AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
