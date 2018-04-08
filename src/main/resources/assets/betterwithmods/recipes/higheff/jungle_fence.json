@@ -16,7 +16,7 @@
   "key": {
     "M": {
       "type": "betterwithmods:minitype",
-      "minitype": "siding",
+      "minitype": "moulding",
       "baseIngredient": {
         "item": "minecraft:planks",
         "data": 3
