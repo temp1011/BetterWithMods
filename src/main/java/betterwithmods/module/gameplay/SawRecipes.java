@@ -4,6 +4,7 @@ import betterwithmods.api.util.IWood;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
+import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.SawRecipe;
 import betterwithmods.module.Feature;
@@ -53,7 +54,7 @@ public class SawRecipes extends Feature {
     public void postInit(FMLPostInitializationEvent event) {
         int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
         for (IWood wood : BWOreDictionary.woods) {
-            BWRegistry.WOOD_SAW.addRecipe(wood.getLog(1), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2)));
+            BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getLog(1)), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2)));
         }
     }
 
