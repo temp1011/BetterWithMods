@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.BlockAxle;
 import betterwithmods.common.blocks.mechanical.BlockWindmill;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,8 +27,15 @@ public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
                 BlockPos offPos = pos.add(x, offset, z);
 
                 double s = Math.sqrt((x * x) + (z * z));
-                if (s > 4.5 || x == 0 && z == 0)
+                if (s > 4.5) {
                     continue;
+                }
+                if (x == 0 && z == 0) {
+                    IBlockState state = getBlockWorld().getBlockState(offPos);
+                    if (!(state.getBlock() instanceof BlockAxle))
+                        return false;
+                    continue;
+                }
                 if (getBlockWorld().isAirBlock(offPos)) {
                     airCounter++;
                 } else {
