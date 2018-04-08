@@ -55,7 +55,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
     @Override
     public String[] getVariants() {
-        return new String[]{"plantertype=empty", "plantertype=farmland", "plantertype=grass", "plantertype=soul_sand", "plantertype=fertile", "plantertype=sand", "plantertype=water_still", "plantertype=gravel", "plantertype=red_sand","plantertype=dirt"};
+        return new String[]{"plantertype=empty", "plantertype=farmland", "plantertype=grass", "plantertype=soul_sand", "plantertype=fertile", "plantertype=sand", "plantertype=water_still", "plantertype=gravel", "plantertype=red_sand", "plantertype=dirt"};
     }
 
     public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
@@ -89,6 +89,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                         return true;
                     if (player.isCreative() || InvUtils.usePlayerItem(player, EnumFacing.UP, heldItem, 1)) {
                         world.playSound(null, pos, newType == WATER ? SoundEvents.ITEM_BUCKET_EMPTY : newType.getState().getBlock().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+                        player.swingArm(hand);
                         return world.setBlockState(pos, state.withProperty(TYPE, newType));
                     }
                 }
@@ -99,6 +100,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
                         return true;
                     if (InvUtils.usePlayerItem(player, EnumFacing.UP, heldItem, 1))
                         InvUtils.givePlayer(player, EnumFacing.UP, InvUtils.asNonnullList(new ItemStack(Items.WATER_BUCKET)));
+                    player.swingArm(hand);
                     world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                     world.setBlockState(pos, state.withProperty(TYPE, EMPTY));
                 }
@@ -108,6 +110,7 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
             case DIRT:
                 if (newType == FARMLAND) {
                     heldItem.damageItem(1, player);
+                    player.swingArm(hand);
                     world.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     world.setBlockState(pos, state.withProperty(TYPE, newType));
                     break;
@@ -145,41 +148,46 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         if (!world.isRemote) {
-            int meta = world.getBlockState(pos).getValue(TYPE).getMeta();
+            EnumType type = world.getBlockState(pos).getValue(TYPE);
             BlockPos up = pos.up();
             if (world.isAirBlock(up)) {
-                if (meta == 1) {
-                    if (world.getLight(up) > 8) {
-                        int xP = rand.nextInt(3) - 1;
-                        int yP = rand.nextInt(3) - 1;
-                        int zP = rand.nextInt(3) - 1;
-                        BlockPos checkPos = pos.add(xP, yP, zP);
-                        if (world.getBlockState(checkPos).getBlock() == Blocks.GRASS)
-                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, GRASS));
-                    }
-                } else if (meta == 2 && rand.nextInt(30) == 0) {
-                    world.getBiome(pos).plantFlower(world, rand, up);
-                    if (world.getLight(up) > 8) {
-                        for (int i = 0; i < 4; i++) {
+                switch (type) {
+                    case DIRT:
+                        if (world.getLight(up) > 8) {
                             int xP = rand.nextInt(3) - 1;
                             int yP = rand.nextInt(3) - 1;
                             int zP = rand.nextInt(3) - 1;
                             BlockPos checkPos = pos.add(xP, yP, zP);
-                            if (world.getBlockState(checkPos) == Blocks.DIRT && world.getBlockState(checkPos) == Blocks.DIRT.getDefaultState())
-                                world.setBlockState(checkPos, Blocks.GRASS.getDefaultState());
+                            if (world.getBlockState(checkPos).getBlock() == Blocks.GRASS)
+                                world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, GRASS));
                         }
-                    }
-                }
-            } else if (world.getBlockState(up).getBlock() instanceof IPlantable) {
-                IPlantable plant = (IPlantable) world.getBlockState(up).getBlock();
-                if (this.canSustainPlant(world.getBlockState(pos), world, pos, EnumFacing.UP, plant) && world.getBlockState(up).getBlock().getTickRandomly()) {
-                    IBlockState cropState = world.getBlockState(up);
-                    world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
-                    if (meta == 4) {
-                        world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
-                        if (rand.nextInt(100) == 0)
-                            world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumType.DIRT));
-                    }
+                        break;
+                    case GRASS:
+                        if (rand.nextInt(30) == 0) {
+                            world.getBiome(pos).plantFlower(world, rand, up);
+                            if (world.getLight(up) > 8) {
+                                for (int i = 0; i < 4; i++) {
+                                    int xP = rand.nextInt(3) - 1;
+                                    int yP = rand.nextInt(3) - 1;
+                                    int zP = rand.nextInt(3) - 1;
+                                    BlockPos checkPos = pos.add(xP, yP, zP);
+                                    if (world.getBlockState(checkPos) == Blocks.DIRT && world.getBlockState(checkPos) == Blocks.DIRT.getDefaultState())
+                                        world.setBlockState(checkPos, Blocks.GRASS.getDefaultState());
+                                }
+                            }
+                        }
+                    case FERTILE:
+                        if (world.getBlockState(up).getBlock() instanceof IPlantable) {
+                            IPlantable plant = (IPlantable) world.getBlockState(up).getBlock();
+                            if (this.canSustainPlant(world.getBlockState(pos), world, pos, EnumFacing.UP, plant) && world.getBlockState(up).getBlock().getTickRandomly()) {
+                                IBlockState cropState = world.getBlockState(up);
+                                world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
+                                world.getBlockState(up).getBlock().updateTick(world, up, cropState, rand);
+                                if (rand.nextInt(100) == 0)
+                                    world.setBlockState(pos, this.getDefaultState().withProperty(TYPE, EnumType.DIRT));
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -242,10 +250,9 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        if(face != EnumFacing.UP)
+        if (face != EnumFacing.UP)
             return face == EnumFacing.DOWN ? BlockFaceShape.CENTER_BIG : BlockFaceShape.UNDEFINED;
-        switch(state.getValue(TYPE))
-        {
+        switch (state.getValue(TYPE)) {
             case EMPTY:
             case WATER:
                 return BlockFaceShape.BOWL;
@@ -283,8 +290,6 @@ public class BlockPlanter extends BWMBlock implements IMultiVariants {
         }
 
         public static EnumType byMeta(int meta) {
-            if (meta > 8)
-                return EMPTY;
             return VALUES[meta];
         }
 
