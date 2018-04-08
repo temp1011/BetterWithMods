@@ -11,5 +11,4 @@ public class BlockWicker extends BlockPane {
         this.setSoundType(SoundType.WOOD);
     }
 
-
 }

@@ -14,7 +14,16 @@
     ],
     "inventory": [
       {
-        "transform": "forge:default-block"
+        "submodel": {
+          "ext0": {
+            "model": "betterwithmods:grate_extension",
+            "y": 90
+          },
+          "ext2": {
+            "model": "betterwithmods:grate_extension",
+            "y": 270
+          }
+        }
       }
     ],
     "north": {

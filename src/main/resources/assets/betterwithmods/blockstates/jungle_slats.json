@@ -13,7 +13,18 @@
       {}
     ],
     "inventory": [
-      {}
+      {
+        "submodel": {
+          "ext0": {
+            "model": "betterwithmods:slats_extension",
+            "y": 90
+          },
+          "ext2": {
+            "model": "betterwithmods:slats_extension",
+            "y": 270
+          }
+        }
+      }
     ],
     "north": {
       "true": {

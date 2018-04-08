@@ -2,10 +2,9 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IOverpower;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
+import betterwithmods.common.blocks.BlockRotate;
 import betterwithmods.common.blocks.mechanical.tile.TileSaw;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.gameplay.MechanicalBreakage;
@@ -37,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
+public class BlockSaw extends BlockRotate implements IBlockActive, IOverpower {
     private static final float HEIGHT = 0.71875F;
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
@@ -50,7 +49,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         super(Material.WOOD);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DirUtils.FACING, EnumFacing.UP));
+        this.setDefaultState(getDefaultState().withProperty(DirUtils.FACING, EnumFacing.DOWN));
     }
 
 
@@ -320,5 +319,10 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void nextState(World world, BlockPos pos, IBlockState state) {
+        world.setBlockState(pos, state.cycleProperty(DirUtils.FACING).withProperty(ACTIVE, false));
     }
 }
