@@ -37,9 +37,8 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
 
     public static final IUnlistedProperty<MiniInfo> MINI_INFO = new UnlistedPropertyGeneric<>("mini", MiniInfo.class);
 
-
     public BlockMini(Material material, Set<IBlockState> subtypes) {
-        super(material,subtypes);
+        super(material, subtypes);
     }
 
 
@@ -87,7 +86,9 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
 
     @Nullable
     @Override
-    public abstract TileEntity createTileEntity(World world, IBlockState state);
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileMini();
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -171,4 +172,7 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
     public boolean rotates() {
         return true;
     }
+
+    public abstract BaseOrientation deserializeOrientation(int ordinal);
+
 }

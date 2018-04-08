@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks;
 
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
+import betterwithmods.common.blocks.camo.BlockCamo;
+import betterwithmods.common.blocks.camo.TileCamo;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -18,14 +18,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public class ItemMini extends ItemBlock {
+public class ItemCamo extends ItemBlock {
 
-    public ItemMini(Block block) {
+    public ItemCamo(Block block) {
         super(block);
     }
 
     public static IBlockState getState(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemMini) {
+        if (stack != null && stack.getItem() instanceof ItemCamo) {
             NBTTagCompound tag = stack.getSubCompound("texture");
             if (tag != null) {
                 return NBTUtil.readBlockState(tag);
@@ -37,10 +37,10 @@ public class ItemMini extends ItemBlock {
     public static boolean matches(ItemStack a, ItemStack b) {
         if ((a == null || b == null))
             return false;
-        if (!(a.getItem() instanceof ItemMini && b.getItem() instanceof ItemMini))
+        if (!(a.getItem() instanceof ItemCamo && b.getItem() instanceof ItemCamo))
             return false;
 
-        ItemMini miniA = (ItemMini) a.getItem(), miniB = (ItemMini) b.getItem();
+        ItemCamo miniA = (ItemCamo) a.getItem(), miniB = (ItemCamo) b.getItem();
         if (miniA.getBlock() != miniB.getBlock())
             return false;
         IBlockState stateA = getState(a), stateB = getState(b);
@@ -57,7 +57,7 @@ public class ItemMini extends ItemBlock {
         if (data != null) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (tileentity instanceof TileMini) {
+            if (tileentity instanceof TileCamo) {
                 if (!worldIn.isRemote && tileentity.onlyOpsCanSetNbt()) {
                     return;
                 }
@@ -83,7 +83,7 @@ public class ItemMini extends ItemBlock {
 
             setTileEntityNBT(world, player, pos, stack);
             setNBT(world, pos, stack);
-            ((BlockMini) this.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
+            ((BlockCamo) this.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
             if (player instanceof EntityPlayerMP)
                 CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
         }

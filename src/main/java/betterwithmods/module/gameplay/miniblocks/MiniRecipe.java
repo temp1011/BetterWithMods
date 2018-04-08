@@ -29,8 +29,8 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
             boolean inRecipe = false;
             ItemStack stack = inv.getStackInSlot(x);
             if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof ItemMini && matches <= 1) {
-                    Block block = ((ItemMini) stack.getItem()).getBlock();
+                if (stack.getItem() instanceof ItemCamo && matches <= 1) {
+                    Block block = ((ItemCamo) stack.getItem()).getBlock();
                     if (block == start) {
                         stacks[matches] = stack;
                         inRecipe = true;
@@ -42,7 +42,7 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
             }
 
         }
-        return ItemMini.matches(stacks[0], stacks[1]);
+        return ItemCamo.matches(stacks[0], stacks[1]);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
         for (int x = 0; x < inv.getSizeInventory(); x++) {
             ItemStack stack = inv.getStackInSlot(x);
             if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof ItemMini) {
+                if (stack.getItem() instanceof ItemCamo) {
                     first = stack;
                     break;
                 }
@@ -87,7 +87,7 @@ public class MiniRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRe
                 NBTTagCompound tag = input.getTagCompound();
                 result.setTagCompound(tag);
             } else {
-                IBlockState state = ItemMini.getState(input);
+                IBlockState state = ItemCamo.getState(input);
                 if (state != null)
                     result = BWMRecipes.getStackFromState(state);
             }

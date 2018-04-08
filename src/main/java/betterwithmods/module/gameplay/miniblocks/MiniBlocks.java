@@ -6,12 +6,14 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
+import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
-import betterwithmods.module.gameplay.miniblocks.tiles.*;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileTable;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.*;
 import net.minecraft.block.*;
@@ -50,12 +52,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.*;
 
 public class MiniBlocks extends Feature {
-    public static HashMap<MiniType, HashMap<Material, BlockMini>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
-    public static HashMap<Material, BlockMini> SIDINGS = Maps.newHashMap();
-    public static HashMap<Material, BlockMini> MOULDINGS = Maps.newHashMap();
-    public static HashMap<Material, BlockMini> CORNERS = Maps.newHashMap();
-    public static HashMap<Material, BlockMini> COLUMNS = Maps.newHashMap();
-    public static HashMap<Material, BlockMini> PEDESTALS = Maps.newHashMap();
+    public static HashMap<MiniType, HashMap<Material, BlockCamo>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static Map<Material, String> names = Maps.newHashMap();
     private static boolean autoGeneration;
@@ -65,22 +62,20 @@ public class MiniBlocks extends Feature {
         names.put(Material.WOOD, "wood");
         names.put(Material.ROCK, "rock");
         names.put(Material.IRON, "iron");
-        MINI_MATERIAL_BLOCKS.put(MiniType.SIDING, SIDINGS);
-        MINI_MATERIAL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
-        MINI_MATERIAL_BLOCKS.put(MiniType.CORNER, CORNERS);
-        MINI_MATERIAL_BLOCKS.put(MiniType.COLUMN, COLUMNS);
-        MINI_MATERIAL_BLOCKS.put(MiniType.PEDESTAL, PEDESTALS);
+        for (MiniType type : MiniType.VALUES) {
+            MINI_MATERIAL_BLOCKS.put(type, Maps.newHashMap());
+        }
     }
 
     static {
         for (Material material : names.keySet()) {
             String name = names.get(material);
             Set<IBlockState> states = Sets.newHashSet(MATERIALS.get(material));
-            SIDINGS.put(material, (BlockMini) new BlockSiding(material,states).setRegistryName(String.format("%s_%s", "siding", name)));
-            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material,states).setRegistryName(String.format("%s_%s", "moulding", name)));
-            CORNERS.put(material, (BlockMini) new BlockCorner(material,states).setRegistryName(String.format("%s_%s", "corner", name)));
-            COLUMNS.put(material, (BlockMini) new BlockColumn(material,states).setRegistryName(String.format("%s_%s", "column", name)));
-            PEDESTALS.put(material, (BlockMini) new BlockPedestals(material,states).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, states).setRegistryName(String.format("%s_%s", "siding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, states).setRegistryName(String.format("%s_%s", "moulding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, states).setRegistryName(String.format("%s_%s", "corner", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, states).setRegistryName(String.format("%s_%s", "column", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, states).setRegistryName(String.format("%s_%s", "pedestal", name)));
         }
     }
 
@@ -187,16 +182,13 @@ public class MiniBlocks extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        SIDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        MOULDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        CORNERS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        COLUMNS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        PEDESTALS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
-        GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
-        GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
-        GameRegistry.registerTileEntity(TileColumn.class, "bwm.column");
-        GameRegistry.registerTileEntity(TilePedestal.class, "bwm.pedestal");
+        for (MiniType type : MiniType.VALUES) {
+            for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
+                BWMBlocks.registerBlock(mini, new ItemCamo(mini));
+            }
+        }
+        GameRegistry.registerTileEntity(TileMini.class, "bwm.mini");
+        GameRegistry.registerTileEntity(TileTable.class, "bwm.table");
     }
 
 
@@ -233,9 +225,9 @@ public class MiniBlocks extends Feature {
     public void postInit(FMLPostInitializationEvent event) {
 
         for (Material material : names.keySet()) {
-            BlockMini siding = SIDINGS.get(material);
-            BlockMini moulding = MOULDINGS.get(material);
-            BlockMini corner = CORNERS.get(material);
+            BlockCamo siding = MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(material);
+            BlockCamo moulding = MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(material);
+            BlockCamo corner = MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).get(material);
 
             addHardcoreRecipe(new MiniRecipe(siding, null));
             addHardcoreRecipe(new MiniRecipe(moulding, siding));
@@ -247,9 +239,9 @@ public class MiniBlocks extends Feature {
             MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
             MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
             MiniBlockIngredient corner = new MiniBlockIngredient("corner", mini);
-            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(Material.WOOD), wood, 2);
-            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(Material.WOOD), wood, 2);
-            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(Material.WOOD), wood, 2);
+            ItemStack sidingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(Material.WOOD), wood, 2);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(Material.WOOD), wood, 2);
+            ItemStack cornerStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).get(Material.WOOD), wood, 2);
             BWRegistry.WOOD_SAW.addRecipe(mini, sidingStack);
             BWRegistry.WOOD_SAW.addRecipe(siding, mouldingStack);
             BWRegistry.WOOD_SAW.addRecipe(moulding, cornerStack);
@@ -258,23 +250,30 @@ public class MiniBlocks extends Feature {
         }
 
 
+        for (IBlockState parent : Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON), MATERIALS.get(Material.WOOD))) {
+            ItemStack mini = BWMRecipes.getStackFromState(parent);
+            Material material = parent.getMaterial();
+            MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
+            MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
+            ItemStack columnStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).get(material), parent, 8);
+            ItemStack pedestalStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).get(material), parent, 8);
+
+            AnvilRecipes.addSteelShapedRecipe(columnStack.getItem().getRegistryName(), columnStack, "XX", "XX", "XX", "XX", 'X', moulding);
+            AnvilRecipes.addSteelShapedRecipe(pedestalStack.getItem().getRegistryName(), pedestalStack, " XX ", "BBBB", "BBBB", "BBBB", 'X', siding, 'B', mini);
+        }
+
         for (IBlockState parent : Iterables.concat(MATERIALS.get(Material.ROCK), MATERIALS.get(Material.IRON))) {
             ItemStack mini = BWMRecipes.getStackFromState(parent);
             Material material = parent.getMaterial();
             MiniBlockIngredient siding = new MiniBlockIngredient("siding", mini);
             MiniBlockIngredient moulding = new MiniBlockIngredient("moulding", mini);
-            ItemStack sidingStack = MiniBlocks.fromParent(SIDINGS.get(material), parent, 8);
-            ItemStack mouldingStack = MiniBlocks.fromParent(MOULDINGS.get(material), parent, 8);
-            ItemStack cornerStack = MiniBlocks.fromParent(CORNERS.get(material), parent, 8);
-            ItemStack columnStack = MiniBlocks.fromParent(COLUMNS.get(material), parent, 8);
-            ItemStack pedestalStack = MiniBlocks.fromParent(PEDESTALS.get(material), parent, 8);
+            ItemStack sidingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(material), parent, 8);
+            ItemStack mouldingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(material), parent, 8);
+            ItemStack cornerStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).get(material), parent, 8);
 
             AnvilRecipes.addSteelShapedRecipe(sidingStack.getItem().getRegistryName(), sidingStack, "XXXX", 'X', mini);
             AnvilRecipes.addSteelShapedRecipe(mouldingStack.getItem().getRegistryName(), mouldingStack, "XXXX", 'X', siding);
             AnvilRecipes.addSteelShapedRecipe(cornerStack.getItem().getRegistryName(), cornerStack, "XXXX", 'X', moulding);
-
-            AnvilRecipes.addSteelShapedRecipe(columnStack.getItem().getRegistryName(), columnStack, "XX","XX","XX","XX", 'X', moulding);
-            AnvilRecipes.addSteelShapedRecipe(pedestalStack.getItem().getRegistryName(), pedestalStack, " XX ","BBBB","BBBB","BBBB", 'X', siding, 'B', mini);
         }
 
     }

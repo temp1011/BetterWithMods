@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class TileMini extends TileCamo {
+public class TileMini extends TileCamo {
 
     public BaseOrientation orientation;
 
@@ -33,7 +33,13 @@ public abstract class TileMini extends TileCamo {
         return tag;
     }
 
-    public abstract BaseOrientation deserializeOrientation(NBTTagCompound tag);
+    public BaseOrientation deserializeOrientation(NBTTagCompound tag) {
+        int o = tag.getInteger("orientation");
+        if (getBlockType() instanceof BlockMini) {
+            return ((BlockMini) getBlockType()).deserializeOrientation(o);
+        }
+        return BaseOrientation.DEFAULT;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {

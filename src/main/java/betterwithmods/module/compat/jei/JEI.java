@@ -26,7 +26,7 @@ import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
+import betterwithmods.module.gameplay.miniblocks.MiniType;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -100,9 +100,9 @@ public class JEI implements IModPlugin {
 
     private List<Item> getAllMiniBlocks() {
         ArrayList<Item> list = new ArrayList<>();
-        MiniBlocks.SIDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
-        MiniBlocks.MOULDINGS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
-        MiniBlocks.CORNERS.values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).values().stream().map(Item::getItemFromBlock).forEach(list::add);
+        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).values().stream().map(Item::getItemFromBlock).forEach(list::add);
         return list;
     }
 
