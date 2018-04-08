@@ -238,4 +238,22 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
         }
         return new ItemStack(this);
     }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        TileMini tile = (TileMini) world.getTileEntity(pos);
+        if (tile != null) {
+            return tile.state.getBlock().getFireSpreadSpeed(world,pos,face);
+        }
+        return 5;
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        TileMini tile = (TileMini) world.getTileEntity(pos);
+        if (tile != null) {
+            return tile.state.getBlock().getFlammability(world,pos,face);
+        }
+        return 10;
+    }
 }

@@ -35,7 +35,7 @@ public class ItemMini extends ItemBlock {
     }
 
     public static boolean matches(ItemStack a, ItemStack b) {
-        if((a == null || b == null))
+        if ((a == null || b == null))
             return false;
         if (!(a.getItem() instanceof ItemMini && b.getItem() instanceof ItemMini))
             return false;
@@ -94,12 +94,15 @@ public class ItemMini extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         NBTTagCompound tag = stack.getSubCompound("texture");
-        String type = "bwm.unknown_mini";
+        String type = I18n.translateToLocal("bwm.unknown_mini.name").trim();
         if (tag != null) {
             IBlockState state = NBTUtil.readBlockState(tag);
             ItemStack block = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
-            type = block.getUnlocalizedName();
+            if (block.getItem() instanceof ItemBlock) {
+                ItemBlock itemBlock = (ItemBlock) block.getItem();
+                type = itemBlock.getItemStackDisplayName(block);
+            }
         }
-        return String.format("%s %s", I18n.translateToLocal(type + ".name").trim(), I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
+        return String.format("%s %s", type, I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
     }
 }
