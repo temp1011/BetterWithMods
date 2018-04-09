@@ -11,6 +11,7 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.WorldUtils;
@@ -38,7 +39,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private final int STACK_SIZE = 8;
     public SimpleStackHandler filter;
-    public IHopperFilter hopperFilter;
+    public IHopperFilter hopperFilter = HopperFilter.NONE;
 
     public int soulsRetained;
     public byte power;
