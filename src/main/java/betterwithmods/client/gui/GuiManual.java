@@ -219,7 +219,12 @@ public final class GuiManual extends GuiScreen {
 
     private void refreshPage() {
         final Iterable<String> content = ManualAPI.contentFor(ManualAPIImpl.peekPath());
-        document = Document.parse(content != null ? content : Lists.newArrayList(I18n.format("bwm.manual.error.0"), "`" + ManualAPIImpl.fixLanguage(ManualAPIImpl.peekPath()) + "`", I18n.format("bwm.manual.error.1") + " [here](https://github.com/BeetoGuy/BetterWithMods/issues)"));
+        document = Document.parse(content != null ? content :
+                Lists.newArrayList(I18n.format("bwm.manual.error.0"),
+                        "`" + ManualAPIImpl.fixLanguage(ManualAPIImpl.peekPath()) + "`",
+                        I18n.format("bwm.manual.error.1") + " [here](https://github.com/BeetoGuy/BetterWithMods/issues)",
+                        I18n.format("bwm.manual.error.2") + " [Online Docs](https://betterwithmods.github.io/Documentation/en_us/" + ManualAPIImpl.peekPath() + ")")
+        );
         documentHeight = Document.height(document, documentMaxWidth, getFontRenderer());
         scrollTo(offset());
     }
