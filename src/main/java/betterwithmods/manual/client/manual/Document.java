@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * nodes, up to the root.
  */
 public final class Document {
-	private static final List<PatternMapping> SEGMENT_TYPES = Lists.newArrayList(
+	public static final List<PatternMapping> SEGMENT_TYPES = Lists.newArrayList(
 		new PatternMapping("^(#+)\\s(.*)", Document::HeaderSegment), // headers: # ...
 		new PatternMapping("(`)(.*?)\\1", Document::CodeSegment), // code: `...`
 		new PatternMapping("!\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEIImageSegment), // images: ![...](...)
@@ -42,8 +42,7 @@ public final class Document {
 		new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
 		new PatternMapping("(\\*\\*|_)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | _..._
 		new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
-		new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment), // strikethrough: ~~...~~
-		new PatternMapping("\\{([^\\?]+)\\?([^\\[]+):([^\\[]+)\\}", Document::FeatureSegment) // {feature?enable-text:disable-text}
+		new PatternMapping("~~(\\S.*?\\S|$)~~", Document::StrikethroughSegment) // strikethrough: ~~...~~
 	);
 
 	private Document() {
@@ -274,7 +273,7 @@ public final class Document {
 		}
 	}
 
-	private static final class PatternMapping {
+	public static final class PatternMapping {
 		public final Pattern pattern;
 		public final SegmentRefiner refiner;
 
