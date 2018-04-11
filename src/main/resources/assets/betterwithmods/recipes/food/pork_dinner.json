@@ -8,10 +8,12 @@
       "item": "minecraft:cooked_porkchop"
     },
     {
-      "item": "minecraft:carrot"
+      "ore": "cookedCarrot",
+      "type": "forge:ore_dict"
     },
     {
-      "item": "minecraft:baked_potato"
+      "ore": "cookedPotato",
+      "type": "forge:ore_dict"
     }
   ],
   "type": "minecraft:crafting_shapeless"
