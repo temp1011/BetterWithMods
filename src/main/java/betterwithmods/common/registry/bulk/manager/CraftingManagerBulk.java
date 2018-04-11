@@ -54,7 +54,7 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     public List<T> getRecipes() {
-        return this.recipes.stream().filter(r -> !r.isHidden()).collect(Collectors.toList());
+        return this.recipes;
     }
 
     public boolean remove(T t) {
