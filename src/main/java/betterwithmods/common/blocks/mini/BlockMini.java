@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public abstract class BlockMini extends BlockRotate implements IMultiVariants, IAdvancedRotationPlacement, IDamageDropped, IRenderRotationPlacement {
     public static final Material MINI = new Material(MapColor.WOOD);
     public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
@@ -191,9 +192,9 @@ public abstract class BlockMini extends BlockRotate implements IMultiVariants, I
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (int i = 0; i < getUsedTypes(); i++) {
-            items.add(new ItemStack(this, 1, i));
-        }
+//        for (int i = 0; i < getUsedTypes(); i++) {
+//            items.add(new ItemStack(this, 1, i));
+//        }
     }
 
     @Override
