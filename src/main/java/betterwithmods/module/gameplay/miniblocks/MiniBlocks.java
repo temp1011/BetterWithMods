@@ -76,23 +76,10 @@ public class MiniBlocks extends Feature {
     private static HashSet<String> whitelist = new HashSet<>();
 
     static {
-        names.put(Material.WOOD, "wood");
-        names.put(Material.ROCK, "rock");
-        names.put(Material.IRON, "iron");
         MINI_MATERIAL_BLOCKS.put(MiniType.SIDING, SIDINGS);
         MINI_MATERIAL_BLOCKS.put(MiniType.MOULDING, MOULDINGS);
         MINI_MATERIAL_BLOCKS.put(MiniType.CORNER, CORNERS);
     }
-
-    static {
-        for (Material material : names.keySet()) {
-            String name = names.get(material);
-            SIDINGS.put(material, (BlockMini) new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
-            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
-            CORNERS.put(material, (BlockMini) new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
-        }
-    }
-
 
     public MiniBlocks() {
         enabledByDefault = false;
@@ -175,6 +162,11 @@ public class MiniBlocks extends Feature {
         whitelist.add(resloc.toString()+":"+meta);
     }
 
+    public static void addMaterial(Material material, String name) {
+        if(!names.containsKey(material)) //so addons don't overwrite our names, causing world breakage
+            names.put(material, name);
+    }
+
     @Override
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
@@ -201,17 +193,31 @@ public class MiniBlocks extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        SIDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        MOULDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
-        CORNERS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        names.put(Material.WOOD, "wood");
+        names.put(Material.ROCK, "rock");
+        names.put(Material.IRON, "iron");
+
         GameRegistry.registerTileEntity(TileSiding.class, "bwm.siding");
         GameRegistry.registerTileEntity(TileMoulding.class, "bwm.moulding");
         GameRegistry.registerTileEntity(TileCorner.class, "bwm.corner");
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void beforeBlockRegister(RegistryEvent.Register<Block> event) {
+        for (Material material : names.keySet()) {
+            String name = names.get(material);
+            SIDINGS.put(material, (BlockMini) new BlockSiding(material).setRegistryName(String.format("%s_%s", "siding", name)));
+            MOULDINGS.put(material, (BlockMini) new BlockMoulding(material).setRegistryName(String.format("%s_%s", "moulding", name)));
+            CORNERS.put(material, (BlockMini) new BlockCorner(material).setRegistryName(String.format("%s_%s", "corner", name)));
+        }
+
+        SIDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        MOULDINGS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+        CORNERS.values().forEach(b -> BWMBlocks.registerBlock(b, new ItemMini(b)));
+    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onItemRegister(RegistryEvent.Register<Item> event) {
+    public void afterItemRegister(RegistryEvent.Register<Item> event) {
         final NonNullList<ItemStack> list = NonNullList.create();
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof ItemBlock))
