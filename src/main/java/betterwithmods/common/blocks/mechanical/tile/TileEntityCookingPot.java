@@ -115,7 +115,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         if (this.getBlockWorld().isRemote) {
             Random random = this.getBlockWorld().rand;
 
-            if(heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
+            if(facing == EnumFacing.UP && heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
                 double xOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
                 double zOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
                 this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
