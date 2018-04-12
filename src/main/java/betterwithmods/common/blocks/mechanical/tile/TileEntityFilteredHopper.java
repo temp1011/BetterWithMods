@@ -174,7 +174,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        return player.getDistanceSq(x + 0.5D, y + 0.5D, z + 0.5D) <= 64.0D;
+        return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(x + 0.5D, y + 0.5D, z + 0.5D) <= 64.0D;
     }
 
     @Override
