@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.List;
+import java.util.Random;
 
 
 public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower, IHeated {
@@ -47,7 +49,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public boolean hasFastRenderer() {
-        return true;
+        return false;
     }
 
     @Override
@@ -110,8 +112,16 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public void update() {
-        if (this.getBlockWorld().isRemote)
+        if (this.getBlockWorld().isRemote) {
+            Random random = this.getBlockWorld().rand;
+
+            if(heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
+                double xOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
+                double zOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
+                this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
+            }
             return;
+        }
         if (getBlock() instanceof BlockCookingPot) {
             IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (isPowered()) {
@@ -127,6 +137,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                 if (this.heat != heat) {
                     this.heat = heat;
                     this.cookProgress = 0;
+                    this.markDirty();
                 }
                 int time = findCookTime();
                 if (this.cookTime != time) {
@@ -243,6 +254,10 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     @Override
     public void markDirty() {
         super.markDirty();
+        if (this.getBlockWorld() != null) {
+            IBlockState state = getBlockWorld().getBlockState(pos);
+            getBlockWorld().notifyBlockUpdate(pos, state, state, 3);
+        }
     }
 
     public boolean isUseableByPlayer(EntityPlayer player) {
