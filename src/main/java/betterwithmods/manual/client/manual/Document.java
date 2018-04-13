@@ -277,7 +277,7 @@ public final class Document {
 		public final Pattern pattern;
 		public final SegmentRefiner refiner;
 
-		private PatternMapping(final String pattern, final SegmentRefiner refiner) {
+		public PatternMapping(final String pattern, final SegmentRefiner refiner) {
 			this.pattern = Pattern.compile(pattern);
 			this.refiner = refiner;
 		}

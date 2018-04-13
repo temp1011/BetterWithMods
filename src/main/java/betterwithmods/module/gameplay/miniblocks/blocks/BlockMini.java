@@ -35,6 +35,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public abstract class BlockMini extends BlockRotate implements IRenderRotationPlacement {
 
@@ -67,9 +69,17 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (IBlockState state : MiniBlocks.MATERIALS.get(blockMaterial)) {
-           items.add(MiniBlocks.fromParent(this, state));
-        }
+        items.addAll(MiniBlocks.MATERIALS.get(blockMaterial).stream().sorted(this::compareBlockStates).map(state -> MiniBlocks.fromParent(this, state)).collect(Collectors.toList()));
+    }
+
+    private int compareBlockStates(IBlockState a, IBlockState b) {
+        Block blockA = a.getBlock();
+        Block blockB = b.getBlock();
+        int compare = Integer.compare(Block.getIdFromBlock(blockA),Block.getIdFromBlock(blockB));
+        if(compare == 0)
+            return Integer.compare(blockA.getMetaFromState(a), blockB.getMetaFromState(b));
+        else
+            return compare;
     }
 
     @Override
