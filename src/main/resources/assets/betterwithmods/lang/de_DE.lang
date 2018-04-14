@@ -292,10 +292,10 @@ tile.bwm:cobble.0.name=Granit-Pflasterstein
 tile.bwm:cobble.1.name=Diorit-Pflasterstein
 tile.bwm:cobble.2.name=Andesit-Pflasterstein
 
-tile.bwm:deadweight.name=Tragfähigkeit
-tile.bwm:deadweight.intact.name=Tragfähigkeit
-tile.bwm:deadweight.slightDamaged.name=Leicht Beeinträchtigte Tragfähigkeit
-tile.bwm:deadweight.veryDamaged.name=Stark Beeinträchtigte Tragfähigkeit
+tile.bwm:deadweight.name=Klotz am Bein
+tile.bwm:deadweight.intact.name=Klotz am Bein
+tile.bwm:deadweight.slightDamaged.name=Leicht beschädigter Klotz am Bein
+tile.bwm:deadweight.veryDamaged.name=Stark beschädigter Klotz am Bein
 
 tile.bwm:bucket.name=Brunneneimer
 
@@ -309,7 +309,7 @@ item.bwm:material.tanned_leather.name=Gegerbtes Leder
 item.bwm:material.scoured_leather.name=Gereinigtes Leder
 item.bwm:material.leather_strap.name=Ledergurt
 item.bwm:material.leather_belt.name=Lederriemen
-item.bwm:material.wood_blade.name=Holzklinge
+item.bwm:material.wood_blade.name=Radschaufel
 item.bwm:material.windmill_blade.name=Windsegel
 item.bwm:material.glue.name=Kleber
 item.bwm:material.tallow.name=Talg
