@@ -275,7 +275,7 @@ public class BWOreDictionary {
     }
 
     public static List<ItemStack> getOreNames(String prefix) {
-        return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n != null && n.startsWith(prefix)).map(OreDictionary::getOres).filter(o -> !o.isEmpty()).flatMap(Collection::stream).collect(Collectors.toList());
+        return Arrays.stream(OreDictionary.getOreNames()).filter(Objects::nonNull).filter(n -> n.startsWith(prefix)).map(OreDictionary::getOres).filter(o -> !o.isEmpty()).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public static List<ItemStack> getItems(List<Ore> ores) {
@@ -283,7 +283,7 @@ public class BWOreDictionary {
     }
 
     public static List<Ore> getOreIngredients(String prefix) {
-        return Arrays.stream(OreDictionary.getOreNames()).filter(n -> n != null && n.startsWith(prefix)).map(n -> new Ore(prefix, n)).collect(Collectors.toList());
+        return Arrays.stream(OreDictionary.getOreNames()).filter(Objects::nonNull).filter(n -> n.startsWith(prefix)).map(n -> new Ore(prefix, n)).collect(Collectors.toList());
     }
 
     public static int listContains(Object obj, List<Object> list) {
