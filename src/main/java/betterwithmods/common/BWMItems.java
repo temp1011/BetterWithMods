@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Objects;
 
 public final class BWMItems {
-    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 4, 2250, 12, 3,
-            22);
+    public static final ToolMaterial SOULFORGED_STEEL = EnumHelper.addToolMaterial("SOULFORGED_STEEL", 4, 2250, 12, 3, 22);
+
     public static final Item BARK = new ItemBark().setRegistryName("bark");
     public static final Item DONUT = new ItemFood(2, 0.25f, false).setCreativeTab(CreativeTabs.FOOD).setRegistryName("donut");
     public static final Item DYNAMITE = new ItemDynamite().setRegistryName("dynamite");
@@ -224,6 +224,4 @@ public final class BWMItems {
             setModelLocation(item, OreDictionary.WILDCARD_VALUE, "inventory");
         }
     }
-
-    ///CLIENT END
 }

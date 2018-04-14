@@ -24,8 +24,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -78,11 +76,6 @@ public final class BWMBlocks {
     public static final Block HORIZONTAL_WINDMILL = new BlockWindmill(EnumFacing.Axis.X).setRegistryName("horizontal_windmill");
     public static final Block VERTICAL_WINDMILL = new BlockWindmill(EnumFacing.Axis.Y).setRegistryName("vertical_windmill");
     public static final Block WATERWHEEL = new BlockWaterwheel().setRegistryName("waterwheel");
-    //    public static final Block WOOD_SIDING = new BlockSiding(BlockMini.MINI).setRegistryName("wood_siding");
-//    public static final Block WOOD_MOULDING = new BlockMoulding(BlockMini.MINI).setRegistryName("wood_moulding");
-//    public static final Block WOOD_CORNER = new BlockCorner(BlockMini.MINI).setRegistryName("wood_corner");
-//    public static final Block WOOD_BENCH = new BlockWoodBench().setRegistryName("wood_bench");
-//    public static final Block WOOD_TABLE = new BlockWoodTable().setRegistryName("wood_table");
     public static final Block WOLF = new BlockWolf().setRegistryName("companion_cube");
     public static final Block BLOCK_DISPENSER = new BlockBDispenser().setRegistryName("block_dispenser");
     public static final Block BUDDY_BLOCK = new BlockBUD().setRegistryName("buddy_block");
@@ -95,9 +88,6 @@ public final class BWMBlocks {
     public static final Block VINE_TRAP = new BlockVineTrap().setRegistryName("vine_trap");
     public static final BlockLiquid TEMP_LIQUID_SOURCE = (BlockLiquid) new BlockTemporaryWater().setRegistryName("temporary_water");
     public static final Block STEEL_ANVIL = new BlockSteelAnvil().setRegistryName("steel_anvil");
-    //    public static final Block STONE_SIDING = new BlockSiding(Material.ROCK).setRegistryName("stone_siding");
-//    public static final Block STONE_MOULDING = new BlockMoulding(Material.ROCK).setRegistryName("stone_moulding");
-//    public static final Block STONE_CORNER = new BlockCorner(Material.ROCK).setRegistryName("stone_corner");
     public static final Block DIRT_SLAB = new BlockDirtSlab().setRegistryName("dirt_slab");
     public static final Block CRUCIBLE = new BlockCrucible().setRegistryName("crucible");
     public static final Block CAULDRON = new BlockCauldron().setRegistryName("cauldron");
@@ -213,19 +203,12 @@ public final class BWMBlocks {
         registerBlock(BLOOD_LEAVES);
         registerBlock(BLOOD_SAPLING);
         registerBlock(NETHER_CLAY);
-
         registerBlock(STEEL_PRESSURE_PLATE);
         registerBlock(INFERNAL_ENCHANTER);
         registerBlock(CANDLE_HOLDER);
         registerBlock(SHAFT);
         registerBlock(BUCKET);
-
         registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
-
-        //        registerBlock(UNFIRED_POTTERY, new ItemBlockLimited(UNFIRED_POTTERY));
-        //        registerBlock(WOOD_BENCH, new ItemBlockLimited(WOOD_BENCH));
-        //        registerBlock(WOOD_TABLE, new ItemBlockLimited(WOOD_TABLE));
-        //        registerBlock(RAW_PASTRY, new ItemBlockLimited(RAW_PASTRY));
     }
 
     public static void registerTileEntities() {
@@ -293,12 +276,4 @@ public final class BWMBlocks {
     public static void registerBlock(Block block) {
         registerBlock(block, new ItemBlock(block));
     }
-
-    @SideOnly(Side.CLIENT)
-    public static void setInventoryModel(Block block) {
-        BWMItems.setInventoryModel(Item.getItemFromBlock(block));
-    }
-
-
-    ///CLIENT END
 }
