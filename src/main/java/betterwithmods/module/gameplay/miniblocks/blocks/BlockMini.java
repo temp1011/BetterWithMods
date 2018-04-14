@@ -35,7 +35,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class BlockMini extends BlockRotate implements IRenderRotationPlacement {
@@ -49,22 +49,12 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getState().getBlockHardness(worldIn, pos);
-        }
-        return super.getBlockHardness(blockState, worldIn, pos);
+        return getTile(worldIn, pos).map(t -> t.getState().getBlockHardness(worldIn, pos)).orElse(super.getBlockHardness(blockState, worldIn, pos));
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion);
-        }
-        return super.getExplosionResistance(world, pos, exploder, explosion);
+        return getTile(world, pos).map(t -> t.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion)).orElse(super.getExplosionResistance(world, pos, exploder, explosion));
     }
 
     @Override
@@ -75,8 +65,8 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     private int compareBlockStates(IBlockState a, IBlockState b) {
         Block blockA = a.getBlock();
         Block blockB = b.getBlock();
-        int compare = Integer.compare(Block.getIdFromBlock(blockA),Block.getIdFromBlock(blockB));
-        if(compare == 0)
+        int compare = Integer.compare(Block.getIdFromBlock(blockA), Block.getIdFromBlock(blockB));
+        if (compare == 0)
             return Integer.compare(blockA.getMetaFromState(a), blockB.getMetaFromState(b));
         else
             return compare;
@@ -108,12 +98,8 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
         IExtendedBlockState extendedBS = (IExtendedBlockState) super.getExtendedState(state, world, pos);
-        if (tile != null) {
-            return extendedBS.withProperty(MINI_INFO, MiniCacheInfo.from(tile));
-        }
-        return extendedBS;
+        return getTile(world, pos).map(t -> extendedBS.withProperty(MINI_INFO, MiniCacheInfo.from(t))).orElse(extendedBS);
     }
 
     @Override
@@ -126,15 +112,16 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
         return false;
     }
 
+    public Optional<TileMini> getTile(IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileMini)
+            return Optional.of((TileMini) tile);
+        return Optional.empty();
+    }
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        TileEntity tile = source.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            if (mini.getOrientation() != null)
-                return mini.getOrientation().getBounds();
-        }
-        return Block.FULL_BLOCK_AABB;
+        return getTile(source, pos).map(t -> t.getOrientation().getBounds()).orElse(Block.FULL_BLOCK_AABB);
     }
 
 
@@ -149,12 +136,7 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.changeOrientation(mini.getOrientation().next(), false);
-        }
-        return false;
+        return getTile(world, pos).map(t -> t.changeOrientation(t.getOrientation().next(), false)).orElse(false);
     }
 
     @Override
@@ -176,12 +158,7 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getPickBlock(null, null, state);
-        }
-        return new ItemStack(this);
+        return getPickBlock(state, null, worldIn, pos, null);
     }
 
 
@@ -189,7 +166,6 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     public final void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         getDrops(drops, world, pos, state, null, fortune, false);
     }
-
 
 
     @Override
@@ -223,7 +199,6 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
     }
 
 
-
     @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
         if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) {
@@ -241,29 +216,16 @@ public abstract class BlockMini extends BlockRotate implements IRenderRotationPl
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini) {
-            TileMini mini = (TileMini) tile;
-            return mini.getPickBlock(player, target, state);
-        }
-        return new ItemStack(this);
+        return getTile(world, pos).map(t -> t.getPickBlock(player, target, state)).orElse(new ItemStack(this));
     }
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFireSpreadSpeed(world,pos,face);
-        }
-        return 5;
+        return getTile(world, pos).map(t -> t.getState().getBlock().getFireSpreadSpeed(world, pos, face)).orElse(5);
     }
 
     @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileMini tile = (TileMini) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFlammability(world,pos,face);
-        }
-        return 10;
+        return getTile(world, pos).map(t -> t.getState().getBlock().getFlammability(world, pos, face)).orElse(10);
     }
 }
