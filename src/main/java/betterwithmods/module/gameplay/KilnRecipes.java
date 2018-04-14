@@ -6,7 +6,6 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.Feature;
 import betterwithmods.module.hardcore.needs.HCCooking;
