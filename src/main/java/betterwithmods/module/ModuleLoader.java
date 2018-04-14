@@ -83,9 +83,10 @@ public final class ModuleLoader {
             config.save();
     }
 
+
     public static void postInit(FMLPostInitializationEvent event) {
         forEachEnabled(module -> module.postInit(event));
-
+        forEachEnabled(module -> module.finalInit(event));
         if (config.hasChanged())
             config.save();
     }
@@ -192,11 +193,11 @@ public final class ModuleLoader {
     }
 
     public static void forEachModule(Consumer<Module> consumer) {
-        moduleInstances.values().stream().forEachOrdered(consumer);
+        moduleInstances.values().forEach(consumer);
     }
 
     public static void forEachEnabled(Consumer<Module> consumer) {
-        enabledModules.stream().forEachOrdered(consumer);
+        enabledModules.forEach(consumer);
     }
 
     private static void registerModule(Class<? extends Module> clazz) {
