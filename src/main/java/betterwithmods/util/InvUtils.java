@@ -509,6 +509,7 @@ public class InvUtils {
     }
 
 
+    @Deprecated
     public static boolean matches(ItemStack one, ItemStack two) {
         if (one.isItemEqual(two))
             return true;

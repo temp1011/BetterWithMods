@@ -2,7 +2,7 @@ package betterwithmods.module.hardcore.needs;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.util.item.StackMap;
+import betterwithmods.util.IngredientMap;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,7 +19,6 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.Calendar;
@@ -28,7 +27,7 @@ import java.util.Calendar;
  * Created by primetoxinz on 5/10/17.
  */
 public class HCArmor extends Feature {
-    public static final StackMap<Integer> weights = new StackMap<>(0);
+    public static final IngredientMap<Integer> weights = new IngredientMap<>(0);
 
     public static final EntityEquipmentSlot[] ARMOR_SLOTS = new EntityEquipmentSlot[]{EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
     public static final ItemStack[] IRON_ARMOR = new ItemStack[]{new ItemStack(Items.IRON_HELMET), new ItemStack(Items.IRON_CHESTPLATE), new ItemStack(Items.IRON_LEGGINGS), new ItemStack(Items.IRON_BOOTS)};
@@ -44,25 +43,25 @@ public class HCArmor extends Feature {
     }
 
     public static void initWeights() {
-        weights.put(Items.CHAINMAIL_HELMET, OreDictionary.WILDCARD_VALUE, 3);
-        weights.put(Items.CHAINMAIL_CHESTPLATE, OreDictionary.WILDCARD_VALUE, 4);
-        weights.put(Items.CHAINMAIL_LEGGINGS, OreDictionary.WILDCARD_VALUE, 4);
-        weights.put(Items.CHAINMAIL_BOOTS, OreDictionary.WILDCARD_VALUE, 2);
+        weights.put(Items.CHAINMAIL_HELMET, 3);
+        weights.put(Items.CHAINMAIL_CHESTPLATE, 4);
+        weights.put(Items.CHAINMAIL_LEGGINGS, 4);
+        weights.put(Items.CHAINMAIL_BOOTS, 2);
 
-        weights.put(Items.IRON_HELMET, OreDictionary.WILDCARD_VALUE, 5);
-        weights.put(Items.IRON_CHESTPLATE, OreDictionary.WILDCARD_VALUE, 8);
-        weights.put(Items.IRON_LEGGINGS, OreDictionary.WILDCARD_VALUE, 7);
-        weights.put(Items.IRON_BOOTS, OreDictionary.WILDCARD_VALUE, 4);
+        weights.put(Items.IRON_HELMET, 5);
+        weights.put(Items.IRON_CHESTPLATE, 8);
+        weights.put(Items.IRON_LEGGINGS, 7);
+        weights.put(Items.IRON_BOOTS, 4);
 
-        weights.put(Items.DIAMOND_HELMET, OreDictionary.WILDCARD_VALUE, 5);
-        weights.put(Items.DIAMOND_CHESTPLATE, OreDictionary.WILDCARD_VALUE, 8);
-        weights.put(Items.DIAMOND_LEGGINGS, OreDictionary.WILDCARD_VALUE, 7);
-        weights.put(Items.DIAMOND_BOOTS, OreDictionary.WILDCARD_VALUE, 4);
+        weights.put(Items.DIAMOND_HELMET, 5);
+        weights.put(Items.DIAMOND_CHESTPLATE, 8);
+        weights.put(Items.DIAMOND_LEGGINGS, 7);
+        weights.put(Items.DIAMOND_BOOTS, 4);
 
-        weights.put(Items.GOLDEN_HELMET, OreDictionary.WILDCARD_VALUE, 5);
-        weights.put(Items.GOLDEN_CHESTPLATE, OreDictionary.WILDCARD_VALUE, 8);
-        weights.put(Items.GOLDEN_LEGGINGS, OreDictionary.WILDCARD_VALUE, 7);
-        weights.put(Items.GOLDEN_BOOTS, OreDictionary.WILDCARD_VALUE, 4);
+        weights.put(Items.GOLDEN_HELMET, 5);
+        weights.put(Items.GOLDEN_CHESTPLATE, 8);
+        weights.put(Items.GOLDEN_LEGGINGS, 7);
+        weights.put(Items.GOLDEN_BOOTS, 4);
     }
 
     public static void setSkeletonEquipment(AbstractSkeleton entity) {
@@ -109,6 +108,16 @@ public class HCArmor extends Feature {
         }
     }
 
+    public static void halloween(EntityLiving entity) {
+        if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
+            Calendar calendar = entity.world.getCurrentDate();
+            if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && entity.getRNG().nextFloat() < 0.25F) {
+                entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(entity.getRNG().nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
+                entity.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
+            }
+        }
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
         if (shieldRebalance) {
@@ -132,16 +141,6 @@ public class HCArmor extends Feature {
     @Override
     public boolean hasSubscriptions() {
         return true;
-    }
-
-    public static void halloween(EntityLiving entity) {
-        if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
-            Calendar calendar = entity.world.getCurrentDate();
-            if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && entity.getRNG().nextFloat() < 0.25F) {
-                entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(entity.getRNG().nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
-                entity.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-            }
-        }
     }
 
     @Override

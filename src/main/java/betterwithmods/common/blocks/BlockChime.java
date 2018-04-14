@@ -212,4 +212,5 @@ public class BlockChime extends BWMBlock {
     public BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, ACTIVE);
     }
+
 }
