@@ -151,13 +151,13 @@
         "modid": "betterwithmods"
       }
     ],
-    "name": "CORNER_WOOD",
+    "name": "CORNER_STONE",
     "ingredient": [
       {
         "type": "betterwithmods:minitype",
         "baseIngredient": {
-          "ore": "plankWood",
-          "type": "forge:ore_dict"
+          "item": "minecraft:stone",
+          "data": 0
         },
         "minitype": "corner"
       }

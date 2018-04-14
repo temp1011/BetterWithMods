@@ -227,8 +227,8 @@ public class RenderUtils {
     public static ResourceLocation getResourceLocation(ItemStack stack) {
         TextureAtlasSprite sprite = getSprite(stack);
         String iconLoc = sprite.getIconName();
-        String domain = iconLoc.substring(0, iconLoc.indexOf(':')), resource = iconLoc.substring(iconLoc.indexOf(':') + 1, iconLoc.length());
-        return new ResourceLocation(domain, "textures/" + resource + ".png");
+        String split[] = ResourceLocation.splitObjectName(iconLoc);
+        return new ResourceLocation(split[0], "textures/" + split[1] + ".png");
     }
 
     public static int multiplyColor(int src, int dst) {

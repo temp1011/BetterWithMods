@@ -11,6 +11,7 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.WorldUtils;
@@ -38,7 +39,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     private final int STACK_SIZE = 8;
     public SimpleStackHandler filter;
-    public IHopperFilter hopperFilter;
+    public IHopperFilter hopperFilter = HopperFilter.NONE;
 
     public int soulsRetained;
     public byte power;
@@ -172,7 +173,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        return player.getDistanceSq(x + 0.5D, y + 0.5D, z + 0.5D) <= 64.0D;
+        return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(x + 0.5D, y + 0.5D, z + 0.5D) <= 64.0D;
     }
 
     @Override

@@ -9,7 +9,8 @@
       "item": "minecraft:brown_mushroom"
     },
     {
-      "item": "minecraft:carrot"
+      "ore": "cropCarrot",
+      "type": "forge:ore_dict"
     },
     {
       "item": "minecraft:mutton"

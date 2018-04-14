@@ -54,8 +54,8 @@ public class MillRecipes extends Feature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("netherrack"), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.GROUND_NETHERRACK)), SoundEvents.ENTITY_GHAST_SCREAM);
-        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.BLAZE_POWDER, 3), Lists.newArrayList(new ItemStack(Items.BLAZE_ROD)), SoundEvents.ENTITY_GHAST_SCREAM);
+        BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("netherrack"), Lists.newArrayList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK)), SoundEvents.ENTITY_GHAST_SCREAM);
+        BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.BLAZE_ROD), Lists.newArrayList(new ItemStack(Items.BLAZE_POWDER, 3)), SoundEvents.ENTITY_BLAZE_DEATH);
 
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(BWMBlocks.WOLF), Lists.newArrayList(new ItemStack(Items.STRING, 10), getDye(EnumDyeColor.RED, 3)), SoundEvents.ENTITY_WOLF_WHINE);
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(Items.REEDS), Lists.newArrayList(new ItemStack(Items.SUGAR, 2)));

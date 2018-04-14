@@ -60,9 +60,6 @@ public class MiniBlocks extends Feature {
     private static HashSet<String> whitelist = new HashSet<>();
 
     static {
-        names.put(Material.WOOD, "wood");
-        names.put(Material.ROCK, "rock");
-        names.put(Material.IRON, "iron");
         for (MiniType type : MiniType.VALUES) {
             MINI_MATERIAL_BLOCKS.put(type, Maps.newHashMap());
         }
@@ -163,6 +160,11 @@ public class MiniBlocks extends Feature {
         whitelist.add(resloc.toString() + ":" + meta);
     }
 
+    public static void addMaterial(Material material, String name) {
+        if(!names.containsKey(material)) //so addons don't overwrite our names, causing world breakage
+            names.put(material, name);
+    }
+
     @Override
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
@@ -184,18 +186,24 @@ public class MiniBlocks extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        names.put(Material.WOOD, "wood");
+        names.put(Material.ROCK, "rock");
+        names.put(Material.IRON, "iron");
+
+        GameRegistry.registerTileEntity(TileMini.class, "bwm.mini");
+        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void beforeBlockRegister(RegistryEvent.Register<Block> event) {
         for (MiniType type : MiniType.VALUES) {
             for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
                 BWMBlocks.registerBlock(mini, new ItemCamo(mini));
             }
         }
-        GameRegistry.registerTileEntity(TileMini.class, "bwm.mini");
-        GameRegistry.registerTileEntity(TileCamo.class, "bwm.camo");
-    }
-
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onItemRegister(RegistryEvent.Register<Item> event) {
+    public void afterItemRegister(RegistryEvent.Register<Item> event) {
         final NonNullList<ItemStack> list = NonNullList.create();
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof ItemBlock))

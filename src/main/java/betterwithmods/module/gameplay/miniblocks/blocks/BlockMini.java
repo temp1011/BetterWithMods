@@ -13,12 +13,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -26,8 +35,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.function.Function;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public abstract class BlockMini extends BlockCamo implements IRenderRotationPlacement {
 
@@ -35,6 +44,41 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
 
     public BlockMini(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileMini) {
+            TileMini mini = (TileMini) tile;
+            return mini.getState().getBlockHardness(worldIn, pos);
+        }
+        return super.getBlockHardness(blockState, worldIn, pos);
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileMini) {
+            TileMini mini = (TileMini) tile;
+            return mini.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion);
+        }
+        return super.getExplosionResistance(world, pos, exploder, explosion);
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.addAll(MiniBlocks.MATERIALS.get(blockMaterial).stream().sorted(this::compareBlockStates).map(state -> MiniBlocks.fromParent(this, state)).collect(Collectors.toList()));
+    }
+
+    private int compareBlockStates(IBlockState a, IBlockState b) {
+        Block blockA = a.getBlock();
+        Block blockB = b.getBlock();
+        int compare = Integer.compare(Block.getIdFromBlock(blockA),Block.getIdFromBlock(blockB));
+        if(compare == 0)
+            return Integer.compare(blockA.getMetaFromState(a), blockB.getMetaFromState(b));
+        else
+            return compare;
     }
 
     @Override

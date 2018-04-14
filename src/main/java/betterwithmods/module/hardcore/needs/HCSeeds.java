@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,9 +31,9 @@ import java.util.function.Predicate;
  */
 public class HCSeeds extends Feature {
     private static final Random RANDOM = new Random();
-
     public static Set<ItemStack> SEED_BLACKLIST = Sets.newHashSet(new ItemStack(Items.WHEAT_SEEDS));
     public static Set<IBlockState> BLOCKS_TO_STOP = Sets.newHashSet();
+    private static boolean stopZombieCropLoot;
     private static Predicate<IBlockState> STOP_SEEDS = state -> {
         Block block = state.getBlock();
         return BLOCKS_TO_STOP.contains(state) || block instanceof BlockTallGrass || (block instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN));
@@ -41,6 +42,11 @@ public class HCSeeds extends Feature {
     @Override
     public String getFeatureDescription() {
         return "Requires Tilling the ground with a hoe to get seeds.";
+    }
+
+    @Override
+    public void setupConfig() {
+        stopZombieCropLoot = loadPropBool("Stop Zombie Crop Loot", "Stops Zombies from dropping potatoes or carrots", true);
     }
 
     @SubscribeEvent
@@ -76,6 +82,8 @@ public class HCSeeds extends Feature {
 
     @SubscribeEvent
     public void mobDrop(LivingDropsEvent e) {
+        if (!stopZombieCropLoot || !(e.getEntityLiving() instanceof EntityZombie))
+            return;
         Iterator<EntityItem> iter = e.getDrops().iterator();
         EntityItem item;
         while (iter.hasNext()) {

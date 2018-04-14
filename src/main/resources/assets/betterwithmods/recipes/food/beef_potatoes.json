@@ -8,7 +8,8 @@
       "item": "minecraft:cooked_beef"
     },
     {
-      "item": "minecraft:baked_potato"
+      "ore": "cookedPotato",
+      "type": "forge:ore_dict"
     }
   ],
   "type": "minecraft:crafting_shapeless"

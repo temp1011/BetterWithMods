@@ -87,6 +87,7 @@ public class BlockPlanter extends BWMBlock {
                         return true;
                     if (player.isCreative() || InvUtils.usePlayerItem(player, EnumFacing.UP, heldItem, 1)) {
                         world.playSound(null, pos, itemType == WATER ? SoundEvents.ITEM_BUCKET_EMPTY : itemType.getState().getBlock().getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
+                        player.swingArm(hand);
                         newType = itemType;
                     }
                 }
@@ -97,6 +98,7 @@ public class BlockPlanter extends BWMBlock {
                         return true;
                     if (InvUtils.usePlayerItem(player, EnumFacing.UP, heldItem, 1))
                         InvUtils.givePlayer(player, EnumFacing.UP, InvUtils.asNonnullList(new ItemStack(Items.WATER_BUCKET)));
+                    player.swingArm(hand);
                     world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
                     newType = EMPTY;
                 }
@@ -106,6 +108,7 @@ public class BlockPlanter extends BWMBlock {
             case DIRT:
                 if (itemType == FARMLAND) {
                     heldItem.damageItem(1, player);
+                    player.swingArm(hand);
                     world.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     newType = itemType;
                     break;

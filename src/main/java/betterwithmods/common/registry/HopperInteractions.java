@@ -110,7 +110,7 @@ public class HopperInteractions {
         }
     }
 
-    public static abstract class HopperRecipe {
+    public static class HopperRecipe {
         protected final String filterName;
         protected final Ingredient input;
         protected List<ItemStack> outputs = new ArrayList<>(); //This goes in
