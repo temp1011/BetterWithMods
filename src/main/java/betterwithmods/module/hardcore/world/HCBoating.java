@@ -1,6 +1,8 @@
 package betterwithmods.module.hardcore.world;
 
+import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
+import betterwithmods.module.compat.Quark;
 import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;

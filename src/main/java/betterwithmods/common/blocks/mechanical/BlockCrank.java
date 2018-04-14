@@ -1,10 +1,10 @@
 package betterwithmods.common.blocks.mechanical;
 
+import betterwithmods.BWMod;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TileCrank;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import net.minecraft.block.Block;
@@ -70,7 +70,7 @@ public class BlockCrank extends BWMBlock implements IOverpower {
         int meta = state.getValue(STAGE);
         if (meta == 0) {
             if (Gameplay.crankExhaustion > 0.0) {
-                int minHunger = ModuleLoader.isFeatureEnabled(HCHunger.class) ? 20 : 6;
+                int minHunger = BWMod.MODULE_LOADER.isFeatureEnabled(HCHunger.class) ? 20 : 6;
                 if (player.getFoodStats().getFoodLevel() > minHunger) {
                     player.addExhaustion((float) Gameplay.crankExhaustion);
                     if (!world.isRemote) {

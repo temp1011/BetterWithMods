@@ -1,7 +1,7 @@
 package betterwithmods.module.industry;
 
+import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.beacons.HCBeacons;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,7 +18,7 @@ public class WeatherControl extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        if(ModuleLoader.isFeatureEnabled(HCBeacons.class)) {
+        if(BWMod.MODULE_LOADER.isFeatureEnabled(HCBeacons.class)) {
             HCBeacons.BEACON_EFFECTS.put(Blocks.SEA_LANTERN.getDefaultState(), new WeatherBeaconEffect());
         }
     }

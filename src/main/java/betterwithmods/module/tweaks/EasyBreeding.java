@@ -1,9 +1,9 @@
 package betterwithmods.module.tweaks;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.entity.ai.EntityAISearchFood;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.creatures.HCChickens;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
@@ -12,13 +12,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -103,7 +101,7 @@ public class EasyBreeding extends Feature {
             EntityLivingBase entity = (EntityLivingBase) event.getEntity();
             if (entity instanceof EntityAnimal) {
                 EntityAnimal animal = ((EntityAnimal) entity);
-                if (!ModuleLoader.isFeatureEnabled(HCChickens.class) || !(event.getEntity() instanceof EntityChicken)) {
+                if (!BWMod.MODULE_LOADER.isFeatureEnabled(HCChickens.class) || !(event.getEntity() instanceof EntityChicken)) {
                     animal.tasks.addTask(3, new EntityAISearchFood(((EntityAnimal) entity)));
                 }
                 if (!getTempted(animal).isEmpty()) {

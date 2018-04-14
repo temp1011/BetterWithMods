@@ -37,8 +37,6 @@ public final class Document {
 		new PatternMapping("^(#+)\\s(.*)", Document::HeaderSegment), // headers: # ...
 		new PatternMapping("(`)(.*?)\\1", Document::CodeSegment), // code: `...`
 		new PatternMapping("!\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEIImageSegment), // images: ![...](...)
-//		new PatternMapping("@\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEISegment), // jei text: @[...](...)
-//		new PatternMapping("%\\[([^\\[]*)\\]\\(([^\\)]+)\\)", Document::JEIImageSegment), // jei image: %[...](...)
 		new PatternMapping("\\[([^\\[]+)\\]\\(([^\\)]+)\\)", Document::LinkSegment), // links: [...](...)
 		new PatternMapping("(\\*\\*|_)(\\S.*?\\S|$)\\1", Document::BoldSegment), // bold: **...** | _..._
 		new PatternMapping("(\\*|_)(\\S.*?\\S|$)\\1", Document::ItalicSegment), // italic: *...* | _..._
@@ -250,10 +248,6 @@ public final class Document {
 
 	private static Segment FieldSegment(final Segment s, final Matcher m) {
 		return new FieldSegment(s, m.group(1), m.group(2));
-	}
-
-	private static Segment FeatureSegment(final Segment s, final Matcher m) {
-		return new FeatureSegment(s, m.group(1), m.group(2), m.group(3));
 	}
 
 	private static Segment JEISegment(final Segment s, final Matcher m) {

@@ -20,7 +20,6 @@ import betterwithmods.manual.api.ManualAPI;
 import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
 import betterwithmods.manual.api.prefab.manual.TextureTabIconRenderer;
 import betterwithmods.manual.client.manual.provider.*;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import betterwithmods.module.gameplay.breeding_harness.CapabilityHarness;
 import betterwithmods.module.hardcore.crafting.HCFurnace;
@@ -82,12 +81,12 @@ public class ClientProxy implements IProxy {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
         ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
-        ModuleLoader.registerModels(event);
+        BWMod.MODULE_LOADER.registerModels(event);
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        ModuleLoader.preInitClient(event);
+        BWMod.MODULE_LOADER.preInitClient(event);
         registerRenderInformation();
         initRenderers();
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
@@ -96,7 +95,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
-        ModuleLoader.initClient(event);
+        BWMod.MODULE_LOADER.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());
         ManualAPI.addProvider(new ResourceContentProvider("betterwithmods", "docs/"));
@@ -109,7 +108,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        ModuleLoader.postInitClient(event);
+        BWMod.MODULE_LOADER.postInitClient(event);
         RenderUtils.registerFilters();
     }
 
@@ -125,7 +124,7 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeacon.class, new TESRBeacon());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSteelSaw.class, new TESRSteelSaw());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBucket.class, new TESRBucket());
-        if (ModuleLoader.isFeatureEnabled(HCFurnace.class)) {
+        if (BWMod.MODULE_LOADER.isFeatureEnabled(HCFurnace.class)) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace.class, new TESRFurnaceContent());
         }
     }

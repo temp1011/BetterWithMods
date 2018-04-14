@@ -1,13 +1,14 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.HCCooking;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -49,7 +50,7 @@ public class KilnRecipes extends Feature {
 
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16), 0.1F);
         GameRegistry.addSmelting(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2), 0.1F);
-        int foodModifier = ModuleLoader.isFeatureEnabled(HCCooking.class) ? 1 : 2;
+        int foodModifier = BWMod.MODULE_LOADER.isFeatureEnabled(HCCooking.class) ? 1 : 2;
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0,foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD,foodModifier));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8*foodModifier));

@@ -294,7 +294,7 @@ public class BWRegistry {
     }
 
     private static void replaceIRecipe(Class<? extends Feature> clazz, IForgeRegistry<IRecipe> reg) {
-        if (ModuleLoader.isFeatureEnabled(clazz)) {
+        if (BWMod.MODULE_LOADER.isFeatureEnabled(clazz)) {
             List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
             if (recipes != null) {
                 recipes.forEach(reg::register);

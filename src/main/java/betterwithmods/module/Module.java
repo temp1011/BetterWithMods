@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -58,7 +57,6 @@ public class Module {
     }
 
     public void registerFeature(Feature feature, String name, boolean enabledByDefault) {
-        ModuleLoader.featureInstances.put(feature.getClass(), feature);
         features.put(name, feature);
 
         feature.enabledByDefault = enabledByDefault;
@@ -95,7 +93,7 @@ public class Module {
                         }
 
                     if (!failiures.isEmpty())
-                        FMLLog.info("[BWM] '" + feature.configName + "' is forcefully disabled as it's incompatible with the following loaded mods: " + failiures);
+                        BWMod.logger.info("[BWM] '" + feature.configName + "' is forcefully disabled as it's incompatible with the following loaded mods: " + failiures);
                 }
             }
 
@@ -240,5 +238,13 @@ public class Module {
 
     public int getPriority() {
         return priority;
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public boolean isFeatureEnabled(Class<? extends Feature> clazz) {
+        return enabledFeatures.stream().anyMatch(feature -> clazz.isAssignableFrom(feature.getClass()));
     }
 }

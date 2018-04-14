@@ -1,8 +1,8 @@
 package betterwithmods.module.hardcore;
 
+import betterwithmods.BWMod;
 import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.module.CompatModule;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.beacons.HCBeacons;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.*;
@@ -88,9 +88,9 @@ public class Hardcore extends CompatModule {
     @Override
     public void initClient(FMLInitializationEvent event) {
         super.initClient(event);
-        GuiStatus.isGloomLoaded = ModuleLoader.isFeatureEnabled(HCGloom.class);
-        GuiStatus.isHungerLoaded = ModuleLoader.isFeatureEnabled(HCHunger.class);
-        GuiStatus.isInjuryLoaded = ModuleLoader.isFeatureEnabled(HCInjury.class);
+        GuiStatus.isGloomLoaded = BWMod.MODULE_LOADER.isFeatureEnabled(HCGloom.class);
+        GuiStatus.isHungerLoaded = BWMod.MODULE_LOADER.isFeatureEnabled(HCHunger.class);
+        GuiStatus.isInjuryLoaded = BWMod.MODULE_LOADER.isFeatureEnabled(HCInjury.class);
     }
 
     @Override

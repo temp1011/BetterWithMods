@@ -9,7 +9,6 @@ import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.miniblocks.MiniBlockIngredient;
 import betterwithmods.module.hardcore.needs.HCTools;
 import net.minecraft.init.Blocks;
@@ -73,7 +72,7 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe("steel_pants", new ItemStack(BWMItems.STEEL_PANTS), "SSSS", "PSSP", "P  P", "P  P", 'P', ItemMaterial.getStack(ItemMaterial.EnumMaterial.ARMOR_PLATE), 'S', "ingotSoulforgedSteel");
         addSteelShapedRecipe("steel_boots", new ItemStack(BWMItems.STEEL_BOOTS), " SS ", " SS ", "SPPS", 'P', ItemMaterial.getStack(ItemMaterial.EnumMaterial.ARMOR_PLATE), 'S', "ingotSoulforgedSteel");
         addSteelShapedRecipe("polished_lapis", ItemMaterial.getStack(ItemMaterial.EnumMaterial.POLISHED_LAPIS, 2), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
-        if (ModuleLoader.isFeatureEnabled(HCTools.class)) {
+        if (BWMod.MODULE_LOADER.isFeatureEnabled(HCTools.class)) {
             addSteelShapedRecipe("steel_axe", new ItemStack(BWMItems.STEEL_AXE), "X ", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getStack(ItemMaterial.EnumMaterial.HAFT));
         } else {
             addSteelShapedRecipe("steel_axe", new ItemStack(BWMItems.STEEL_AXE), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', ItemMaterial.getStack(ItemMaterial.EnumMaterial.HAFT));

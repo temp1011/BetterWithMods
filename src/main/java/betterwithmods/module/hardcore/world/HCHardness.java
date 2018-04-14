@@ -1,7 +1,7 @@
 package betterwithmods.module.hardcore.world;
 
+import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.tweaks.AxeLeaves;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.block.Block;
@@ -84,7 +84,7 @@ public class HCHardness extends Feature {
 
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
 
-        if (ModuleLoader.isFeatureEnabled(AxeLeaves.class)) {
+        if (BWMod.MODULE_LOADER.isFeatureEnabled(AxeLeaves.class)) {
             ToolsManager.setAxesAsEffectiveAgainst(Blocks.LEAVES, Blocks.LEAVES2);
             for (ItemStack stack : OreDictionary.getOres("treeLeaves")) {
                 if (stack.getItem() instanceof ItemBlock) {
