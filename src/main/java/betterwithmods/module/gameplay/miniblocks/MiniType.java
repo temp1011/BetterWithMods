@@ -3,6 +3,8 @@ package betterwithmods.module.gameplay.miniblocks;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
@@ -20,6 +22,7 @@ public enum MiniType {
     private Class<? extends BlockCamo> block;
     private String name;
 
+    @SideOnly(Side.CLIENT)
     MiniType(Class<? extends BlockCamo> block, String name) {
         this.block = block;
         this.name = name;

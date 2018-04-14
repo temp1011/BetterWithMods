@@ -142,6 +142,14 @@ tile.bwm:column_rock.name=Column
 tile.bwm:column_wood.name=Column
 tile.bwm:column_iron.name=Column
 
+tile.bwm:table_rock.name=Table
+tile.bwm:table_wood.name=Table
+tile.bwm:table_iron.name=Table
+
+tile.bwm:bench_rock.name=Bench
+tile.bwm:bench_wood.name=Bench
+tile.bwm:bench_iron.name=Bench
+
 tile.bwm:pedestal_rock.name=Pedestal
 tile.bwm:pedestal_wood.name=Pedestal
 tile.bwm:pedestal_iron.name=Pedestal

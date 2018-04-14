@@ -65,20 +65,6 @@ public class MiniBlocks extends Feature {
         }
     }
 
-    static {
-        for (Material material : names.keySet()) {
-            String name = names.get(material);
-            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "siding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "moulding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "corner", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "column", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "pedestal", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).put(material, (BlockCamo) new BlockTable(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "table", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).put(material, (BlockCamo) new BlockBench(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "bench", name)));
-        }
-    }
-
-
     public MiniBlocks() {
         enabledByDefault = false;
     }
@@ -196,12 +182,23 @@ public class MiniBlocks extends Feature {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void beforeBlockRegister(RegistryEvent.Register<Block> event) {
+        for (Material material : names.keySet()) {
+            String name = names.get(material);
+            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "siding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "moulding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "corner", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "column", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).put(material, (BlockCamo) new BlockTable(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "table", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).put(material, (BlockCamo) new BlockBench(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "bench", name)));
+        }
+
+
         for (MiniType type : MiniType.VALUES) {
             for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
                 BWMBlocks.registerBlock(mini, new ItemCamo(mini));
             }
         }
-
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
