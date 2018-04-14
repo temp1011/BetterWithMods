@@ -90,6 +90,7 @@ public class BWOreDictionary {
         registerOre("dustCoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.COAL_DUST));
         registerOre("dustCharcoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHARCOAL_DUST));
         registerOre("gemNetherCoal", ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL));
+        registerOre("coal", new ItemStack(Items.COAL, 1, 0), new ItemStack(Items.COAL, 1, 1));
         registerOre("materialNetherSludge", ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE));
         registerOre("foodChocolatebar", new ItemStack(BWMItems.CHOCOLATE));
         registerOre("chainmail", ItemMaterial.getStack(ItemMaterial.EnumMaterial.CHAIN_MAIL));
@@ -112,16 +113,6 @@ public class BWOreDictionary {
         registerOre("hideScoured", ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER));
         registerOre("hideStrap", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_STRAP));
         registerOre("leather", ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT));
-
-
-//        registerOre("slabWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-//        registerOre("sidingWood", new ItemStack(BWMBlocks.WOOD_SIDING, 1, OreDictionary.WILDCARD_VALUE));
-//        registerOre("mouldingWood", new ItemStack(BWMBlocks.WOOD_MOULDING, 1, OreDictionary.WILDCARD_VALUE));
-//        registerOre("cornerWood", new ItemStack(BWMBlocks.WOOD_CORNER, 1, OreDictionary.WILDCARD_VALUE));
-
-//        registerOre("sidingStone", new ItemStack(BWMBlocks.STONE_SIDING, 1, 0));
-//        registerOre("mouldingStone", new ItemStack(BWMBlocks.STONE_MOULDING, 1, 0));
-//        registerOre("cornerStone", new ItemStack(BWMBlocks.STONE_CORNER, 1, 0));
 
         registerOre("fiberHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_FIBERS));
         registerOre("fabricHemp", ItemMaterial.getStack(ItemMaterial.EnumMaterial.HEMP_CLOTH));

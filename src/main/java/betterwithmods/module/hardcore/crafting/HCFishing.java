@@ -82,7 +82,7 @@ public class HCFishing extends Feature {
                 new ItemStack(BWMItems.COOKED_BAT_WING, 1),
                 new ItemStack(Items.ROTTEN_FLESH)
         }));
-        addHardcoreRecipe(new BaitingRecipe());
+        addRecipe(new BaitingRecipe());
     }
 
     //Override loottables

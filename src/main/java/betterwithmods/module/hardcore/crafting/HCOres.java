@@ -13,12 +13,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -61,10 +58,17 @@ public class HCOres extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if (fixVanillaRecipes) {
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.COMPASS, " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "compass")));
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.CLOCK, " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz").setRegistryName(new ResourceLocation("minecraft", "clock")));
-            addHardcoreRecipe(new ShapedOreRecipe(null, Items.BUCKET, "N N", "N N", "NNN", 'N', "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "bucket")));
-            addHardcoreRecipe(new ShapelessOreRecipe(null, Items.FLINT_AND_STEEL, Items.FLINT, "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "flint_and_steel")));
+
+            BWMRecipes.removeRecipe(Items.COMPASS.getRegistryName());
+            BWMRecipes.removeRecipe(Items.CLOCK.getRegistryName());
+            BWMRecipes.removeRecipe(Items.BUCKET.getRegistryName());
+            BWMRecipes.removeRecipe(Items.FLINT_AND_STEEL.getRegistryName());
+
+            //TODO
+//            addHardcoreRecipe(new ShapedOreRecipe(null, Items.COMPASS, " N ", "NRN", " N ", 'N', "nuggetIron", 'R', "dustRedstone").setRegistryName(new ResourceLocation("minecraft", "compass")));
+//            addHardcoreRecipe(new ShapedOreRecipe(null, Items.CLOCK, " N ", "NQN", " N ", 'N', "nuggetGold", 'Q', "gemQuartz").setRegistryName(new ResourceLocation("minecraft", "clock")));
+//            addHardcoreRecipe(new ShapedOreRecipe(null, Items.BUCKET, "N N", "N N", "NNN", 'N', "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "bucket")));
+//            addHardcoreRecipe(new ShapelessOreRecipe(null, Items.FLINT_AND_STEEL, Items.FLINT, "nuggetIron").setRegistryName(new ResourceLocation("minecraft", "flint_and_steel")));
         }
 
         addMeltingRecipeWithoutReturn(new ItemStack(Items.BUCKET), new ItemStack(Items.IRON_NUGGET, 7));
@@ -78,7 +82,7 @@ public class HCOres extends Feature {
     }
 
     private void addMeltingRecipeWithoutReturn(ItemStack input, ItemStack output) {
-        BWRegistry.CRUCIBLE.addRecipe(new CookingPotRecipe(Lists.newArrayList(Ingredient.fromStacks(input)),Lists.newArrayList(output), BWMHeatRegistry.STOKED_HEAT){
+        BWRegistry.CRUCIBLE.addRecipe(new CookingPotRecipe(Lists.newArrayList(Ingredient.fromStacks(input)), Lists.newArrayList(output), BWMHeatRegistry.STOKED_HEAT) {
             @Override
             protected boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
                 boolean success = super.consumeIngredients(inventory, containItems);

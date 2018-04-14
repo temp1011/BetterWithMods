@@ -5,7 +5,7 @@
       "name": "mill",
       "entries": [
         {
-          "type": "cobble",
+          "type": "item",
           "name": "minecraft:cobblestone",
           "weight": 1,
           "functions": [
@@ -19,7 +19,7 @@
           ]
         },
         {
-          "type": "gear",
+          "type": "item",
           "name": "betterwithmods:wood_gear",
           "weight": 1,
           "functions": [

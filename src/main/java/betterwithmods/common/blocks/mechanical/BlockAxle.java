@@ -135,11 +135,6 @@ public class BlockAxle extends BWMBlock implements IOverpower, IBlockActive {
         }
     }
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) withTile(world, pos).ifPresent(System.out::println);
-        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
-    }
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {

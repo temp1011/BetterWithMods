@@ -14,8 +14,12 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "S": {
-      "item": "betterwithmods:wood_siding",
-      "data": 5
+      "type": "betterwithmods:minitype",
+      "minitype": "siding",
+      "baseIngredient": {
+        "item": "minecraft:planks",
+        "data": 5
+      }
     },
     "M": {
       "type": "betterwithmods:minitype",

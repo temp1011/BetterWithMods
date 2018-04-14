@@ -238,9 +238,9 @@ public class MiniBlocks extends Feature {
             BlockCamo moulding = MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(material);
             BlockCamo corner = MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).get(material);
 
-            addHardcoreRecipe(new MiniRecipe(siding, null));
-            addHardcoreRecipe(new MiniRecipe(moulding, siding));
-            addHardcoreRecipe(new MiniRecipe(corner, moulding));
+            addRecipe(new MiniRecipe(siding, null));
+            addRecipe(new MiniRecipe(moulding, siding));
+            addRecipe(new MiniRecipe(corner, moulding));
         }
 
         for (IBlockState wood : MATERIALS.get(Material.WOOD)) {

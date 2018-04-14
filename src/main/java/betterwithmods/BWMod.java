@@ -81,7 +81,6 @@ public class BWMod {
         MODULE_LOADER.postInit(evt);
 
         proxy.postInit(evt);
-        BWRegistry.postPostInit();
     }
 
     @Mod.EventHandler

@@ -17,8 +17,7 @@
       "item": "minecraft:redstone_torch"
     },
     "S": {
-      "item": "betterwithmods:stone_siding",
-      "data": 0
+      "item": "#SIDING_STONE"
     }
   }
 }

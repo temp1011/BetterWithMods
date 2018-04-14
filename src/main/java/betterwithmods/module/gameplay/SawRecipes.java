@@ -8,6 +8,7 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.SawRecipe;
+import betterwithmods.common.registry.crafting.ChoppingRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.util.InvUtils;
@@ -15,7 +16,11 @@ import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
@@ -46,6 +51,16 @@ public class SawRecipes extends Feature {
                 return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
+
+        if (!Loader.isModLoaded("primal")) {
+            for (IRecipe recipe : BWOreDictionary.logRecipes) {
+                ItemStack plank = recipe.getRecipeOutput();
+                BWOreDictionary.woods.stream().filter(w -> w.getPlank(4).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
+                    ResourceLocation registry = new ResourceLocation(BWMod.MODID, recipe.getRegistryName().getResourcePath());
+                    addRecipe(new ChoppingRecipe(wood, 4).setRegistryName(registry));
+                });
+            }
+        }
     }
 
     @Override
@@ -56,5 +71,16 @@ public class SawRecipes extends Feature {
         }
     }
 
-
+    private boolean hasLog(IRecipe recipe, ItemStack log) {
+        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getMatchingStacks().length > 0) {
+                for (ItemStack stack : ingredient.getMatchingStacks()) {
+                    if (stack.isItemEqual(log))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 }

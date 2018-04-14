@@ -112,9 +112,9 @@ public class HCArmor extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if (shieldRebalance) {
-            addHardcoreRecipe(new ShapedOreRecipe(null, new ItemStack(Items.SHIELD),
+            addRecipe((new ShapedOreRecipe(null, new ItemStack(Items.SHIELD),
                     "SWS", "WIW", " W ", 'S', "strapLeather", 'W', "sidingWood", 'I', "ingotIron"
-            ).setRegistryName("minecraft:shield"));
+            ).setRegistryName("minecraft:shield")));
         }
         initWeights();
     }

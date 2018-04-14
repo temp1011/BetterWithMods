@@ -38,6 +38,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCRedstone().recipes());
         registerFeature(new HCBoating().recipes());
         registerFeature(new HCFishing().recipes());
+        registerFeature(new HCTorches().recipes());
 
         registerFeature(new HCArmor());
         registerFeature(new HCBeacons());
@@ -68,7 +69,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCStructures());
         registerFeature(new HCStumping());
         registerFeature(new HCTools());
-        registerFeature(new HCTorches());
+
         registerFeature(new HCVillages());
         registerFeature(new HCMovement());
         registerFeature(new HCCobblestone());

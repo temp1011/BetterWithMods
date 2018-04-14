@@ -66,7 +66,7 @@ public class ItemCamo extends ItemBlock {
                 NBTTagCompound tileNBT = tileentity.writeToNBT(new NBTTagCompound());
                 NBTTagCompound newNBT = tileNBT.copy();
                 tileNBT.merge(data);
-
+                System.out.println(newNBT);
                 if (!tileNBT.equals(newNBT)) {
                     tileentity.readFromNBT(tileNBT);
                     tileentity.markDirty();

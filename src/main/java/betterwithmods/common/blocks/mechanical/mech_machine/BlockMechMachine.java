@@ -77,6 +77,7 @@ public abstract class BlockMechMachine extends BWMBlock implements IBlockActive,
 
     @Override
     public void overpower(World world, BlockPos pos) {
+        overpowerSound(world,pos);
         InvUtils.ejectBrokenItems(world,pos.offset(EnumFacing.random(world.rand)),overpowerDrops);
         world.setBlockToAir(pos);
     }

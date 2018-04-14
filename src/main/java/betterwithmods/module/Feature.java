@@ -49,11 +49,6 @@ public class Feature {
 
     public ConfigHelper configHelper;
 
-    public static IRecipe registerHardcoreRecipe(String ID, IRecipe recipe) {
-        BWMRecipes.addHardcoreRecipe(ID, recipe);
-        return recipe;
-    }
-
     public Feature recipes() {
         recipeCondition = true;
         return this;
@@ -197,11 +192,11 @@ public class Feature {
         return configHelper.loadRecipeCondition(jsonName, propName, configCategory, comment, _default);
     }
 
-    public IRecipe addHardcoreRecipe(IRecipe recipe) {
-        return registerHardcoreRecipe(getClass().getSimpleName(), recipe);
-    }
-
     public final List<ResourceLocation> loadRLList(String propName, String comment, String[] default_) {
         return configHelper.loadPropRLList(propName, configCategory, comment, default_);
+    }
+
+    public IRecipe addRecipe(IRecipe recipe) {
+        return BWMRecipes.addRecipe(recipe);
     }
 }

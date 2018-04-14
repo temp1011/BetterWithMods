@@ -25,14 +25,7 @@ import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
-import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.gameplay.CraftingRecipes;
-import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
-import betterwithmods.module.hardcore.needs.HCTools;
-import betterwithmods.module.hardcore.world.HCTorches;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -51,7 +44,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -65,13 +57,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.awt.*;
-import java.util.List;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
@@ -127,6 +116,7 @@ public class BWRegistry {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) event.getRegistry();
+        BWMRecipes.RECIPES.forEach(reg::register);
         for (IRecipe recipe : reg) {
             for (ResourceLocation loc : BWMRecipes.REMOVE_RECIPE_BY_RL) {
                 if (loc.equals(recipe.getRegistryName()))
@@ -150,10 +140,6 @@ public class BWRegistry {
     public static void postInit() {
         BWOreDictionary.postInitOreDictGathering();
         BellowsManager.postInit();
-    }
-
-    public static void postPostInit() {
-        registerRecipes();
     }
 
     /**
@@ -266,47 +252,5 @@ public class BWRegistry {
         return potion;
     }
 
-    public static void registerRecipes() {
-        ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
-
-        replaceIRecipe(CraftingRecipes.class, reg);
-        replaceIRecipe(HCTools.class, reg);
-        replaceIRecipe(HCDiamond.class, reg);
-        replaceIRecipe(HCLumber.class, reg);
-        replaceIRecipe(HCOres.class, reg);
-        replaceIRecipe(HCRedstone.class, reg);
-        replaceIRecipe(HCTorches.class, reg);
-        replaceIRecipe(HCFishing.class, reg);
-        replaceIRecipe(MiniBlocks.class, reg);
-    }
-
-    private static void retrieveRecipes(String category, ForgeRegistry<IRecipe> reg) {
-        List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(category);
-        if (recipes != null) {
-            for (IRecipe recipe : recipes) {
-                ResourceLocation location = recipe.getRegistryName();
-                if (reg.containsKey(location))
-                    registerReplacements(reg.getValue(location), recipe);
-                else
-                    reg.register(recipe);
-            }
-        }
-    }
-
-    private static void replaceIRecipe(Class<? extends Feature> clazz, IForgeRegistry<IRecipe> reg) {
-        if (BWMod.MODULE_LOADER.isFeatureEnabled(clazz)) {
-            List<IRecipe> recipes = BWMRecipes.getHardcoreRecipes(clazz.getSimpleName());
-            if (recipes != null) {
-                recipes.forEach(reg::register);
-            }
-        }
-    }
-
-    private static void registerReplacements(IRecipe original, IRecipe from) {
-        NonNullList<Ingredient> ing = original.getIngredients();
-        for (int i = 0; i < ing.size(); i++) {
-            ing.set(i, from.getIngredients().get(i));
-        }
-    }
 }
 

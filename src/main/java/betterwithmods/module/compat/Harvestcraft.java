@@ -1,14 +1,10 @@
 package betterwithmods.module.compat;
 
-import betterwithmods.common.BWMItems;
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.registry.Wood;
 import betterwithmods.module.CompatFeature;
-import betterwithmods.module.gameplay.CauldronRecipes;
-import betterwithmods.module.gameplay.MillRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -18,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 @SuppressWarnings("unused")
 public class Harvestcraft extends CompatFeature {
@@ -58,8 +53,6 @@ public class Harvestcraft extends CompatFeature {
         BWRegistry.MILLSTONE.addMillRecipe(new ItemStack(curry), new ItemStack(curryPowder));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(new ItemStack(Items.EGG), new ItemStack(boiledEgg));
-
-        BWMRecipes.addShapelessOreRecipe(new ItemStack(BWMItems.CHOCOLATE, 2), "foodCocoapowder", "listAllmilk", Items.SUGAR, "toolSaucepan");
 
         BWOreDictionary.woods.add(new Wood(new ItemStack(logMaple),new ItemStack(Blocks.PLANKS,1, BlockPlanks.EnumType.SPRUCE.getMetadata()), ItemBark.getStack("spruce",1)));
         BWOreDictionary.woods.add(new Wood(new ItemStack(logCinnamon),new ItemStack(Blocks.PLANKS,1, BlockPlanks.EnumType.JUNGLE.getMetadata()), ItemBark.getStack("jungle",1)));
