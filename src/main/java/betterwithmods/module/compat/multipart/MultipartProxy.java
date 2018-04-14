@@ -17,16 +17,21 @@ import java.util.function.Function;
 public class MultipartProxy implements IMultipart {
 
     private final Block block;
-    private final Function<IBlockState, IPartSlot> placementSlot, worldSlot;
+    private final Function<IBlockState, IPartSlot> placementWrapper, worldWrapper;
 
-    public MultipartProxy(Block block, Function<IBlockState, IPartSlot> placementSlot, Function<IBlockState, IPartSlot> worldSlot) {
+    public MultipartProxy(Block block, Function<IBlockState, IPartSlot> placementWrapper, Function<IBlockState, IPartSlot> worldWrapper) {
         this.block = block;
-        this.placementSlot = placementSlot;
-        this.worldSlot = worldSlot;
+        this.placementWrapper = placementWrapper;
+        this.worldWrapper = worldWrapper;
     }
 
     public MultipartProxy(Block block, Function<IBlockState, IPartSlot> wrapper) {
         this(block, wrapper, wrapper);
+    }
+
+    @Override
+    public IMultipartTile convertToMultipartTile(TileEntity tileEntity) {
+        return MultipartTileProxy.proxy(tileEntity);
     }
 
     @Override
@@ -35,17 +40,14 @@ public class MultipartProxy implements IMultipart {
     }
 
     @Override
-    public IMultipartTile convertToMultipartTile(TileEntity tileEntity) {
-        return new MultipartTileProxy(tileEntity);
-    }
-
-    @Override
-    public IPartSlot getSlotForPlacement(World world, BlockPos pos, IBlockState state, EnumFacing facing, float hitX, float hitY, float hitZ, EntityLivingBase placer) {
-        return placementSlot.apply(state);
+    public IPartSlot getSlotForPlacement(World world, BlockPos pos, IBlockState state, EnumFacing facing, float hitX, float hitY,
+                                         float hitZ, EntityLivingBase placer) {
+        return placementWrapper.apply(state);
     }
 
     @Override
     public IPartSlot getSlotFromWorld(IBlockAccess world, BlockPos pos, IBlockState state) {
-        return worldSlot.apply(state);
+        return worldWrapper.apply(state);
     }
+
 }

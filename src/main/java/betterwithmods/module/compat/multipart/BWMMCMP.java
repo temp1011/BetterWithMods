@@ -1,5 +1,6 @@
 package betterwithmods.module.compat.multipart;
 
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.module.gameplay.miniblocks.ItemMini;
 import betterwithmods.module.gameplay.miniblocks.MiniType;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
@@ -9,6 +10,7 @@ import mcmultipart.api.addon.IWrappedBlock;
 import mcmultipart.api.addon.MCMPAddon;
 import mcmultipart.api.multipart.IMultipart;
 import mcmultipart.api.multipart.IMultipartRegistry;
+import mcmultipart.api.slot.EnumCenterSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +37,9 @@ public class BWMMCMP implements IMCMPAddon {
 //                }
 //            }
 //        }
+
+        register(registry, BWMBlocks.WOODEN_AXLE, new MultipartProxy(BWMBlocks.WOODEN_AXLE, state -> EnumCenterSlot.CENTER));
+        register(registry, BWMBlocks.STEEL_AXLE, new MultipartProxy(BWMBlocks.STEEL_AXLE, state -> EnumCenterSlot.CENTER));
     }
 
     private boolean placeSiding(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, IBlockState newState) {
@@ -44,7 +49,7 @@ public class BWMMCMP implements IMCMPAddon {
                 newState = world.getBlockState(pos);
                 SoundType soundtype = newState.getBlock().getSoundType(newState, world, pos, player);
                 world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                if(!player.isCreative())
+                if (!player.isCreative())
                     stack.shrink(1);
             }
             return true;
