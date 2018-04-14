@@ -7,26 +7,24 @@ public final class GlobalConfig {
     public static boolean debug;
     public static int maxPlatformBlocks;
 
-    public static void initGlobalConfig() {
+    public static void initGlobalConfig(ModuleLoader loader) {
         String category = "_global";
 
-        ConfigHelper.needsRestart = ConfigHelper.allNeedRestart = true;
+        loader.configHelper.setRestartNeed(true);
 
-        debug = ConfigHelper.loadPropBool("Debug", category, "Enables debug features", false);
-        maxPlatformBlocks = ConfigHelper.loadPropInt("Max Platform Blocks", category, "Max blocks a platform can have", 128);
+        debug = loader.configHelper.loadPropBool("Debug", category, "Enables debug features", false);
+        maxPlatformBlocks = loader.configHelper.loadPropInt("Max Platform Blocks", category, "Max blocks a platform can have", 128);
 
-        ConfigHelper.needsRestart = ConfigHelper.allNeedRestart = false;
+        loader.configHelper.setRestartNeed(false);
 
-        BlockHemp.growthChance = ConfigHelper.loadPropDouble("Growth Chance","Hemp","Hemp has a 1/X chance of growing where X is this value, the following modifiers divide this value", 15D);
-        BlockHemp.fertileModifier = ConfigHelper.loadPropDouble("Fertile Modifier","Hemp","Modifies Hemp Growth Chance when planted on Fertile Farmland", 1.33);
-        BlockHemp.lampModifier = ConfigHelper.loadPropDouble("Light Block Modifier","Hemp","Modifies Hemp Growth Chance when a Light Block is two blocks above the Hemp",  1.5D);
-        BlockHemp.neighborModifier = ConfigHelper.loadPropDouble("Neighbor Modifier","Hemp","Modifies Hemp Growth Chance for each other crop next to it ",  1.1D);
-
-
+        BlockHemp.growthChance = loader.configHelper.loadPropDouble("Growth Chance","Hemp","Hemp has a 1/X chance of growing where X is this value, the following modifiers divide this value", 15D);
+        BlockHemp.fertileModifier = loader.configHelper.loadPropDouble("Fertile Modifier","Hemp","Modifies Hemp Growth Chance when planted on Fertile Farmland", 1.33);
+        BlockHemp.lampModifier = loader.configHelper.loadPropDouble("Light Block Modifier","Hemp","Modifies Hemp Growth Chance when a Light Block is two blocks above the Hemp",  1.5D);
+        BlockHemp.neighborModifier = loader.configHelper.loadPropDouble("Neighbor Modifier","Hemp","Modifies Hemp Growth Chance for each other crop next to it ",  1.1D);
     }
 
-    public static void initGlobalClient() {
-        GuiStatus.offsetY = ConfigHelper.loadPropInt("Status Effect Offset Y", "gui", "Y Offset for the Hunger, Injury and Gloom Status effects.", 0);
-        GuiStatus.offsetX = ConfigHelper.loadPropInt("Status Effect Offset X", "gui", "X Offset for the Hunger, Injury and Gloom Status effects.", 0);
+    public static void initGlobalClient(ModuleLoader loader) {
+        GuiStatus.offsetY = loader.configHelper.loadPropInt("Status Effect Offset Y", "gui", "Y Offset for the Hunger, Injury and Gloom Status effects.", 0);
+        GuiStatus.offsetX = loader.configHelper.loadPropInt("Status Effect Offset X", "gui", "X Offset for the Hunger, Injury and Gloom Status effects.", 0);
     }
 }

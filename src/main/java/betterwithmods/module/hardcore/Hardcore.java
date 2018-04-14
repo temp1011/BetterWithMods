@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore;
 import betterwithmods.BWMod;
 import betterwithmods.client.gui.GuiStatus;
 import betterwithmods.module.CompatModule;
+import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.beacons.HCBeacons;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.*;
@@ -16,7 +17,10 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
  * Created by primetoxinz on 4/20/17.
  */
 public class Hardcore extends CompatModule {
-    public Hardcore() {
+
+
+    public Hardcore(ModuleLoader loader) {
+        super(loader);
         priority = 1;
     }
 

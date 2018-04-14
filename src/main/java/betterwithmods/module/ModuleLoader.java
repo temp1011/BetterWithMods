@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +35,7 @@ public abstract class ModuleLoader {
     private final List<Class<? extends Module>> moduleClasses;
     private final Map<Class<? extends Module>, Module> moduleInstances;
     private final List<Module> enabledModules;
-    public Configuration config;
-    private File configFile;
+    public ConfigHelper configHelper;
 
     public ModuleLoader() {
         enabledModules = Lists.newArrayList();
@@ -51,7 +49,7 @@ public abstract class ModuleLoader {
     public void preInit(FMLPreInitializationEvent event) {
         moduleClasses.forEach(clazz -> {
             try {
-                moduleInstances.put(clazz, clazz.newInstance());
+                moduleInstances.put(clazz, clazz.getConstructor(ModuleLoader.class).newInstance(this));
             } catch (Exception e) {
                 throw new RuntimeException("Can't initialize module " + clazz, e);
             }
@@ -66,22 +64,17 @@ public abstract class ModuleLoader {
             module.preInit(event);
         });
 
-        if (config.hasChanged())
-            config.save();
+        configHelper.save();
     }
 
     public void init(FMLInitializationEvent event) {
         forEachEnabled(module -> module.init(event));
-
-        if (config.hasChanged())
-            config.save();
+        configHelper.save();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         forEachEnabled(module -> module.postInit(event));
-
-        if (config.hasChanged())
-            config.save();
+        configHelper.save();
     }
 
     public void finalInit(FMLPostInitializationEvent event) {
@@ -90,7 +83,7 @@ public abstract class ModuleLoader {
 
     @SideOnly(Side.CLIENT)
     public void preInitClient(FMLPreInitializationEvent event) {
-        GlobalConfig.initGlobalClient();
+        GlobalConfig.initGlobalClient(this);
         forEachEnabled(module -> module.preInitClient(event));
     }
 
@@ -115,17 +108,16 @@ public abstract class ModuleLoader {
     }
 
     public void setupConfig(FMLPreInitializationEvent event) {
-        configFile = event.getSuggestedConfigurationFile();
-        config = new Configuration(configFile);
-        config.load();
+        configHelper = new ConfigHelper(new Configuration(event.getSuggestedConfigurationFile()));
 
-        GlobalConfig.initGlobalConfig();
+        GlobalConfig.initGlobalConfig(this);
 
         forEachModule(module -> {
             module.enabled = true;
             if (module.canBeDisabled()) {
-                ConfigHelper.needsRestart = true;
-                module.enabled = ConfigHelper.loadPropBool(module.name, "_modules", module.getModuleDescription(), module.isEnabledByDefault());
+                configHelper.setRestartNeed(true);
+                configHelper.setCategoryComment(module.name, module.getModuleDescription());
+                module.enabled = configHelper.loadPropBool("enabled", module.name, "Enable this module", module.isEnabledByDefault());
             }
         });
 
@@ -142,9 +134,7 @@ public abstract class ModuleLoader {
 
     private void loadModuleConfigs() {
         forEachModule(Module::setupConfig);
-
-        if (config.hasChanged())
-            config.save();
+        configHelper.save();
     }
 
 
@@ -168,9 +158,9 @@ public abstract class ModuleLoader {
     }
 
     public boolean isFeatureEnabled(Class<? extends Feature> clazz) {
-        for(Module module: this.moduleInstances.values()) {
-            if(module.isEnabled()) {
-                if(module.isFeatureEnabled(clazz)) {
+        for (Module module : this.moduleInstances.values()) {
+            if (module.isEnabled()) {
+                if (module.isFeatureEnabled(clazz)) {
                     return true;
                 }
             }

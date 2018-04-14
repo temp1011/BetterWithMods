@@ -21,6 +21,10 @@ import java.util.Map;
 public class CompatModule extends Module {
     private HashMap<String, String> compatRegistry = Maps.newHashMap();
 
+    public CompatModule(ModuleLoader loader) {
+        super(loader);
+    }
+
     public void registerCompatFeature(String modid, String clazz) {
         compatRegistry.put(modid, clazz);
     }

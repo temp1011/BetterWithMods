@@ -28,17 +28,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class Module {
+public abstract class Module {
 
     public final String name = makeName();
     public final Map<String, Feature> features = Maps.newHashMap();
     public final List<Feature> enabledFeatures = Lists.newArrayList(), disabledFeatures = Lists.newArrayList();
     public boolean enabled;
     protected int priority = 0;
+    private ModuleLoader loader;
 
-    public void addFeatures() {
-        // NO-OP
+    public Module(ModuleLoader loader) {
+        this.loader = loader;
     }
+
+    public abstract void addFeatures();
 
     public void registerFeature(Feature feature) {
         registerFeature(feature, convertName(feature.getClass().getSimpleName()));
@@ -65,6 +68,8 @@ public class Module {
         feature.module = this;
         feature.configName = name;
         feature.configCategory = this.name + "." + name;
+
+        feature.configHelper = loader.configHelper;
     }
 
     public void setupConfig() {
@@ -72,9 +77,11 @@ public class Module {
             addFeatures();
 
         forEachFeature(feature -> {
-            ConfigHelper.needsRestart = feature.requiresMinecraftRestartToEnable();
+            loader.configHelper.setRestartNeed(feature.requiresMinecraftRestartToEnable());
             if (feature.canDisable) {
-                feature.enabled = loadPropBool(feature.configName, feature.getFeatureDescription(), feature.enabledByDefault) && enabled;
+                loader.configHelper.setCategoryComment(feature.configCategory, feature.getFeatureDescription());
+
+                feature.enabled = loader.configHelper.loadPropBool("enabled", feature.configCategory, "Enable this feature", feature.enabledByDefault);
                 feature.setupConstantConfig();
             } else {
                 feature.enabled = true;
@@ -213,27 +220,27 @@ public class Module {
     }
 
     public final int loadPropInt(String propName, String desc, int default_) {
-        return ConfigHelper.loadPropInt(propName, name, desc, default_);
+        return loader.configHelper.loadPropInt(propName, name, desc, default_);
     }
 
     public final double loadPropDouble(String propName, String desc, double default_, double min, double max) {
-        return ConfigHelper.loadPropDouble(propName, name, desc, default_, min, max);
+        return loader.configHelper.loadPropDouble(propName, name, desc, default_, min, max);
     }
 
     public final double loadPropDouble(String propName, String desc, double default_) {
-        return ConfigHelper.loadPropDouble(propName, name, desc, default_);
+        return loader.configHelper.loadPropDouble(propName, name, desc, default_);
     }
 
     public final boolean loadPropBool(String propName, String desc, boolean default_) {
-        return ConfigHelper.loadPropBool(propName, name, desc, default_);
+        return loader.configHelper.loadPropBool(propName, name, desc, default_);
     }
 
     public final String loadPropString(String propName, String desc, String default_) {
-        return ConfigHelper.loadPropString(propName, name, desc, default_);
+        return loader.configHelper.loadPropString(propName, name, desc, default_);
     }
 
     public final void loadRecipeCondition(String jsonName, String propName, String comment, boolean _default) {
-        ConfigHelper.loadRecipeCondition(jsonName, propName, name, comment, _default);
+        loader.configHelper.loadRecipeCondition(jsonName, propName, name, comment, _default);
     }
 
     public int getPriority() {
