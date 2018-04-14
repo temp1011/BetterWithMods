@@ -202,6 +202,8 @@ public class MiniBlocks extends Feature {
             }
         }
 
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void afterItemRegister(RegistryEvent.Register<Item> event) {
         final NonNullList<ItemStack> list = NonNullList.create();
