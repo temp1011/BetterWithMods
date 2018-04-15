@@ -1,6 +1,7 @@
 package betterwithmods.common.registry.block.managers;
 
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
+import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,11 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
     }
 
     protected List<T> findRecipe(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> outputs.containsAll(r.getOutputs())).collect(Collectors.toList());
+        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs)).collect(Collectors.toList());
+    }
+
+    protected List<T> findRecipeExact(List<ItemStack> outputs) {
+        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs)).collect(Collectors.toList());
     }
 
     public List<T> findRecipes(World world, BlockPos pos, IBlockState state) {
@@ -59,6 +64,10 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
 
     public boolean remove(List<ItemStack> outputs) {
         return recipes.removeAll(findRecipe(outputs));
+    }
+
+    public boolean removeExact(List<ItemStack> outputs) {
+        return recipes.removeAll(findRecipeExact(outputs));
     }
 
     public List<T> getRecipes() {
