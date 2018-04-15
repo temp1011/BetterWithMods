@@ -45,6 +45,10 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
         return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs)).collect(Collectors.toList());
     }
 
+    protected List<T> findRecipeExact(List<ItemStack> outputs) {
+        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs)).collect(Collectors.toList());
+    }
+
     public boolean canCraft(TileEntity tile, ItemStackHandler inv) {
         return findRecipe(recipes, tile, inv).isPresent();
     }
@@ -63,6 +67,10 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
 
     public boolean remove(List<ItemStack> outputs) {
         return recipes.removeAll(findRecipe(outputs));
+    }
+
+    public boolean removeExact(List<ItemStack> outputs) {
+        return recipes.removeAll(findRecipeExact(outputs));
     }
 
 }

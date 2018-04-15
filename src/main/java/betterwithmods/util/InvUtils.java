@@ -519,16 +519,30 @@ public class InvUtils {
     }
 
     public static boolean matchesSize(ItemStack one, ItemStack two) {
-        return one.getCount() == two.getCount() && matches(one,two);
+        return one.getCount() == two.getCount() && matches(one, two);
+    }
+
+    public static boolean matchesExact(List<ItemStack> oneList, List<ItemStack> twoList) {
+        if (oneList.size() != twoList.size())
+            return false; //trivial case
+        HashSet<ItemStack> alreadyMatched = new HashSet<>();
+        for (ItemStack one : oneList) {
+            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matchesSize(one, two)).findFirst();
+            if (found.isPresent())
+                alreadyMatched.add(found.get()); //Don't match twice
+            else
+                return false; //This itemstack doesn't match, thus the two lists don't match
+        }
+        return true;
     }
 
     public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
-        if(oneList.size() != twoList.size())
+        if (oneList.size() != twoList.size())
             return false; //trivial case
         HashSet<ItemStack> alreadyMatched = new HashSet<>();
-        for(ItemStack one : oneList) {
-            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matchesSize(one,two)).findFirst();
-            if(found.isPresent())
+        for (ItemStack one : oneList) {
+            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two)).findFirst();
+            if (found.isPresent())
                 alreadyMatched.add(found.get()); //Don't match twice
             else
                 return false; //This itemstack doesn't match, thus the two lists don't match
