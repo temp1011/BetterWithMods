@@ -15,6 +15,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -118,13 +120,16 @@ public class HCArmor extends Feature {
         }
     }
 
+
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        if (shieldRebalance) {
+            event.getRegistry().register((new ShapedOreRecipe(null, new ItemStack(Items.SHIELD), "SWS", "WIW", " W ", 'S', "strapLeather", 'W', "sidingWood", 'I', "ingotIron").setRegistryName("minecraft:shield")));
+        }
+    }
+
     @Override
     public void init(FMLInitializationEvent event) {
-        if (shieldRebalance) {
-            addRecipe((new ShapedOreRecipe(null, new ItemStack(Items.SHIELD),
-                    "SWS", "WIW", " W ", 'S', "strapLeather", 'W', "sidingWood", 'I', "ingotIron"
-            ).setRegistryName("minecraft:shield")));
-        }
         initWeights();
     }
 

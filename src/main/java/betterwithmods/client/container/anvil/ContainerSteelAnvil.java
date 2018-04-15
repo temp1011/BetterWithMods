@@ -51,7 +51,6 @@ public class ContainerSteelAnvil extends Container {
      * Callback for when the crafting matrix is changed.
      */
     public void onCraftMatrixChanged(IInventory matrix) {
-
         this.craftResult.setInventorySlotContents(0, AnvilCraftingManager.findMatchingResult(this.craftMatrix, te.getWorld()));
     }
 

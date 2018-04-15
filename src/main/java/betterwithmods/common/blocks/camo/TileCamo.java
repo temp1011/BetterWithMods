@@ -1,7 +1,6 @@
 package betterwithmods.common.blocks.camo;
 
 import betterwithmods.common.blocks.tile.TileBasic;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -77,7 +76,7 @@ public class TileCamo extends TileBasic {
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
-        if (this.state != null && getBlockType() instanceof BlockMini) {
+        if (this.state != null && getBlockType() instanceof BlockCamo) {
             return fromParent(getBlockType(), this.state, 1);
         }
         return ItemStack.EMPTY;

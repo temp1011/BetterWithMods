@@ -15,6 +15,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,10 +32,10 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -71,8 +72,8 @@ public class HCFishing extends Feature {
         BWMRecipes.removeRecipe(new ResourceLocation("fishing_rod"));
     }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         BAIT = Ingredient.fromStacks(loadItemStackArray("Bait", "Add items as valid fishing bait", new ItemStack[]{
                 new ItemStack(Items.SPIDER_EYE),
                 new ItemStack(BWMItems.CREEPER_OYSTER),
@@ -82,7 +83,7 @@ public class HCFishing extends Feature {
                 new ItemStack(BWMItems.COOKED_BAT_WING, 1),
                 new ItemStack(Items.ROTTEN_FLESH)
         }));
-        addRecipe(new BaitingRecipe());
+        event.getRegistry().register(new BaitingRecipe());
     }
 
     //Override loottables

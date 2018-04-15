@@ -2,6 +2,7 @@ package betterwithmods.common.registry.block.recipe;
 
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
@@ -34,6 +35,10 @@ public class BlockIngredient extends Ingredient {
     public BlockIngredient(String ore) {
         super(0);
         this.stacks = OreDictionary.getOres(ore);
+    }
+
+    public BlockIngredient(IBlockState state) {
+        this(Lists.newArrayList(state));
     }
 
     public BlockIngredient(Collection<IBlockState> states) {

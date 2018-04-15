@@ -114,9 +114,13 @@ public class BWRegistry {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void postPreInit(RegistryEvent.Register<Item> event) {
+        BWOreDictionary.registerOres();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) event.getRegistry();
-        BWMRecipes.RECIPES.forEach(reg::register);
         for (IRecipe recipe : reg) {
             for (ResourceLocation loc : BWMRecipes.REMOVE_RECIPE_BY_RL) {
                 if (loc.equals(recipe.getRegistryName()))
@@ -133,7 +137,7 @@ public class BWRegistry {
 
     public static void init() {
         BWRegistry.registerHeatSources();
-        BWOreDictionary.registerOres();
+
         VillagerUtils.initVillagerInfo();
     }
 

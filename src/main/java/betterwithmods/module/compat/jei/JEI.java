@@ -26,7 +26,6 @@ import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.gameplay.miniblocks.MiniType;
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
@@ -41,13 +40,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @mezz.jei.api.JEIPlugin
@@ -92,18 +88,11 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-        getAllMiniBlocks().forEach(item -> subtypeRegistry.registerSubtypeInterpreter(item, (ISubtypeRegistry.ISubtypeInterpreter) itemStack -> {
-            NBTTagCompound compound = itemStack.getSubCompound("texture");
-            return compound != null ? compound.toString() : "";
-        }));
+        subtypeRegistry.useNbtForSubtypes(getAllMiniBlocks());
     }
 
-    private List<Item> getAllMiniBlocks() {
-        ArrayList<Item> list = new ArrayList<>();
-        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).values().stream().map(Item::getItemFromBlock).forEach(list::add);
-        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).values().stream().map(Item::getItemFromBlock).forEach(list::add);
-        MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).values().stream().map(Item::getItemFromBlock).forEach(list::add);
-        return list;
+    private Item[] getAllMiniBlocks() {
+        return MiniBlocks.MINI_MATERIAL_BLOCKS.values().stream().map(HashMap::values).flatMap(Collection::stream).map(Item::getItemFromBlock).toArray(Item[]::new);
     }
 
     @Override

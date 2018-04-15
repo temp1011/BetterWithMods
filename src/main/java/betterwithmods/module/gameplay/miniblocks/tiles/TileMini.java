@@ -5,8 +5,6 @@ import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -32,8 +30,6 @@ public class TileMini extends TileCamo {
         NBTTagCompound tag = super.writeToNBT(compound);
         if (orientation != null) {
             tag.setInteger("orientation", orientation.ordinal());
-        } else {
-            world.setBlockToAir(pos);
         }
         return tag;
     }

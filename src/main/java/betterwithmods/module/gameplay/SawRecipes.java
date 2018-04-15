@@ -20,9 +20,11 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
 
@@ -32,6 +34,19 @@ import java.util.Random;
 public class SawRecipes extends Feature {
     public SawRecipes() {
         canDisable = false;
+    }
+
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        if (!Loader.isModLoaded("primal")) {
+            for (IRecipe recipe : BWOreDictionary.logRecipes) {
+                ItemStack plank = recipe.getRecipeOutput();
+                BWOreDictionary.woods.stream().filter(w -> w.getPlank(4).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
+                    ResourceLocation registry = new ResourceLocation(BWMod.MODID, recipe.getRegistryName().getResourcePath());
+                    event.getRegistry().register(new ChoppingRecipe(wood, 4).setRegistryName(registry));
+                });
+            }
+        }
     }
 
     @Override
@@ -51,16 +66,6 @@ public class SawRecipes extends Feature {
                 return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
-
-        if (!Loader.isModLoaded("primal")) {
-            for (IRecipe recipe : BWOreDictionary.logRecipes) {
-                ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.woods.stream().filter(w -> w.getPlank(4).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
-                    ResourceLocation registry = new ResourceLocation(BWMod.MODID, recipe.getRegistryName().getResourcePath());
-                    addRecipe(new ChoppingRecipe(wood, 4).setRegistryName(registry));
-                });
-            }
-        }
     }
 
     @Override

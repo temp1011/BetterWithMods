@@ -10,9 +10,7 @@
  */
 package betterwithmods.module;
 
-import betterwithmods.common.BWMRecipes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -194,10 +192,6 @@ public class Feature {
 
     public final List<ResourceLocation> loadRLList(String propName, String comment, String[] default_) {
         return configHelper.loadPropRLList(propName, configCategory, comment, default_);
-    }
-
-    public IRecipe addRecipe(IRecipe recipe) {
-        return BWMRecipes.addRecipe(recipe);
     }
 
 }

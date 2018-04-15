@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,12 +18,6 @@ public final class BWMRecipes {
 
     public static final List<ItemStack> REMOVE_RECIPE_BY_OUTPUT = Lists.newArrayList();
     public static final List<ResourceLocation> REMOVE_RECIPE_BY_RL = Lists.newArrayList();
-    public static final List<IRecipe> RECIPES = Lists.newArrayList();
-
-    public static IRecipe addRecipe(IRecipe recipe) {
-        RECIPES.add(recipe);
-        return recipe;
-    }
 
     public static void removeRecipe(ItemStack output) {
         REMOVE_RECIPE_BY_OUTPUT.add(output);
