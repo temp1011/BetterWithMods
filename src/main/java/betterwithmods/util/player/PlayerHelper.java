@@ -46,6 +46,10 @@ public final class PlayerHelper {
 
     }
 
+    public static boolean areHandsEmpty(EntityPlayer player) {
+        return getHolding(player, EnumHand.MAIN_HAND).isEmpty() && getHolding(player, EnumHand.OFF_HAND).isEmpty();
+    }
+
     public static ItemStack getHolding(EntityPlayer player, EnumHand hand) {
         if (hand != null) {
             switch (hand) {

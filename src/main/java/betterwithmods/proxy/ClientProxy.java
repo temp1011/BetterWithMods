@@ -5,7 +5,6 @@ import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.ColorHandlers;
 import betterwithmods.client.ResourceProxy;
-import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.client.tesr.*;
 import betterwithmods.common.BWMBlocks;
@@ -106,7 +105,6 @@ public class ClientProxy implements IProxy {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         BWMod.MODULE_LOADER.postInitClient(event);
-        RenderUtils.registerFilters();
     }
 
     private void registerRenderInformation() {

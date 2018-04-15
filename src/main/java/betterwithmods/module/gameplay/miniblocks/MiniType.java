@@ -1,30 +1,36 @@
 package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.common.blocks.camo.BlockCamo;
+import betterwithmods.common.blocks.camo.TileCamo;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
 public enum MiniType {
-    SIDING(BlockSiding.class, "siding"),
-    MOULDING(BlockMoulding.class, "moulding"),
-    CORNER(BlockCorner.class, "corner"),
-    COLUMN(BlockColumn.class, "column"),
-    PEDESTAL(BlockPedestals.class, "pedestal"),
-    TABLE(BlockTable.class, "table"),
-    BENCH(BlockBench.class, "bench"),
-    UNKNOWN(null, "");
+    SIDING(BlockSiding.class, BlockSiding.TileSiding.class, "siding"),
+    MOULDING(BlockMoulding.class, BlockMoulding.TileMoulding.class, "moulding"),
+    CORNER(BlockCorner.class, BlockCorner.TileCorner.class, "corner"),
+    COLUMN(BlockColumn.class, BlockColumn.TileColumn.class, "column"),
+    PEDESTAL(BlockPedestals.class, BlockPedestals.TilePedestal.class, "pedestal"),
+    TABLE(BlockTable.class, TileCamo.class, "table"),
+    BENCH(BlockBench.class, TileCamo.class, "bench"),
+    CHAIR(BlockChair.class, BlockChair.TileChair.class, "chair"),
+    UNKNOWN(null, null, "");
     public static MiniType[] VALUES = values();
 
     private Class<? extends BlockCamo> block;
+    private Class<? extends TileEntity> tile;
     private String name;
 
     @SideOnly(Side.CLIENT)
-    MiniType(Class<? extends BlockCamo> block, String name) {
+    MiniType(Class<? extends BlockCamo> block, Class<? extends TileEntity> tile, String name) {
         this.block = block;
+        this.tile = tile;
         this.name = name;
     }
 
@@ -54,5 +60,15 @@ public enum MiniType {
 
     private boolean isBlock(BlockCamo mini) {
         return this.block.isAssignableFrom(mini.getClass());
+    }
+
+    public static void registerTiles() {
+        for(MiniType type: VALUES) {
+            if(type.tile != null) {
+                if(TileEntity.getKey(type.tile) == null) {
+                    GameRegistry.registerTileEntity(type.tile, "bwm."+type.name);
+                }
+            }
+        }
     }
 }

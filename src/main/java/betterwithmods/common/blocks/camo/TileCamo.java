@@ -28,7 +28,6 @@ public class TileCamo extends TileBasic {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = super.writeToNBT(compound);
-
         if (state != null) {
             NBTTagCompound texture = new NBTTagCompound();
             NBTUtil.writeBlockState(texture, state);

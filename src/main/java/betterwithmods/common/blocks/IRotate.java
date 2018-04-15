@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -36,9 +37,7 @@ public interface IRotate {
         if (!rotates())
             return false;
 
-        boolean emptyHands = player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.isSneaking();
-
-        if (emptyHands) {
+        if (PlayerHelper.areHandsEmpty(player) && player.isSneaking()) {
             world.playSound(null, pos, block.getSoundType(state, world, pos, player).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.9F);
             nextState(world, pos, state);
             world.notifyNeighborsOfStateChange(pos, block, false);

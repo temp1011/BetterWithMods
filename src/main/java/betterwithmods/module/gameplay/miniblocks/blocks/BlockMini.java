@@ -74,9 +74,7 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileMini();
-    }
+    public abstract TileEntity createTileEntity(World world, IBlockState state);
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -146,8 +144,5 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
     public boolean rotates() {
         return true;
     }
-
-    public abstract BaseOrientation deserializeOrientation(int ordinal);
-
 
 }

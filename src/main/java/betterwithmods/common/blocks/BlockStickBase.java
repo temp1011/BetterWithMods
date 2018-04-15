@@ -58,7 +58,7 @@ public abstract class BlockStickBase extends BWMBlock {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         IBlockState newState = state;
-        if (worldIn.getBlockState(pos.down()).isBlockNormalCube()) {
+        if (worldIn.getBlockState(pos.down()).isSideSolid(worldIn,pos,EnumFacing.UP)) {
             newState = newState.withProperty(GROUND, true);
         }
         IBlockState above = worldIn.getBlockState(pos.up());

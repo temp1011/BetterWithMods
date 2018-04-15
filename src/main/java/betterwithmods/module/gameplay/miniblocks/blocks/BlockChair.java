@@ -1,41 +1,47 @@
 package betterwithmods.module.gameplay.miniblocks.blocks;
 
+import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
+import betterwithmods.module.gameplay.miniblocks.orientations.ChairOrientation;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.function.Function;
 
-public class BlockBench extends BlockFurniture implements ISittable {
+public class BlockChair extends BlockMini implements ISittable {
 
-    public BlockBench(Material material, Function<Material, Collection<IBlockState>> subtypes) {
+    public BlockChair(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
-        setDefaultState(getDefaultState().withProperty(SUPPORTED, true));
+    }
+
+
+    @Override
+    public double getOffset() {
+        return 0;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-    }
-
-    @Override
-    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        return world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockBench;
+    public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
+        return ChairOrientation.getFromVec(placer, new Vec3d(hitX, hitY, hitZ), face);
     }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
-
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -54,8 +60,17 @@ public class BlockBench extends BlockFurniture implements ISittable {
         return attemptToSit(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
+    @Nullable
     @Override
-    public double getOffset() {
-        return 0;
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileChair();
+    }
+
+
+    public static class TileChair extends TileMini {
+        @Override
+        public BaseOrientation deserializeOrientation(int ordinal) {
+            return ChairOrientation.VALUES[ordinal];
+        }
     }
 }
