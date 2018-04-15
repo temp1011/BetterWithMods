@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.util.IWood;
+import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
@@ -41,7 +41,7 @@ public class SawRecipes extends Feature {
         if (!Loader.isModLoaded("primal")) {
             for (IRecipe recipe : BWOreDictionary.logRecipes) {
                 ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.woods.stream().filter(w -> w.getPlank(4).isItemEqual(plank) && hasLog(recipe, w.getLog(1))).forEach(wood -> {
+                BWOreDictionary.blockVariants.stream().filter(w -> w.getVariant(IBlockVariants.EnumBlock.BLOCK, 4).isItemEqual(plank) && hasLog(recipe, w.getVariant(IBlockVariants.EnumBlock.LOG, 1))).forEach(wood -> {
                     ResourceLocation registry = new ResourceLocation(BWMod.MODID, recipe.getRegistryName().getResourcePath());
                     event.getRegistry().register(new ChoppingRecipe(wood, 4).setRegistryName(registry));
                 });
@@ -71,8 +71,8 @@ public class SawRecipes extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         int count = BWMod.MODULE_LOADER.isFeatureEnabled(HCLumber.class) ? 4 : 6;
-        for (IWood wood : BWOreDictionary.woods) {
-            BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getLog(1)), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2)));
+        for (IBlockVariants wood : BWOreDictionary.blockVariants) {
+            BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getVariant(IBlockVariants.EnumBlock.LOG, 1)), Lists.newArrayList(wood.getVariant(IBlockVariants.EnumBlock.BLOCK, count), wood.getVariant(IBlockVariants.EnumBlock.BARK, 1), wood.getVariant(IBlockVariants.EnumBlock.SAWDUST, 2)));
         }
     }
 

@@ -1,6 +1,6 @@
 package betterwithmods.module.hardcore.world;
 
-import betterwithmods.api.util.IWood;
+import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWOreDictionary;
@@ -75,7 +75,7 @@ public class HCStumping extends Feature {
             }
             return true;
         }
-        return BWOreDictionary.getWoodFromState(state) != null;
+        return BWOreDictionary.getVariantFromState(IBlockVariants.EnumBlock.LOG, state) != null;
     }
 
     public static boolean isRoots(IBlockState state) {
@@ -110,18 +110,18 @@ public class HCStumping extends Feature {
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
 
         if (isStump(event.getState()) && isRoots(event.getWorld().getBlockState(event.getPos().down()))) {
-            IWood wood = BWOreDictionary.getWoodFromState(event.getState());
+            IBlockVariants wood = BWOreDictionary.getVariantFromState(IBlockVariants.EnumBlock.LOG,event.getState());
             if (wood != null) {
                 event.getDrops().clear();
-                event.getDrops().addAll(Lists.newArrayList(wood.getSawdust(1), wood.getBark(1)));
+                event.getDrops().addAll(Lists.newArrayList(wood.getVariant(IBlockVariants.EnumBlock.SAWDUST,1), wood.getVariant(IBlockVariants.EnumBlock.BARK,1)));
             }
         }
         if (isRoots(event.getState()) && isStump(event.getWorld().getBlockState(event.getPos().up()))) {
-            IWood wood = BWOreDictionary.getWoodFromState(event.getWorld().getBlockState(event.getPos().up()));
+            IBlockVariants wood = BWOreDictionary.getVariantFromState(IBlockVariants.EnumBlock.LOG,event.getWorld().getBlockState(event.getPos().up()));
             if (wood != null) {
                 event.setResult(Event.Result.DENY);
                 event.getDrops().clear();
-                event.getDrops().addAll(Lists.newArrayList(new ItemStack(BWMItems.DIRT_PILE, 2), wood.getSawdust(1), wood.getBark(1)));
+                event.getDrops().addAll(Lists.newArrayList(new ItemStack(BWMItems.DIRT_PILE, 2), wood.getVariant(IBlockVariants.EnumBlock.SAWDUST,1), wood.getVariant(IBlockVariants.EnumBlock.BARK,1)));
             }
         }
     }

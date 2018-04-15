@@ -1,6 +1,6 @@
 package betterwithmods.module.hardcore.crafting;
 
-import betterwithmods.api.util.IWood;
+import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static betterwithmods.api.util.IBlockVariants.EnumBlock.*;
+
 /**
  * Created by primetoxinz on 4/20/17.
  */
@@ -24,7 +26,7 @@ public class HCLumber extends Feature {
     public static int axePlankAmount, axeBarkAmount, axeSawDustAmount;
 
     public static boolean hasAxe(EntityPlayer harvester, BlockPos pos, IBlockState state) {
-        if(harvester == null)
+        if (harvester == null)
             return false;
         return PlayerHelper.isCurrentToolEffectiveOnBlock(harvester, pos, state);
     }
@@ -51,7 +53,6 @@ public class HCLumber extends Feature {
     }
 
 
-
     @Override
     public void disabledInit(FMLInitializationEvent event) {
     }
@@ -64,12 +65,12 @@ public class HCLumber extends Feature {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void harvestLog(BlockEvent.HarvestDropsEvent event) {
         if (!event.getWorld().isRemote) {
-            IWood wood = BWOreDictionary.getWoodFromState(event.getState());
+            IBlockVariants wood = BWOreDictionary.getVariantFromState(LOG, event.getState());
             if (wood != null) {
                 if (event.isSilkTouching() || hasAxe(event.getHarvester(), event.getPos(), event.getState()) || Loader.isModLoaded("primal"))
                     return;
                 event.getDrops().clear();
-                event.getDrops().addAll(Lists.newArrayList(wood.getPlank(plankAmount), wood.getSawdust(sawDustAmount), wood.getBark(barkAmount)));
+                event.getDrops().addAll(Lists.newArrayList(wood.getVariant(BLOCK, plankAmount), wood.getVariant(SAWDUST, sawDustAmount), wood.getVariant(BARK, barkAmount)));
             }
         }
     }

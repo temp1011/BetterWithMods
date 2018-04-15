@@ -116,6 +116,7 @@ public class BWRegistry {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void postPreInit(RegistryEvent.Register<Item> event) {
         BWOreDictionary.registerOres();
+        BWOreDictionary.oreGathering();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -137,12 +138,11 @@ public class BWRegistry {
 
     public static void init() {
         BWRegistry.registerHeatSources();
-
         VillagerUtils.initVillagerInfo();
     }
 
     public static void postInit() {
-        BWOreDictionary.postInitOreDictGathering();
+
         BellowsManager.postInit();
     }
 

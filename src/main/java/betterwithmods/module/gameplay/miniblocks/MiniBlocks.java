@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay.miniblocks;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
@@ -198,6 +199,22 @@ public class MiniBlocks extends Feature {
             event.getRegistry().register(new ShapedOreRecipe(tableStack.getItem().getRegistryName(), tableStack, "SSS", " M ", " M ", 'S', siding, 'M', moulding).setRegistryName(getRecipeRegistry(tableStack, parentStack)));
             event.getRegistry().register(new ShapedOreRecipe(benchStack.getItem().getRegistryName(), benchStack, "SSS", " M ", 'S', siding, 'M', moulding).setRegistryName(getRecipeRegistry(benchStack, parentStack)));
 
+            IBlockVariants blockVariants = BWOreDictionary.getVariantFromState(IBlockVariants.EnumBlock.BLOCK, parent);
+            if (blockVariants != null) {
+                ItemStack fence = blockVariants.getVariant(IBlockVariants.EnumBlock.FENCE, 2);
+                ItemStack fencegate = blockVariants.getVariant(IBlockVariants.EnumBlock.FENCE_GATE, 1);
+                ItemStack stairs = blockVariants.getVariant(IBlockVariants.EnumBlock.STAIR, 1);
+                ItemStack wall = blockVariants.getVariant(IBlockVariants.EnumBlock.WALL, 3);
+                if(!wall.isEmpty())
+                    event.getRegistry().register(new ShapedOreRecipe(wall.getItem().getRegistryName(), wall, "SSS", 'S', siding).setRegistryName(getRecipeRegistry(wall, parentStack)));
+                if (!stairs.isEmpty())
+                    event.getRegistry().register(new ShapedOreRecipe(stairs.getItem().getRegistryName(), stairs, "M ", "MM", 'M', moulding).setMirrored(true).setRegistryName(getRecipeRegistry(stairs, parentStack)));
+                if (!fence.isEmpty())
+                    event.getRegistry().register(new ShapedOreRecipe(fence.getItem().getRegistryName(), fence, "MMM", 'M', moulding).setRegistryName(getRecipeRegistry(fence, parentStack)));
+                if (!fencegate.isEmpty())
+                    event.getRegistry().register(new ShapedOreRecipe(fencegate.getItem().getRegistryName(), fencegate, "MSM", 'M', moulding, 'S', siding).setRegistryName(getRecipeRegistry(fencegate, parentStack)));
+            }
+
             if (parent.getMaterial() == Material.WOOD) {
                 MiniBlockIngredient corner = new MiniBlockIngredient("corner", parentStack);
                 ItemStack sidingStack = MiniBlocks.fromParent(MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(Material.WOOD), parent, 2);
@@ -233,9 +250,12 @@ public class MiniBlocks extends Feature {
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
         whitelist = loadPropStringHashSet("Whitelist", "Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)", new String[]{});
+        whitelist.add("minecraft:cobblestone:0");
         whitelist.add("minecraft:stone:0");
         whitelist.add("minecraft:stonebrick");
         whitelist.add("minecraft:sandstone");
+        whitelist.add("minecraft:red_sandstone");
+        whitelist.add("minecraft:purpur_block");
         whitelist.add("minecraft:brick_block");
         whitelist.add("minecraft:nether_brick");
         whitelist.add("minecraft:quartz_block");

@@ -1,11 +1,11 @@
 package betterwithmods.common;
 
-import betterwithmods.api.util.IWood;
-import betterwithmods.api.util.IWoodProvider;
+import betterwithmods.api.util.IBlockVariants;
+import betterwithmods.api.util.IVariantProvider;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.Wood;
+import betterwithmods.common.registry.BlockVariant;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
@@ -27,6 +27,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static betterwithmods.api.util.IBlockVariants.EnumBlock.*;
+
 /**
  * Created by primetoxinz on 5/10/17.
  */
@@ -38,8 +40,8 @@ public class BWOreDictionary {
     public static List<Ore> oreNames;
     public static List<Ore> ingotNames;
 
-    public static List<IWood> woods = new ArrayList<>();
-    public static List<IWoodProvider> woodProviders = new ArrayList<>();
+    public static List<IBlockVariants> blockVariants = new ArrayList<>();
+    public static List<IVariantProvider> variantProviders = new ArrayList<>();
 
 
     public static List<ItemStack> planks;
@@ -224,22 +226,85 @@ public class BWOreDictionary {
             registerOre(ore, new ItemStack(item));
     }
 
-    public static void postInitOreDictGathering() {
+    public static void oreGathering() {
         nuggetNames = getOreIngredients("nugget");
         dustNames = getOreIngredients("dust");
         oreNames = getOreIngredients("ore");
         ingotNames = getOreIngredients("ingot");
         cropNames = getOreNames("crop");
-        woods.addAll(Lists.newArrayList(
-                new Wood(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)),
-                new Wood(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)),
-                new Wood(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)),
-                new Wood(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1)),
-                new Wood(new ItemStack(BWMBlocks.BLOOD_LOG), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("bloody", 1), true)
+        blockVariants.addAll(Lists.newArrayList(
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.COBBLESTONE))
+                        .addVariant(STAIR, new ItemStack(Blocks.STONE_STAIRS))
+                        .addVariant(WALL, new ItemStack(Blocks.COBBLESTONE_WALL)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.BRICK_BLOCK))
+                        .addVariant(STAIR, new ItemStack(Blocks.BRICK_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.QUARTZ_BLOCK))
+                        .addVariant(STAIR, new ItemStack(Blocks.QUARTZ_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.SANDSTONE))
+                        .addVariant(STAIR, new ItemStack(Blocks.SANDSTONE_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.RED_SANDSTONE))
+                        .addVariant(STAIR, new ItemStack(Blocks.RED_SANDSTONE_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.PURPUR_BLOCK))
+                        .addVariant(STAIR, new ItemStack(Blocks.PURPUR_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(BLOCK, new ItemStack(Blocks.NETHER_BRICK))
+                        .addVariant(STAIR, new ItemStack(Blocks.NETHER_BRICK_STAIRS))
+                        .addVariant(FENCE, new ItemStack(Blocks.NETHER_BRICK_FENCE)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 0))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 0))
+                        .addVariant(BARK, ItemBark.getStack("oak", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.OAK_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.OAK_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.OAK_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 1))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 1))
+                        .addVariant(BARK, ItemBark.getStack("spruce", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.SPRUCE_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.SPRUCE_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.SPRUCE_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 2))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 2))
+                        .addVariant(BARK, ItemBark.getStack("birch", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.BIRCH_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.BIRCH_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.BIRCH_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 3))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 3))
+                        .addVariant(BARK, ItemBark.getStack("jungle", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.JUNGLE_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.JUNGLE_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.JUNGLE_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG2, 1, 0))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 4))
+                        .addVariant(BARK, ItemBark.getStack("acacia", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.ACACIA_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.ACACIA_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.ACACIA_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(Blocks.LOG2, 1, 1))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 5))
+                        .addVariant(BARK, ItemBark.getStack("dark_oak", 1))
+                        .addVariant(FENCE, new ItemStack(Blocks.DARK_OAK_FENCE))
+                        .addVariant(FENCE_GATE, new ItemStack(Blocks.DARK_OAK_FENCE_GATE))
+                        .addVariant(STAIR, new ItemStack(Blocks.DARK_OAK_STAIRS)),
+                BlockVariant.builder()
+                        .addVariant(LOG, new ItemStack(BWMBlocks.BLOOD_LOG))
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 3))
+                        .addVariant(BARK, ItemBark.getStack("bloody", 1))
+                        .addVariant(IBlockVariants.EnumBlock.SAWDUST, ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST))
         ));
-        woods.forEach(w -> getPlankOutput(w.getLog(1)));
+        blockVariants.forEach(w -> getPlankOutput(w.getVariant(LOG, 1)));
         logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft") && !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("betterwithmods")).collect(Collectors.toList());
         for (ItemStack log : logs) {
             if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
@@ -247,15 +312,15 @@ public class BWOreDictionary {
                     ItemStack subLog = new ItemStack(log.getItem(), 1, i);
                     ItemStack plank = getPlankOutput(subLog);
                     if (!plank.isEmpty() && !isWoodRegistered(subLog)) {
-                        Wood wood = new Wood(subLog, plank);
-                        woods.add(wood);
+                        BlockVariant wood = BlockVariant.builder().addVariant(LOG, subLog).addVariant(BLOCK, plank);
+                        blockVariants.add(wood);
                     }
                 }
             } else {
                 ItemStack plank = getPlankOutput(log);
                 if (!plank.isEmpty() && !isWoodRegistered(log)) {
-                    Wood wood = new Wood(log, plank);
-                    woods.add(wood);
+                    BlockVariant wood = BlockVariant.builder().addVariant(LOG, log).addVariant(BLOCK, plank);
+                    blockVariants.add(wood);
                 }
             }
         }
@@ -263,7 +328,7 @@ public class BWOreDictionary {
     }
 
     public static boolean isWoodRegistered(ItemStack stack) {
-        return woods.stream().anyMatch(wood -> wood.getLog(1).isItemEqual(stack));
+        return blockVariants.stream().anyMatch(wood -> wood.getVariant(LOG, 1).isItemEqual(stack));
     }
 
     public static List<ItemStack> getOreNames(String prefix) {
@@ -276,27 +341,6 @@ public class BWOreDictionary {
 
     public static List<Ore> getOreIngredients(String prefix) {
         return Arrays.stream(OreDictionary.getOreNames()).filter(Objects::nonNull).filter(n -> n.startsWith(prefix)).map(n -> new Ore(prefix, n)).collect(Collectors.toList());
-    }
-
-    public static int listContains(Object obj, List<Object> list) {
-        if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                if (obj instanceof ItemStack && list.get(i) instanceof ItemStack) {
-                    ItemStack stack = (ItemStack) obj;
-                    ItemStack toCheck = (ItemStack) list.get(i);
-                    if (ItemStack.areItemsEqual(stack, toCheck)) {
-                        if (toCheck.hasTagCompound()) {
-                            if (ItemStack.areItemStackTagsEqual(stack, toCheck))
-                                return i;
-                        } else if (stack.hasTagCompound()) {
-                            return -1;
-                        } else
-                            return i;
-                    }
-                }
-            }
-        }
-        return -1;
     }
 
     public static boolean isOre(ItemStack stack, String ore) {
@@ -327,22 +371,22 @@ public class BWOreDictionary {
         return toolEffectiveOre.get(tool).stream().anyMatch(getOres(stack)::contains);
     }
 
-    public static IWood getWoodFromState(IBlockState state) {
+    public static IBlockVariants getVariantFromState(IBlockVariants.EnumBlock variant, IBlockState state) {
 
         ItemStack stack = BWMRecipes.getStackFromState(state);
-        IWood wood = null;
+        IBlockVariants blockVariant = null;
         if (!stack.isEmpty()) {
-            wood = woods.stream().filter(w -> InvUtils.matches(w.getLog(1), stack)).findFirst().orElse(null);
+            blockVariant = blockVariants.stream().filter(w -> InvUtils.matches(w.getVariant(variant, 1), stack)).findFirst().orElse(null);
         }
-        if (wood == null) {
-            for (IWoodProvider provider : woodProviders) {
+        if (blockVariant == null) {
+            for (IVariantProvider provider : variantProviders) {
                 if (provider.match(state)) {
-                    wood = provider.getWood(state);
+                    blockVariant = provider.getVariant(variant, state);
                     break;
                 }
             }
         }
-        return wood;
+        return blockVariant;
     }
 
     public static class Ore extends OreIngredient {
