@@ -11,14 +11,25 @@ import java.util.List;
 public class KilnRecipe extends BlockRecipe implements IHeatRecipe {
     private int heat;
     private boolean ignoreHeat;
-    public KilnRecipe(BlockIngredient input, List<ItemStack> outputs, int heat) {
+    private int cookTime;
+
+    public KilnRecipe(BlockIngredient input, List<ItemStack> outputs, int heat, int cookTime) {
         super(input, outputs);
         this.heat = heat;
+        this.cookTime = cookTime;
     }
 
     @Override
     public int getHeat() {
         return heat;
+    }
+
+    public int getCookTime() {
+        return cookTime;
+    }
+
+    public void setCookTime(int cookTime) {
+        this.cookTime = cookTime;
     }
 
     @Override

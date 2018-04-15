@@ -42,7 +42,7 @@ public class KilnStructureManager {
             world.setBlockState(pos, kiln);
             TileEntity tile = world.getTileEntity(pos);
             if (tile instanceof TileKiln) {
-                ((TileKiln) tile).setCamoState(state);
+                ((TileKiln) tile).setState(state);
                 world.notifyBlockUpdate(pos, kiln, kiln, 8);
             }
             return true;
@@ -52,7 +52,7 @@ public class KilnStructureManager {
 
     //@Param BlockPos pos - the position of the kiln block
     public static int getHeat(World world, BlockPos pos) {
-        return BWMHeatRegistry.getHeat(world,pos.down());
+        return BWMHeatRegistry.getHeat(world, pos.down());
     }
 
     public static IHeated getKiln() {
@@ -60,7 +60,7 @@ public class KilnStructureManager {
     }
 
     public static boolean isValidRecipe(World world, BlockPos pos, KilnRecipe recipe) {
-        return recipe.canCraft(getKiln(),world, pos);
+        return recipe.canCraft(getKiln(), world, pos);
     }
 
     public static boolean isValidKiln(IBlockAccess world, BlockPos pos) {
@@ -75,8 +75,11 @@ public class KilnStructureManager {
         return numBrick > 2;
     }
 
-
     public static void removeKilnBlock(IBlockState state) {
         KILN_BLOCKS.remove(state);
+    }
+
+    public static Set<IBlockState> getKilnBlocks() {
+        return KILN_BLOCKS;
     }
 }

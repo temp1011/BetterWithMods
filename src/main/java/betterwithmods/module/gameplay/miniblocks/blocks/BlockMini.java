@@ -98,6 +98,7 @@ public abstract class BlockMini extends BlockCamo implements IRenderRotationPlac
         return false;
     }
 
+    @Override
     public Optional<TileMini> getTile(IBlockAccess world, BlockPos pos) {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileMini)

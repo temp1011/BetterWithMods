@@ -15,6 +15,7 @@ import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.tile.*;
 import betterwithmods.common.items.*;
 import betterwithmods.common.items.tools.ItemSteelSaw;
+import betterwithmods.common.registry.KilnStructureManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MapColor;
@@ -66,7 +67,7 @@ public final class BWMBlocks {
     public static final Block HIBACHI = new BlockHibachi().setRegistryName("hibachi");
     public static final Block BELLOWS = new BlockBellows().setTileClass(TileBellows.class).setRegistryName("bellows");
     public static final Block SPRING_ACTION_BELLOWS = new BlockBellows().setTileClass(TileSpringActionBellows.class).setRegistryName("spring_action_bellows");
-    public static final Block KILN = new BlockKiln().setRegistryName("kiln");
+    public static final Block KILN = new BlockKiln(KilnStructureManager::getKilnBlocks).setRegistryName("kiln");
     public static final Block HEMP = new BlockHemp().setRegistryName("hemp");
     public static final Block DETECTOR = new BlockDetector().setRegistryName("detector");
     public static final Block LENS = new BlockLens().setRegistryName("lens");

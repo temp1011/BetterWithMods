@@ -4,7 +4,6 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.baking.UnlistedPropertyGeneric;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -45,10 +44,10 @@ public abstract class BlockCamo extends BWMBlock {
         setCreativeTab(BWCreativeTabs.MINI_BLOCKS);
     }
 
-    public Optional<TileMini> getTile(IBlockAccess world, BlockPos pos) {
+    public Optional<? extends TileCamo> getTile(IBlockAccess world, BlockPos pos) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileMini)
-            return Optional.of((TileMini) tile);
+        if (tile instanceof TileCamo)
+            return Optional.of((TileCamo) tile);
         return Optional.empty();
     }
 
@@ -101,7 +100,9 @@ public abstract class BlockCamo extends BWMBlock {
         return getTile(world, pos).map(t -> fromTile(extendedBS, t)).orElse(extendedBS);
     }
 
-    public abstract IBlockState fromTile(IExtendedBlockState state, TileCamo tile);
+    public IBlockState fromTile(IExtendedBlockState state, TileCamo tile) {
+        return state.withProperty(CAMO_INFO, new CamoInfo(tile));
+    }
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {

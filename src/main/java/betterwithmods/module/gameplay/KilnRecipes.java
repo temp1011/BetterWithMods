@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
@@ -8,14 +9,20 @@ import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.module.Feature;
+import betterwithmods.module.gameplay.miniblocks.client.CamoModel;
 import betterwithmods.module.hardcore.needs.HCCooking;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,9 +54,9 @@ public class KilnRecipes extends Feature {
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1));
 
         int foodModifier = BWMod.MODULE_LOADER.isFeatureEnabled(HCCooking.class) ? 1 : 2;
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0,foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD,foodModifier));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8*foodModifier));
+        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0, foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
+        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD, foodModifier));
+        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8 * foodModifier));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, foodModifier));
         BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, foodModifier));
     }
@@ -65,6 +72,13 @@ public class KilnRecipes extends Feature {
             KilnStructureManager.createKiln(event.getWorld(), event.getPos());
     }
 
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPostBake(ModelBakeEvent event) {
+        CamoModel.KILN = new CamoModel(RenderUtils.getModel(new ResourceLocation("minecraft", "block/cube")));
+        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":kiln", "normal"), CamoModel.KILN);
+    }
 
     @Override
     public boolean hasSubscriptions() {

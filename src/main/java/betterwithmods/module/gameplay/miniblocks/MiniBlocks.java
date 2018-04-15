@@ -299,12 +299,12 @@ public class MiniBlocks extends Feature {
 
 
     @SideOnly(Side.CLIENT)
-    private void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model) {
+    public static void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model) {
         registerModel(registry, name, model, Sets.newHashSet("normal", "inventory"));
     }
 
     @SideOnly(Side.CLIENT)
-    private void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model, Set<String> variants) {
+    public static void registerModel(IRegistry<ModelResourceLocation, IBakedModel> registry, String name, IBakedModel model, Set<String> variants) {
         for (String variant : variants) {
             registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, variant), model);
         }

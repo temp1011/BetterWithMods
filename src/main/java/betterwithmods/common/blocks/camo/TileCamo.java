@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -66,7 +67,13 @@ public class TileCamo extends TileBasic {
     }
 
     public IBlockState getState() {
+        if(state == null)
+            return Blocks.AIR.getDefaultState();
         return state;
+    }
+
+    public void setState(IBlockState state) {
+        this.state = state;
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {

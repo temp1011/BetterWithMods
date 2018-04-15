@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,13 @@ public class BlockIngredient extends Ingredient {
     public BlockIngredient(String ore) {
         super(0);
         this.stacks = OreDictionary.getOres(ore);
+    }
+
+    public BlockIngredient(Collection<IBlockState> states) {
+        this.stacks = NonNullList.create();
+        for (IBlockState state : states) {
+            this.stacks.add(BWMRecipes.getStackFromState(state));
+        }
     }
 
     public BlockIngredient(List<ItemStack> stacks) {
@@ -57,7 +65,7 @@ public class BlockIngredient extends Ingredient {
             if (states == null) states = Sets.newHashSet();
             NonNullList<ItemStack> lst = NonNullList.create();
             Iterator<ItemStack> iter = this.stacks.iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 ItemStack itemstack = iter.next();
                 Set<IBlockState> s = BWMRecipes.getStatesFromStack(itemstack);
                 if (s.isEmpty()) {

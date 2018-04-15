@@ -11,7 +11,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -65,11 +64,7 @@ public class ItemCamo extends ItemBlock {
     }
 
     public static void setNBT(TileCamo tileentity, World worldIn, ItemStack stackIn) {
-        MinecraftServer minecraftserver = worldIn.getMinecraftServer();
-        if (minecraftserver == null)
-            return;
-
-        NBTTagCompound data = stackIn.getSubCompound("miniblock");
+        NBTTagCompound data = stackIn.getSubCompound("texture");
 
         if (data != null) {
             if (tileentity != null) {

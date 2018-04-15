@@ -5,7 +5,6 @@ import betterwithmods.client.BWStateMapper;
 import betterwithmods.client.ClientEventHandler;
 import betterwithmods.client.ColorHandlers;
 import betterwithmods.client.ResourceProxy;
-import betterwithmods.client.model.ModelKiln;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.client.tesr.*;
@@ -45,7 +44,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -80,7 +78,6 @@ public class ClientProxy implements IProxy {
     public static void registerModels(ModelRegistryEvent event) {
         BWMItems.getItems().forEach(BWMItems::setInventoryModel);
         ModelLoader.setCustomStateMapper(BWMBlocks.STOKED_FLAME, new BWStateMapper(BWMBlocks.STOKED_FLAME.getRegistryName().toString()));
-        ModelLoaderRegistry.registerLoader(new ModelKiln.Loader());
         BWMod.MODULE_LOADER.registerModels(event);
     }
 

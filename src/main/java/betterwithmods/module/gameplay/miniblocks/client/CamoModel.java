@@ -20,6 +20,7 @@ public class CamoModel extends ModelFactory<CamoInfo> {
 
     public static CamoModel TABLE_SUPPORTED, TABLE_UNSUPPORTED;
     public static CamoModel BENCH_SUPPORTED, BENCH_UNSUPPORTED;
+    public static CamoModel KILN;
 
     public IModel template;
 

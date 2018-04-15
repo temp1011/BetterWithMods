@@ -1,7 +1,6 @@
 package betterwithmods.module.gameplay.miniblocks.blocks;
 
 import betterwithmods.common.blocks.camo.BlockCamo;
-import betterwithmods.common.blocks.camo.CamoInfo;
 import betterwithmods.common.blocks.camo.TileCamo;
 import betterwithmods.common.entity.EntitySitMount;
 import net.minecraft.block.material.Material;
@@ -19,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
@@ -39,11 +37,6 @@ public abstract class BlockFurniture extends BlockCamo {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileCamo();
-    }
-
-    @Override
-    public IBlockState fromTile(IExtendedBlockState state, TileCamo tile) {
-        return state.withProperty(CAMO_INFO, new CamoInfo(tile));
     }
 
     @Override
