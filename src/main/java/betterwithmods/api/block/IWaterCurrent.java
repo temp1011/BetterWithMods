@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 
 public interface IWaterCurrent {
     IWaterCurrent VANILLA_LIQUID = fromLiquid();
-    IWaterCurrent FORGE_LIQUID = fromLiquid();
+    IWaterCurrent FORGE_LIQUID = fromForgeLiquid();
     IWaterCurrent NO_FLOW = (world, pos, state) -> Vec3d.ZERO;
 
     Vec3d getFlowDirection(World world, BlockPos pos, IBlockState state);

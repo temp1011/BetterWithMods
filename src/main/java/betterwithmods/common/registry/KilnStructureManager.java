@@ -52,8 +52,7 @@ public class KilnStructureManager {
 
     //@Param BlockPos pos - the position of the kiln block
     public static int getHeat(World world, BlockPos pos) {
-        BWMHeatRegistry.HeatSource source = BWMHeatRegistry.get(world,pos.down());
-        return source.getHeat();
+        return BWMHeatRegistry.getHeat(world,pos.down());
     }
 
     public static IHeated getKiln() {

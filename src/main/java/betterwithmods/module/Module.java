@@ -163,6 +163,7 @@ public abstract class Module {
         forEachDisabled(feature -> feature.disabledPostInit(event));
     }
 
+
     public void finalInit(FMLPostInitializationEvent event) {
         forEachEnabled(feature -> feature.finalInit(event));
     }

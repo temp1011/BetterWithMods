@@ -20,6 +20,11 @@ public interface BaseOrientation extends IStringSerializable {
         public String getName() {
             return "default";
         }
+
+        @Override
+        public AxisAlignedBB getBounds() {
+            return Block.FULL_BLOCK_AABB;
+        }
     };
 
 

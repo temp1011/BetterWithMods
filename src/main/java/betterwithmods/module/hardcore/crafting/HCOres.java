@@ -31,6 +31,8 @@ public class HCOres extends Feature {
     private static Set<String> oreExclude, dustExclude;
     private static int oreProductionCount, dustProductionCount;
 
+    public HCOres() {    }
+
     @Override
     public void setupConfig() {
         oreNuggetSmelting = loadPropBool("Ore to Nugget Smelting", "Make Ores (oredict ore.* )smelt into nuggets instead of ingots", true);
@@ -102,6 +104,8 @@ public class HCOres extends Feature {
         BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Blocks.TRIPWIRE_HOOK, 2), new ItemStack(Items.IRON_INGOT));
         BWRegistry.CRUCIBLE.addStokedRecipe(new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4));
     }
+
+
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {

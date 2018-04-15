@@ -12,7 +12,7 @@ buildscript {
 apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.12-2.1.6"
+version = "1.12-2.1.7"
 group = "betterwithmods"
 archivesBaseName = "BetterWithMods"
 
@@ -45,7 +45,11 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:4.8.3.128"
     deobfCompile "applecore:AppleCore:1.12.2-3.1.0:deobf"
     deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.9"
+    compile "MCMultiPart2:MCMultiPart:2.4.1"
+    runtime "MCMultiPart2:MCMultiPart:2.4.1"
 }
+
+
 
 jar {
     manifest {

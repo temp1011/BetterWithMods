@@ -48,7 +48,23 @@ public class ItemCamo extends ItemBlock {
         return stateA != null & stateB != null && stateA.equals(stateB);
     }
 
-    private void setNBT(World worldIn, BlockPos pos, ItemStack stackIn) {
+    public static boolean placeBlockAt(ItemMini item, ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        if (!world.setBlockState(pos, newState, 11)) return false;
+
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == item.block) {
+            setTileEntityNBT(world, player, pos, stack);
+            TileEntity tile = world.getTileEntity(pos);
+            if(tile instanceof TileMini)
+                setNBT((TileMini) tile,world, stack);
+            ((BlockMini) item.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
+            if (player instanceof EntityPlayerMP)
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
+        }
+        return true;
+    }
+
+    public static void setNBT(TileMini tile, World worldIn, ItemStack stackIn) {
         MinecraftServer minecraftserver = worldIn.getMinecraftServer();
         if (minecraftserver == null)
             return;
@@ -66,7 +82,6 @@ public class ItemCamo extends ItemBlock {
                 NBTTagCompound tileNBT = tileentity.writeToNBT(new NBTTagCompound());
                 NBTTagCompound newNBT = tileNBT.copy();
                 tileNBT.merge(data);
-                System.out.println(newNBT);
                 if (!tileNBT.equals(newNBT)) {
                     tileentity.readFromNBT(tileNBT);
                     tileentity.markDirty();
@@ -76,20 +91,7 @@ public class ItemCamo extends ItemBlock {
     }
 
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-        if (!world.setBlockState(pos, newState, 11)) return false;
-
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == this.block) {
-
-
-            setTileEntityNBT(world, player, pos, stack);
-            setNBT(world, pos, stack);
-            ((BlockCamo) this.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
-            if (player instanceof EntityPlayerMP)
-                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
-        }
-
-        return true;
+        return placeBlockAt(this, stack, player, world, pos, side, hitX, hitY, hitZ, newState);
     }
 
     @Override

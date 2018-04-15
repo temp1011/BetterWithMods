@@ -74,6 +74,7 @@ public abstract class ModuleLoader {
 
     public void postInit(FMLPostInitializationEvent event) {
         forEachEnabled(module -> module.postInit(event));
+        forEachEnabled(module -> module.finalInit(event));
         configHelper.save();
     }
 

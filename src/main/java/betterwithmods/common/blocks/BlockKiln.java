@@ -87,7 +87,7 @@ public class BlockKiln extends BWMBlock {
 
     private int calculateTickRate(World world, BlockPos pos) {
         int secondaryFire = 0;
-        int centerFire = BWMHeatRegistry.getHeat(world, pos);
+        int centerFire = BWMHeatRegistry.getHeat(world, pos.down());
         for (int xP = -1; xP < 2; xP++) {
             for (int zP = -1; zP < 2; zP++) {
                 BlockPos bPos = pos.add(xP, -1, zP);
