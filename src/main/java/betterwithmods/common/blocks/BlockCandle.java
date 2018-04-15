@@ -81,7 +81,7 @@ public class BlockCandle extends BWMBlock implements IMultiVariants {
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         BlockPos down = pos.down();
-        BlockFaceShape blockfaceshape = worldIn.getBlockState(down).getBlockFaceShape(worldIn, pos, UP);
+        BlockFaceShape blockfaceshape = worldIn.getBlockState(down).getBlockFaceShape(worldIn, down, UP);
         return blockfaceshape != BlockFaceShape.BOWL && blockfaceshape != BlockFaceShape.UNDEFINED;
     }
 
