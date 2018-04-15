@@ -23,7 +23,7 @@ public class BlockPedestals extends BlockMini {
     @Override
     public BaseOrientation getOrientationFromPlacement(EntityLivingBase placer, @Nullable EnumFacing face, ItemStack stack, float hitX, float hitY, float hitZ) {
         if (face != null)
-            return PedestalOrientation.getFromVec(new Vec3d(hitX, hitY, hitZ), face);
+            return PedestalOrientation.getFromVec(new Vec3d(hitX, hitY, hitZ), placer.isSneaking() ? face.getOpposite() : face);
         return BaseOrientation.DEFAULT;
     }
 

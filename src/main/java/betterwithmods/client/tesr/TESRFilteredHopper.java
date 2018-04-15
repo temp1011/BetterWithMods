@@ -1,6 +1,5 @@
 package betterwithmods.client.tesr;
 
-import betterwithmods.client.model.filters.ModelTransparent;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
@@ -18,11 +17,6 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
         if (te != null) {
             if (te.getHopperFilter() != HopperFilter.NONE) {
                 model = te.getModel();
-                if (model == null) {
-                    if (!te.getFilterStack().isEmpty()) {
-                        model = new ModelTransparent(RenderUtils.getResourceLocation(te.getFilterStack()));
-                    }
-                }
                 if (model != null) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);

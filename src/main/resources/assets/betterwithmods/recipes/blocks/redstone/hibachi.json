@@ -22,7 +22,7 @@
       "type": "forge:ore_dict"
     },
     "H": {
-      "ore": "latchRedstone",
+      "ore": "ingotConcentratedHellfire",
       "type": "forge:ore_dict"
     }
   }

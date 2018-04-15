@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "betterwithmods:blocks/wood_side_oak",
+      "particle": "betterwithmods:blocks/oak_grate",
       "side": "#particle"
     },
     "model": "betterwithmods:pane_main",

@@ -6,7 +6,6 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IHopperFilter;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.client.model.filters.ModelWithResource;
-import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
@@ -283,7 +282,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     public ModelWithResource getModel() {
-        return RenderUtils.getModelFromStack(getFilterStack());
+        if(getFilterStack().isEmpty())
+            return null;
+        return getHopperFilter().getModelOverride(getFilterStack());
     }
 
     public ItemStack getFilterStack() {

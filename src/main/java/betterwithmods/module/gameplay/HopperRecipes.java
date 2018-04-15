@@ -1,6 +1,9 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.model.filters.ModelGrate;
+import betterwithmods.client.model.filters.ModelSlats;
+import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
@@ -65,7 +68,12 @@ public class HopperRecipes extends Feature {
 
         BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":grates", new OreIngredient("grates"), Lists.newArrayList(
                 new IngredientSpecial(stack -> stack.getMaxStackSize() == 1)
-        )));
+        )) {
+            @Override
+            public ModelWithResource getModelOverride(ItemStack filter) {
+                return new ModelGrate(filter);
+            }
+        });
 
         BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":iron_bar", Ingredient.fromStacks(new ItemStack(Blocks.IRON_BARS)), Lists.newArrayList(
                 new IngredientSpecial(stack -> stack.getMaxStackSize() > 1)
@@ -74,7 +82,12 @@ public class HopperRecipes extends Feature {
         BWRegistry.HOPPER_FILTERS.addFilter(new HopperFilter(BWMod.MODID + ":slats", new OreIngredient("slats"), Lists.newArrayList(
                 //TODO flat items
                 new IngredientSpecial(stack -> true)
-        )));
+        )) {
+            @Override
+            public ModelWithResource getModelOverride(ItemStack filter) {
+                return new ModelSlats(filter);
+            }
+        });
 
 
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustNetherrack"), ItemStack.EMPTY, ItemMaterial.getStack(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));

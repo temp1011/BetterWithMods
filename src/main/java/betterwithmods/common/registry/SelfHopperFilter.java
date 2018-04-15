@@ -2,6 +2,9 @@ package betterwithmods.common.registry;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.tile.IHopperFilter;
+import betterwithmods.client.model.filters.ModelTransparent;
+import betterwithmods.client.model.filters.ModelWithResource;
+import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -30,5 +33,10 @@ public class SelfHopperFilter implements IHopperFilter {
     @Override
     public Ingredient getFilter() {
         return filter;
+    }
+
+    @Override
+    public ModelWithResource getModelOverride(ItemStack filter) {
+        return new ModelTransparent(RenderUtils.getResourceLocation(filter));
     }
 }
