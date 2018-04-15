@@ -48,23 +48,23 @@ public class ItemCamo extends ItemBlock {
         return stateA != null & stateB != null && stateA.equals(stateB);
     }
 
-    public static boolean placeBlockAt(ItemMini item, ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+    public static boolean placeBlockAt(ItemCamo item, ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         if (!world.setBlockState(pos, newState, 11)) return false;
 
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() == item.block) {
             setTileEntityNBT(world, player, pos, stack);
             TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof TileMini)
-                setNBT((TileMini) tile,world, stack);
-            ((BlockMini) item.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
+            if (tile instanceof TileCamo)
+                setNBT((TileCamo) tile, world, stack);
+            ((BlockCamo) item.block).onBlockPlacedBy(world, pos, state, player, stack, side, hitX, hitY, hitZ);
             if (player instanceof EntityPlayerMP)
                 CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
         }
         return true;
     }
 
-    public static void setNBT(TileMini tile, World worldIn, ItemStack stackIn) {
+    public static void setNBT(TileCamo tileentity, World worldIn, ItemStack stackIn) {
         MinecraftServer minecraftserver = worldIn.getMinecraftServer();
         if (minecraftserver == null)
             return;
@@ -72,9 +72,7 @@ public class ItemCamo extends ItemBlock {
         NBTTagCompound data = stackIn.getSubCompound("miniblock");
 
         if (data != null) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-
-            if (tileentity instanceof TileCamo) {
+            if (tileentity != null) {
                 if (!worldIn.isRemote && tileentity.onlyOpsCanSetNbt()) {
                     return;
                 }

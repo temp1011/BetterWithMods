@@ -4,6 +4,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.baking.UnlistedPropertyGeneric;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,6 +31,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class BlockCamo extends BWMBlock {
@@ -43,25 +45,24 @@ public abstract class BlockCamo extends BWMBlock {
         setCreativeTab(BWCreativeTabs.MINI_BLOCKS);
     }
 
+    public Optional<TileMini> getTile(IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileMini)
+            return Optional.of((TileMini) tile);
+        return Optional.empty();
+    }
+
+
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileCamo) {
-            TileCamo mini = (TileCamo) tile;
-            return mini.getState().getBlockHardness(worldIn, pos);
-        }
-        return super.getBlockHardness(blockState, worldIn, pos);
+        return getTile(worldIn, pos).map(t -> t.getState().getBlockHardness(worldIn, pos)).orElse(super.getBlockHardness(blockState, worldIn, pos));
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileCamo) {
-            TileCamo mini = (TileCamo) tile;
-            return mini.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion);
-        }
-        return super.getExplosionResistance(world, pos, exploder, explosion);
+        return getTile(world, pos).map(t -> t.getState().getBlock().getExplosionResistance(world, pos, exploder, explosion)).orElse(super.getExplosionResistance(world, pos, exploder, explosion));
     }
+
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
@@ -96,12 +97,8 @@ public abstract class BlockCamo extends BWMBlock {
 
     @Override
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileCamo tile = (TileCamo) world.getTileEntity(pos);
         IExtendedBlockState extendedBS = (IExtendedBlockState) super.getExtendedState(state, world, pos);
-        if (tile != null) {
-            return fromTile(extendedBS, tile);
-        }
-        return extendedBS;
+        return getTile(world, pos).map(t -> fromTile(extendedBS, t)).orElse(extendedBS);
     }
 
     public abstract IBlockState fromTile(IExtendedBlockState state, TileCamo tile);
@@ -183,31 +180,21 @@ public abstract class BlockCamo extends BWMBlock {
         }
     }
 
+
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileCamo) {
-            TileCamo mini = (TileCamo) tile;
-            return mini.getPickBlock(player, target, state);
-        }
-        return new ItemStack(this);
+        return getTile(world, pos).map(t -> t.getPickBlock(player, target, state)).orElse(new ItemStack(this));
     }
+
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileCamo tile = (TileCamo) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFireSpreadSpeed(world, pos, face);
-        }
-        return 5;
+        return getTile(world, pos).map(t -> t.getState().getBlock().getFireSpreadSpeed(world, pos, face)).orElse(5);
     }
 
     @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        TileCamo tile = (TileCamo) world.getTileEntity(pos);
-        if (tile != null) {
-            return tile.state.getBlock().getFlammability(world, pos, face);
-        }
-        return 10;
+        return getTile(world, pos).map(t -> t.getState().getBlock().getFlammability(world, pos, face)).orElse(10);
     }
+
 }
