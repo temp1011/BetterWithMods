@@ -1,6 +1,7 @@
 package betterwithmods.module.hardcore.crafting;
 
 import betterwithmods.api.util.IBlockVariants;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
 import betterwithmods.module.Feature;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -48,13 +50,14 @@ public class HCLumber extends Feature {
     }
 
     @Override
-    public void init(FMLInitializationEvent event) {
-        BrokenToolRegistry.init();
+    public void preInit(FMLPreInitializationEvent event) {
+
     }
 
-
     @Override
-    public void disabledInit(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
+        BrokenToolRegistry.init();
+        BWOreDictionary.logRecipes.forEach(r -> BWMRecipes.removeRecipe(r.getRegistryName()));
     }
 
     @Override

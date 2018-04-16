@@ -2,8 +2,7 @@ package betterwithmods.module.compat;
 
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.items.ItemBark;
-import betterwithmods.common.registry.BlockVariant;
+import betterwithmods.common.registry.variants.WoodVariant;
 import betterwithmods.module.CompatFeature;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -15,7 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static betterwithmods.api.util.IBlockVariants.EnumBlock.*;
+import static betterwithmods.api.util.IBlockVariants.EnumBlock.BLOCK;
+import static betterwithmods.api.util.IBlockVariants.EnumBlock.LOG;
 
 @SuppressWarnings("unused")
 public class Harvestcraft extends CompatFeature {
@@ -56,20 +56,17 @@ public class Harvestcraft extends CompatFeature {
         BWRegistry.CAULDRON.addUnstokedRecipe(new ItemStack(Items.EGG), new ItemStack(boiledEgg));
 
 
-        BWOreDictionary.blockVariants.add(BlockVariant.builder()
+        BWOreDictionary.blockVariants.add(WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(logMaple))
-                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.SPRUCE.getMetadata()))
-                        .addVariant(BARK, ItemBark.getStack("spruce", 1)));
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.SPRUCE.getMetadata())));
 
-        BWOreDictionary.blockVariants.add(BlockVariant.builder()
+        BWOreDictionary.blockVariants.add(WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(logCinnamon))
-                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.JUNGLE.getMetadata()))
-                        .addVariant(BARK, ItemBark.getStack("jungle", 1)));
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.JUNGLE.getMetadata())));
 
-        BWOreDictionary.blockVariants.add(BlockVariant.builder()
+        BWOreDictionary.blockVariants.add(WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(logPaperbark))
-                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.JUNGLE.getMetadata()))
-                        .addVariant(BARK, ItemBark.getStack("jungle", 1)));
+                        .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, BlockPlanks.EnumType.JUNGLE.getMetadata())));
 
     }
 

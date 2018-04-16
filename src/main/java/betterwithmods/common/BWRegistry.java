@@ -121,6 +121,7 @@ public class BWRegistry {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+
         ForgeRegistry<IRecipe> reg = (ForgeRegistry<IRecipe>) event.getRegistry();
         for (IRecipe recipe : reg) {
             for (ResourceLocation loc : BWMRecipes.REMOVE_RECIPE_BY_RL) {

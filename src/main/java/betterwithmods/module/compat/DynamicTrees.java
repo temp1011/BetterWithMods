@@ -3,8 +3,7 @@ package betterwithmods.module.compat;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.api.util.IVariantProvider;
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.common.items.ItemBark;
-import betterwithmods.common.registry.BlockVariant;
+import betterwithmods.common.registry.variants.WoodVariant;
 import betterwithmods.module.CompatFeature;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyInteger;
@@ -35,12 +34,12 @@ public class DynamicTrees extends CompatFeature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(oakbranch, new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0), ItemBark.getStack("oak", 1)));
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(sprucebranch, new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1), ItemBark.getStack("spruce", 1)));
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(birchbranch, new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemBark.getStack("birch", 1)));
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(junglebranch, new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3), ItemBark.getStack("jungle", 1)));
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(acaciabranch, new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4), ItemBark.getStack("acacia", 1)));
-        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(darkoakabranch, new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5), ItemBark.getStack("dark_oak", 1)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(oakbranch, new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(sprucebranch, new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(birchbranch, new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(junglebranch, new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 1, 3)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(acaciabranch, new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 1, 4)));
+        BWOreDictionary.variantProviders.add(new DynamicWoodProvider(darkoakabranch, new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 1, 5)));
     }
 
 
@@ -49,13 +48,11 @@ public class DynamicTrees extends CompatFeature {
         private Block block;
         private ItemStack log;
         private ItemStack planks;
-        private ItemStack bark;
 
-        DynamicWoodProvider(Block block, ItemStack log, ItemStack planks, ItemStack bark) {
+        DynamicWoodProvider(Block block, ItemStack log, ItemStack planks) {
             this.block = block;
             this.log = log;
             this.planks = planks;
-            this.bark = bark;
         }
 
         @Override
@@ -71,12 +68,12 @@ public class DynamicTrees extends CompatFeature {
                 r = state.getValue(radius);
             }
             int finalR = r;
-            return new BlockVariant() {
+            return new WoodVariant() {
                 {
-                    addVariant(EnumBlock.LOG,log);
-                    addVariant(EnumBlock.BLOCK,planks);
-                    addVariant(EnumBlock.BARK,bark);
+                    addVariant(EnumBlock.LOG, log);
+                    addVariant(EnumBlock.BLOCK, planks);
                 }
+
                 @Override
                 public ItemStack getVariant(EnumBlock type, int count) {
                     if (type == EnumBlock.BLOCK) {

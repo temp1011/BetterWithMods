@@ -112,6 +112,7 @@ public class CauldronRecipes extends Feature {
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(cord, new OreIngredient("dustGlowstone"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.FILAMENT)));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(cord, new OreIngredient("dustBlaze"), new OreIngredient("dustRedstone")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ELEMENT)));
 
+        //TODO this with the new bark
         StackIngredient bark = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre(5, "barkOak"),
                 StackIngredient.fromOre(3, "barkSpruce"),

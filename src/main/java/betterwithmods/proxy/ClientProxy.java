@@ -2,7 +2,9 @@ package betterwithmods.proxy;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.*;
+import betterwithmods.client.baking.BarkModel;
 import betterwithmods.client.baking.IStateParticleBakedModel;
+import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.render.*;
 import betterwithmods.client.tesr.*;
 import betterwithmods.common.BWMBlocks;
@@ -46,6 +48,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -60,6 +63,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -77,6 +81,13 @@ public class ClientProxy implements IProxy {
         List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
         resourceProxy = new ResourceProxy();
         packs.add(resourceProxy);
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public static void onPostBake(ModelBakeEvent event) {
+        BarkModel.BARK = new BarkModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "item/bark")));
+        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID +":bark","inventory"), BarkModel.BARK);
     }
 
     @SubscribeEvent
@@ -191,7 +202,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void spawnBlockDustClient(World world, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed, EnumFacing facing) {
-        if(pos == null)
+        if (pos == null)
             return;
         TextureAtlasSprite sprite;
         int tintIndex = -1;

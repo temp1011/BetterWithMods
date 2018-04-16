@@ -3,6 +3,7 @@ package betterwithmods.module.gameplay;
 import betterwithmods.BWMod;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
@@ -16,15 +17,12 @@ import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
@@ -36,22 +34,9 @@ public class SawRecipes extends Feature {
         canDisable = false;
     }
 
-    @SubscribeEvent
-    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        if (!Loader.isModLoaded("primal")) {
-            for (IRecipe recipe : BWOreDictionary.logRecipes) {
-                ItemStack plank = recipe.getRecipeOutput();
-                BWOreDictionary.blockVariants.stream().filter(w -> w.getVariant(IBlockVariants.EnumBlock.BLOCK, 4).isItemEqual(plank) && hasLog(recipe, w.getVariant(IBlockVariants.EnumBlock.LOG, 1))).forEach(wood -> {
-                    ResourceLocation registry = new ResourceLocation(BWMod.MODID, recipe.getRegistryName().getResourcePath());
-                    event.getRegistry().register(new ChoppingRecipe(wood, 4).setRegistryName(registry));
-                });
-            }
-        }
-    }
-
     @Override
     public void init(FMLInitializationEvent event) {
-        BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.PUMPKIN));
+        BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.PUMPKIN, 0, OreDictionary.WILDCARD_VALUE));
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.VINE));
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.YELLOW_FLOWER));
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.BROWN_MUSHROOM));
@@ -66,7 +51,22 @@ public class SawRecipes extends Feature {
                 return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
             }
         });
-    }
+
+        BWOreDictionary.findLogRecipes();
+        //TODO configure this
+        BWOreDictionary.logRecipes.forEach(BWMRecipes::removeRecipe);
+        int plankCount = BWMod.MODULE_LOADER.isFeatureEnabled(HCLumber.class) ? HCLumber.axePlankAmount: 4;
+        if (!Loader.isModLoaded("primal")) {
+            for(IBlockVariants variant: BWOreDictionary.blockVariants) {
+                ItemStack log = variant.getVariant(IBlockVariants.EnumBlock.LOG,1);
+                if(!log.isEmpty()) {
+                    ResourceLocation location = new ResourceLocation(BWMod.MODID, log.getItem().getRegistryName() + "_" + log.getMetadata());
+                    BWMRecipes.addRecipe(new ChoppingRecipe(variant, plankCount).setRegistryName(location));
+                }
+            }
+        }
+
+}
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
@@ -75,17 +75,8 @@ public class SawRecipes extends Feature {
             BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getVariant(IBlockVariants.EnumBlock.LOG, 1)), Lists.newArrayList(wood.getVariant(IBlockVariants.EnumBlock.BLOCK, count), wood.getVariant(IBlockVariants.EnumBlock.BARK, 1), wood.getVariant(IBlockVariants.EnumBlock.SAWDUST, 2)));
         }
     }
-
-    private boolean hasLog(IRecipe recipe, ItemStack log) {
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getMatchingStacks().length > 0) {
-                for (ItemStack stack : ingredient.getMatchingStacks()) {
-                    if (stack.isItemEqual(log))
-                        return true;
-                }
-            }
-        }
-        return false;
+    @Override
+    public boolean hasSubscriptions() {
+        return true;
     }
 }

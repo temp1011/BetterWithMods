@@ -558,4 +558,8 @@ public class InvUtils {
         }
         return splitStacks;
     }
+
+    public static boolean applyIngredients(Collection<Ingredient> ingredients, ItemStack stack) {
+        return ingredients.stream().anyMatch(i -> i.apply(stack));
+    }
 }

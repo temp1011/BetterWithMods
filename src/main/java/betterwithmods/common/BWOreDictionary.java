@@ -3,12 +3,13 @@ package betterwithmods.common;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.api.util.IVariantProvider;
 import betterwithmods.common.blocks.*;
-import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.BlockVariant;
+import betterwithmods.common.registry.variants.BlockVariant;
+import betterwithmods.common.registry.variants.WoodVariant;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -18,7 +19,6 @@ import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
@@ -46,7 +46,7 @@ public class BWOreDictionary {
 
     public static List<ItemStack> planks;
     public static List<ItemStack> logs;
-    public static List<IRecipe> logRecipes = new ArrayList<>();
+    public static Set<IRecipe> logRecipes = Sets.newHashSet();
 
     public static HashMultimap<String, String> toolEffectiveOre = HashMultimap.create();
 
@@ -143,8 +143,8 @@ public class BWOreDictionary {
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));
         registerOre("blockNetherSludge", new ItemStack(BWMBlocks.NETHER_CLAY));
 
-        registerOre("slats", new ItemStack(BWMBlocks.OAK_SLATS), new ItemStack(BWMBlocks.SPRUCE_SLATS),new ItemStack(BWMBlocks.BIRCH_SLATS), new ItemStack(BWMBlocks.JUNGLE_SLATS), new ItemStack(BWMBlocks.ACACIA_SLATS),new ItemStack(BWMBlocks.DARK_OAK_SLATS));
-        registerOre("grates", new ItemStack(BWMBlocks.OAK_GRATE), new ItemStack(BWMBlocks.SPRUCE_GRATE),new ItemStack(BWMBlocks.BIRCH_GRATE), new ItemStack(BWMBlocks.JUNGLE_GRATE), new ItemStack(BWMBlocks.ACACIA_GRATE),new ItemStack(BWMBlocks.DARK_OAK_GRATE));
+        registerOre("slats", new ItemStack(BWMBlocks.OAK_SLATS), new ItemStack(BWMBlocks.SPRUCE_SLATS), new ItemStack(BWMBlocks.BIRCH_SLATS), new ItemStack(BWMBlocks.JUNGLE_SLATS), new ItemStack(BWMBlocks.ACACIA_SLATS), new ItemStack(BWMBlocks.DARK_OAK_SLATS));
+        registerOre("grates", new ItemStack(BWMBlocks.OAK_GRATE), new ItemStack(BWMBlocks.SPRUCE_GRATE), new ItemStack(BWMBlocks.BIRCH_GRATE), new ItemStack(BWMBlocks.JUNGLE_GRATE), new ItemStack(BWMBlocks.ACACIA_GRATE), new ItemStack(BWMBlocks.DARK_OAK_GRATE));
         registerOre("wicker", new ItemStack(BWMBlocks.WICKER));
 
         registerOre("blockPlanter", BlockPlanter.BLOCKS.values());
@@ -181,28 +181,20 @@ public class BWOreDictionary {
 
     }
 
-    private static ItemStack getPlankOutput(ItemStack log) {
+
+    private static IRecipe getLogPlankRecipe(ItemStack log) {
+        if (log.isEmpty())
+            return null;
         Iterator<IRecipe> it = CraftingManager.REGISTRY.iterator();
-        ItemStack stack = ItemStack.EMPTY;
-        while (it.hasNext() && stack.isEmpty()) {
+        while (it.hasNext()) {
             IRecipe recipe = it.next();
-            if (isPlank(recipe.getRecipeOutput())) {
-                NonNullList<Ingredient> ing = recipe.getIngredients();
-                for (Ingredient in : ing) {
-                    for (ItemStack check : in.getMatchingStacks()) {
-                        if (check.isItemEqual(log)) {
-                            stack = recipe.getRecipeOutput().copy();
-                            logRecipes.add(recipe);
-                            break;
-                        }
-                    }
-                    if (!stack.isEmpty())
-                        break;
+            if (InvUtils.applyIngredients(recipe.getIngredients(), log)) {
+                if (isPlank(recipe.getRecipeOutput())) {
+                    return recipe;
                 }
             }
-
         }
-        return stack;
+        return null;
     }
 
     private static boolean isPlank(ItemStack output) {
@@ -257,72 +249,65 @@ public class BWOreDictionary {
                 BlockVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 0))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 0))
-                        .addVariant(BARK, ItemBark.getStack("oak", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.OAK_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.OAK_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.OAK_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 1))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 1))
-                        .addVariant(BARK, ItemBark.getStack("spruce", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.SPRUCE_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.SPRUCE_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.SPRUCE_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 2))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 2))
-                        .addVariant(BARK, ItemBark.getStack("birch", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.BIRCH_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.BIRCH_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.BIRCH_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG, 1, 3))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 3))
-                        .addVariant(BARK, ItemBark.getStack("jungle", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.JUNGLE_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.JUNGLE_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.JUNGLE_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG2, 1, 0))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 4))
-                        .addVariant(BARK, ItemBark.getStack("acacia", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.ACACIA_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.ACACIA_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.ACACIA_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(Blocks.LOG2, 1, 1))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 5))
-                        .addVariant(BARK, ItemBark.getStack("dark_oak", 1))
                         .addVariant(FENCE, new ItemStack(Blocks.DARK_OAK_FENCE))
                         .addVariant(FENCE_GATE, new ItemStack(Blocks.DARK_OAK_FENCE_GATE))
                         .addVariant(STAIR, new ItemStack(Blocks.DARK_OAK_STAIRS)),
-                BlockVariant.builder()
+                WoodVariant.builder()
                         .addVariant(LOG, new ItemStack(BWMBlocks.BLOOD_LOG))
                         .addVariant(BLOCK, new ItemStack(Blocks.PLANKS, 1, 3))
-                        .addVariant(BARK, ItemBark.getStack("bloody", 1))
                         .addVariant(IBlockVariants.EnumBlock.SAWDUST, ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_DUST))
         ));
-        blockVariants.forEach(w -> getPlankOutput(w.getVariant(LOG, 1)));
-        logs = OreDictionary.getOres("logWood").stream().filter(stack -> !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("minecraft") && !stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase("betterwithmods")).collect(Collectors.toList());
+    }
+
+    public static void findLogRecipes() {
+        BWOreDictionary.logs = OreDictionary.getOres("logWood").stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
         for (ItemStack log : logs) {
-            if (log.getMetadata() == OreDictionary.WILDCARD_VALUE) {//Probably the most common instance of OreDict use for logs.
-                for (int i = 0; i <= 4; i++) {//Terraqueous's logs go up to 4 for some reason. Should we look for up to 15?
-                    ItemStack subLog = new ItemStack(log.getItem(), 1, i);
-                    ItemStack plank = getPlankOutput(subLog);
-                    if (!plank.isEmpty() && !isWoodRegistered(subLog)) {
-                        BlockVariant wood = BlockVariant.builder().addVariant(LOG, subLog).addVariant(BLOCK, plank);
-                        blockVariants.add(wood);
+            Item logItem = log.getItem();
+            NonNullList<ItemStack> listSubItems = NonNullList.create();
+            log.getItem().getSubItems(logItem.getCreativeTab(), listSubItems);
+            for (ItemStack subLog : listSubItems) {
+                IRecipe recipe = getLogPlankRecipe(subLog);
+                if (recipe != null) {
+                    ItemStack plank = recipe.getRecipeOutput();
+                    if (!plank.isEmpty()) {
+                        logRecipes.add(recipe);
+                        if (!isWoodRegistered(log)) {
+                            blockVariants.add(WoodVariant.builder().addVariant(LOG, subLog).addVariant(BLOCK, plank));
+                        }
                     }
-                }
-            } else {
-                ItemStack plank = getPlankOutput(log);
-                if (!plank.isEmpty() && !isWoodRegistered(log)) {
-                    BlockVariant wood = BlockVariant.builder().addVariant(LOG, log).addVariant(BLOCK, plank);
-                    blockVariants.add(wood);
                 }
             }
         }
-
     }
 
     public static boolean isWoodRegistered(ItemStack stack) {
@@ -370,7 +355,6 @@ public class BWOreDictionary {
     }
 
     public static IBlockVariants getVariantFromState(IBlockVariants.EnumBlock variant, IBlockState state) {
-
         ItemStack stack = BWMRecipes.getStackFromState(state);
         IBlockVariants blockVariant = null;
         if (!stack.isEmpty()) {

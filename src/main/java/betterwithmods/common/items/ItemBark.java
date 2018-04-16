@@ -1,19 +1,23 @@
 package betterwithmods.common.items;
 
+import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.BWMItems;
-import com.google.common.collect.Lists;
+import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWOreDictionary;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemBark extends Item {
-
-    public static List<String> barks = Lists.newArrayList("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "bloody");
 
     public ItemBark() {
         super();
@@ -21,37 +25,47 @@ public class ItemBark extends Item {
         this.setHasSubtypes(true);
     }
 
-    public static ItemStack getStack(String wood, int amount) {
-        ItemStack stack = new ItemStack(BWMItems.BARK, amount);
+    public static ItemStack fromParentStack(Item bark, ItemStack log, int count) {
+        ItemStack stack = new ItemStack(bark, count);
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", wood);
+        NBTTagCompound texture = new NBTTagCompound();
+        NBTUtil.writeBlockState(texture, BWMRecipes.getStateFromStack(log));
+        tag.setTag("texture", texture);
         stack.setTagCompound(tag);
         return stack;
     }
-
 
     @Override
     public int getItemBurnTime(ItemStack itemStack) {
         return 25;
     }
 
+    public List<ItemStack> getLogs() {
+        return BWOreDictionary.blockVariants.stream().map(b -> b.getVariant(IBlockVariants.EnumBlock.LOG, 1)).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+    }
+
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
-            for (String bark : barks) {
-                items.add(getStack(bark, 1));
+            List<ItemStack> logs = getLogs();
+            for (ItemStack log : logs) {
+                items.add(fromParentStack(this, log, 1));
             }
         }
     }
 
-
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        NBTTagCompound tag = stack.getTagCompound();
+    public String getItemStackDisplayName(ItemStack stack) {
+        NBTTagCompound tag = stack.getSubCompound("texture");
+        String type = I18n.translateToLocal("bwm.unknown_bark.name").trim();
         if (tag != null) {
-            String type = tag.getString("type");
-            return super.getUnlocalizedName() + "." + type;
+            IBlockState state = NBTUtil.readBlockState(tag);
+            ItemStack block = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+            if (block.getItem() instanceof ItemBlock) {
+                ItemBlock itemBlock = (ItemBlock) block.getItem();
+                type = itemBlock.getItemStackDisplayName(block);
+            }
         }
-        return "Unknown Bark";
+        return String.format("%s %s", type, I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
     }
 }

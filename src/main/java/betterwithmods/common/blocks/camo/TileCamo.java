@@ -76,12 +76,12 @@ public class TileCamo extends TileBasic {
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
         if (this.state != null && state.getBlock() instanceof BlockCamo) {
-            return fromParent(state.getBlock(), this.state, 1);
+            return fromParentState(state.getBlock(), this.state, 1);
         }
         return ItemStack.EMPTY;
     }
 
-    private ItemStack fromParent(Block mini, IBlockState state, int count) {
+    public static ItemStack fromParentState(Block mini, IBlockState state, int count) {
         ItemStack stack = new ItemStack(mini, count);
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagCompound texture = new NBTTagCompound();
