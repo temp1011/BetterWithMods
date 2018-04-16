@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -66,8 +65,8 @@ public class CompatModule extends Module {
             String modId = feature.getKey();
             String classPath = feature.getValue();
             if (isLoaded(modId)) try {
-                registerFeature(Class.forName(classPath).asSubclass(CompatFeature.class).newInstance());
-                FMLLog.info(" [BWM] Successfully load compat for " + modId);
+                registerFeature(Class.forName(classPath).asSubclass(Feature.class).newInstance());
+                BWMod.logger.info(" [BWM] Successfully load compat for " + modId);
             } catch (ExceptionInInitializerError | InstantiationException | ClassNotFoundException | IllegalAccessException ignore) {
                 BWMod.logger.info(" [BWM] Compatibility class " + classPath + " could not be loaded. Report this!");
             }
