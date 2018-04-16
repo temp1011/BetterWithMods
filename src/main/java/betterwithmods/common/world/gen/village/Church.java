@@ -1,6 +1,5 @@
 package betterwithmods.common.world.gen.village;
 
-import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -92,14 +91,14 @@ public class Church extends AbandonedVillagePiece {
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 0, 3, 6, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 4, 3, 6, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 3, 8, structureBoundingBoxIn);
-        IBlockState ladder = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.WEST);
-
-        for (int i = 1; i <= 9; ++i) {
-            if(worldIn.rand.nextInt(2) == 0)
-                this.setBlockState(worldIn, ladder, 3, i, 3, structureBoundingBoxIn);
-            else
-                this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 3, i, 3, structureBoundingBoxIn);
-        }
+//        IBlockState ladder = Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EnumFacing.WEST);
+//
+//        for (int i = 1; i <= 9; ++i) {
+//            if(worldIn.rand.nextInt(2) == 0)
+//                this.setBlockState(worldIn, ladder, 3, i, 3, structureBoundingBoxIn);
+//            else
+//                this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 3, i, 3, structureBoundingBoxIn);
+//        }
 
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 1, 0, structureBoundingBoxIn);
         this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 2, 0, structureBoundingBoxIn);
