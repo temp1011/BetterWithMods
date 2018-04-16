@@ -11,6 +11,7 @@ import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -241,17 +242,18 @@ public final class PlayerHelper {
         ItemStack stack = BrokenToolRegistry.findItem(player, state);
         if (player == null || state == null)
             return false;
-        return isCurrentToolEffectiveOnBlock(stack, state) || ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
+        return isCurrentToolEffectiveOnBlock(stack, state, Sets.newHashSet()) || ForgeHooks.isToolEffective(player.getEntityWorld(), pos, stack);
     }
 
     /**
      * Partial copy of {@link ForgeHooks#isToolEffective(IBlockAccess, BlockPos, ItemStack)} build 2185
      *
-     * @param stack The tool.
-     * @param state The block.
+     * @param stack               The tool.
+     * @param state               The block.
+     * @param effective_materials
      * @return Whether the tool can harvest well the block.
      */
-    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state) {
+    public static boolean isCurrentToolEffectiveOnBlock(ItemStack stack, IBlockState state, Set<Material> effective_materials) {
 
         if (stack == null) return false;
         if (stack.hasTagCompound()) {
@@ -263,12 +265,15 @@ public final class PlayerHelper {
 
         ItemStack block = BWMRecipes.getStackFromState(state);
 
+        Material material = state.getMaterial();
+        if(effective_materials.contains(material))
+            return true;
         for (String type : stack.getItem().getToolClasses(stack)) {
             if (Objects.equals(type, "mattock"))
                 return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("axe", state);
-            if (Objects.equals(type, "bwmmattock"))
+            if (Objects.equals(type, "bwmmattock")) {
                 return state.getBlock().isToolEffective("shovel", state) || state.getBlock().isToolEffective("pickaxe", state);
-
+            }
             if (state.getBlock().isToolEffective(type, state) || BWOreDictionary.isToolForOre(type, block))
                 return true;
         }
