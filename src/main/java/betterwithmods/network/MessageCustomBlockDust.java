@@ -1,7 +1,6 @@
 package betterwithmods.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -32,31 +31,30 @@ public class MessageCustomBlockDust extends NetworkMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-
-        pos = readData(buf,pos);
-        numberOfParticles = readData(buf,numberOfParticles);
-        posX = readData(buf,posX);
-        posY = readData(buf,posY);
-        posZ = readData(buf,posZ);
-        particleSpeed = readData(buf, particleSpeed);
+//        pos = readData(buf,pos);
+//        numberOfParticles = readData(buf,numberOfParticles);
+//        posX = readData(buf,posX);
+//        posY = readData(buf,posY);
+//        posZ = readData(buf,posZ);
+//        particleSpeed = readData(buf, particleSpeed);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        writeData(buf, pos);
-        writeData(buf, numberOfParticles);
-        writeData(buf,posX);
-        writeData(buf,posY);
-        writeData(buf,posZ);
-        writeData(buf,particleSpeed);
+//        writeData(buf, pos);
+//        writeData(buf, numberOfParticles);
+//        writeData(buf,posX);
+//        writeData(buf,posY);
+//        writeData(buf,posZ);
+//        writeData(buf,particleSpeed);
     }
 
     @Override
     public IMessage onMessage(IMessage message, MessageContext ctx) {
-        this.world = Minecraft.getMinecraft().world;
-        if (world != null) {
-//            BWMod.proxy.spawnBlockDustClient(world, pos, rand, posX, posY, posZ, numberOfParticles, particleSpeed, EnumFacing.UP);
-        }
+//        this.world = Minecraft.getMinecraft().world;
+//        if (world != null) {
+////            BWMod.proxy.spawnBlockDustClient(world, pos, rand, posX, posY, posZ, numberOfParticles, particleSpeed, EnumFacing.UP);
+//        }
         return null;
     }
 }
