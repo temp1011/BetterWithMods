@@ -176,7 +176,7 @@ public class BlockAxle extends BlockRotate implements IOverpower, IBlockActive {
     }
 
     public Optional<TileAxle> withTile(World world, BlockPos pos) {
-        return Optional.of(getTile(world, pos));
+        return Optional.ofNullable(getTile(world, pos));
     }
 
     public TileAxle getTile(World world, BlockPos pos) {

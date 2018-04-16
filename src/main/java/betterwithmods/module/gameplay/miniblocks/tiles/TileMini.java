@@ -7,6 +7,7 @@ import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -38,9 +39,14 @@ public abstract class TileMini extends TileBasic {
             NBTTagCompound texture = new NBTTagCompound();
             NBTUtil.writeBlockState(texture, state);
             tag.setTag("texture", texture);
+        } else {
+            world.setBlockToAir(pos);
         }
-        if (orientation != null)
+        if (orientation != null) {
             tag.setInteger("orientation", orientation.ordinal());
+        } else {
+            world.setBlockToAir(pos);
+        }
         return tag;
     }
 
@@ -48,8 +54,11 @@ public abstract class TileMini extends TileBasic {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        if (compound.hasKey("texture"))
+        if (compound.hasKey("texture")) {
             state = NBTUtil.readBlockState(compound.getCompoundTag("texture"));
+        } else {
+            world.setBlockToAir(pos);
+        }
         orientation = deserializeOrientation(compound);
         super.readFromNBT(compound);
     }
@@ -91,16 +100,20 @@ public abstract class TileMini extends TileBasic {
     }
 
     public BaseOrientation getOrientation() {
+        if (orientation == null)
+            return BaseOrientation.DEFAULT;
         return orientation;
     }
 
     public IBlockState getState() {
+        if (state == null)
+            return Blocks.AIR.getDefaultState();
         return state;
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
         if (this.state != null && getBlockType() instanceof BlockMini) {
-            return MiniBlocks.fromParent(getBlockType(), this.state);
+            return MiniBlocks.fromParent(getBlockType(), this.getState());
         }
         return ItemStack.EMPTY;
     }

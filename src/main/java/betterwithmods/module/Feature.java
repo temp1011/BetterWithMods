@@ -224,4 +224,5 @@ public class Feature {
     public final List<ResourceLocation> loadRLList(String propName, String comment, String[] default_) {
         return ConfigHelper.loadPropRLList(propName, configCategory, comment, default_);
     }
+
 }

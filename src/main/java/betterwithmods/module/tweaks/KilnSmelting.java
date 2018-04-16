@@ -23,12 +23,11 @@ public class KilnSmelting extends Feature {
     }
 
     @Override
-    public void postInit(FMLPostInitializationEvent event) {
+    public void finalInit(FMLPostInitializationEvent event) {
         BWOreDictionary.oreNames.stream().flatMap(ore -> Arrays.stream(ore.getMatchingStacks())).filter(s -> s.getItem() instanceof ItemBlock).forEach(input -> {
             ItemStack output = FurnaceRecipes.instance().getSmeltingResult(input).copy();
             BWRegistry.KILN.addStokedRecipe(input, InvUtils.setCount(output, oreProductionCount));
         });
-
     }
 
     @Override
