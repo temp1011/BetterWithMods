@@ -9,6 +9,7 @@ import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,9 @@ import java.util.Set;
 public class ItemSoulforgedMattock extends ItemTool {
     private static final Set<Block> EFFECTIVE = Sets.union(ToolsManager.getEffectiveBlocks((ItemTool) BWMItems.STEEL_PICKAXE), ToolsManager.getEffectiveBlocks((ItemTool) BWMItems.STEEL_SHOVEL));
 
+    private static final Set<Material> EFFECTIVE_MATERIALS =  Sets.newHashSet(Material.ROCK,Material.IRON,Material.ANVIL,
+            Material.GROUND, Material.GRASS,Material.CLAY, Material.GLASS,Material.PISTON,Material.SNOW);
+
     public ItemSoulforgedMattock() {
         super(BWMItems.SOULFORGED_STEEL, EFFECTIVE);
         setCreativeTab(BWCreativeTabs.BWTAB);
@@ -34,7 +38,7 @@ public class ItemSoulforgedMattock extends ItemTool {
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if (PlayerHelper.isCurrentToolEffectiveOnBlock(stack, state))
+        if (PlayerHelper.isCurrentToolEffectiveOnBlock(stack, state, EFFECTIVE_MATERIALS))
             return efficiency;
         return EFFECTIVE.contains(state.getBlock()) ? this.efficiency : 1.0F;
     }
