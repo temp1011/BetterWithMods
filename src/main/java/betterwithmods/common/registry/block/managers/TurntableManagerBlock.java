@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe> {
 
@@ -36,6 +37,14 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
 
     public TurntableRecipe addRecipe(BlockIngredient input, IBlockState productState, List<ItemStack> outputs, int rotations) {
         return addRecipe(new TurntableRecipe(input, productState, outputs, rotations));
+    }
+
+    protected List<TurntableRecipe> findRecipe(IBlockState output) {
+        return recipes.stream().filter(r -> r.getProductState() == output).collect(Collectors.toList());
+    }
+
+    public boolean remove(IBlockState output) {
+        return recipes.removeAll(findRecipe(output));
     }
 
     @Override

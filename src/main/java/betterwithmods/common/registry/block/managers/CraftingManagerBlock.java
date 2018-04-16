@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 public abstract class CraftingManagerBlock<T extends BlockRecipe> {
 
-    private final ArrayList<T> recipes = Lists.newArrayList();
+    protected final ArrayList<T> recipes = Lists.newArrayList();
 
     public T addRecipe(T recipe) {
         if (!recipe.isInvalid())
