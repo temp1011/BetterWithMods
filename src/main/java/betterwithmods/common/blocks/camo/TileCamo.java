@@ -75,8 +75,8 @@ public class TileCamo extends TileBasic {
     }
 
     public ItemStack getPickBlock(EntityPlayer player, RayTraceResult target, IBlockState state) {
-        if (this.state != null && getBlockType() instanceof BlockCamo) {
-            return fromParent(getBlockType(), this.state, 1);
+        if (this.state != null && state.getBlock() instanceof BlockCamo) {
+            return fromParent(state.getBlock(), this.state, 1);
         }
         return ItemStack.EMPTY;
     }

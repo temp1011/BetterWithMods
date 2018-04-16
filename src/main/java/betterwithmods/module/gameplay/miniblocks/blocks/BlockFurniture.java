@@ -29,14 +29,6 @@ import java.util.function.Function;
 
 public abstract class BlockFurniture extends BlockCamo {
     protected static final PropertyBool SUPPORTED = PropertyBool.create("supported");
-    /* Bounds */
-    private static ImmutableList<AxisAlignedBB> BOUNDS_Table = ImmutableList.of(
-            new AxisAlignedBB(0, 0.75, 0, 1, 1, 1),
-            new AxisAlignedBB(0, 0, 0, 0.25, 0.75, 0.25),
-            new AxisAlignedBB(0.75, 0, 0, 1, 0.75, 0.25),
-            new AxisAlignedBB(0.75, 0, 0.75, 1, 0.75, 1),
-            new AxisAlignedBB(0, 0, 0.75, 0.25, 0.75, 1)
-    );
 
     public BlockFurniture(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
