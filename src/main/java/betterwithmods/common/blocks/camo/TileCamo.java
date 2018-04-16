@@ -38,8 +38,13 @@ public class TileCamo extends TileBasic {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        if (compound.hasKey("texture"))
-            state = NBTUtil.readBlockState(compound.getCompoundTag("texture"));
+        if (compound.hasKey("texture")) {
+            try {
+                state = NBTUtil.readBlockState(compound.getCompoundTag("texture"));
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
         super.readFromNBT(compound);
     }
 

@@ -59,11 +59,17 @@ public class ItemBark extends Item {
         NBTTagCompound tag = stack.getSubCompound("texture");
         String type = I18n.translateToLocal("bwm.unknown_bark.name").trim();
         if (tag != null) {
-            IBlockState state = NBTUtil.readBlockState(tag);
-            ItemStack block = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
-            if (block.getItem() instanceof ItemBlock) {
-                ItemBlock itemBlock = (ItemBlock) block.getItem();
-                type = itemBlock.getItemStackDisplayName(block);
+            try {
+                IBlockState state = NBTUtil.readBlockState(tag);
+                if (state != null) {
+                    ItemStack block = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+                    if (block.getItem() instanceof ItemBlock) {
+                        ItemBlock itemBlock = (ItemBlock) block.getItem();
+                        type = itemBlock.getItemStackDisplayName(block);
+                    }
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
         return String.format("%s %s", type, I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());

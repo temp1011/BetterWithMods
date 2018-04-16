@@ -314,6 +314,7 @@ item.bwm:axle_generator.waterwheel.name=Water Wheel
 item.bwm:axle_generator.windmill_vertical.name=Vertical Windmill
 
 item.bwm:bark.name=Bark
+item.bwm.unknown_bark.name=Unknown Bark
 
 item.bwm:steel_axe.name=Refined Axe
 item.bwm:steel_hoe.name=Refined Hoe
