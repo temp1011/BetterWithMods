@@ -6,7 +6,6 @@ import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.needs.HCTools;
-import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.util.player.FatPenalty;
@@ -290,8 +289,8 @@ public class HCHunger extends CompatFeature {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (!event.player.world.isRemote && event.phase == TickEvent.Phase.START) {
             EntityPlayer player = event.player;
-            if (event.player instanceof EntityPlayerMP)
-                NetworkHandler.INSTANCE.sendTo(new MessageFat(event.player.getUniqueID()), (EntityPlayerMP) event.player);
+//            if (event.player instanceof EntityPlayerMP)
+//                NetworkHandler.INSTANCE.sendTo(new MessageFat(event.player.getUniqueID()), (EntityPlayerMP) event.player);
             if (player.isCreative() || player.world.getDifficulty() == EnumDifficulty.PEACEFUL)
                 return;
             if (!PlayerHelper.getHungerPenalty(player).canSprint())

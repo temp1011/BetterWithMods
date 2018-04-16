@@ -1,14 +1,13 @@
 package betterwithmods.proxy;
 
 import betterwithmods.BWMod;
-import betterwithmods.client.BWStateMapper;
-import betterwithmods.client.ClientEventHandler;
-import betterwithmods.client.ColorHandlers;
-import betterwithmods.client.ResourceProxy;
+import betterwithmods.client.*;
+import betterwithmods.client.baking.IStateParticleBakedModel;
 import betterwithmods.client.render.*;
 import betterwithmods.client.tesr.*;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.mechanical.tile.*;
 import betterwithmods.common.blocks.tile.TileEntityBeacon;
@@ -24,12 +23,16 @@ import betterwithmods.module.hardcore.crafting.HCFurnace;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityCow;
@@ -39,7 +42,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -58,6 +63,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID, value = Side.CLIENT)
@@ -133,7 +139,7 @@ public class ClientProxy implements IProxy {
         col.registerBlockColorHandler(ColorHandlers.BlockBloodLeafColor, BWMBlocks.BLOOD_LEAVES);
         col.registerBlockColorHandler(ColorHandlers.BlockGrassColor, BWMBlocks.DIRT_SLAB);
 
-        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor,  BlockPlanter.BLOCKS.get(BlockPlanter.EnumType.GRASS));
+        itCol.registerItemColorHandler(ColorHandlers.ItemPlanterColor, BlockPlanter.BLOCKS.get(BlockPlanter.EnumType.GRASS));
         itCol.registerItemColorHandler(ColorHandlers.ItemFoliageColor, BWMBlocks.VINE_TRAP);
         itCol.registerItemColorHandler(ColorHandlers.ItemBloodLeafColor, BWMBlocks.BLOOD_LEAVES);
         itCol.registerItemColorHandler(ColorHandlers.ItemGrassColor, BWMBlocks.DIRT_SLAB);
@@ -181,6 +187,62 @@ public class ClientProxy implements IProxy {
         if (world == null)
             return null;
         return world.getEntityByID(id);
+    }
+
+    @Override
+    public void spawnBlockDustClient(World world, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed, EnumFacing facing) {
+        if(pos == null)
+            return;
+        TextureAtlasSprite sprite;
+        int tintIndex = -1;
+
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BWMBlock) {
+            tintIndex = ((BWMBlock) state.getBlock()).getParticleTintIndex();
+        }
+
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+        if (model instanceof IStateParticleBakedModel) {
+            state = state.getBlock().getExtendedState(state.getActualState(world, pos), world, pos);
+            sprite = ((IStateParticleBakedModel) model).getParticleTexture(state, facing);
+        } else {
+            sprite = model.getParticleTexture();
+        }
+
+        ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
+
+        for (int i = 0; i < numberOfParticles; i++) {
+            double xSpeed = rand.nextGaussian() * particleSpeed;
+            double ySpeed = rand.nextGaussian() * particleSpeed;
+            double zSpeed = rand.nextGaussian() * particleSpeed;
+
+            try {
+                Particle particle = new BWParticleDigging(world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite, tintIndex);
+                manager.addEffect(particle);
+            } catch (Throwable var16) {
+                BWMod.logger.warn("Could not spawn block particle!");
+                return;
+            }
+        }
+    }
+
+
+    public boolean addRunningParticles(IBlockState state, World world, BlockPos pos, Entity entity) {
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+        if (model instanceof IStateParticleBakedModel) {
+            state = state.getBlock().getExtendedState(state.getActualState(world, pos), world, pos);
+            TextureAtlasSprite sprite = ((IStateParticleBakedModel) model).getParticleTexture(state, EnumFacing.UP);
+
+            double posX = entity.posY + ((double) world.rand.nextFloat() - 0.5D) * (double) entity.width, posY = entity.getEntityBoundingBox().minY + 0.1D, posZ = entity.posZ + ((double) world.rand.nextFloat() - 0.5D) * (double) entity.width;
+            double vX = -entity.motionX * 4.0D, vY = 1.5D, vZ = -entity.motionZ * 4.0D;
+            Particle particle = new BWParticleDigging(world, posX, posY, posZ, vX, vY, vZ,
+                    state, pos, sprite, ((BWMBlock) state.getBlock()).getParticleTintIndex());
+
+            Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {

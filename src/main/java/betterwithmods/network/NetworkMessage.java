@@ -23,20 +23,28 @@ import java.util.List;
 
 public abstract class NetworkMessage<REQ extends NetworkMessage> implements IMessage, IMessageHandler<REQ, IMessage> {
 
-    private static final HashMap<Class, List<Field>> fieldCache = new HashMap();
+    private static final HashMap<Class, List<Field>> fieldCache = new HashMap<>();
+
+    protected static <DataType> DataType readData(ByteBuf buf, DataType data) {
+        try {
+            MessageDataHandler<DataType> handler = MessageDataHandler.getHandlerType(data);
+            if (handler != null)
+                handler.read(buf);
+            return null;
+        } catch (NullPointerException e) {
+        }
+        return null;
+    }
+
+    protected static <DataType> void writeData(ByteBuf buf, DataType data) {
+        MessageDataHandler<DataType> handler = MessageDataHandler.getHandlerType(data);
+        if (handler != null)
+            handler.write(buf, data);
+    }
 
     // The thing you override!
     public IMessage handleMessage(MessageContext context) {
         return null;
-    }
-
-    protected static <DataType> DataType readData(ByteBuf buf, DataType data) {
-        return MessageDataHandler.getHandlerType(data).read(buf);
-    }
-
-    protected static <DataType> void writeData(ByteBuf buf, DataType data) {
-        MessageDataHandler handler = MessageDataHandler.getHandlerType(data);
-        handler.write(buf, data);
     }
 
     @Override

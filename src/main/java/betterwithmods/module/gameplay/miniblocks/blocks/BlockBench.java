@@ -1,5 +1,6 @@
 package betterwithmods.module.gameplay.miniblocks.blocks;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -16,6 +17,9 @@ import java.util.function.Function;
 
 public class BlockBench extends BlockFurniture implements ISittable {
 
+    private static final AxisAlignedBB BENCH_TOP = new AxisAlignedBB(0, 6d / 16d, 0, 1, 8 / 16d, 1);
+    private static final ImmutableList<AxisAlignedBB> BENCH = ImmutableList.of(new AxisAlignedBB(0, 6/16d, 0, 1, 0.5, 1), new AxisAlignedBB(6 / 16d, 0, 6 / 16d, 10 / 16d, 8 / 16d, 10 / 16d));
+
     public BlockBench(Material material, Function<Material, Collection<IBlockState>> subtypes) {
         super(material, subtypes);
         setDefaultState(getDefaultState().withProperty(SUPPORTED, true));
@@ -23,7 +27,12 @@ public class BlockBench extends BlockFurniture implements ISittable {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+        return BENCH_TOP;
+    }
+
+    @Override
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+        return BENCH_TOP.offset(pos);
     }
 
     @Override
@@ -35,7 +44,6 @@ public class BlockBench extends BlockFurniture implements ISittable {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
-
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -57,5 +65,10 @@ public class BlockBench extends BlockFurniture implements ISittable {
     @Override
     public double getOffset() {
         return 0;
+    }
+
+    @Override
+    public ImmutableList<AxisAlignedBB> getBoxes() {
+        return BENCH;
     }
 }

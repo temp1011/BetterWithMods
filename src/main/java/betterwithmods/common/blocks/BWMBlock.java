@@ -1,5 +1,6 @@
 package betterwithmods.common.blocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.client.BWParticleDigging;
 import betterwithmods.client.baking.IStateParticleBakedModel;
@@ -203,17 +204,14 @@ public abstract class BWMBlock extends Block implements IRotate {
 
     @Override
     public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState stateAgain, EntityLivingBase entity, int numberOfParticles) {
-        //TODO
-//        PacketCustomBlockDust packet = new PacketCustomBlockDust(world, pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15f);
-//        CharsetLib.packet.sendToDimension(packet, world.provider.getDimension());
+//        MessageCustomBlockDust packet = new MessageCustomBlockDust(world, pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15f);
+//        NetworkHandler.sendToAllAround(packet, world, pos);
         return super.addLandingEffects(state, world, pos, stateAgain, entity, numberOfParticles);
     }
 
     @Override
     public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
-        return super.addRunningEffects(state, world, pos, entity);
-//        return UtilProxyCommon.proxy.addRunningParticles(state, world, pos, entity);
-
+        return BWMod.proxy.addRunningParticles(state, world, pos, entity);
     }
 
     public int getParticleTintIndex() {
@@ -227,6 +225,6 @@ public abstract class BWMBlock extends Block implements IRotate {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return IRotate.super.onBlockActivated(this,worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+        return IRotate.super.onBlockActivated(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 }
