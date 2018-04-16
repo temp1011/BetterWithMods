@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by blueyu2 on 11/21/16.
  */
-public class TileEntitySteelAnvil extends TileBasicInventory {
+public class TileSteelAnvil extends TileBasicInventory {
     private ItemStack result;
 
-    public TileEntitySteelAnvil() {
+    public TileSteelAnvil() {
         super();
     }
 

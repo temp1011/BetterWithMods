@@ -5,7 +5,7 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.cookingpot.BlockCookingPot;
-import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.common.blocks.tile.TileVisibleInventory;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Random;
 
 
-public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower, IHeated {
+public abstract class TileCookingPot extends TileVisibleInventory implements IMechanicalPower, IHeated {
     public int cookProgress, cookTime;
     public EnumFacing facing;
     public int heat;
     protected CraftingManagerBulk<CookingPotRecipe> manager;
 
-    public TileEntityCookingPot(CraftingManagerBulk<CookingPotRecipe> manager) {
+    public TileCookingPot(CraftingManagerBulk<CookingPotRecipe> manager) {
         this.manager = manager;
         this.cookProgress = 0;
         this.cookTime = 0;

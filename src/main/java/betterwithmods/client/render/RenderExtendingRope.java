@@ -4,7 +4,7 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.client.tesr.TESRBucket;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockBucket;
-import betterwithmods.common.blocks.tile.TileEntityBucket;
+import betterwithmods.common.blocks.tile.TileBucket;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.util.AABBArray;
 import net.minecraft.block.state.IBlockState;
@@ -67,7 +67,7 @@ public class RenderExtendingRope extends Render<EntityExtendingRope> {
                     blockrendererdispatcher.getModelForState(state), state, blockpos.add(vec), vertexbuffer, false, 0);
             if (state.getBlock() instanceof BlockBucket) {
                 if (entity.getTiles().containsKey(vec)) {
-                    TileEntityBucket bucket = new TileEntityBucket();
+                    TileBucket bucket = new TileBucket();
                     NBTTagCompound tag = entity.getTiles().get(vec);
                     bucket.readFromNBT(tag);
                     new TESRBucket().render(bucket, x, y, z, partialTicks, 0, 0);

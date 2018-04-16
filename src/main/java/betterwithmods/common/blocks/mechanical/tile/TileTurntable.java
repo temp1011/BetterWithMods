@@ -3,8 +3,6 @@ package betterwithmods.common.blocks.mechanical.tile;
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
-import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
@@ -24,7 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITickable, IMechanicalPower {
+public class TileTurntable extends TileBasic implements IMechSubtype, ITickable, IMechanicalPower {
 
     private static final int height = 3;
     private static final int[] ticksToRotate = {10, 20, 40, 80};

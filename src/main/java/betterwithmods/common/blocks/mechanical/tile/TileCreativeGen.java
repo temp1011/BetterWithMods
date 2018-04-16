@@ -14,7 +14,7 @@ import net.minecraftforge.common.capabilities.Capability;
 /**
  * Created by primetoxinz on 8/5/16.
  */
-public class TileEntityCreativeGen extends TileEntity implements IMechanicalPower {
+public class TileCreativeGen extends TileEntity implements IMechanicalPower {
     @Override
     public int getMinimumInput(EnumFacing facing) {
         return 0;

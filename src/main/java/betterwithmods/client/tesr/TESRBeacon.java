@@ -1,6 +1,6 @@
 package betterwithmods.client.tesr;
 
-import betterwithmods.common.blocks.tile.TileEntityBeacon;
+import betterwithmods.common.blocks.tile.TileBeacon;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,25 +14,25 @@ import java.util.List;
 /**
  * Created by primetoxinz on 7/17/17.
  */
-public class TESRBeacon extends TileEntitySpecialRenderer<TileEntityBeacon> {
+public class TESRBeacon extends TileEntitySpecialRenderer<TileBeacon> {
 
     public static final ResourceLocation TEXTURE_BEACON_BEAM = new ResourceLocation("textures/entity/beacon_beam.png");
 
     @Override
-    public void render(TileEntityBeacon te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileBeacon te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         renderBeacon(te,x,y,z,partialTicks);
     }
 
 
-    public void renderBeacon(TileEntityBeacon te, double x, double y, double z, float partialTicks) {
+    public void renderBeacon(TileBeacon te, double x, double y, double z, float partialTicks) {
         if (te.isEnabled()) {
             GlStateManager.alphaFunc(516, 0.1F);
             this.bindTexture(TEXTURE_BEACON_BEAM);
-            List<TileEntityBeacon.BeamSegment> segments = te.getSegments();
+            List<TileBeacon.BeamSegment> segments = te.getSegments();
             GlStateManager.disableFog();
             int i = 0;
             for (int j = 0; j < segments.size(); ++j) {
-                TileEntityBeacon.BeamSegment segment = segments.get(j);
+                TileBeacon.BeamSegment segment = segments.get(j);
                 renderBeamSegment(x, y, z, partialTicks, te.getBeamScale(), te.getWorld().getTotalWorldTime(), i, segment.getHeight(), segment.getColors());
                 i += segment.getHeight();
             }
@@ -131,7 +131,7 @@ public class TESRBeacon extends TileEntitySpecialRenderer<TileEntityBeacon> {
     }
 
     @Override
-    public boolean isGlobalRenderer(TileEntityBeacon te) {
+    public boolean isGlobalRenderer(TileBeacon te) {
         return true;
     }
 }

@@ -10,8 +10,8 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockPlanter;
 import betterwithmods.common.blocks.mechanical.tile.*;
-import betterwithmods.common.blocks.tile.TileEntityBeacon;
-import betterwithmods.common.blocks.tile.TileEntityBucket;
+import betterwithmods.common.blocks.tile.TileBeacon;
+import betterwithmods.common.blocks.tile.TileBucket;
 import betterwithmods.common.entity.*;
 import betterwithmods.manual.api.ManualAPI;
 import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
@@ -116,15 +116,15 @@ public class ClientProxy implements IProxy {
     private void registerRenderInformation() {
 
         OBJLoader.INSTANCE.addDomain(BWMod.MODID);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillHorizontal.class, new TESRWindmill());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillVertical.class, new TESRVerticalWindmill());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterwheel.class, new TESRWaterwheel());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFilteredHopper.class, new TESRFilteredHopper());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new TESRCookingPot());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TESRCookingPot());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeacon.class, new TESRBeacon());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillHorizontal.class, new TESRWindmill());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillVertical.class, new TESRVerticalWindmill());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheel.class, new TESRWaterwheel());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFilteredHopper.class, new TESRFilteredHopper());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCauldron.class, new TESRCookingPot());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCrucible.class, new TESRCookingPot());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBeacon.class, new TESRBeacon());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSteelSaw.class, new TESRSteelSaw());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBucket.class, new TESRBucket());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBucket.class, new TESRBucket());
         if (BWMod.MODULE_LOADER.isFeatureEnabled(HCFurnace.class)) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnace.class, new TESRFurnaceContent());
         }

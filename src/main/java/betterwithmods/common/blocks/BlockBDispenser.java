@@ -7,7 +7,7 @@ import betterwithmods.client.BWCreativeTabs;
 import betterwithmods.common.blocks.behaviors.BehaviorBreakBlock;
 import betterwithmods.common.blocks.behaviors.BehaviorDefaultDispenseBlock;
 import betterwithmods.common.blocks.behaviors.BehaviorEntity;
-import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileBlockDispenser;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -85,7 +85,7 @@ public class BlockBDispenser extends BlockDispenser  {
     @Override
     protected void dispense(World world, BlockPos pos) {
         BlockSourceImpl impl = new BlockSourceImpl(world, pos);
-        TileEntityBlockDispenser tile = impl.getBlockTileEntity();
+        TileBlockDispenser tile = impl.getBlockTileEntity();
         if (tile != null) {
             if (!world.getBlockState(pos).getValue(TRIGGERED)) {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
@@ -127,8 +127,8 @@ public class BlockBDispenser extends BlockDispenser  {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileEntityBlockDispenser) {
-            InvUtils.ejectInventoryContents(world, pos, ((TileEntityBlockDispenser) te).inventory);
+        if (te instanceof TileBlockDispenser) {
+            InvUtils.ejectInventoryContents(world, pos, ((TileBlockDispenser) te).inventory);
             world.updateComparatorOutputLevel(pos, this);
         }
         super.breakBlock(world, pos, state);
@@ -141,7 +141,7 @@ public class BlockBDispenser extends BlockDispenser  {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityBlockDispenser();
+        return new TileBlockDispenser();
     }
     
     public boolean hasComparatorInputOverride(IBlockState state) {

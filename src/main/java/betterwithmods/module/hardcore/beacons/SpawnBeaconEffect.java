@@ -1,6 +1,6 @@
 package betterwithmods.module.hardcore.beacons;
 
-import betterwithmods.common.blocks.tile.TileEntityBeacon;
+import betterwithmods.common.blocks.tile.TileBeacon;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,7 +92,7 @@ public class SpawnBeaconEffect implements IBeaconEffect {
 
         public boolean canSpawn(BlockPos beacon, EntityPlayer player, World world) {
             TileEntity tile = world.getTileEntity(beacon);
-            if (isPlayer(player) && (tile instanceof TileEntityBeacon) && (((TileEntityBeacon) tile).getLevels() - 1) == type.ordinal())
+            if (isPlayer(player) && (tile instanceof TileBeacon) && (((TileBeacon) tile).getLevels() - 1) == type.ordinal())
                 return type.inRange(beacon, player, world);
             return false;
         }

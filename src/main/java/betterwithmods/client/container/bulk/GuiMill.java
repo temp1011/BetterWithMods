@@ -1,7 +1,7 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
+import betterwithmods.common.blocks.mechanical.tile.TileMill;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiMill extends GuiContainer {
     private static final String NAME = "inv.mill.name";
-    private final TileEntityMill mill;
+    private final TileMill mill;
     private ContainerMill container;
-    public GuiMill(EntityPlayer player, TileEntityMill mill) {
+    public GuiMill(EntityPlayer player, TileMill mill) {
         super(new ContainerMill(player, mill));
         this.container = (ContainerMill) inventorySlots;
         this.ySize = 158;

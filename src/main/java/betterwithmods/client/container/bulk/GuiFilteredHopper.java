@@ -1,7 +1,7 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiFilteredHopper extends GuiContainer {
-    private final TileEntityFilteredHopper tile;
+    private final TileFilteredHopper tile;
 
-    public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
+    public GuiFilteredHopper(EntityPlayer player, TileFilteredHopper tile) {
         super(new ContainerFilteredHopper(player, tile));
         this.ySize = 193;
         this.tile = tile;

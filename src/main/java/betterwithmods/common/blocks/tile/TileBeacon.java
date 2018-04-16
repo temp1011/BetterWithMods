@@ -43,7 +43,7 @@ import static betterwithmods.module.hardcore.beacons.HCBeacons.BEACON_EFFECTS;
 /**
  * Created by primetoxinz on 7/17/17.
  */
-public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon implements ITickable {
+public class TileBeacon extends net.minecraft.tileentity.TileEntityBeacon implements ITickable {
 
     private int level, prevLevel;
     private IBlockState type = Blocks.AIR.getDefaultState();
@@ -57,7 +57,7 @@ public class TileEntityBeacon extends net.minecraft.tileentity.TileEntityBeacon 
     private float beamRenderScale;
 
 
-    public TileEntityBeacon() {
+    public TileBeacon() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 

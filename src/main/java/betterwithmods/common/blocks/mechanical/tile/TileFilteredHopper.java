@@ -9,7 +9,7 @@ import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
-import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.common.blocks.tile.TileVisibleInventory;
 import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
@@ -34,7 +34,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechanicalPower {
+public class TileFilteredHopper extends TileVisibleInventory implements IMechanicalPower {
 
     private final int STACK_SIZE = 8;
     public SimpleStackHandler filter;
@@ -45,7 +45,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     private int ejectCounter, ejectXPCounter;
     private int experienceCount, maxExperienceCount = 1000;
 
-    public TileEntityFilteredHopper() {
+    public TileFilteredHopper() {
         this.ejectCounter = 0;
         this.experienceCount = 0;
         this.ejectXPCounter = 10;
@@ -363,9 +363,9 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     private class HopperHandler extends SimpleStackHandler {
-        TileEntityFilteredHopper hopper;
+        TileFilteredHopper hopper;
 
-        public HopperHandler(int size, TileEntityFilteredHopper hopper) {
+        public HopperHandler(int size, TileFilteredHopper hopper) {
             super(size, hopper);
             this.hopper = hopper;
         }

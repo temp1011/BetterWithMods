@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeHooks;
 /**
  * Created by primetoxinz on 9/11/16.
  */
-public class TileEntityInfernalEnchanter extends TileBasic implements ITickable {
+public class TileInfernalEnchanter extends TileBasic implements ITickable {
     private final static int RADIUS = 8;
     public int bookcaseCount;
     private boolean active;

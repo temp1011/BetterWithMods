@@ -1,14 +1,13 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.tile.TileEntityVase;
+import betterwithmods.common.blocks.tile.TileVase;
 import betterwithmods.util.ColorUtils;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,7 +63,7 @@ public class BlockVase extends BWMBlock {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityVase();
+        return new TileVase();
     }
 
     @Override

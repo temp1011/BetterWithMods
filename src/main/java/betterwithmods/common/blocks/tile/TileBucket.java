@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-public class TileEntityBucket extends TileFluid implements ITickable {
+public class TileBucket extends TileFluid implements ITickable {
     private int ticks;
 
     @Override

@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.api.IColor;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillHorizontal;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityWindmillVertical;
+import betterwithmods.common.blocks.mechanical.tile.TileWindmillHorizontal;
+import betterwithmods.common.blocks.mechanical.tile.TileWindmillVertical;
 import betterwithmods.util.ColorUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -57,7 +57,7 @@ public class BlockWindmill extends BlockAxleGenerator {
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         if(axis == EnumFacing.Axis.Y)
-            return new TileEntityWindmillVertical();
-        return new TileEntityWindmillHorizontal();
+            return new TileWindmillVertical();
+        return new TileWindmillHorizontal();
     }
 }

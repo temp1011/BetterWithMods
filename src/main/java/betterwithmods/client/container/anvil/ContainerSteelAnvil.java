@@ -1,6 +1,6 @@
 package betterwithmods.client.container.anvil;
 
-import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
+import betterwithmods.common.blocks.tile.TileSteelAnvil;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,10 +20,10 @@ public class ContainerSteelAnvil extends Container {
     public InventoryPlayer inventoryPlayer;
 
     public EntityPlayer player;
-    private TileEntitySteelAnvil te;
+    private TileSteelAnvil te;
     private IItemHandler handler;
 
-    public ContainerSteelAnvil(InventoryPlayer inventory, TileEntitySteelAnvil te) {
+    public ContainerSteelAnvil(InventoryPlayer inventory, TileSteelAnvil te) {
         this.te = te;
         this.handler = te.inventory;
         this.inventoryPlayer = inventory;

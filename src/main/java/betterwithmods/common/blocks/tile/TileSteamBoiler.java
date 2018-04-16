@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidTank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntitySteamBoiler extends TileEntity implements ITickable, ISteamPower {
+public class TileSteamBoiler extends TileEntity implements ITickable, ISteamPower {
 
     private int heatUnits = 0;
     private boolean isActive = false;

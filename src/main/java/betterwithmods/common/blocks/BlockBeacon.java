@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.blocks.tile.TileEntityBeacon;
+import betterwithmods.common.blocks.tile.TileBeacon;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +26,8 @@ public class BlockBeacon extends net.minecraft.block.BlockBeacon {
         setLightLevel(1.0f);
     }
 
-    public TileEntityBeacon getTile(IBlockAccess world, BlockPos pos) {
-        return ((TileEntityBeacon) world.getTileEntity(pos));
+    public TileBeacon getTile(IBlockAccess world, BlockPos pos) {
+        return ((TileBeacon) world.getTileEntity(pos));
     }
 
     @Override
@@ -55,6 +55,6 @@ public class BlockBeacon extends net.minecraft.block.BlockBeacon {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityBeacon();
+        return new TileBeacon();
     }
 }

@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical.mech_machine;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -32,8 +32,8 @@ public class BlockFilteredHopper extends BlockMechMachine {
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote) {
             TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileEntityFilteredHopper) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) tile;
+            if (tile instanceof TileFilteredHopper) {
+                TileFilteredHopper hopper = (TileFilteredHopper) tile;
                 hopper.insert(entityIn);
             }
         }
@@ -44,7 +44,7 @@ public class BlockFilteredHopper extends BlockMechMachine {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityFilteredHopper();
+        return new TileFilteredHopper();
     }
 
     @Override

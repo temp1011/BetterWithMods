@@ -1,6 +1,6 @@
 package betterwithmods.client.container.util;
 
-import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
+import betterwithmods.common.blocks.tile.TileSteelAnvil;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraftforge.items.ItemStackHandler;
@@ -8,9 +8,9 @@ import net.minecraftforge.items.ItemStackHandler;
 public class ItemCraftHandler extends ItemStackHandler {
 
     public InventoryCrafting crafting;
-    private TileEntitySteelAnvil te;
+    private TileSteelAnvil te;
 
-    public ItemCraftHandler(int size, TileEntitySteelAnvil te) {
+    public ItemCraftHandler(int size, TileSteelAnvil te) {
         super(size);
         this.te = te;
     }

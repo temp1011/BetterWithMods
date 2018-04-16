@@ -1,7 +1,7 @@
 package betterwithmods.client.container.other;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TilePulley;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiPulley extends GuiContainer {
-    private final TileEntityPulley tile;
+    private final TilePulley tile;
 
-    public GuiPulley(EntityPlayer player, TileEntityPulley tile) {
+    public GuiPulley(EntityPlayer player, TilePulley tile) {
         super(new ContainerPulley(player, tile));
         this.ySize = 193;
         this.tile = tile;

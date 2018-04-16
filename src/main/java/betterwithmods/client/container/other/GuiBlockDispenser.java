@@ -1,7 +1,7 @@
 package betterwithmods.client.container.other;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileBlockDispenser;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +14,9 @@ public class GuiBlockDispenser extends GuiContainer {
     private static final int guiHeight = 182;
     private static final String NAME = "inv.bwm.dispenser.name";
     final IItemHandler playerInv;
-    private final TileEntityBlockDispenser tile;
+    private final TileBlockDispenser tile;
 
-    public GuiBlockDispenser(EntityPlayer player, TileEntityBlockDispenser tile) {
+    public GuiBlockDispenser(EntityPlayer player, TileBlockDispenser tile) {
 
         super(new ContainerBlockDispenser(player, tile));
         playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);

@@ -2,8 +2,8 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWRegistry;
 
-public class TileEntityCauldron extends TileEntityCookingPot {
-    public TileEntityCauldron() {
+public class TileCauldron extends TileCookingPot {
+    public TileCauldron() {
         super(BWRegistry.CAULDRON);
     }
 

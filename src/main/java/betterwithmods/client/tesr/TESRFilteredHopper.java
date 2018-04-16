@@ -2,18 +2,18 @@ package betterwithmods.client.tesr;
 
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import betterwithmods.common.registry.HopperFilter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilteredHopper> {
+public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileFilteredHopper> {
     private ModelWithResource model;
     private int occupiedStacks;
 
     @Override
-    public void render(TileEntityFilteredHopper te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileFilteredHopper te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
             if (te.getHopperFilter() != HopperFilter.NONE) {
                 model = te.getModel();
@@ -39,7 +39,7 @@ public class TESRFilteredHopper extends TileEntitySpecialRenderer<TileEntityFilt
     }
 
 
-    private float occupationMod(TileEntityFilteredHopper tile) {
+    private float occupationMod(TileFilteredHopper tile) {
         float visibleSlots = (float) tile.getMaxVisibleSlots();
         return (float) occupiedStacks / visibleSlots;
     }

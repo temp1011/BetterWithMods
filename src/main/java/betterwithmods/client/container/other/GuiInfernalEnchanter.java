@@ -1,7 +1,7 @@
 package betterwithmods.client.container.other;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
+import betterwithmods.common.blocks.tile.TileInfernalEnchanter;
 import com.google.common.collect.Maps;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -31,11 +31,11 @@ public class GuiInfernalEnchanter extends GuiContainer {
     }
 
     private FontRenderer fontGalactic;
-    private TileEntityInfernalEnchanter tile;
+    private TileInfernalEnchanter tile;
     private ContainerInfernalEnchanter container;
     private EntityPlayer player;
 
-    public GuiInfernalEnchanter(EntityPlayer player, TileEntityInfernalEnchanter tile) {
+    public GuiInfernalEnchanter(EntityPlayer player, TileInfernalEnchanter tile) {
         super(new ContainerInfernalEnchanter(player, tile));
         this.container = (ContainerInfernalEnchanter) inventorySlots;
         this.player = player;

@@ -2,8 +2,8 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.common.BWRegistry;
 
-public class TileEntityCrucible extends TileEntityCookingPot {
-    public TileEntityCrucible() {
+public class TileCrucible extends TileCookingPot {
+    public TileCrucible() {
         super(BWRegistry.CRUCIBLE);
     }
 

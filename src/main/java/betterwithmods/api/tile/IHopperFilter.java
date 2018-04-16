@@ -1,7 +1,7 @@
 package betterwithmods.api.tile;
 
 import betterwithmods.client.model.filters.ModelWithResource;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -17,7 +17,7 @@ public interface IHopperFilter {
 
     Ingredient getFilter();
 
-    default void onInsert(World world, BlockPos pos, TileEntityFilteredHopper tile, Entity entity) {
+    default void onInsert(World world, BlockPos pos, TileFilteredHopper tile, Entity entity) {
     }
 
     @SideOnly(Side.CLIENT)

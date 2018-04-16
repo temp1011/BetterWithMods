@@ -12,9 +12,9 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityWindmillHorizontal extends TileEntityBaseWindmill {
+public class TileWindmillHorizontal extends TileBaseWindmill {
 
-    public TileEntityWindmillHorizontal() {
+    public TileWindmillHorizontal() {
         super();
         this.bladeMeta = new int[]{0, 0, 0, 0};
     }

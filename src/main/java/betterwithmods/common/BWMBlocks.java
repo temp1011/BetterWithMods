@@ -120,7 +120,6 @@ public final class BWMBlocks {
         BlockCobble.init();
         BlockUnfiredPottery.init();
         BlockRawPastry.init();
-
     }
 
     public static List<Block> getBlocks() {
@@ -213,35 +212,35 @@ public final class BWMBlocks {
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileEntityMill.class, "bwm.millstone");
-        GameRegistry.registerTileEntity(TileEntityPulley.class, "bwm.pulley");
-        GameRegistry.registerTileEntity(TileEntityFilteredHopper.class, "bwm.hopper");
-        GameRegistry.registerTileEntity(TileEntityCauldron.class, "bwm.cauldron");
-        GameRegistry.registerTileEntity(TileEntityCrucible.class, "bwm.crucible");
-        GameRegistry.registerTileEntity(TileEntityDragonVessel.class, "bwm.vessel");
-        GameRegistry.registerTileEntity(TileEntityTurntable.class, "bwm.turntable");
-        GameRegistry.registerTileEntity(TileEntitySteelAnvil.class, "bwm.steelAnvil");
-        GameRegistry.registerTileEntity(TileEntityVase.class, "bwm.vase");
-        GameRegistry.registerTileEntity(TileEntityWindmillVertical.class, "bwm.vert_windmill");
-        GameRegistry.registerTileEntity(TileEntityWindmillHorizontal.class, "bwm.horiz_windmill");
-        GameRegistry.registerTileEntity(TileEntityWaterwheel.class, "bwm.waterwheel");
-        GameRegistry.registerTileEntity(TileEntityBlockDispenser.class, "bwm.block_dispenser");
-        GameRegistry.registerTileEntity(TileEntityCreativeGen.class, "bwm.creative_generator");
+        GameRegistry.registerTileEntity(TileMill.class, "bwm.millstone");
+        GameRegistry.registerTileEntity(TilePulley.class, "bwm.pulley");
+        GameRegistry.registerTileEntity(TileFilteredHopper.class, "bwm.hopper");
+        GameRegistry.registerTileEntity(TileCauldron.class, "bwm.cauldron");
+        GameRegistry.registerTileEntity(TileCrucible.class, "bwm.crucible");
+        GameRegistry.registerTileEntity(TileDragonVessel.class, "bwm.vessel");
+        GameRegistry.registerTileEntity(TileTurntable.class, "bwm.turntable");
+        GameRegistry.registerTileEntity(TileSteelAnvil.class, "bwm.steelAnvil");
+        GameRegistry.registerTileEntity(TileVase.class, "bwm.vase");
+        GameRegistry.registerTileEntity(TileWindmillVertical.class, "bwm.vert_windmill");
+        GameRegistry.registerTileEntity(TileWindmillHorizontal.class, "bwm.horiz_windmill");
+        GameRegistry.registerTileEntity(TileWaterwheel.class, "bwm.waterwheel");
+        GameRegistry.registerTileEntity(TileBlockDispenser.class, "bwm.block_dispenser");
+        GameRegistry.registerTileEntity(TileCreativeGen.class, "bwm.creative_generator");
         GameRegistry.registerTileEntity(TileGearbox.class, "bwm.gearbox");
         GameRegistry.registerTileEntity(TileBellows.class, "bwm.bellows");
         GameRegistry.registerTileEntity(TileSpringActionBellows.class, "bwm.spring_action_bellows");
-        GameRegistry.registerTileEntity(TileEntityBeacon.class, "bwm.beacon");
+        GameRegistry.registerTileEntity(TileBeacon.class, "bwm.beacon");
         GameRegistry.registerTileEntity(TileEnderchest.class, "bwm.enderchest");
         GameRegistry.registerTileEntity(TileAxle.class, "bwm.axle");
         GameRegistry.registerTileEntity(TileSaw.class, "bwm.saw");
         GameRegistry.registerTileEntity(TilePump.class, "bwm.pump");
         GameRegistry.registerTileEntity(TileCrank.class, "bwm.crank");
         GameRegistry.registerTileEntity(TileSteelSaw.class, "bwm.steel_saw");
-        GameRegistry.registerTileEntity(TileEntityInfernalEnchanter.class, "bwm.infernal_enchanter");
+        GameRegistry.registerTileEntity(TileInfernalEnchanter.class, "bwm.infernal_enchanter");
         GameRegistry.registerTileEntity(TileKiln.class, "bwm.kiln");
         GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
         GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
-        GameRegistry.registerTileEntity(TileEntityBucket.class, "bwm.bucket");
+        GameRegistry.registerTileEntity(TileBucket.class, "bwm.bucket");
     }
 
     public static void registerBlocks(Collection<? extends Block> blocks) {

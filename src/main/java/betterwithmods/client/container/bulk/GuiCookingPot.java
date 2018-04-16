@@ -1,7 +1,7 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
+import betterwithmods.common.blocks.mechanical.tile.TileCookingPot;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +11,10 @@ import org.lwjgl.opengl.GL11;
 public class GuiCookingPot extends GuiContainer {
     private static final int fireHeight = 12;
     private static final int stokedHeight = 28;
-    private final TileEntityCookingPot tile;
+    private final TileCookingPot tile;
     private final ContainerCookingPot container;
 
-    public GuiCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
+    public GuiCookingPot(EntityPlayer player, TileCookingPot tile) {
         super(new ContainerCookingPot(player, tile));
         this.container = (ContainerCookingPot) this.inventorySlots;
         this.ySize = 193;

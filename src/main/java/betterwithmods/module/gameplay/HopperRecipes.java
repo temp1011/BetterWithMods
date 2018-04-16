@@ -7,7 +7,7 @@ import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.HopperFilter;
@@ -97,7 +97,7 @@ public class HopperRecipes extends Feature {
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", Ingredient.fromStacks(new ItemStack(Blocks.GRAVEL)), Lists.newArrayList(new ItemStack(Blocks.SAND), new ItemStack(Blocks.SAND, 1, 1)), Lists.newArrayList(new ItemStack(Items.FLINT))) {
             @Override
             public void craft(EntityItem inputStack, World world, BlockPos pos) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+                TileFilteredHopper hopper = (TileFilteredHopper) world.getTileEntity(pos);
                 if (hopper != null) {
                     SimpleStackHandler inventory = hopper.inventory;
                     ItemStack sand = secondaryOutputs.get(world.rand.nextInt(secondaryOutputs.size())).copy();
@@ -112,14 +112,14 @@ public class HopperRecipes extends Feature {
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":soul_sand", new OreIngredient("sand"), ItemStack.EMPTY, new ItemStack(Blocks.SOUL_SAND)) {
             @Override
             public boolean canCraft(World world, BlockPos pos) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+                TileFilteredHopper hopper = (TileFilteredHopper) world.getTileEntity(pos);
                 assert hopper != null;
                 return super.canCraft(world, pos) && hopper.soulsRetained > 0;
             }
 
             @Override
             public void onCraft(World world, BlockPos pos, EntityItem item) {
-                TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+                TileFilteredHopper hopper = (TileFilteredHopper) world.getTileEntity(pos);
                 if (hopper != null)
                     hopper.decreaseSoulCount(1);
                 super.onCraft(world, pos, item);

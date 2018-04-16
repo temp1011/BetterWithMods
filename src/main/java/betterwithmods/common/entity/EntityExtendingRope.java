@@ -1,7 +1,7 @@
 package betterwithmods.common.entity;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TilePulley;
 import betterwithmods.module.GlobalConfig;
 import betterwithmods.util.AABBArray;
 import com.google.common.collect.Maps;
@@ -288,8 +288,8 @@ public class EntityExtendingRope extends Entity implements IEntityAdditionalSpaw
     private boolean done() {
         if (!getEntityWorld().isRemote) {
             TileEntity te = getEntityWorld().getTileEntity(pulley);
-            if (te instanceof TileEntityPulley) {
-                TileEntityPulley pulley = (TileEntityPulley) te;
+            if (te instanceof TilePulley) {
+                TilePulley pulley = (TilePulley) te;
                 if (!pulley.onJobCompleted(up, targetY, this)) {
                     BlockPos pos = this.pulley.down(this.pulley.getY() - targetY);
 

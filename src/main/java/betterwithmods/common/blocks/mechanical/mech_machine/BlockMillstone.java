@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical.mech_machine;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
+import betterwithmods.common.blocks.mechanical.tile.TileMill;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +30,7 @@ public class BlockMillstone extends BlockMechMachine {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityMill();
+        return new TileMill();
     }
 
     @Override

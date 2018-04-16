@@ -1,6 +1,6 @@
 package betterwithmods.client.container.other;
 
-import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
+import betterwithmods.common.blocks.tile.TileBlockDispenser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
@@ -12,10 +12,10 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBlockDispenser extends Container {
-    private final TileEntityBlockDispenser tile;
+    private final TileBlockDispenser tile;
     private int nextSlot;
 
-    public ContainerBlockDispenser(EntityPlayer player, TileEntityBlockDispenser tile) {
+    public ContainerBlockDispenser(EntityPlayer player, TileBlockDispenser tile) {
         this.tile = tile;
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         for (int i = 0; i < 4; i++) {

@@ -1,6 +1,6 @@
 package betterwithmods.client.container.bulk;
 
-import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
+import betterwithmods.common.blocks.mechanical.tile.TileCookingPot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
@@ -12,10 +12,10 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCookingPot extends Container {
-    private final TileEntityCookingPot tile;
+    private final TileCookingPot tile;
     private int progress, heat;
 
-    public ContainerCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
+    public ContainerCookingPot(EntityPlayer player, TileCookingPot tile) {
         IItemHandler playerInv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         this.tile = tile;
 

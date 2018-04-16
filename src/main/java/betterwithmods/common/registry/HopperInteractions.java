@@ -1,7 +1,7 @@
 package betterwithmods.common.registry;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
@@ -56,7 +56,7 @@ public class HopperInteractions {
 
         @Override
         public void onCraft(World world, BlockPos pos, EntityItem item) {
-            ((TileEntityFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(1);
+            ((TileFilteredHopper) world.getTileEntity(pos)).increaseSoulCount(1);
             if (!world.isRemote) {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
             }
@@ -139,7 +139,7 @@ public class HopperInteractions {
         }
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
-            TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            TileFilteredHopper hopper = (TileFilteredHopper) world.getTileEntity(pos);
             SimpleStackHandler inventory = hopper.inventory;
             for (ItemStack output : outputs) {
                 ItemStack remainder = InvUtils.insert(inventory, output, false);
@@ -175,7 +175,7 @@ public class HopperInteractions {
         }
 
         public boolean canCraft(World world, BlockPos pos) {
-            TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            TileFilteredHopper tile = (TileFilteredHopper) world.getTileEntity(pos);
             if (tile != null) {
                 ItemStackHandler inventory = tile.inventory;
                 return !outputs.stream().anyMatch(stack -> !InvUtils.insert(inventory, stack, true).isEmpty());

@@ -2,7 +2,7 @@ package betterwithmods.common.blocks.tile;
 
 import betterwithmods.api.capabilities.SteamCapability;
 import betterwithmods.api.tile.ISteamPower;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteamPower {
+public class TileSteamPipe extends TileEntity implements ITickable, ISteamPower {
     private int heatUnits = 0;
     private int steamPower = 0;
     private boolean update = false;
@@ -175,7 +175,7 @@ public class TileEntitySteamPipe extends TileEntity implements ITickable, ISteam
     }
 
     private boolean isPipelineExit(TileEntity tile, EnumFacing facing) {
-        return tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && !tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing) && !(tile instanceof TileEntityHopper) && !(tile instanceof TileEntityFilteredHopper);
+        return tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) && !tile.hasCapability(SteamCapability.STEAM_CAPABILITY, facing) && !(tile instanceof TileEntityHopper) && !(tile instanceof TileFilteredHopper);
     }
 
     @Override

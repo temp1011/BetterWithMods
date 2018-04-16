@@ -1,6 +1,6 @@
 package betterwithmods.common.blocks.mechanical;
 
-import betterwithmods.common.blocks.mechanical.tile.TileEntityWaterwheel;
+import betterwithmods.common.blocks.mechanical.tile.TileWaterwheel;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +31,7 @@ public class BlockWaterwheel extends BlockAxleGenerator {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityWaterwheel();
+        return new TileWaterwheel();
     }
 
 }

@@ -1,7 +1,7 @@
 package betterwithmods.common.blocks.mechanical.mech_machine;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.mechanical.tile.TileTurntable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,29 +36,29 @@ public class BlockTurntable extends BlockMechMachine {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityTurntable();
+        return new TileTurntable();
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
-            return ((TileEntityTurntable) world.getTileEntity(pos)).processRightClick(player);
+        if (world.getTileEntity(pos) instanceof TileTurntable) {
+            return ((TileTurntable) world.getTileEntity(pos)).processRightClick(player);
         }
         return true;
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
+        if (world.getTileEntity(pos) instanceof TileTurntable) {
             if (!world.getGameRules().getBoolean("doDaylightCycle"))
-                ((TileEntityTurntable) world.getTileEntity(pos)).toggleAsynchronous(null);
+                ((TileTurntable) world.getTileEntity(pos)).toggleAsynchronous(null);
         }
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if (world.getTileEntity(pos) instanceof TileEntityTurntable) {
-            TileEntityTurntable tile = (TileEntityTurntable) world.getTileEntity(pos);
+        if (world.getTileEntity(pos) instanceof TileTurntable) {
+            TileTurntable tile = (TileTurntable) world.getTileEntity(pos);
             return state.withProperty(SPEED, tile.getTimerPos());
         }
         return state;

@@ -1,6 +1,6 @@
 package betterwithmods.client.container.bulk;
 
-import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
+import betterwithmods.common.blocks.mechanical.tile.TileMill;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -10,11 +10,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMill extends Container {
-    private final TileEntityMill mill;
+    private final TileMill mill;
     private int lastMillCounter;
     public boolean blocked;
 
-    public ContainerMill(EntityPlayer player, TileEntityMill mill) {
+    public ContainerMill(EntityPlayer player, TileMill mill) {
         this.mill = mill;
 
         for (int j = 0; j < 3; j++) {

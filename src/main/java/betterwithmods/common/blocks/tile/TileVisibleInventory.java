@@ -6,7 +6,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileEntityVisibleInventory extends TileBasicInventory implements ITickable {
+public abstract class TileVisibleInventory extends TileBasicInventory implements ITickable {
     public short occupiedSlots;
     private int facing;
 

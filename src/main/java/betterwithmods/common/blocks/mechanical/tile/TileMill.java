@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
+public class TileMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
 
     public static final int GRIND_TIME = 200;
 
@@ -35,7 +35,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     private boolean validateContents;
     private boolean containsIngredientsToGrind;
 
-    public TileEntityMill() {
+    public TileMill() {
         this.grindCounter = 0;
         this.validateContents = true;
     }

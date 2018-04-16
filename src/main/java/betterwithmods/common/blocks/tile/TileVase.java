@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by Christian on 24.09.2016.
  */
-public class TileEntityVase extends TileBasicInventory {
-    public TileEntityVase() {
+public class TileVase extends TileBasicInventory {
+    public TileVase() {
     }
 
 

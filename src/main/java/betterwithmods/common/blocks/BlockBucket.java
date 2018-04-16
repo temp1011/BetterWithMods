@@ -1,8 +1,8 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.tile.IRopeConnector;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
-import betterwithmods.common.blocks.tile.TileEntityBucket;
+import betterwithmods.common.blocks.mechanical.tile.TilePulley;
+import betterwithmods.common.blocks.tile.TileBucket;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -60,7 +60,7 @@ public class BlockBucket extends BWMBlock implements IRopeConnector {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityBucket();
+        return new TileBucket();
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockBucket extends BWMBlock implements IRopeConnector {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         IBlockState above = worldIn.getBlockState(pos.up());
-        if (above.getBlock() instanceof BlockRope || worldIn.getTileEntity(pos.up()) instanceof TileEntityPulley) {
+        if (above.getBlock() instanceof BlockRope || worldIn.getTileEntity(pos.up()) instanceof TilePulley) {
             return getDefaultState().withProperty(CONNECTED, true);
         }
         return super.getActualState(state, worldIn, pos).withProperty(CONNECTED, false);

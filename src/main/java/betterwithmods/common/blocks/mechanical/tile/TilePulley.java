@@ -9,7 +9,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
-import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
+import betterwithmods.common.blocks.tile.TileVisibleInventory;
 import betterwithmods.common.entity.EntityExtendingRope;
 import betterwithmods.common.registry.PulleyStructureManager;
 import betterwithmods.module.GlobalConfig;
@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityPulley extends TileEntityVisibleInventory implements IMechanicalPower {
+public class TilePulley extends TileVisibleInventory implements IMechanicalPower {
 
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;

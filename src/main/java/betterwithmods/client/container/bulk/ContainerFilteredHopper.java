@@ -1,7 +1,7 @@
 package betterwithmods.client.container.bulk;
 
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import betterwithmods.common.registry.HopperFilter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -12,10 +12,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerFilteredHopper extends Container {
-    private final TileEntityFilteredHopper tile;
+    private final TileFilteredHopper tile;
     private byte lastMechPower;
 
-    public ContainerFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
+    public ContainerFilteredHopper(EntityPlayer player, TileFilteredHopper tile) {
         this.tile = tile;
         this.lastMechPower = 0;
 

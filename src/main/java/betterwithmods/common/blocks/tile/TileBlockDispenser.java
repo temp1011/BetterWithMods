@@ -8,10 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBlockDispenser extends TileBasicInventory {
+public class TileBlockDispenser extends TileBasicInventory {
     public int nextIndex;
 
-    public TileEntityBlockDispenser() {
+    public TileBlockDispenser() {
         this.nextIndex = 0;
     }
 

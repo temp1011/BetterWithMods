@@ -2,7 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.BWCreativeTabs;
-import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
+import betterwithmods.common.blocks.tile.TileSteelAnvil;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.BlockContainer;
@@ -100,17 +100,17 @@ public class BlockSteelAnvil extends BlockContainer {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntitySteelAnvil();
+        return new TileSteelAnvil();
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntitySteelAnvil();
+        return new TileSteelAnvil();
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntitySteelAnvil anvil = (TileEntitySteelAnvil) worldIn.getTileEntity(pos);
+        TileSteelAnvil anvil = (TileSteelAnvil) worldIn.getTileEntity(pos);
         InvUtils.ejectInventoryContents(worldIn,pos,anvil.inventory);
         super.breakBlock(worldIn, pos, state);
     }

@@ -30,12 +30,12 @@ import java.util.List;
  * @author primetoxinz
  * @version 3/20/17
  */
-public class TileEntityDragonVessel extends TileBasic implements ITickable, IMechanicalPower, ICrankable {
+public class TileDragonVessel extends TileBasic implements ITickable, IMechanicalPower, ICrankable {
     private final int MAX_EXPERIENCE = 1500;
     private int experience;
     private int maxDist = 5;
     private EnumFacing facing = EnumFacing.UP;
-    public TileEntityDragonVessel() {
+    public TileDragonVessel() {
     }
 
     private int addExperience(int xp)  {

@@ -1,7 +1,7 @@
 package betterwithmods.common.registry.block.managers;
 
 import betterwithmods.common.BWMRecipes;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
+import betterwithmods.common.blocks.mechanical.tile.TileTurntable;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.TurntableRecipe;
 import betterwithmods.event.FakePlayerHandler;
@@ -43,11 +43,11 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
         return super.addRecipe(recipe);
     }
 
-    public TileEntityTurntable findTurntable(World world, BlockPos craftingPos) {
+    public TileTurntable findTurntable(World world, BlockPos craftingPos) {
         for(int i = 1; i < 2;i++) {
             TileEntity tile = world.getTileEntity(craftingPos.down(i));
-            if(tile instanceof TileEntityTurntable) {
-                return (TileEntityTurntable) tile;
+            if(tile instanceof TileTurntable) {
+                return (TileTurntable) tile;
             }
         }
         return null;
@@ -55,7 +55,7 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
 
     @Override
     public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {
-        TileEntityTurntable turntable = findTurntable(world,pos);
+        TileTurntable turntable = findTurntable(world,pos);
         TurntableRecipe recipe = findRecipe(world, pos, state).orElse(null);
         if (recipe != null && turntable.getPotteryRotation() == recipe.getRotations()) {
             InvUtils.ejectStackWithOffset(world, pos, craftItem(world, pos, state));

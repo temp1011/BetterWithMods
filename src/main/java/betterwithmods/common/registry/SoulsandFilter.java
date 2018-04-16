@@ -1,7 +1,7 @@
 package betterwithmods.common.registry;
 
 import betterwithmods.BWMod;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.item.crafting.Ingredient;
@@ -17,7 +17,7 @@ public class SoulsandFilter extends HopperFilter{
     }
 
     @Override
-    public void onInsert(World world, BlockPos pos, TileEntityFilteredHopper tile, Entity entity) {
+    public void onInsert(World world, BlockPos pos, TileFilteredHopper tile, Entity entity) {
         if (entity instanceof EntityXPOrb && !tile.isXPFull()) {
             EntityXPOrb orb = (EntityXPOrb) entity;
             int remaining = tile.getMaxExperienceCount() - tile.getExperienceCount();

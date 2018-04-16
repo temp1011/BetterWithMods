@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.DimensionType;
 
-public abstract class TileEntityBaseWindmill extends TileAxleGenerator implements IColor {
+public abstract class TileBaseWindmill extends TileAxleGenerator implements IColor {
     protected int[] bladeMeta;
 
     @Override

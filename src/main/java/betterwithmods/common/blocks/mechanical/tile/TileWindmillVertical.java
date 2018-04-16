@@ -12,9 +12,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityWindmillVertical extends TileEntityBaseWindmill {
+public class TileWindmillVertical extends TileBaseWindmill {
 
-    public TileEntityWindmillVertical() {
+    public TileWindmillVertical() {
         this.bladeMeta = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
     }
 

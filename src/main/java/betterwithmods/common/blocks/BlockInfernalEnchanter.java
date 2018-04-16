@@ -2,7 +2,7 @@ package betterwithmods.common.blocks;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.BWGuiHandler;
-import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
+import betterwithmods.common.blocks.tile.TileInfernalEnchanter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -63,7 +63,7 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityInfernalEnchanter();
+        return new TileInfernalEnchanter();
     }
 
     @Override

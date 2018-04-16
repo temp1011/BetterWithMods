@@ -1,7 +1,7 @@
 package betterwithmods.client.container.other;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
+import betterwithmods.common.blocks.mechanical.tile.TilePulley;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -11,9 +11,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerPulley extends Container {
-    private final TileEntityPulley tile;
+    private final TilePulley tile;
 
-    public ContainerPulley(EntityPlayer player, TileEntityPulley tile) {
+    public ContainerPulley(EntityPlayer player, TilePulley tile) {
         this.tile = tile;
 
         for (int i = 0; i < 4; i++) {

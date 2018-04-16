@@ -1,6 +1,6 @@
 package betterwithmods.client.container.anvil;
 
-import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
+import betterwithmods.common.blocks.tile.TileSteelAnvil;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
@@ -8,9 +8,9 @@ import net.minecraft.util.SoundCategory;
 
 public class InventorySteelCraftingResult extends InventoryCraftResult {
 
-    private TileEntitySteelAnvil craft;
+    private TileSteelAnvil craft;
 
-    public InventorySteelCraftingResult(TileEntitySteelAnvil te) {
+    public InventorySteelCraftingResult(TileSteelAnvil te) {
         craft = te;
     }
 
