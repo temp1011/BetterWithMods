@@ -23,18 +23,18 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class NetworkMessage<REQ extends NetworkMessage> implements IMessage, IMessageHandler<REQ, IMessage> {
 
-    private static final Supplier CANNOT_READ_PACKET_EXCEPTION = () -> new RuntimeException("Cannot read packet data");
 
     protected static <DataType> DataType readData(ByteBuf buf, Class type) {
-        return (DataType) MessageDataHandler.getHandler(type).orElseThrow(CANNOT_READ_PACKET_EXCEPTION).read(buf);
+        return (DataType) MessageDataHandler.getHandler(type).read(buf);
     }
 
     protected static <DataType> void writeData(@NotNull ByteBuf buf, DataType data) {
-        MessageDataHandler.getHandler(data.getClass()).orElseThrow(CANNOT_READ_PACKET_EXCEPTION).write(buf, data);
+        MessageDataHandler.getHandler(data.getClass()).write(buf, data);
     }
 
     // The thing you override!

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by michaelepps on 4/3/18.
@@ -58,16 +59,16 @@ public class MessageDataHandler<DataType> {
         handlers.add(new MessageDataHandler<>(type, reader, writer));
     }
 
-    public static Optional<MessageDataHandler> getHandler(@NotNull Class type) {
-        MessageDataHandler handler = null;
-        for (MessageDataHandler<?> messageDataHandler : handlers) {
-            if(messageDataHandler.typeMatches(type)) {
-                handler = messageDataHandler;
-                break;
+    public static MessageDataHandler getHandler(@NotNull Class type) {
+        for (MessageDataHandler<?> handler : handlers) {
+            if(handler.typeMatches(type)) {
+                return handler;
             }
         }
 
-        return Optional.of(handler);
+        //Just error here because at this point something
+        //has gone very wrong and the packet will crash either way
+        throw new RuntimeException("Cannot read packet data! Unsupported data type!");
     }
 
     public DataType read(@NotNull ByteBuf buf) {
