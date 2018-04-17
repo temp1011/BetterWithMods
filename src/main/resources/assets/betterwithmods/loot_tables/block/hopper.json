@@ -30,7 +30,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "betterwithmods:wood_siding",
+          "name": "betterwithmods:siding_wood",
           "weight": 1,
           "functions": [
             {
@@ -41,8 +41,8 @@
               }
             },
             {
-              "function": "set_data",
-              "data": 0
+              "function": "set_nbt",
+              "tag": "{texture:{Properties:{variant:\"oak\"},Name:\"minecraft:planks\"}}"
             }
           ]
         }
