@@ -10,8 +10,7 @@ import betterwithmods.module.gameplay.Gameplay;
 import betterwithmods.module.hardcore.Hardcore;
 import betterwithmods.module.industry.Industry;
 import betterwithmods.module.tweaks.Tweaks;
-import betterwithmods.network.MessageCustomBlockDust;
-import betterwithmods.network.NetworkHandler;
+import betterwithmods.network.*;
 import betterwithmods.proxy.IProxy;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.common.Mod;
@@ -59,9 +58,9 @@ public class BWMod {
         MODULE_LOADER.preInit(evt);
         BWRegistry.preInit();
         //TODO
-//        NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
-//        NetworkHandler.register(MessageFat.class, Side.CLIENT);
-//        NetworkHandler.register(MessageHarnessSync.class, Side.CLIENT);
+        NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);
+        NetworkHandler.register(MessageFat.class, Side.CLIENT);
+        NetworkHandler.register(MessageHarnessSync.class, Side.CLIENT);
         NetworkHandler.register(MessageCustomBlockDust.class, Side.CLIENT);
         proxy.preInit(evt);
     }

@@ -29,8 +29,8 @@ public class MessageHarnessSync extends NetworkMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.entityID = readData(buf, entityID);
-        this.harness = readData(buf, harness);
+        this.entityID = readData(buf, int.class);
+        this.harness = readData(buf, ItemStack.class);
     }
 
     @Override

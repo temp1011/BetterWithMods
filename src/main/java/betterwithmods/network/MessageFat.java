@@ -33,7 +33,7 @@ public class MessageFat extends NetworkMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.uuid = readData(buf, uuid);
+        this.uuid = readData(buf, String.class);
     }
 
     @Override
