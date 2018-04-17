@@ -11,6 +11,7 @@ package betterwithmods.network;
  * File Created @ [11/01/2016, 22:00:30 (GMT)]
  */
 
+import com.sun.istack.internal.NotNull;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -18,28 +19,22 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class NetworkMessage<REQ extends NetworkMessage> implements IMessage, IMessageHandler<REQ, IMessage> {
 
-    private static final HashMap<Class, List<Field>> fieldCache = new HashMap<>();
+    private static final Supplier CANNOT_READ_PACKET_EXCEPTION = () -> new RuntimeException("Cannot read packet data");
 
-    protected static <DataType> DataType readData(ByteBuf buf, DataType data) {
-        try {
-            MessageDataHandler<DataType> handler = MessageDataHandler.getHandlerType(data);
-            if (handler != null)
-                handler.read(buf);
-            return null;
-        } catch (NullPointerException e) {
-        }
-        return null;
+    protected static <DataType> DataType readData(ByteBuf buf, Class type) {
+        return (DataType) MessageDataHandler.getHandler(type).orElseThrow(CANNOT_READ_PACKET_EXCEPTION).read(buf);
     }
 
-    protected static <DataType> void writeData(ByteBuf buf, DataType data) {
-        MessageDataHandler<DataType> handler = MessageDataHandler.getHandlerType(data);
-        if (handler != null)
-            handler.write(buf, data);
+    protected static <DataType> void writeData(@NotNull ByteBuf buf, DataType data) {
+        MessageDataHandler.getHandler(data.getClass()).orElseThrow(CANNOT_READ_PACKET_EXCEPTION).write(buf, data);
     }
 
     // The thing you override!
