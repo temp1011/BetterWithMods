@@ -46,6 +46,7 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
         this.cookTime = 0;
         this.occupiedSlots = 0;
         this.facing = EnumFacing.UP;
+        this.hasCapability = f -> f == facing;
     }
 
     @Override
@@ -232,7 +233,10 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
             ItemStack eject = new ItemStack(stack.getItem(), ejectStackSize, stack.getItemDamage());
             InvUtils.copyTags(eject, stack);
             IBlockState targetState = getBlockWorld().getBlockState(target);
-            boolean ejectIntoWorld = getBlockWorld().isAirBlock(target) || targetState.getBlock().isReplaceable(getBlockWorld(), target) || !targetState.getMaterial().isSolid() || targetState.getBoundingBox(getBlockWorld(), target).maxY < 0.5d;
+            boolean ejectIntoWorld = getBlockWorld().isAirBlock(target) ||
+                    targetState.getBlock().isReplaceable(getBlockWorld(), target) ||
+                    !targetState.getMaterial().isSolid() ||
+                    targetState.getBoundingBox(getBlockWorld(), target).maxY < 0.5d;
             if (ejectIntoWorld) {
                 this.getBlockWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ejectStack(getBlockWorld(), target, facing, eject);
