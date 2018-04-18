@@ -1,6 +1,7 @@
 package betterwithmods.common.blocks;
 
 import betterwithmods.api.block.ISoulContainer;
+import betterwithmods.api.block.IUrnConnector;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockFilteredHopper;
 import betterwithmods.util.InvUtils;
@@ -12,9 +13,9 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -49,7 +50,7 @@ public class BlockUrn extends BWMBlock implements ISoulContainer {
 
         BlockPos up = pos.up();
         IBlockState state = worldIn.getBlockState(up);
-        boolean above = state.getBlock() instanceof BlockFilteredHopper;
+        boolean above = state.getBlock() instanceof IUrnConnector;
         return below || above;
     }
 
