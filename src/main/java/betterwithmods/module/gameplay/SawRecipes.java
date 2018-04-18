@@ -8,8 +8,6 @@ import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.SawRecipe;
 import betterwithmods.module.Feature;
-import betterwithmods.module.ModuleLoader;
-import betterwithmods.module.hardcore.crafting.HCLumber;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
@@ -25,14 +23,22 @@ import java.util.Random;
  * Created by primetoxinz on 5/16/17.
  */
 public class SawRecipes extends Feature {
+    private static int plankCount, barkCount, sawDustCount;
+
     public SawRecipes() {
         canDisable = false;
     }
 
     @Override
+    public void setupConfig() {
+        //TODO make the default 4 in 1.13
+        plankCount = loadPropInt("Saw Plank Output", "Plank count that is output when a log is chopped by a Saw.", 6);
+        barkCount = loadPropInt("Saw Bark Output", "Bark count that is output when a log is chopped by a Saw.", 1);
+        sawDustCount = loadPropInt("Saw sawdust Output", "Sawdust count that is output when a log is chopped by a Saw.", 2);
+    }
+
+    @Override
     public void init(FMLInitializationEvent event) {
-
-
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.PUMPKIN));
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.VINE));
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.YELLOW_FLOWER));
@@ -52,9 +58,8 @@ public class SawRecipes extends Feature {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        int count = ModuleLoader.isFeatureEnabled(HCLumber.class) ? 4 : 6;
         for (IWood wood : BWOreDictionary.woods) {
-            BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getLog(1)), Lists.newArrayList(wood.getPlank(count), wood.getBark(1), wood.getSawdust(2)));
+            BWRegistry.WOOD_SAW.addRecipe(new BlockDropIngredient(wood.getLog(1)), Lists.newArrayList(wood.getPlank(plankCount), wood.getBark(barkCount), wood.getSawdust(sawDustCount)));
         }
     }
 
