@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.blocks.mechanical.cookingpot.BlockCookingPot;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public abstract class TileCookingPot extends TileVisibleInventory implements IMechanicalPower, IHeated {
+public abstract class TileCookingPot extends TileVisibleInventory implements IMechanicalPower, IHeated, ICrankable {
     public int cookProgress, cookTime;
     public EnumFacing facing;
     public int heat;

@@ -42,6 +42,13 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     protected List<T> findRecipe(List<ItemStack> outputs) {
+        List<T> recipes = findRecipeExact(outputs);
+        if(recipes.isEmpty())
+            recipes = findRecipeFuzzy(outputs);
+        return recipes;
+    }
+
+    protected List<T> findRecipeFuzzy(List<ItemStack> outputs) {
         return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs)).collect(Collectors.toList());
     }
 
@@ -67,6 +74,10 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
 
     public boolean remove(List<ItemStack> outputs) {
         return recipes.removeAll(findRecipe(outputs));
+    }
+
+    public boolean removeFuzzy(List<ItemStack> outputs) {
+        return recipes.removeAll(findRecipeFuzzy(outputs));
     }
 
     public boolean removeExact(List<ItemStack> outputs) {

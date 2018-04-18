@@ -24,6 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static net.minecraft.util.EnumFacing.UP;
+
 public class BlockUrn extends BWMBlock implements ISoulContainer {
     public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
     private static final double OFFSET = 0.375D;
@@ -37,6 +39,27 @@ public class BlockUrn extends BWMBlock implements ISoulContainer {
         this.type = type;
         this.setHardness(2.0F);
         this.setDefaultState(getDefaultState().withProperty(UNDERHOPPER, false));
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        BlockPos down = pos.down();
+        BlockFaceShape blockfaceshape = worldIn.getBlockState(down).getBlockFaceShape(worldIn, down, UP);
+        boolean below = blockfaceshape != BlockFaceShape.BOWL && blockfaceshape != BlockFaceShape.UNDEFINED;
+
+        BlockPos up = pos.up();
+        IBlockState state = worldIn.getBlockState(up);
+        boolean above = state.getBlock() instanceof BlockFilteredHopper;
+        return below || above;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!canPlaceBlockAt(worldIn, pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
