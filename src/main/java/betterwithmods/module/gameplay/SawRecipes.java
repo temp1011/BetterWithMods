@@ -30,8 +30,18 @@ import java.util.Random;
  * Created by primetoxinz on 5/16/17.
  */
 public class SawRecipes extends Feature {
+    private static int plankCount, barkCount, sawDustCount;
+
     public SawRecipes() {
         canDisable = false;
+    }
+
+    @Override
+    public void setupConfig() {
+        //TODO make the default 4 in 1.13
+        plankCount = loadPropInt("Saw Plank Output", "Plank count that is output when a log is chopped by a Saw.", 6);
+        barkCount = loadPropInt("Saw Bark Output", "Bark count that is output when a log is chopped by a Saw.", 1);
+        sawDustCount = loadPropInt("Saw sawdust Output", "Sawdust count that is output when a log is chopped by a Saw.", 2);
     }
 
     @Override
