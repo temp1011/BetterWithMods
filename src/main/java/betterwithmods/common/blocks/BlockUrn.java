@@ -25,6 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static net.minecraft.util.EnumFacing.UP;
+
 public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants {
     public static final PropertyEnum<EnumType> TYPE = PropertyEnum.create("urntype", EnumType.class);
     public static final PropertyBool UNDERHOPPER = PropertyBool.create("underhopper");
@@ -42,6 +44,27 @@ public class BlockUrn extends BWMBlock implements ISoulSensitive, IMultiVariants
 
     public static ItemStack getStack(EnumType type, int count) {
         return new ItemStack(BWMBlocks.URN, count, type.getMeta());
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        BlockPos down = pos.down();
+        BlockFaceShape blockfaceshape = worldIn.getBlockState(down).getBlockFaceShape(worldIn, down, UP);
+        boolean below = blockfaceshape != BlockFaceShape.BOWL && blockfaceshape != BlockFaceShape.UNDEFINED;
+
+        BlockPos up = pos.up();
+        IBlockState state = worldIn.getBlockState(up);
+        boolean above = state.getBlock() == BWMBlocks.SINGLE_MACHINES && worldIn.getBlockState(up).getValue(BlockMechMachines.TYPE) == BlockMechMachines.EnumType.HOPPER;
+        return below || above;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!canPlaceBlockAt(worldIn, pos)) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
