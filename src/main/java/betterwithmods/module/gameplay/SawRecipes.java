@@ -70,7 +70,7 @@ public class SawRecipes extends Feature {
             for(IBlockVariants variant: BWOreDictionary.blockVariants) {
                 ItemStack log = variant.getVariant(IBlockVariants.EnumBlock.LOG,1);
                 if(!log.isEmpty()) {
-                    ResourceLocation location = new ResourceLocation(BWMod.MODID, log.getItem().getRegistryName() + "_" + log.getMetadata());
+                    ResourceLocation location = new ResourceLocation(BWMod.MODID, log.getItem().getRegistryName().getResourcePath() + "_" + log.getMetadata());
                     BWMRecipes.addRecipe(new ChoppingRecipe(variant, plankCount).setRegistryName(location));
                 }
             }
