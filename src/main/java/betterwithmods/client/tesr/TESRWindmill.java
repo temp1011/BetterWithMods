@@ -1,5 +1,6 @@
 package betterwithmods.client.tesr;
 
+import betterwithmods.BWMod;
 import betterwithmods.client.model.ModelWindmillSail;
 import betterwithmods.client.model.ModelWindmillShafts;
 import betterwithmods.client.model.render.RenderUtils;
@@ -11,13 +12,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHorizontal> {
+    public static final ResourceLocation WINDMILL = new ResourceLocation(BWMod.MODID, "textures/blocks/vertical_windmill.png");
+    public static final ResourceLocation WINDMILL_SAIL = new ResourceLocation(BWMod.MODID, "textures/blocks/vertical_windmill_sail.png");
     private final ModelWindmillShafts shafts = new ModelWindmillShafts();
     private final ModelWindmillSail sail = new ModelWindmillSail();
 
     @Override
     public void render(TileEntityWindmillHorizontal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         BlockPos pos = te.getBlockPos();
-        RenderUtils.renderDebugBoundingBox(x,y,z,te.getRenderBoundingBox().offset(-pos.getX(),-pos.getY(),-pos.getZ()));
+        RenderUtils.renderDebugBoundingBox(x, y, z, te.getRenderBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ()));
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -35,9 +38,9 @@ public class TESRWindmill extends TileEntitySpecialRenderer<TileEntityWindmillHo
             GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
         }
 
-        this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
+        this.bindTexture(WINDMILL);
         this.shafts.render(0.0625F);
-        this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/wool_colored_white.png"));
+        this.bindTexture(WINDMILL_SAIL);
         this.sail.render(0.0625F, te);
         GlStateManager.popMatrix();
     }
