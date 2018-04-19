@@ -14,6 +14,7 @@ import betterwithmods.BWMod;
 import betterwithmods.api.FeatureEnabledEvent;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
@@ -238,6 +239,12 @@ public class Module {
     public final void loadRecipeCondition(String jsonName, String propName, String comment, boolean _default) {
         ConfigHelper.loadRecipeCondition(jsonName, propName, name, comment, _default);
     }
+
+
+    public List<ResourceLocation> loadPropRLList(String propName, String desc, String[] default_) {
+        return ConfigHelper.loadPropRLList(propName, name, desc, default_);
+    }
+
 
     public int getPriority() {
         return priority;

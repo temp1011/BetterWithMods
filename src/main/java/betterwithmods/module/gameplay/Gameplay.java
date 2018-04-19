@@ -1,12 +1,21 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
+import betterwithmods.common.blocks.mechanical.tile.TileEntityWaterwheel;
+import betterwithmods.module.ConfigHelper;
 import betterwithmods.module.Module;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by primetoxinz on 4/20/17.
@@ -17,6 +26,8 @@ public class Gameplay extends Module {
     public static float cauldronNormalSpeedFactor, cauldronStokedSpeedFactor, cauldronMultipleFiresFactor;
 
     public static boolean dropHempSeeds;
+
+    public static List<Fluid> waterwheelFluids;
 
     @Override
     public void addFeatures() {
@@ -48,14 +59,20 @@ public class Gameplay extends Module {
         cauldronNormalSpeedFactor = (float) loadPropDouble("Cauldron normal speed factor", "Cooking speed multiplier for unstoked cauldrons.", 1.0);
         cauldronStokedSpeedFactor = (float) loadPropDouble("Cauldron stoked speed factor", "Cooking speed multiplier for stoked cauldrons and crucibles.", 1.0);
         cauldronMultipleFiresFactor = (float) loadPropDouble("Cauldron Multiple fires factor", "Sets how strongly multiple fire sources (in a 3x3 grid below the pot) affect cooking times.", 1.0);
-        dropHempSeeds = loadPropBool("Drop Hemp Seeds","Adds Hemp seeds to the grass seed drop list.", true);
+        dropHempSeeds = loadPropBool("Drop Hemp Seeds", "Adds Hemp seeds to the grass seed drop list.", true);
+
         super.setupConfig();
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        if(dropHempSeeds) {
+        waterwheelFluids = Arrays.stream(ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
+                "swamp_water"
+        })).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
+        waterwheelFluids.forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
+
+        if (dropHempSeeds) {
             MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
         }
     }
