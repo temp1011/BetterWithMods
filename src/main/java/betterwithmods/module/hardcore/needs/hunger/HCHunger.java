@@ -73,8 +73,6 @@ public class HCHunger extends CompatFeature {
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
     public static boolean rawMeatDangerous;
-//	public static boolean fat;
-
     public static boolean overridePumpkinSeeds;
     public static boolean overrideMushrooms;
 
@@ -88,7 +86,6 @@ public class HCHunger extends CompatFeature {
 
         overrideMushrooms = loadPropBool("Edible Mushrooms", "Override Mushrooms to be edible, be careful with the red one ;)", true);
         overridePumpkinSeeds = loadPropBool("Edible Pumpkin Seeds", "Override Pumpkin Seeds to be edible", true);
-//		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
     }
 
     public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");

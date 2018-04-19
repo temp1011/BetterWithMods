@@ -16,6 +16,7 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -33,12 +34,14 @@ import java.util.Set;
 
 public class BreedingHarness extends Feature {
 
+    public static final Item BREEDING_HARNESS = new ItemBreedingHarness().setRegistryName("breeding_harness");
+
     public BreedingHarness() {
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        BWMItems.registerItem(BWMItems.BREEDING_HARNESS);
+        BWMItems.registerItem(BREEDING_HARNESS);
         CapabilityManager.INSTANCE.register(CapabilityHarness.class, new CapabilityHarness.Storage(), CapabilityHarness::new);
     }
 

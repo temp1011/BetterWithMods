@@ -97,7 +97,6 @@ public class CauldronRecipes extends Feature {
                 StackIngredient.fromOre(1, "string"),
                 StackIngredient.fromOre(1, "fiberHemp")
         ));
-
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustPotash"), StackIngredient.fromOre(4, "dustHellfire")),
                 Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHER_SLUDGE, 8)));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(new OreIngredient("dustHellfire"), new OreIngredient("dustCarbon")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.NETHERCOAL, 4)));
@@ -214,6 +213,7 @@ public class CauldronRecipes extends Feature {
                 StackIngredient.fromOre(8, "blockSoulUrn")
         ), new ItemStack(BWMBlocks.BLOOD_SAPLING));
 
+        BWRegistry.CAULDRON.addUnstokedRecipe(Ingredient.fromItem(Items.CHORUS_FRUIT), new ItemStack(Items.CHORUS_FRUIT_POPPED));
     }
 
     @Override

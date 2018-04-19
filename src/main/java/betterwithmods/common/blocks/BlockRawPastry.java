@@ -20,15 +20,9 @@ import java.util.HashMap;
 /**
  * Created by blueyu2 on 11/19/16.
  */
-public class BlockRawPastry extends Block  {
+public class BlockRawPastry extends Block {
 
     public static HashMap<EnumType, BlockRawPastry> BLOCKS = Maps.newHashMap();
-    public static void init() {
-        for(EnumType type: EnumType.VALUES) {
-            BLOCKS.put(type,new BlockRawPastry(type));
-        }
-    }
-
     private EnumType type;
 
     public BlockRawPastry(EnumType type) {
@@ -39,6 +33,12 @@ public class BlockRawPastry extends Block  {
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setRegistryName(type.getName());
         this.type = type;
+    }
+
+    public static void init() {
+        for (EnumType type : EnumType.VALUES) {
+            BLOCKS.put(type, new BlockRawPastry(type));
+        }
     }
 
     public static ItemStack getStack(EnumType type) {
@@ -83,20 +83,18 @@ public class BlockRawPastry extends Block  {
     }
 
     public enum EnumType implements IStringSerializable {
-        CAKE(0, "raw_cake", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
-        PUMPKIN(1, "raw_pumpkin_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
-        COOKIE(2, "raw_cookie", new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D)),
-        BREAD(3, "raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D)),
-        APPLE(4, "raw_apple_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D));
-
+        CAKE("raw_cake", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
+        PUMPKIN("raw_pumpkin_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
+        COOKIE("raw_cookie", new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.0625D, 0.8125D)),
+        BREAD("raw_flour", new AxisAlignedBB(0.25D, 0.0D, 0.0625D, 0.75D, 0.375D, 0.9375D)),
+        APPLE("raw_apple_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
+        MELON("raw_melon_pie", new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D));
         public static final BlockRawPastry.EnumType[] VALUES = values();
 
-        private final int meta;
         private final String name;
         private final AxisAlignedBB aabb;
 
-        EnumType(int metaIn, String nameIn, AxisAlignedBB aabbIn) {
-            this.meta = metaIn;
+        EnumType(String nameIn, AxisAlignedBB aabbIn) {
             this.name = nameIn;
             this.aabb = aabbIn;
         }

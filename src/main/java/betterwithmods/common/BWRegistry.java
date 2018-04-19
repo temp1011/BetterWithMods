@@ -11,7 +11,6 @@ import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
-import betterwithmods.common.fluid.BWFluidRegistry;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
@@ -94,7 +93,7 @@ public class BWRegistry {
 
     public static void preInit() {
         API.manualAPI = ManualAPIImpl.INSTANCE;
-        BWFluidRegistry.registerFluids();
+//        BWFluidRegistry.registerFluids();
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
@@ -280,6 +279,7 @@ public class BWRegistry {
             Blocks.FIRE.setFireInfo(state.getBlock(), encouragement, flammability);
         }
     }
+
 }
 
 
