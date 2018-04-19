@@ -11,6 +11,7 @@ import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
+import betterwithmods.common.fluid.BWFluidRegistry;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
@@ -20,6 +21,7 @@ import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.block.managers.KilnManagerBlock;
 import betterwithmods.common.registry.block.managers.SawManagerBlock;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -32,6 +34,7 @@ import betterwithmods.util.MechanicalUtil;
 import betterwithmods.util.VillagerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityChicken;
@@ -91,7 +94,7 @@ public class BWRegistry {
 
     public static void preInit() {
         API.manualAPI = ManualAPIImpl.INSTANCE;
-
+        BWFluidRegistry.registerFluids();
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();
@@ -257,5 +260,26 @@ public class BWRegistry {
         return potion;
     }
 
+    private static void registerFireInfo() {
+
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_AXLE, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_BROKEN_GEARBOX, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_GEARBOX, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.HORIZONTAL_WINDMILL, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.VERTICAL_WINDMILL, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WATERWHEEL, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.VINE_TRAP, 5, 20);
+
+        registerFireInfo(new BlockIngredient("blockCandle"), 5, 20);
+        registerFireInfo(new BlockIngredient("slats"), 5, 20);
+        registerFireInfo(new BlockIngredient("grates"), 5, 20);
+    }
+
+    public static void registerFireInfo(BlockIngredient ingredient,  int encouragement, int flammability) {
+        for(IBlockState state: ingredient.getStates()) {
+            Blocks.FIRE.setFireInfo(state.getBlock(), encouragement, flammability);
+        }
+    }
 }
+
 
