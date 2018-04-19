@@ -1,5 +1,6 @@
 package betterwithmods.client.tesr;
 
+import betterwithmods.BWMod;
 import betterwithmods.client.model.ModelWaterwheel;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileWaterwheel;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 public class TESRWaterwheel extends TileEntitySpecialRenderer<TileWaterwheel> {
     private final ModelWaterwheel waterwheel;
 
+    public static final ResourceLocation WATERWHEEL = new ResourceLocation(BWMod.MODID,"textures/blocks/waterwheel.png");
     public TESRWaterwheel() {
         this.waterwheel = new ModelWaterwheel();
     }
@@ -23,7 +25,7 @@ public class TESRWaterwheel extends TileEntitySpecialRenderer<TileWaterwheel> {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-        this.bindTexture(new ResourceLocation("minecraft", "textures/blocks/planks_oak.png"));
+        this.bindTexture(WATERWHEEL);
         EnumFacing dir = te.getOrientation();
         float rotation = (te.getCurrentRotation() + (te.getMaximumInput(dir) == 0 ? 0 : partialTicks * te.getPrevRotation()));
 
