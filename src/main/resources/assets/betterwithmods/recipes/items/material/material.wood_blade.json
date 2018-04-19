@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "betterwithmods:wood_blade",
-    "data": 10
+    "item": "betterwithmods:wood_blade"
   },
   "pattern": [
     "W  ",
@@ -15,7 +14,7 @@
       "type": "forge:ore_dict"
     },
     "W": {
-      "item": "#SIDING_WOOD"
+      "item": "#SIDING"
     }
   }
 }
