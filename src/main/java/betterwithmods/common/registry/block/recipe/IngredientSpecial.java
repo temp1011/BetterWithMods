@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.BWMod;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -37,9 +38,7 @@ public class IngredientSpecial extends Ingredient {
     public void cacheMatchingStacks() {
         ArrayList<ItemStack> matches = new ArrayList<>();
         for (Item item : ForgeRegistries.ITEMS) {
-            ItemStack testItem = new ItemStack(item);
-            if (matcher.test(testItem))
-                matches.add(testItem);
+            BWMod.proxy.getSubItems(item).stream().filter(matcher::test).forEach(matches::add);
         }
         matchingStacks = matches.toArray(matchingStacks);
         matchingStacksCached = true;

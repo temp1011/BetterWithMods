@@ -4,6 +4,7 @@ import betterwithmods.BWMod;
 import betterwithmods.api.block.IOverpower;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
+import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.mechanical.tile.TileSaw;
@@ -11,6 +12,7 @@ import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
@@ -33,6 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -45,6 +48,17 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final AxisAlignedBB S_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, HEIGHT);
     private static final AxisAlignedBB W_AABB = new AxisAlignedBB(1.0F - HEIGHT, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, HEIGHT, 1.0F, 1.0F);
+
+    private static final HashSet<Material> SOLID_MATERIALS = Sets.newHashSet(
+            Material.ROCK,
+            Material.ANVIL,
+            Material.GLASS,
+            Material.IRON,
+            Material.ICE,
+            Material.PACKED_ICE,
+            Material.REDSTONE_LIGHT,
+            Material.PISTON
+    );
 
     public BlockSaw() {
         super(Material.WOOD);
@@ -160,7 +174,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
                 BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() - i, pos.getZ()).offset(dir);
                 Block block = world.getBlockState(pos2).getBlock();
                 IBlockState blockState = world.getBlockState(pos2);
-                if (block == BWMBlocks.AESTHETIC && blockState.getValue(BlockAesthetic.TYPE).getMeta() < 2) {
+                if (isChoppingBlock(blockState)) {
                     source = BWDamageSource.getChoppingBlockDamage();
                     damage *= 3;
                     if (blockState.getValue(BlockAesthetic.TYPE).getMeta() == 0 && unobstructed)
@@ -176,6 +190,10 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
                 world.playSound(null, pos, SoundEvents.ENTITY_MINECART_RIDING, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat() * 0.1F, 1.5F + world.rand.nextFloat() * 0.1F);
             }
         }
+    }
+
+    private boolean isChoppingBlock(IBlockState state) {
+        return state.getBlock() == BWMBlocks.AESTHETIC && state.getValue(BlockAesthetic.TYPE).getMeta() < 2;
     }
 
     @Override
@@ -256,8 +274,15 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     }
 
     private void sawBlockInFront(World world, BlockPos pos, Random rand) {
-        BlockPos blockPos = pos.offset(getFacing(world, pos));
-        BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
+        EnumFacing facing = getFacing(world, pos);
+        BlockPos blockPos = pos.offset(facing);
+        boolean success = BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
+        if(!success) {
+            IBlockState state = world.getBlockState(blockPos);
+            if(!isChoppingBlock(state) && SOLID_MATERIALS.contains(state.getMaterial()) && state.getBlockFaceShape(world,blockPos,facing.getOpposite()) == BlockFaceShape.SOLID) {
+                world.playSound(null,pos, BWSounds.METAL_HACKSAW, SoundCategory.BLOCKS,1.0f,0.80f);
+            }
+        }
     }
 
     @Override
