@@ -620,7 +620,7 @@ public class InvUtils {
             return false; //trivial case
         HashSet<ItemStack> alreadyMatched = new HashSet<>();
         for (ItemStack one : oneList) {
-            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two)).findFirst();
+            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(one)).findFirst();
             if (found.isPresent())
                 alreadyMatched.add(found.get()); //Don't match twice
             else
