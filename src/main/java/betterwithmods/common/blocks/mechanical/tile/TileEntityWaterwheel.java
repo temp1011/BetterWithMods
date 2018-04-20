@@ -29,11 +29,11 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
 
     public static void registerWater(Block block) {
         if (block instanceof BlockLiquid)
-            WATER_BLOCKS.put(block, IWaterCurrent.VANILLA_LIQUID);
+            registerWater(block, IWaterCurrent.VANILLA_LIQUID);
         else if (block instanceof BlockFluidBase)
-            WATER_BLOCKS.put(block, IWaterCurrent.FORGE_LIQUID);
+            registerWater(block, IWaterCurrent.FORGE_LIQUID);
         else
-            WATER_BLOCKS.put(block, IWaterCurrent.NO_FLOW);
+            registerWater(block, IWaterCurrent.NO_FLOW);
     }
 
     public static void registerWater(Block block, IWaterCurrent handler) {
@@ -49,6 +49,7 @@ public class TileEntityWaterwheel extends TileAxleGenerator {
         IBlockState state = world.getBlockState(pos);
         return isVanillaWater(state) || isForgeFluid(state.getBlock()) || WATER_BLOCKS.containsKey(state.getBlock());
     }
+
 
     public IWaterCurrent getCurrentHandler(IBlockState state) {
         if (isVanillaWater(state))

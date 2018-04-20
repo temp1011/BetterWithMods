@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -67,16 +68,20 @@ public class Gameplay extends Module {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        waterwheelFluids = Arrays.stream(ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
-                "swamp_water"
-        })).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
-        waterwheelFluids.forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
+
+
 
         if (dropHempSeeds) {
             MinecraftForge.addGrassSeed(new ItemStack(BWMBlocks.HEMP, 1), 5);
         }
     }
 
-
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        waterwheelFluids = Arrays.stream(ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
+                "swamp_water"
+        })).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
+        waterwheelFluids.forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
+    }
 }
 
