@@ -28,7 +28,7 @@ public class Gameplay extends Module {
 
     public static boolean dropHempSeeds;
 
-    public static List<Fluid> waterwheelFluids;
+    private String[] waterwheelFluidConfig;
 
     @Override
     public void addFeatures() {
@@ -61,6 +61,9 @@ public class Gameplay extends Module {
         cauldronStokedSpeedFactor = (float) loadPropDouble("Cauldron stoked speed factor", "Cooking speed multiplier for stoked cauldrons and crucibles.", 1.0);
         cauldronMultipleFiresFactor = (float) loadPropDouble("Cauldron Multiple fires factor", "Sets how strongly multiple fire sources (in a 3x3 grid below the pot) affect cooking times.", 1.0);
         dropHempSeeds = loadPropBool("Drop Hemp Seeds", "Adds Hemp seeds to the grass seed drop list.", true);
+        waterwheelFluidConfig = ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
+                "swamp_water"
+        });
 
         super.setupConfig();
     }
@@ -78,10 +81,8 @@ public class Gameplay extends Module {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        waterwheelFluids = Arrays.stream(ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
-                "swamp_water"
-        })).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
-        waterwheelFluids.forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
+        super.postInit(event);
+        Arrays.stream(waterwheelFluidConfig).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList()).forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
     }
 }
 
