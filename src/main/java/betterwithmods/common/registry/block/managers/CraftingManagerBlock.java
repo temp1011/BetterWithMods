@@ -85,7 +85,7 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
         return recipes.removeAll(findRecipeExact(outputs));
     }
 
-    public boolean removeExact(ItemStack input) {
+    public boolean removeByInput(ItemStack input) {
         return recipes.removeAll(findRecipeByInput(input));
     }
 
