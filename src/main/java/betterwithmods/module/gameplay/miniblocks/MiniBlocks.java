@@ -7,6 +7,7 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;
+import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.module.Feature;
@@ -14,11 +15,15 @@ import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.client.CamoModel;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
+import betterwithmods.util.InvUtils;
+import betterwithmods.util.JsonUtils;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.EnumFacing;
@@ -43,6 +49,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -53,14 +60,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MiniBlocks extends Feature {
     public static HashMap<MiniType, HashMap<Material, BlockCamo>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static Map<Material, String> names = Maps.newHashMap();
     private static boolean autoGeneration;
-    private static HashSet<String> whitelist = new HashSet<>();
+
+    private static Set<Ingredient> WHITELIST;
 
     static {
         for (MiniType type : MiniType.VALUES) {
@@ -78,9 +89,8 @@ public class MiniBlocks extends Feature {
     }
 
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
-        ResourceLocation resloc = stack.getItem().getRegistryName();
-        if (!autoGeneration && resloc != null && !whitelist.contains(resloc.toString()) && !whitelist.contains(resloc.toString() + ":" + stack.getMetadata()))
-            return BWOreDictionary.hasPrefix(stack, "plankWood"); //Specifically planks are a-okay
+        if (!autoGeneration && !InvUtils.applyIngredients(WHITELIST, stack))
+            return false;
 
         Block blk = state.getBlock();
         final ReflectionHelperBlock pb = new ReflectionHelperBlock();
@@ -141,12 +151,8 @@ public class MiniBlocks extends Feature {
         return stack;
     }
 
-    public static void addWhitelistedBlock(ResourceLocation resloc) {
-        whitelist.add(resloc.toString());
-    }
-
-    public static void addWhitelistedBlock(ResourceLocation resloc, int meta) { //Delete this in 1.13
-        whitelist.add(resloc.toString() + ":" + meta);
+    public static void forceMiniBlock(Ingredient ingredient) {
+        WHITELIST.add(ingredient);
     }
 
     public static void addMaterial(Material material, String name) {
@@ -164,6 +170,31 @@ public class MiniBlocks extends Feature {
         for (String variant : variants) {
             registry.putObject(new ModelResourceLocation(BWMod.MODID + ":" + name, variant), model);
         }
+    }
+
+    public Set<Ingredient> loadMiniblockWhitelist() {
+        File file = new File(configHelper.path, "betterwithmods/miniblocks.json");
+
+        if (!Files.exists(file.toPath()) && file.getParentFile().mkdirs()) {
+            JsonArray DEFAULT_CONFIG = new JsonArray();
+            DEFAULT_CONFIG.add(JsonUtils.fromOre("plankWood"));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.COBBLESTONE)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.STONE)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.STONEBRICK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.SANDSTONE)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.RED_SANDSTONE)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.PURPUR_BLOCK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.BRICK_BLOCK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.NETHER_BRICK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.QUARTZ_BLOCK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITESTONE)));
+            System.out.println(DEFAULT_CONFIG);
+            JsonUtils.writeFile(file, DEFAULT_CONFIG);
+        }
+        JsonObject[] objects = JsonUtils.readerFile(file);
+        if (objects != null)
+            return Arrays.stream(objects).map(object -> CraftingHelper.getIngredient(object, JsonUtils.BWM_CONTEXT)).collect(Collectors.toSet());
+        return Sets.newHashSet();
     }
 
     @SubscribeEvent
@@ -249,17 +280,6 @@ public class MiniBlocks extends Feature {
     @Override
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
-        whitelist = loadPropStringHashSet("Whitelist", "Whitelist for blocks to generate miniblocks for (aside from the ones required by BWM)", new String[]{});
-        whitelist.add("minecraft:cobblestone:0");
-        whitelist.add("minecraft:stone:0");
-        whitelist.add("minecraft:stonebrick");
-        whitelist.add("minecraft:sandstone");
-        whitelist.add("minecraft:red_sandstone");
-        whitelist.add("minecraft:purpur_block");
-        whitelist.add("minecraft:brick_block");
-        whitelist.add("minecraft:nether_brick");
-        whitelist.add("minecraft:quartz_block");
-        whitelist.add("betterwithmods:whitestone");
     }
 
     @Override
@@ -274,6 +294,7 @@ public class MiniBlocks extends Feature {
         names.put(Material.IRON, "iron");
 
         MiniType.registerTiles();
+        System.out.println(WHITELIST);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -290,7 +311,6 @@ public class MiniBlocks extends Feature {
             MINI_MATERIAL_BLOCKS.get(MiniType.CHAIR).put(material, (BlockCamo) new BlockChair(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "chair", name)));
         }
 
-
         for (MiniType type : MiniType.VALUES) {
             for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
                 BWMBlocks.registerBlock(mini, new ItemCamo(mini));
@@ -300,6 +320,8 @@ public class MiniBlocks extends Feature {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void afterItemRegister(RegistryEvent.Register<Item> event) {
+        WHITELIST = loadMiniblockWhitelist();
+
         final NonNullList<ItemStack> list = NonNullList.create();
         for (Item item : ForgeRegistries.ITEMS) {
             if (!(item instanceof ItemBlock))
@@ -354,7 +376,6 @@ public class MiniBlocks extends Feature {
         CamoModel.BENCH_SUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/bench_supported")));
         CamoModel.BENCH_UNSUPPORTED = new CamoModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "block/bench_unsupported")));
 
-
         for (Material material : names.keySet()) {
             String name = names.get(material);
             registerModel(event.getModelRegistry(), String.format("%s_%s", "siding", name), MiniModel.SIDING);
@@ -367,8 +388,6 @@ public class MiniBlocks extends Feature {
             registerModel(event.getModelRegistry(), String.format("%s_%s", "table", name), CamoModel.TABLE_UNSUPPORTED, Sets.newHashSet("supported=false"));
             registerModel(event.getModelRegistry(), String.format("%s_%s", "bench", name), CamoModel.BENCH_SUPPORTED, Sets.newHashSet("normal", "inventory", "supported=true"));
             registerModel(event.getModelRegistry(), String.format("%s_%s", "bench", name), CamoModel.BENCH_UNSUPPORTED, Sets.newHashSet("supported=false"));
-
-
         }
     }
 

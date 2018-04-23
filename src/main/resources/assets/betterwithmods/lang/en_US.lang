@@ -150,6 +150,10 @@ tile.bwm:bench_rock.name=Bench
 tile.bwm:bench_wood.name=Bench
 tile.bwm:bench_iron.name=Bench
 
+tile.bwm:chair_rock.name=Chair
+tile.bwm:chair_wood.name=Chair
+tile.bwm:chair_iron.name=Chair
+
 tile.bwm:pedestal_rock.name=Pedestal
 tile.bwm:pedestal_wood.name=Pedestal
 tile.bwm:pedestal_iron.name=Pedestal

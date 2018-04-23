@@ -39,8 +39,10 @@ public class ConfigHelper {
     public boolean allNeedRestart = false;
 
     public Configuration config;
+    public String path;
 
-    public ConfigHelper(Configuration configuration) {
+    public ConfigHelper(String path, Configuration configuration) {
+        this.path = path;
         this.config = configuration;
     }
 

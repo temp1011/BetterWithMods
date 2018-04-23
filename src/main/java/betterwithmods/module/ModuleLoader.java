@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,8 @@ public abstract class ModuleLoader {
     }
 
     public void setupConfig(FMLPreInitializationEvent event) {
-        configHelper = new ConfigHelper(new Configuration(event.getSuggestedConfigurationFile()));
+        File file = event.getSuggestedConfigurationFile();
+        configHelper = new ConfigHelper(file.getParent(), new Configuration(file));
 
         GlobalConfig.initGlobalConfig(this);
 
