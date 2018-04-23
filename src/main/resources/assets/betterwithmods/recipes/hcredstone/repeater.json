@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "config",
+      "enabled": "hcredstone"
+    }
+  ],
   "result": {
     "item": "minecraft:repeater"
   },
@@ -15,7 +21,7 @@
       "item": "minecraft:redstone_torch"
     },
     "S": {
-      "item": "#SIDING_STONE"
+      "item": "#HE_STONE"
     }
   }
 }

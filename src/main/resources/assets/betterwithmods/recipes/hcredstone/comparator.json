@@ -1,28 +1,29 @@
 {
+  "conditions": [
+    {
+      "type": "config",
+      "enabled": "hcredstone"
+    }
+  ],
   "result": {
     "item": "minecraft:comparator"
   },
   "pattern": [
-    " R ",
-    "RQR",
+    " T ",
+    "TCT",
     "SSS"
   ],
   "type": "forge:ore_shaped",
   "key": {
-    "Q": {
+    "C": {
       "ore": "gemQuartz",
       "type": "forge:ore_dict"
     },
-    "R": {
+    "T": {
       "item": "minecraft:redstone_torch"
     },
     "S": {
-      "type": "betterwithmods:minitype",
-      "minitype": "siding",
-      "baseIngredient": {
-        "item": "minecraft:stone",
-        "data": 0
-      }
+      "item": "#HE_STONE"
     }
   }
 }
