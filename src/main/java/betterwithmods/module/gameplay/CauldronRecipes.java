@@ -167,10 +167,10 @@ public class CauldronRecipes extends Feature {
                 new ItemStack(BWMItems.CHOCOLATE, 2)
         );
 
-        Ingredient stewMeats = Ingredient.merge(Lists.newArrayList(
-                new OreIngredient("meatPork"),
-                new OreIngredient("meatBeef"),
-                new OreIngredient("meatMutton")
+        Ingredient stewMeats = StackIngredient.mergeStacked(Lists.newArrayList(
+                StackIngredient.fromOre("meatPork"),
+                StackIngredient.fromOre("meatBeef"),
+                StackIngredient.fromOre("meatMutton")
         ));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
