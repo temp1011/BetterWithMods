@@ -27,6 +27,7 @@ public class TileBellows extends TileBasic implements IMechanicalPower {
     private int power;
 
     public void onChange() {
+
         if (getBlock().getTier(world,pos) == EnumTier.STEEL)
             continuous = true;
         int power = calculateInput();
@@ -100,7 +101,9 @@ public class TileBellows extends TileBasic implements IMechanicalPower {
     }
 
     public BlockBellows getBlock() {
-        return (BlockBellows) getBlockType();
+        if(this.getBlockType() instanceof BlockBellows)
+            return (BlockBellows) getBlockType();
+        throw new IllegalStateException("This TileEntity does not have the correct block, something is severely wrong. Report to the mod author immediately");
     }
 
     @Override

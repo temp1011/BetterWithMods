@@ -50,7 +50,9 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     }
 
     public BlockMechMachines getBlock() {
-        return (BlockMechMachines) this.getBlockType();
+        if(this.getBlockType() instanceof BlockMechMachines)
+            return (BlockMechMachines) this.getBlockType();
+        throw new IllegalStateException("This TileEntity does not have the correct block, something is severely wrong. Report to the mod author immediately");
     }
 
     private boolean findIfBlocked() {

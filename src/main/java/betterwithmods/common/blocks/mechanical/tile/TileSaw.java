@@ -23,7 +23,7 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
         int power = calculateInput();
         if (this.power != power) {
             this.power = power;
-            getBlock().setActive(world,pos,power > 0);
+            getBlock().setActive(world, pos, power > 0);
         }
     }
 
@@ -51,7 +51,7 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
 
     @Override
     public int getMechanicalInput(EnumFacing facing) {
-        if (facing != getBlock().getFacing(world,pos))
+        if (facing != getBlock().getFacing(world, pos))
             return BWMAPI.IMPLEMENTATION.getPowerOutput(world, pos.offset(facing), facing.getOpposite());
         return 0;
     }
@@ -82,7 +82,9 @@ public class TileSaw extends TileBasic implements IMechanicalPower {
     }
 
     public BlockSaw getBlock() {
-        return (BlockSaw) getBlockType();
+        if (getBlockType() instanceof BlockSaw)
+            return (BlockSaw) getBlockType();
+        throw new IllegalStateException("This TileEntity does not have the correct block, something is severely wrong. Report to the mod author immediately");
     }
 
     @Override
