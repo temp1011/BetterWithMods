@@ -36,7 +36,7 @@ public abstract class Module {
     public final List<Feature> enabledFeatures = Lists.newArrayList(), disabledFeatures = Lists.newArrayList();
     public boolean enabled;
     protected int priority = 0;
-    private ModuleLoader loader;
+    protected ModuleLoader loader;
 
     public Module(ModuleLoader loader) {
         this.loader = loader;
@@ -247,7 +247,7 @@ public abstract class Module {
 
 
     public List<ResourceLocation> loadPropRLList(String propName, String desc, String[] default_) {
-        return ConfigHelper.loadPropRLList(propName, name, desc, default_);
+        return loader.configHelper.loadPropRLList(propName, name, desc, default_);
     }
 
 

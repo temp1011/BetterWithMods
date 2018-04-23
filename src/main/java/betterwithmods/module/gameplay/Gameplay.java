@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.common.BWMBlocks;
-import betterwithmods.module.ConfigHelper;
+import betterwithmods.common.blocks.mechanical.tile.TileWaterwheel;
 import betterwithmods.module.Module;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
@@ -25,12 +25,11 @@ public class Gameplay extends Module {
     public static float cauldronNormalSpeedFactor, cauldronStokedSpeedFactor, cauldronMultipleFiresFactor;
 
     public static boolean dropHempSeeds;
+    private String[] waterwheelFluidConfig;
 
     public Gameplay(ModuleLoader loader) {
         super(loader);
     }
-
-    private String[] waterwheelFluidConfig;
 
     @Override
     public void addFeatures() {
@@ -64,7 +63,7 @@ public class Gameplay extends Module {
         cauldronMultipleFiresFactor = (float) loadPropDouble("Cauldron Multiple fires factor", "Sets how strongly multiple fire sources (in a 3x3 grid below the pot) affect cooking times.", 1.0);
         dropHempSeeds = loadPropBool("Drop Hemp Seeds", "Adds Hemp seeds to the grass seed drop list.", true);
         dropHempSeeds = loadPropBool("Drop Hemp Seeds", "Adds Hemp seeds to the grass seed drop list.", true);
-        waterwheelFluidConfig = ConfigHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
+        waterwheelFluidConfig = loader.configHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
                 "swamp_water"
         });
 
@@ -83,10 +82,11 @@ public class Gameplay extends Module {
     public boolean canBeDisabled() {
         return false;
     }
+
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        Arrays.stream(waterwheelFluidConfig).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList()).forEach(fluid -> TileEntityWaterwheel.registerWater(fluid.getBlock()));
+        Arrays.stream(waterwheelFluidConfig).map(FluidRegistry::getFluid).filter(Objects::nonNull).collect(Collectors.toList()).forEach(fluid -> TileWaterwheel.registerWater(fluid.getBlock()));
     }
 }
 
