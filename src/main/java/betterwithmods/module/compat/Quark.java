@@ -24,7 +24,7 @@ public class Quark extends CompatFeature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        MobSpawning.NetherSpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "basalt")), 0);
+        MobSpawning.SpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "basalt")));
         for (int i = 0; i < 5; i++)
             addHERecipe(new ShapedOreRecipe(null, new ItemStack(getBlock(new ResourceLocation(modid, "custom_chest")), 1, i), "SSS", "S S", "SSS", 'S', new ItemStack(BWMBlocks.WOOD_SIDING, 1, i + 1)).setRegistryName("betterwithmods", "quark_chest." + (i + 1)));
     }
