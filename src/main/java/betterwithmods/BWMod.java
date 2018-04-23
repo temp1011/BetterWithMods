@@ -11,6 +11,10 @@ import betterwithmods.module.hardcore.Hardcore;
 import betterwithmods.module.industry.Industry;
 import betterwithmods.module.tweaks.Tweaks;
 import betterwithmods.network.*;
+import betterwithmods.network.MessageFat;
+import betterwithmods.network.MessageGuiShake;
+import betterwithmods.network.MessageHarnessSync;
+import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +30,7 @@ public class BWMod {
     public static final String MODID = "betterwithmods";
     public static final String VERSION = "${version}";
     public static final String NAME = "Better With Mods";
-    public static final String DEPENDENCIES = "before:survivalist;after:forestry;after:mantle;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:mekanism;after:thermalexpansion;after:ctm;after:geolosys;";
+    public static final String DEPENDENCIES = "after:natura;before:survivalist;after:forestry;after:mantle;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:mekanism;after:thermalexpansion;after:ctm;after:geolosys;";
 
     public static Logger logger;
     @SuppressWarnings({"CanBeFinal", "unused"})

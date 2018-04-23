@@ -2,8 +2,10 @@ package betterwithmods.proxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,5 +39,8 @@ public interface IProxy {
     default boolean addRunningParticles(IBlockState state, World world, BlockPos pos, Entity entity) {
         return false;
     }
-}
 
+    default NonNullList<ItemStack> getSubItems(Item item) {
+        return NonNullList.withSize(1,item.getDefaultInstance());
+    }
+}

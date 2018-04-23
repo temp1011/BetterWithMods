@@ -25,7 +25,7 @@ public abstract class TileBasicInventory extends TileBasic {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if(capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && hasCapability.test(facing))
+        if(capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (facing == null || hasCapability.test(facing)))
             return true;
         return  super.hasCapability(capability, facing);
     }

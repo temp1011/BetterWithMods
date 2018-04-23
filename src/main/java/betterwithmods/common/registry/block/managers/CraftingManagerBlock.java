@@ -47,6 +47,10 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
         return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs)).collect(Collectors.toList());
     }
 
+    protected List<T> findRecipeByInput(ItemStack input) {
+        return recipes.stream().filter(r -> r.getInput().apply(input)).collect(Collectors.toList());
+    }
+
     public List<T> findRecipes(World world, BlockPos pos, IBlockState state) {
         return recipes.stream().filter(r -> r.getInput().apply(world, pos, state)).collect(Collectors.toList());
     }
@@ -79,6 +83,10 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
 
     public boolean removeExact(List<ItemStack> outputs) {
         return recipes.removeAll(findRecipeExact(outputs));
+    }
+
+    public boolean removeByInput(ItemStack input) {
+        return recipes.removeAll(findRecipeByInput(input));
     }
 
     public List<T> getRecipes() {
