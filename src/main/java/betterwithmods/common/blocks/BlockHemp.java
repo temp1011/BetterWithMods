@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -26,14 +27,28 @@ import java.util.Random;
 
 public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations {
     public static final PropertyBool TOP = PropertyBool.create("top");
-    public static double growthChance, lampModifier, fertileModifier, neighborModifier;
+    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[]{
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.125D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.25D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.375D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.5d, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.625D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.75D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 0.875D, 13 / 16d),
+            new AxisAlignedBB(3 / 16d, 0.0D, 3 / 16d, 13 / 16d, 1.0D, 13 / 16d)};
 
+    public static double growthChance, lampModifier, fertileModifier, neighborModifier;
 
     public BlockHemp() {
         super();
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setDefaultState(getDefaultState().withProperty(TOP, false));
     }
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return CROPS_AABB[state.getValue(this.getAgeProperty())];
+    }
+
 
     @Override
     public String[] getLocations() {
@@ -43,6 +58,12 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
     @Override
     public boolean isMaxAge(IBlockState state) {
         return state.getValue(TOP) || state.getValue(AGE) > 6;
+    }
+
+    @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+        IBlockState above = worldIn.getBlockState(pos.up());
+        return !state.getValue(TOP) && !(above.getBlock() instanceof BlockHemp);
     }
 
     @Override
@@ -71,7 +92,7 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
         checkAndDropBlock(world, pos, state);
         BlockPos up = pos.up();
 
-        int meta = state.getValue(AGE);
+        int age = state.getValue(AGE);
         boolean isTop = state.getValue(TOP);
 
         double growthChance = BlockHemp.growthChance;
@@ -87,12 +108,12 @@ public class BlockHemp extends BlockCrops implements IPlantable, IMultiLocations
             if (check.getBlock() == this)
                 growthChance /= neighborModifier;
         }
-        if (meta < 7) {
+        if (age < 7) {
             if (world.getLightFromNeighbors(up) > 12) {
                 if (rand.nextInt(MathHelper.floor(growthChance)) == 0)
-                    world.setBlockState(pos, state.withProperty(AGE, meta + 1));
+                    world.setBlockState(pos, state.withProperty(AGE, age + 1));
             }
-        } else if (meta == 7 && world.isAirBlock(up) && !isTop) {
+        } else if (age == 7 && world.isAirBlock(up) && !isTop) {
             if (world.getLightFromNeighbors(up) > 12) {
                 if (rand.nextInt(MathHelper.floor(growthChance)) == 0)
                     world.setBlockState(up, state.withProperty(AGE, 7).withProperty(TOP, true));
