@@ -50,6 +50,7 @@ public class BlockIngredient extends Ingredient {
         this.stacks = InvUtils.asNonnullList(ingredient.getMatchingStacks());
     }
 
+
     @Override
     @Nonnull
     public ItemStack[] getMatchingStacks() {

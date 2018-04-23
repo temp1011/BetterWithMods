@@ -28,8 +28,8 @@ import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.compat.jei.category.*;
 import betterwithmods.module.compat.jei.wrapper.*;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
-import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
@@ -50,7 +50,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
@@ -70,6 +70,16 @@ public class JEI implements IModPlugin {
         JEI.JEI_RUNTIME.getRecipesGui().show(focus);
     }
 
+    private static String getHeatUID(String base, int heat) {
+        if (heat == BWMHeatRegistry.UNSTOKED_HEAT) {
+            return base;
+        } else if (heat == BWMHeatRegistry.STOKED_HEAT) {
+            return String.format("%s.%s", base, "stoked");
+        } else {
+            return String.format("%s.%s", base, heat);
+        }
+    }
+
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         if (JEI_RUNTIME == null) {
@@ -81,15 +91,19 @@ public class JEI implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration reg) {
         final IJeiHelpers helpers = reg.getJeiHelpers();
         final IGuiHelper guiHelper = helpers.getGuiHelper();
+
+        for (int heat : BWMHeatRegistry.allHeatLevels()) {
+            reg.addRecipeCategories(
+                    new CookingPotRecipeCategory(guiHelper, getHeatUID(CookingPotRecipeCategory.CAULDRON_UID, heat)),
+                    new CookingPotRecipeCategory(guiHelper, getHeatUID(CookingPotRecipeCategory.CRUCIBLE_UID, heat)),
+                    new KilnRecipeCategory(guiHelper, getHeatUID(KilnRecipeCategory.UID, heat))
+            );
+        }
+
         reg.addRecipeCategories(
-                new CookingPotRecipeCategory(guiHelper, CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID),
-                new CookingPotRecipeCategory(guiHelper, CookingPotRecipeCategory.CRUCIBLE_STOKED_UID),
-                new CookingPotRecipeCategory(guiHelper, CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID),
-                new CookingPotRecipeCategory(guiHelper, CookingPotRecipeCategory.CAULDRON_STOKED_UID),
                 new MillRecipeCategory(guiHelper),
                 new SawRecipeCategory(guiHelper),
                 new SteelSawRecipeCategory(guiHelper),
-                new KilnRecipeCategory(guiHelper),
                 new TurntableRecipeCategory(guiHelper),
                 new HopperRecipeCategory(guiHelper),
                 new SteelAnvilRecipeCategory(guiHelper)
@@ -115,14 +129,10 @@ public class JEI implements IModPlugin {
     @Override
     public void register(@Nonnull IModRegistry reg) {
         HELPER = reg.getJeiHelpers();
-        reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
-        reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
 
-        reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
-        reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
+        registerHeatBasedRecipes(reg);
 
         reg.handleRecipes(MillRecipe.class, r -> new BulkRecipeWrapper<>(HELPER, r), MillRecipeCategory.UID);
-        reg.handleRecipes(KilnRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), KilnRecipeCategory.UID);
         reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SawRecipeCategory.UID);
         reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SteelSawRecipeCategory.UID);
         reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER, recipe), TurntableRecipeCategory.UID);
@@ -136,21 +146,13 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), SteelCraftingCategory.UID);
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), "minecraft.crafting");
 
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CAULDRON.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CAULDRON_STOKED_UID);
-
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.UNSTOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID);
-        reg.addRecipes(BWRegistry.CRUCIBLE.getRecipes().stream().filter(r -> r.getHeat() == BWMHeatRegistry.STOKED_HEAT).collect(Collectors.toList()), CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
-
         reg.addRecipes(BWRegistry.MILLSTONE.getRecipes(), MillRecipeCategory.UID);
         reg.addRecipes(BWRegistry.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
-//        reg.addRecipes(Sets.union(Sets.newHashSet(SawManager.WOOD_SAW.getRecipes()), Sets.newHashSet(SawManager.STEEL_SAW.getRecipes())), SteelSawRecipeCategory.UID);
-        reg.addRecipes(BWRegistry.KILN.getRecipes(), KilnRecipeCategory.UID);
         reg.addRecipes(BWRegistry.TURNTABLE.getRecipes(), TurntableRecipeCategory.UID);
         ArrayList<HopperRecipe> hopperRecipes = new ArrayList<>();
-        HopperInteractions.RECIPES.stream().forEach(recipe -> {
-            if(recipe instanceof SoulUrnRecipe)
-                hopperRecipes.add(((SoulUrnRecipe)recipe).withoutUrn());
+        HopperInteractions.RECIPES.forEach(recipe -> {
+            if (recipe instanceof SoulUrnRecipe)
+                hopperRecipes.add(((SoulUrnRecipe) recipe).withoutUrn());
             hopperRecipes.add(recipe);
         });
         reg.addRecipes(hopperRecipes, HopperRecipeCategory.UID);
@@ -160,15 +162,11 @@ public class JEI implements IModPlugin {
         reg.addRecipeCatalyst(BlockMechMachines.getStack(MILL), MillRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(HOPPER), HopperRecipeCategory.UID);
         reg.addRecipeCatalyst(BlockMechMachines.getStack(TURNTABLE), TurntableRecipeCategory.UID);
-        reg.addRecipeCatalyst(BlockCookingPot.getStack(CAULDRON), CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID, CookingPotRecipeCategory.CAULDRON_STOKED_UID);
-        reg.addRecipeCatalyst(BlockCookingPot.getStack(CRUCIBLE), CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID, CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
+
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.SAW), SawRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.STEEL_SAW), SteelSawRecipeCategory.UID);
-        reg.addRecipeCatalyst(new ItemStack(Blocks.BRICK_BLOCK), KilnRecipeCategory.UID);
         reg.addRecipeCatalyst(new ItemStack(BWMBlocks.STEEL_ANVIL), SteelCraftingCategory.UID);
 
-        reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, CookingPotRecipeCategory.CAULDRON_UNSTOKED_UID, CookingPotRecipeCategory.CAULDRON_STOKED_UID);
-        reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, CookingPotRecipeCategory.CRUCIBLE_UNSTOKED_UID, CookingPotRecipeCategory.CRUCIBLE_STOKED_UID);
         reg.addRecipeClickArea(GuiMill.class, 81, 19, 14, 14, MillRecipeCategory.UID);
         reg.addRecipeClickArea(GuiSteelAnvil.class, 88, 41, 28, 23, SteelCraftingCategory.UID);
 
@@ -194,6 +192,38 @@ public class JEI implements IModPlugin {
             v.createAnvilRecipe(dam1, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam2));
             v.createAnvilRecipe(dam2, Collections.singletonList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), Collections.singletonList(dam3));
         }
+
+    }
+
+    private void registerHeatBasedRecipes(@Nonnull IModRegistry reg) {
+        Set<String> cauldron = Sets.newHashSet(), crucible = Sets.newHashSet(), kiln = Sets.newHashSet();
+        for (int heat : BWMHeatRegistry.allHeatLevels()) {
+            String cauldronUID = getHeatUID(CookingPotRecipeCategory.CAULDRON_UID, heat);
+            String crucibleUID = getHeatUID(CookingPotRecipeCategory.CRUCIBLE_UID, heat);
+            String kilnUID = getHeatUID(KilnRecipeCategory.UID, heat);
+            cauldron.add(cauldronUID);
+            crucible.add(crucibleUID);
+            kiln.add(kilnUID);
+
+            reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), cauldronUID);
+            reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), crucibleUID);
+            reg.handleRecipes(KilnRecipe.class, recipe -> new BlockRecipeWrapper(HELPER, recipe), kilnUID);
+
+            reg.addRecipes(BWRegistry.CAULDRON.getRecipesForHeat(heat), cauldronUID);
+            reg.addRecipes(BWRegistry.CRUCIBLE.getRecipesForHeat(heat), crucibleUID);
+            reg.addRecipes(BWRegistry.KILN.getRecipesForHeat(heat), kilnUID);
+
+        }
+
+        reg.addRecipeCatalyst(BlockCookingPot.getStack(CAULDRON), cauldron.stream().toArray(String[]::new));
+        reg.addRecipeCatalyst(BlockCookingPot.getStack(CRUCIBLE), crucible.stream().toArray(String[]::new));
+        reg.addRecipeCatalyst(new ItemStack(Blocks.BRICK_BLOCK), kiln.stream().toArray(String[]::new));
+
+        reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, cauldron.stream().toArray(String[]::new));
+        reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, crucible.stream().toArray(String[]::new));
+
+
     }
 
 }
+

@@ -20,6 +20,7 @@ import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.block.managers.KilnManagerBlock;
 import betterwithmods.common.registry.block.managers.SawManagerBlock;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.block.recipe.StateIngredient;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -248,9 +249,8 @@ public class BWRegistry {
 
 
     public static void registerHeatSources() {
-        BWMHeatRegistry.addHeatSource(Blocks.FIRE, 1);
-        BWMHeatRegistry.addHeatSource(BWMBlocks.STOKED_FLAME, 2);
-        BWMHeatRegistry.addHeatSource(Blocks.BARRIER, 10);
+        BWMHeatRegistry.addHeatSource(new StateIngredient(Blocks.FIRE, Items.AIR), 1);
+        BWMHeatRegistry.addHeatSource(new StateIngredient(BWMBlocks.STOKED_FLAME, Items.AIR), 2);
     }
 
     @SubscribeEvent

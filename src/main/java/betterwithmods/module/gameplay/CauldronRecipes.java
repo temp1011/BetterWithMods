@@ -39,6 +39,9 @@ public class CauldronRecipes extends Feature {
     }
 
     private void stoked() {
+
+
+
         StackIngredient meat = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre(1, "meatPork"),
                 StackIngredient.fromOre(4, "meatBeef"),
