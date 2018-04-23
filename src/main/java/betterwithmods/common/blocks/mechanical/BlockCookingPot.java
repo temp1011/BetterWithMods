@@ -138,6 +138,11 @@ public class BlockCookingPot extends BWMBlock implements IMultiVariants {
     }
 
     @Override
+    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        return true;
+    }
+
+    @Override
     public String[] getVariants() {
         return new String[]{
                 "facing=up,type=crucible",
