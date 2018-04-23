@@ -6,7 +6,7 @@ import betterwithmods.common.blocks.mini.*;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.needs.HCPiles;
 import betterwithmods.module.hardcore.needs.HCSeeds;
-import betterwithmods.module.tweaks.MobSpawning.SpawnWhitelist;
+import betterwithmods.module.tweaks.MobSpawning;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -70,10 +70,10 @@ public class BiomesOPlenty extends CompatFeature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        SpawnWhitelist.addBlock(new ItemStack(getBlock(new ResourceLocation(modid, "grass")), 1,1));
-        SpawnWhitelist.addBlock(new ItemStack(getBlock(new ResourceLocation(modid, "grass")), 1,6));
-        SpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "flesh")));
-        SpawnWhitelist.addBlock(getBlock(new ResourceLocation(modid, "ash_block")));
+        MobSpawning.NETHER.addBlock(new ItemStack(getBlock(new ResourceLocation(modid, "grass")), 1,1));
+        MobSpawning.NETHER.addBlock(new ItemStack(getBlock(new ResourceLocation(modid, "grass")), 1,6));
+        MobSpawning.NETHER.addBlock(getBlock(new ResourceLocation(modid, "flesh")));
+        MobSpawning.NETHER.addBlock(getBlock(new ResourceLocation(modid, "ash_block")));
 
         HCSeeds.BLOCKS_TO_STOP.add(getBlock(new ResourceLocation(modid, "plant_0")).getStateFromMeta(0));
         HCSeeds.BLOCKS_TO_STOP.add(getBlock(new ResourceLocation(modid, "plant_0")).getStateFromMeta(1));
