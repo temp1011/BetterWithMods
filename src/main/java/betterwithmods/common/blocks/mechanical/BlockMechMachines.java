@@ -20,7 +20,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -292,10 +291,11 @@ public class BlockMechMachines extends BWMBlock implements IBlockActive, IMultiV
     public void overpower(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         overpowerSound(world,pos);
+        breakBlock(world,pos, state);
         switch(state.getValue(TYPE)) {
             case MILL:
                 InvUtils.ejectBrokenItems(world,pos.offset(EnumFacing.random(world.rand)),MILLSTONE);
-                world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
+                world.setBlockToAir(pos);
                 break;
             case PULLEY:
                 InvUtils.ejectBrokenItems(world, pos.offset(EnumFacing.random(world.rand)), PULLEY);
