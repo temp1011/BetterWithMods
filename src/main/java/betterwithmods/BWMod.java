@@ -5,10 +5,12 @@ import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.ModuleLoader;
-import betterwithmods.network.*;
+import betterwithmods.network.MessageFat;
+import betterwithmods.network.MessageGuiShake;
+import betterwithmods.network.MessageHarnessSync;
+import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
 import net.minecraftforge.common.ForgeModContainer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
@@ -22,7 +24,7 @@ public class BWMod {
     public static final String MODID = "betterwithmods";
     public static final String VERSION = "${version}";
     public static final String NAME = "Better With Mods";
-    public static final String DEPENDENCIES = "before:survivalist;after:mantle;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:mekanism;after:thermalexpansion;after:ctm;after:geolosys;";
+    public static final String DEPENDENCIES = "after:natura;before:survivalist;after:mantle;after:tconstruct;after:minechem;after:natura;after:terrafirmacraft;after:immersiveengineering;after:mekanism;after:thermalexpansion;after:ctm;after:geolosys;";
 
     public static Logger logger;
     @SuppressWarnings({"CanBeFinal", "unused"})

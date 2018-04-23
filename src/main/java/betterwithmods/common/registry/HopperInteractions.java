@@ -31,6 +31,41 @@ public class HopperInteractions {
         RECIPES.add(recipe);
     }
 
+    public static boolean remove(List<ItemStack> outputs,List<ItemStack> secondary) {
+        return RECIPES.removeAll(findRecipe(outputs,secondary));
+    }
+
+    public static boolean removeFuzzy(List<ItemStack> outputs,List<ItemStack> secondary) {
+        return RECIPES.removeAll(findRecipeFuzzy(outputs,secondary));
+    }
+
+    public static boolean removeExact(List<ItemStack> outputs,List<ItemStack> secondary) {
+        return RECIPES.removeAll(findRecipeExact(outputs,secondary));
+    }
+
+    public static boolean removeByInput(ItemStack input) {
+        return RECIPES.removeAll(findRecipeByInput(input));
+    }
+
+    protected static List<HopperRecipe> findRecipe(List<ItemStack> outputs,List<ItemStack> secondary) {
+        List<HopperRecipe> recipes = findRecipeExact(outputs,secondary);
+        if(recipes.isEmpty())
+            recipes = findRecipeFuzzy(outputs,secondary);
+        return recipes;
+    }
+
+    protected static List<HopperRecipe> findRecipeFuzzy(List<ItemStack> outputs,List<ItemStack> secondary) {
+        return RECIPES.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs) && InvUtils.matches(r.getOutputs(),secondary)).collect(Collectors.toList());
+    }
+
+    protected static List<HopperRecipe> findRecipeExact(List<ItemStack> outputs,List<ItemStack> secondary) {
+        return RECIPES.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs) && InvUtils.matchesExact(r.getSecondaryOutputs(),secondary)).collect(Collectors.toList());
+    }
+
+    protected static List<HopperRecipe> findRecipeByInput(ItemStack input) {
+        return RECIPES.stream().filter(r -> r.input.apply(input)).collect(Collectors.toList());
+    }
+
     public static boolean attemptToCraft(String filterName, World world, BlockPos pos, EntityItem input) {
         for (HopperRecipe recipe : RECIPES) {
             if (recipe.isRecipe(filterName, input)) {
