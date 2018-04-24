@@ -94,10 +94,6 @@ public class HCFurnace extends Feature {
         BWMRecipes.removeFurnaceRecipe(Items.GOLDEN_BOOTS);
         BWMRecipes.removeFurnaceRecipe(Items.GOLDEN_HORSE_ARMOR);
 
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
         FURNACE_TIMINGS = loadItemStackIntMap("Furnace Timing Recipes", "example recipes  minecraft:iron_ore=1000  or ore:oreIron=1000", new String[]{
                 "ore:oreIron=3200",
                 "ore:oreGold=3200",
