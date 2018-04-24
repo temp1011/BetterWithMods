@@ -27,6 +27,7 @@ import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
+import betterwithmods.network.BWNetwork;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
@@ -93,7 +94,9 @@ public class BWRegistry {
 
     public static void preInit() {
         API.manualAPI = ManualAPIImpl.INSTANCE;
+
 //        BWFluidRegistry.registerFluids();
+        BWNetwork.registerNetworking();
         BWMBlocks.registerBlocks();
         BWMItems.registerItems();
         BWMBlocks.registerTileEntities();

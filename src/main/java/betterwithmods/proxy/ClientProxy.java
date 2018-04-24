@@ -89,7 +89,7 @@ public class ClientProxy implements IProxy {
     @SideOnly(Side.CLIENT)
     public static void onPostBake(ModelBakeEvent event) {
         BarkModel.BARK = new BarkModel(RenderUtils.getModel(new ResourceLocation(BWMod.MODID, "item/bark")));
-        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID +":bark","inventory"), BarkModel.BARK);
+        event.getModelRegistry().putObject(new ModelResourceLocation(BWMod.MODID + ":bark", "inventory"), BarkModel.BARK);
     }
 
     @SubscribeEvent
@@ -196,9 +196,17 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
+    public void rotateEntity(int entityId, float yaw, float pitch) {
+        Entity entity = getEntityByID(entityId);
+        if (entity != null) {
+            entity.setPositionAndRotation(entity.posX, entity.posY, entity.posZ, yaw, pitch);
+        }
+    }
+
+    @Override
     public NonNullList<ItemStack> getSubItems(Item item) {
         NonNullList<ItemStack> stacks = NonNullList.create();
-        Arrays.stream(item.getCreativeTabs()).forEach(tab -> item.getSubItems(tab,stacks));
+        Arrays.stream(item.getCreativeTabs()).forEach(tab -> item.getSubItems(tab, stacks));
         return stacks;
     }
 
@@ -288,4 +296,6 @@ public class ClientProxy implements IProxy {
             return location;
         }
     }
+
+
 }

@@ -38,7 +38,6 @@ public class BlockCandle extends BWMBlock {
         return new ItemStack(BLOCKS.get(type));
     }
 
-
     public BlockCandle(EnumDyeColor color) {
         super(Material.GROUND);
         setRegistryName("candle_" + color.getName());

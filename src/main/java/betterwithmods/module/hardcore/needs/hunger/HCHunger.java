@@ -6,8 +6,8 @@ import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.needs.HCTools;
-import betterwithmods.network.MessageGuiShake;
-import betterwithmods.network.NetworkHandler;
+import betterwithmods.network.BWNetwork;
+import betterwithmods.network.messages.MessageHungerShake;
 import betterwithmods.util.player.FatPenalty;
 import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
@@ -65,17 +65,19 @@ import java.util.UUID;
  * Created by primetoxinz on 6/20/17.
  */
 public class HCHunger extends CompatFeature {
-    public HCHunger() {
-        super("applecore");
-    }
-
+    private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     public static float blockBreakExhaustion;
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
     public static boolean rawMeatDangerous;
     public static boolean overridePumpkinSeeds;
     public static boolean overrideMushrooms;
-
+    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
+    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
+    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
+    public HCHunger() {
+        super("applecore");
+    }
 
     @Override
     public void setupConfig() {
@@ -87,10 +89,6 @@ public class HCHunger extends CompatFeature {
         overrideMushrooms = loadPropBool("Edible Mushrooms", "Override Mushrooms to be edible, be careful with the red one ;)", true);
         overridePumpkinSeeds = loadPropBool("Edible Pumpkin Seeds", "Override Pumpkin Seeds to be edible", true);
     }
-
-    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
-    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
-    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -137,7 +135,7 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.BREAD), 12);
 
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE), 3);
-        FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE,1,1), 3);
+        FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE, 1, 1), 3);
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_CARROT), 3);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_DINNER), 24);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_POTATOES), 18);
@@ -265,8 +263,6 @@ public class HCHunger extends CompatFeature {
         event.setResult(Event.Result.DENY);
     }
 
-    private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
-
     @SubscribeEvent
     public void entityConstruct(EntityEvent.EntityConstructing e) {
         if (e.getEntity() instanceof EntityPlayer) {
@@ -301,7 +297,6 @@ public class HCHunger extends CompatFeature {
             }
 
 
-
         }
     }
 
@@ -310,7 +305,7 @@ public class HCHunger extends CompatFeature {
     public void onExhaustAdd(ExhaustionEvent.ExhaustionAddition event) {
         if (event.deltaExhaustion > 0.05) {
             if (event.player instanceof EntityPlayerMP)
-                NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
+                BWNetwork.sendTo(new MessageHungerShake(), (EntityPlayerMP) event.player);
             else
                 GuiHunger.INSTANCE.shake();
         }
@@ -331,14 +326,14 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
-        if(event.isCanceled() || player == null || player.isCreative())
+        if (event.isCanceled() || player == null || player.isCreative())
             return;
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
         ItemStack stack = player.getHeldItemMainhand();
         String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < HCTools.noHungerThreshold)
+        if (tooltype != null && state.getBlockHardness(world, pos) <= 0 && stack.getItem().getHarvestLevel(stack, tooltype, player, state) < HCTools.noHungerThreshold)
             return; //doesn't consume hunger if using iron tier axes
         player.addExhaustion(blockBreakExhaustion - 0.005f);
     }
