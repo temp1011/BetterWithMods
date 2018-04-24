@@ -40,7 +40,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
-    private static final float HEIGHT = 0.71875F;
+    private static final float HEIGHT = 0.75f;
     private static final AxisAlignedBB D_AABB = new AxisAlignedBB(0.0F, 1.0F - HEIGHT, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB U_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
     private static final AxisAlignedBB N_AABB = new AxisAlignedBB(0.0F, 0.0F, 1.0F - HEIGHT, 1.0F, 1.0F, 1.0F);

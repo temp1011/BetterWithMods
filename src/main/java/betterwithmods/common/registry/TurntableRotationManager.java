@@ -108,7 +108,7 @@ public class TurntableRotationManager {
     }
 
     public static void rotateEntities(World world, BlockPos pos, Rotation rotation) {
-        List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, Block.FULL_BLOCK_AABB.offset(pos), entity -> true);
+        List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, Block.FULL_BLOCK_AABB.offset(pos).shrink(0.5), entity -> true);
 
         if (!entities.isEmpty()) {
             for (Entity entity : entities) {
