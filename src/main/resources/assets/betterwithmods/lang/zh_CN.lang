@@ -474,6 +474,7 @@ inv.mill.name=磨石
 inv.bwm.dispenser.name=探测器
 inv.saw.name=螺杆锯
 inv.kiln.name=窑
+inv.kiln.stoked.name=窑
 inv.pulley.name=滑车
 inv.turntable.name=螺杆旋转台
 inv.steel_anvil.name=熔魂钢钢砧
