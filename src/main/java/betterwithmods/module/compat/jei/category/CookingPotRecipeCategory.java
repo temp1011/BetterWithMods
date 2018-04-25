@@ -67,7 +67,7 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                int index = 1 + i + (j * 3);
+                int index = i + (j * 3);
                 stacks.init(inputSlots + index, true, 7 + i * 18, 2 + j * 18);
                 stacks.init(outputSlot + index, false, 105 + i * 18, 2 + j * 18);
             }
@@ -76,10 +76,10 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
         int heat = wrapper.getRecipe().getHeat();
         List<ItemStack> heatSources = BWMHeatRegistry.getStacks(heat);
         if (!heatSources.isEmpty()) {
-            stacks.init(0, true, 75, 38);
-            stacks.set(0, heatSources);
+            stacks.init(19, true, 75, 38);
+            stacks.set(19, heatSources);
         }
-        int index = 1;
+        int index = 0;
         List<List<ItemStack>> outputs = InvUtils.splitIntoBoxes(wrapper.getRecipe().getOutputs(), 9);
         for (List<ItemStack> outputStacks : outputs)
             stacks.set(index++, outputStacks);
