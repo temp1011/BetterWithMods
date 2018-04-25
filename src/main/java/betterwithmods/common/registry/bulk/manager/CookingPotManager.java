@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
 
+    public CookingPotRecipe addRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {
+        return addRecipe(new CookingPotRecipe(inputs, outputs, heat));
+    }
+
     public CookingPotRecipe addStokedRecipe(ItemStack input, ItemStack... output) {
         return addStokedRecipe(Lists.newArrayList(Ingredient.fromStacks(input.copy())), Lists.newArrayList(output));
     }
@@ -36,8 +40,9 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addStokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, BWMHeatRegistry.STOKED_HEAT));
+        return addRecipe(inputs, outputs, BWMHeatRegistry.STOKED_HEAT);
     }
+
 
     //Unstoked
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, ItemStack output) {
@@ -65,11 +70,11 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, BWMHeatRegistry.UNSTOKED_HEAT));
+        return addRecipe(inputs, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
     }
 
     public CookingPotRecipe addHeatlessRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, heat).setIgnoreHeat(true));
+        return addRecipe(inputs, outputs, heat).setIgnoreHeat(true);
     }
 
     @Override
@@ -81,4 +86,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
         return Optional.empty();
     }
 
+    public List<CookingPotRecipe> getRecipesForHeat(int heat) {
+        return getRecipes().stream().filter(r -> r.getHeat() == heat).collect(Collectors.toList());
+    }
 }

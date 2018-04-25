@@ -383,6 +383,7 @@ inv.mill.name=Mill Stone
 inv.bwm.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
+inv.kiln.stoked.name=Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
 inv.steel_anvil.name=Soulforged Steel Anvil

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
 
@@ -73,5 +74,9 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
             return true;
         }
         return false;
+    }
+
+    public List<KilnRecipe> getRecipesForHeat(int heat) {
+        return getRecipes().stream().filter( r -> r.getHeat() == heat).collect(Collectors.toList());
     }
 }
