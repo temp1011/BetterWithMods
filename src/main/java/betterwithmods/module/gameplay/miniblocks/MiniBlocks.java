@@ -200,6 +200,11 @@ public class MiniBlocks extends Feature {
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 
+        BWOreDictionary.registerOre("miniblocks",
+                new ItemStack(MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(Material.WOOD)),
+                new ItemStack(MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(Material.WOOD)),
+                new ItemStack(MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).get(Material.WOOD)));
+
         for (Material material : names.keySet()) {
             BlockCamo siding = MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(material);
             BlockCamo moulding = MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).get(material);
