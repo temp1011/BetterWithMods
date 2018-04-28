@@ -29,6 +29,10 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
     }
 
 
+    public KilnRecipe addUnstokedRecipe(ItemStack input, List<ItemStack> outputs) {
+        return addRecipe(input, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
+    }
+
     public KilnRecipe addUnstokedRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
     }
@@ -77,6 +81,6 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
     }
 
     public List<KilnRecipe> getRecipesForHeat(int heat) {
-        return getRecipes().stream().filter( r -> r.getHeat() == heat).collect(Collectors.toList());
+        return getRecipes().stream().filter(r -> r.getHeat() == heat).collect(Collectors.toList());
     }
 }

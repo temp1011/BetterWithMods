@@ -8,6 +8,7 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.KilnStructureManager;
+import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.miniblocks.client.CamoModel;
 import betterwithmods.module.hardcore.needs.HCCooking;
@@ -47,29 +48,27 @@ public class KilnRecipes extends Feature {
         BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.CLAY), new ItemStack(Blocks.HARDENED_CLAY));
         BWRegistry.KILN.addStokedRecipe(new ItemStack(BWMBlocks.NETHER_CLAY), BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY));
 
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), new ItemStack(Items.CAKE));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 16));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, 2));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, 1));
-
         int foodModifier = BWMod.MODULE_LOADER.isFeatureEnabled(HCCooking.class) ? 1 : 2;
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0, foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD, foodModifier));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8 * foodModifier));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, foodModifier));
-        BWRegistry.KILN.addStokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, foodModifier));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.CAKE), IntStream.range(0, foodModifier).mapToObj(i -> new ItemStack(Items.CAKE)).collect(Collectors.toList()));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD), new ItemStack(Items.BREAD, foodModifier));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.COOKIE), new ItemStack(Items.COOKIE, 8 * foodModifier));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.PUMPKIN), new ItemStack(Items.PUMPKIN_PIE, foodModifier));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.APPLE), new ItemStack(BWMItems.APPLE_PIE, foodModifier));
+        BWRegistry.KILN.addUnstokedRecipe(BlockRawPastry.getStack(BlockRawPastry.EnumType.MELON), new ItemStack(BWMItems.MELON_PIE, foodModifier));
     }
 
     @SubscribeEvent
     public void formKiln(BlockEvent.NeighborNotifyEvent event) {
-        KilnStructureManager.createKiln(event.getWorld(), event.getPos());
+        if (BWMHeatRegistry.getHeat(event.getWorld(), event.getPos()) > 0) {
+            KilnStructureManager.createKiln(event.getWorld(), event.getPos().up());
+        }
     }
 
     @SubscribeEvent
     public void onKilnPlace(BlockEvent.PlaceEvent event) {
-        if (event.getPlacedBlock().getBlock() != Blocks.AIR)
+        if (event.getPlacedBlock().getBlock() != Blocks.AIR) {
             KilnStructureManager.createKiln(event.getWorld(), event.getPos());
+        }
     }
 
 

@@ -1,10 +1,10 @@
 {
   "result": {
-    "item": "betterwithmods:raw_apple_pie"
+    "item": "betterwithmods:raw_melon_pie"
   },
   "ingredients": [
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:melon"
     },
     {
       "item": "minecraft:sugar"

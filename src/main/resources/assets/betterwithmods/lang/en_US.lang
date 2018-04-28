@@ -187,6 +187,7 @@ tile.bwm:raw_pumpkin_pie.name=Oven Ready Pumpkin Pie
 tile.bwm:raw_cookie.name=Raw Cookie Dough
 tile.bwm:raw_flour.name=Flour
 tile.bwm:raw_apple_pie.name=Oven Ready Apple Pie
+tile.bwm:raw_melon_pie.name=Oven Ready Melon Pie
 tile.bwm:dirt_slab.name=Dirt Slab
 
 tile.bwm:infernal_enchanter.name=Infernal Enchanter
@@ -308,6 +309,7 @@ item.bwm:mystery_meat.name=Mystery Meat
 item.bwm:cooked_mystery_meat.name=Cooked Mystery Meat
 item.bwm:kibble.name=Kibble
 item.bwm:apple_pie.name=Apple Pie
+item.bwm:melon_pie.name=Apple Pie
 item.bwm:bat_wing.name=Bat Wing
 item.bwm:cooked_bat_wing.name=Cooked Bat Wing
 
@@ -380,7 +382,7 @@ inv.crucible.name=Crucible
 inv.crucible.stoked.name=Stoked Crucible
 inv.filtered_hopper.name=Filtered Hopper
 inv.mill.name=Mill Stone
-inv.bwm.dispenser.name=Block Dispenser
+inv.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
 inv.kiln.stoked.name=Kiln

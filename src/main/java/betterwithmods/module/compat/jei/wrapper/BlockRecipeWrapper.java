@@ -1,7 +1,6 @@
 package betterwithmods.module.compat.jei.wrapper;
 
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
-import com.google.common.collect.Lists;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -10,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -18,11 +16,11 @@ import java.util.stream.Collectors;
  * @author primetoxinz
  * @version 11/11/16
  */
-public class BlockRecipeWrapper implements IRecipeWrapper {
-    public final BlockRecipe recipe;
+public class BlockRecipeWrapper<T extends BlockRecipe> implements IRecipeWrapper {
+    public final T recipe;
     protected final IJeiHelpers helpers;
 
-    public BlockRecipeWrapper(IJeiHelpers helpers, BlockRecipe recipe) {
+    public BlockRecipeWrapper(IJeiHelpers helpers, T recipe) {
         this.helpers = helpers;
         this.recipe = recipe;
     }
@@ -33,5 +31,10 @@ public class BlockRecipeWrapper implements IRecipeWrapper {
         ArrayList<List<ItemStack>> newList = new ArrayList<>();
         newList.add(recipe.getOutputs());
         ingredients.setOutputLists(ItemStack.class, newList);
+    }
+
+
+    public T getRecipe() {
+        return recipe;
     }
 }

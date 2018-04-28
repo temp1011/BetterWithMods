@@ -9,8 +9,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
@@ -22,6 +24,11 @@ public class BlockKiln extends BlockCamo {
 
     public BlockKiln(Supplier<Set<IBlockState>> states) {
         super(Material.ROCK, material -> states.get());
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return true;
     }
 
     @Override

@@ -27,29 +27,14 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
     private static final ResourceLocation guiTexture = new ResourceLocation(BWMod.MODID, "textures/gui/jei/cooking.png");
     @Nonnull
     private final ICraftingGridHelper craftingGrid;
-    private final String uid;
     @Nonnull
     private IDrawableAnimated flame;
     private IGuiHelper helper;
 
     public CookingPotRecipeCategory(IGuiHelper helper, String uid) {
-        super(helper.createDrawable(guiTexture, 0, 0, width, height), String.format("inv.%s.name", uid.substring(4)));
+        super(helper.createDrawable(guiTexture, 0, 0, width, height), uid, String.format("inv.%s.name", uid.substring(4)));
         this.helper = helper;
-        this.uid = uid;
-        craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlot);
-        IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 166, 0, 14, 14);
-        this.flame = helper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
-    }
-
-    @Nonnull
-    @Override
-    public String getUid() {
-        return this.uid;
-    }
-
-    @Override
-    public String getModName() {
-        return BWMod.NAME;
+        this.craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlot);
     }
 
     @Override
