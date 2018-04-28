@@ -86,7 +86,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public int matches(ItemStackHandler inventory) {
-        int index = -1;
+        int index = Integer.MAX_VALUE;
         for (Ingredient ingredient : inputs) {
             if ((index = Math.min(index,InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
                 return -1;
