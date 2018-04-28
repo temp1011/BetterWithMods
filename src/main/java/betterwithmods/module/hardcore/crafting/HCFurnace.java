@@ -28,6 +28,7 @@ public class HCFurnace extends Feature {
         enabledByDefault = false;
     }
 
+    public static boolean CONSUME_FUEL_WHEN_IDLE;
     public static int DEFAULT_FURNACE_TIMING = 200;
     public static HashMap<Ingredient, Integer> FURNACE_TIMINGS = Maps.newHashMap();
     public static HashMap<Ingredient, Integer> FUEL_TIMINGS = Maps.newHashMap();
@@ -37,6 +38,7 @@ public class HCFurnace extends Feature {
 
     @Override
     public void setupConfig() {
+        CONSUME_FUEL_WHEN_IDLE = loadPropBool("Consume Fuel When Idle", "Furnaces will consume fuel even if no smeltable items are present.", true);
         DEFAULT_FURNACE_TIMING = loadPropInt("Default Furnace Timing", "Default number of ticks for an item to smelt in the furnace (vanilla is 200)", "", 200, 1, Integer.MAX_VALUE);
     }
 
