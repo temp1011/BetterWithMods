@@ -1,12 +1,12 @@
 package betterwithmods.common.registry.bulk.manager;
 
+import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -78,13 +78,14 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     @Override
-    protected Optional<CookingPotRecipe> findRecipe(List<CookingPotRecipe> recipes, TileEntity tile, ItemStackHandler inv) {
+    protected Optional<CookingPotRecipe> findRecipe(List<CookingPotRecipe> recipes, IBulkTile tile, ItemStackHandler inv) {
         if (tile instanceof IHeated) {
             List<CookingPotRecipe> r1 = recipes.stream().filter(r -> r.canCraft((IHeated) tile, tile.getWorld(), tile.getPos())).map(CookingPotRecipe.class::cast).collect(Collectors.toList());
             return super.findRecipe(r1, tile, inv);
         }
         return Optional.empty();
     }
+
 
     public List<CookingPotRecipe> getRecipesForHeat(int heat) {
         return getRecipes().stream().filter(r -> r.getHeat() == heat).collect(Collectors.toList());

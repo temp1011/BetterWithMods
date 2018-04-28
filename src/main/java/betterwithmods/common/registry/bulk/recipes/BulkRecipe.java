@@ -1,15 +1,16 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -31,11 +32,11 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         this.priority = priority;
     }
 
-    public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
+    public NonNullList<ItemStack> onCraft(@Nullable World world, IBulkTile tile, ItemStackHandler inv) {
         NonNullList<ItemStack> items = NonNullList.create();
         if (consumeIngredients(inv, items)) {
             items.addAll(getOutputs());
-            return BulkCraftEvent.fireOnCraft(tile, world, inv, this, items);
+            return BulkCraftEvent.fireOnCraft(tile, world, this, items);
         }
         return NonNullList.create();
     }
@@ -86,9 +87,9 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public int matches(ItemStackHandler inventory) {
-        int index = -1;
+        int index = Integer.MAX_VALUE;
         for (Ingredient ingredient : inputs) {
-            if ((index = Math.min(index,InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
+            if ((index = Math.min(index, InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
                 return -1;
         }
         return index;

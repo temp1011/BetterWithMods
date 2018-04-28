@@ -65,7 +65,7 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
     @Override
     public boolean canCraft(World world, BlockPos pos, IBlockState state) {
         KilnRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        return recipe != null && (recipe.ignore() || KilnStructureManager.getKiln().getHeat(world, pos.down()) == recipe.getHeat());
+        return recipe != null && (recipe.ignore() || KilnStructureManager.getKiln().getHeat(world,pos) == recipe.getHeat());
     }
 
     public boolean craftRecipe(World world, BlockPos pos, Random random, IBlockState state) {

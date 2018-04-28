@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.mechanical.tile;
 
 import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
+import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWRegistry;
@@ -19,12 +20,13 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
+public class TileMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable, IBulkTile {
 
     public static final int GRIND_TIME = 200;
 
@@ -248,5 +250,10 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
 
     public boolean isUseableByPlayer(EntityPlayer player) {
         return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public ItemStackHandler getInventory() {
+        return inventory;
     }
 }

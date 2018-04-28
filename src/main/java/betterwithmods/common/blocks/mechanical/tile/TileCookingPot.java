@@ -29,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 import java.util.Random;
@@ -307,5 +308,10 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
     @Override
     public Block getBlock() {
         return getBlockType();
+    }
+
+    @Override
+    public ItemStackHandler getInventory() {
+        return inventory;
     }
 }

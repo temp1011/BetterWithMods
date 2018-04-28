@@ -66,12 +66,12 @@ public class TileKiln extends TileCamo implements ITickable {
 
     private int calculateSpeed() {
         int speed = 0;
-        int centerFire = KilnStructureManager.getHeat(world,pos);
+        int centerFire = KilnStructureManager.getKiln().getHeat(world,pos);
 
         for (int xP = -1; xP < 2; xP++) {
             for (int zP = -1; zP < 2; zP++) {
                 BlockPos bPos = pos.add(xP, 0, zP);
-                int currentFire = KilnStructureManager.getHeat(world, bPos);
+                int currentFire = KilnStructureManager.getKiln().getHeat(world, bPos);
                 if (currentFire == centerFire)
                     speed += currentFire;
             }

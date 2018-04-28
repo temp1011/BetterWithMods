@@ -15,6 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -55,15 +56,6 @@ public class KilnStructureManager {
         return false;
     }
 
-    //@Param BlockPos pos - the position of the kiln block
-    public static int getHeat(World world, BlockPos pos) {
-        return BWMHeatRegistry.getHeat(world, pos.down());
-    }
-
-    public static IHeated getKiln() {
-        return KilnStructureManager::getHeat;
-    }
-
     public static boolean isValidRecipe(World world, BlockPos pos, KilnRecipe recipe) {
         return recipe.canCraft(getKiln(), world, pos);
     }
@@ -86,5 +78,32 @@ public class KilnStructureManager {
 
     public static Set<IBlockState> getKilnBlocks() {
         return KILN_BLOCKS;
+    }
+
+    public static Kiln getKiln() {
+        return new Kiln();
+    }
+
+    public static class Kiln implements IHeated {
+        @Override
+        public int getHeat(World world, BlockPos pos) {
+            return BWMHeatRegistry.getHeat(world, pos.down());
+        }
+
+
+        @Override
+        public World getWorld() {
+            return null;
+        }
+
+        @Override
+        public BlockPos getPos() {
+            return null;
+        }
+
+        @Override
+        public ItemStackHandler getInventory() {
+            return null;
+        }
     }
 }

@@ -32,8 +32,8 @@ tile.bwm:cauldron.name=Cauldron
 tile.bwm:dragon_vessel.name=Mysterious Vessel
 
 tile.bwm:kiln.name=Kiln
-tile.bwm:bellows.0.name=Bellows
-tile.bwm:bellows.1.name=Spring Action Bellows
+tile.bwm:bellows.name=Bellows
+tile.bwm:spring_action_bellows.name=Spring Action Bellows
 tile.bwm:saw.name=Saw
 tile.bwm:steel_anvil.name=Soulforged Steel Anvil
 tile.bwm:chopping_block.name=Chopping Block
@@ -309,7 +309,7 @@ item.bwm:mystery_meat.name=Mystery Meat
 item.bwm:cooked_mystery_meat.name=Cooked Mystery Meat
 item.bwm:kibble.name=Kibble
 item.bwm:apple_pie.name=Apple Pie
-item.bwm:melon_pie.name=Apple Pie
+item.bwm:melon_pie.name=Melon Pie
 item.bwm:bat_wing.name=Bat Wing
 item.bwm:cooked_bat_wing.name=Cooked Bat Wing
 

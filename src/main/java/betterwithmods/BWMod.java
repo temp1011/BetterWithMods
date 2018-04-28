@@ -83,10 +83,15 @@ public class BWMod {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
         MODULE_LOADER.serverStarting(evt);
+    }
+
+    @Mod.EventHandler
+    public void serverStarted(FMLServerStartedEvent evt) {
         if(isDev()) {
             BWMTests.runTests();
         }
     }
+
 
     @Mod.EventHandler
     public void serverStopping(FMLServerStoppingEvent evt) {
