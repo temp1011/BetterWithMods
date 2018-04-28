@@ -47,6 +47,9 @@ dependencies {
     deobfCompile "team.chisel.ctm:CTM:+"
     compile "MCMultiPart2:MCMultiPart:2.4.1"
     runtime "MCMultiPart2:MCMultiPart:2.4.1"
+
+    compile 'org.easytesting:fest-assert:1.4'
+    compile 'org.easytesting:fest-util:1.1.6'
 }
 
 

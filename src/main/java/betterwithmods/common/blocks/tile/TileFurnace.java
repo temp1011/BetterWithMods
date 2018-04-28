@@ -45,7 +45,8 @@ public class TileFurnace extends TileEntityFurnace {
             ItemStack fuel = this.furnaceItemStacks.get(1);
             ItemStack smelt = this.furnaceItemStacks.get(0);
             if (this.isBurning() || !fuel.isEmpty()) {
-                if (!this.isBurning()) {
+                boolean fuelConsumeCondition = HCFurnace.CONSUME_FUEL_WHEN_IDLE || this.canSmelt();
+                if (!this.isBurning() && fuelConsumeCondition) {
                     this.furnaceBurnTime = getItemBurnTime(fuel);
                     this.currentItemBurnTime = this.furnaceBurnTime;
 
