@@ -10,6 +10,7 @@ import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.MessageHarnessSync;
 import betterwithmods.network.NetworkHandler;
 import betterwithmods.proxy.IProxy;
+import betterwithmods.testing.BWMTests;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -66,6 +67,7 @@ public class BWMod {
 
         proxy.postInit(evt);
         BWRegistry.postPostInit();
+
     }
 
     @Mod.EventHandler
@@ -76,11 +78,18 @@ public class BWMod {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
         ModuleLoader.serverStarting(evt);
+        if(isDev()) {
+            BWMTests.runTests();
+        }
     }
 
     @Mod.EventHandler
     public void serverStopping(FMLServerStoppingEvent evt) {
         FakePlayerHandler.setPlayer(null);
         FakePlayerHandler.setCreativePlayer(null);
+    }
+
+    public static boolean isDev() {
+        return BWMod.VERSION.equalsIgnoreCase("${version}");
     }
 }
