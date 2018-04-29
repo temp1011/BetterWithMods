@@ -4,6 +4,7 @@ import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.testing.base.BaseBulkTest;
 import betterwithmods.testing.base.Before;
 import betterwithmods.testing.base.MockInventory;
 import betterwithmods.testing.base.Test;

@@ -2,6 +2,7 @@ package betterwithmods.testing;
 
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
+import betterwithmods.testing.base.BaseBulkTest;
 import betterwithmods.testing.base.Before;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
@@ -13,6 +14,8 @@ import net.minecraftforge.oredict.OreIngredient;
 import java.util.List;
 
 public class BulkRecipeTests extends BaseBulkTest<BulkRecipe> {
+
+
     @Before
     public void beforeTest() {
         TEST_MANAGER = new CraftingManagerBulk<>();

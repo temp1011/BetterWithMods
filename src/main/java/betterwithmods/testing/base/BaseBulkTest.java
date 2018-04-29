@@ -1,11 +1,8 @@
-package betterwithmods.testing;
+package betterwithmods.testing.base;
 
 import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
-import betterwithmods.testing.base.BaseTest;
-import betterwithmods.testing.base.MockInventory;
-import betterwithmods.testing.base.Test;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -45,6 +42,7 @@ public abstract class BaseBulkTest<T extends BulkRecipe > extends BaseTest {
         });
     }
 
+    @Before
     public abstract void beforeTest();
 
     @Test
