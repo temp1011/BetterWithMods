@@ -61,8 +61,6 @@ public abstract class BlockStickBase extends BWMBlock {
         if (worldIn.getBlockState(pos.down()).isSideSolid(worldIn,pos,EnumFacing.UP)) {
             newState = newState.withProperty(GROUND, true);
         }
-        IBlockState above = worldIn.getBlockState(pos.up());
-        Block block = above.getBlock();
         return getConnections(newState, worldIn, pos);
     }
 
