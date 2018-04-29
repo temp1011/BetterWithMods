@@ -84,7 +84,7 @@ public abstract class BlockStickBase extends BWMBlock {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         double y = getHeight(state);
-        return new AxisAlignedBB(7d / 16d, 0, 7d / 16d, 9d / 16d, y, 9d / 16d);
+        return new AxisAlignedBB(6.5d / 16d, 0, 6.5d / 16d, 9.5d / 16d, y, 9.5d / 16d);
     }
 
     public boolean isOpaqueCube(IBlockState state) {
