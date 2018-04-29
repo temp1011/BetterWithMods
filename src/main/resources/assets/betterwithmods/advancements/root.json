@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.betterwithmods.desc"
     },
-    "background": "minecraft:textures/blocks/netherrack.png",
+    "background": "betterwithmods:textures/blocks/soulforged_steel.png",
     "announce_to_chat": false
   },
   "criteria": {
