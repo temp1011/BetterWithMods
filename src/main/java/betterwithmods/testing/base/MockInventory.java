@@ -4,11 +4,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class MockInventory extends ItemStackHandler {
+    public MockInventory(int size) {
+        super(size);
+    }
+
     public static MockInventory createInventory(int startIndex, ItemStack... array) {
-        MockInventory inventory = new MockInventory();
+        MockInventory inventory = new MockInventory(array.length);
 
         for (int i = startIndex; i < Math.min(array.length, inventory.getSlots()); i++) {
-            inventory.setStackInSlot(startIndex, array[i - startIndex]);
+            int j = i - startIndex;
+            inventory.setStackInSlot(i, array[j]);
         }
         return inventory;
     }

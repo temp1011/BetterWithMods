@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class CraftingManagerBulk<T extends BulkRecipe> {
     protected List<T> recipes;
 
-    protected CraftingManagerBulk() {
+    public CraftingManagerBulk() {
         this.recipes = new ArrayList<>();
     }
 
