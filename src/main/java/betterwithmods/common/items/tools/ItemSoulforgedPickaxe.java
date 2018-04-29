@@ -42,6 +42,6 @@ public class ItemSoulforgedPickaxe extends ItemPickaxe {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return HCEnchanting.canEnchantSteel();
+        return HCEnchanting.canEnchantSteel() && super.canApplyAtEnchantingTable(stack,enchantment);
     }
 }

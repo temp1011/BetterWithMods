@@ -19,8 +19,9 @@ public class ItemSoulforgedSword extends ItemSword {
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return BWOreDictionary.listContains(repair, OreDictionary.getOres("ingotSoulforgedSteel")) || super.getIsRepairable(toRepair, repair);
     }
+
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return HCEnchanting.canEnchantSteel();
+        return HCEnchanting.canEnchantSteel() && super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }
