@@ -10,7 +10,7 @@
       "sawstate": "#sawoff"
     },
     "model": "betterwithmods:saw",
-    "uvlock": false
+    "uvlock": true
   },
   "variants": {
     "normal": [
