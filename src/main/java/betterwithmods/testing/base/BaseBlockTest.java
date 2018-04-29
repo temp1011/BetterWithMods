@@ -10,10 +10,10 @@ import org.fest.assertions.Assertions;
 
 public abstract class BaseBlockTest<T extends BlockRecipe> extends BaseTest {
 
+    protected final BlockPos origin = BlockPos.ORIGIN;
     protected FakeWorld world;
     protected CraftingManagerBlock<T> TEST_MANAGER;
-    protected T recipe, oreRecipe;
-    protected final BlockPos origin = BlockPos.ORIGIN;
+    protected T recipe, oreRecipe, blockDropRecipe;
 
     public abstract void beforeTest();
 
@@ -44,27 +44,33 @@ public abstract class BaseBlockTest<T extends BlockRecipe> extends BaseTest {
 
     @Test
     public void testRecipeMatching() {
-        testRecipe(recipe);
+        testRecipe(recipe, origin);
     }
 
     @Test
     public void testOredictMatching() {
-        testRecipe(oreRecipe);
+        testRecipe(oreRecipe, origin);
     }
+
+    @Test
+    public void testBlockDropMatching() {
+        testRecipe(blockDropRecipe, origin.up());
+    }
+
 
     @Test
     public void testPriority() {
 
     }
 
-    private void testRecipe(T recipe) {
-
+    protected void testRecipe(T recipe, BlockPos pos) {
         Assertions.assertThat(recipe.isInvalid()).isFalse();
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isEmpty();
         TEST_MANAGER.addRecipe(recipe);
         Assertions.assertThat(TEST_MANAGER.getRecipes()).hasSize(1);
-        Assertions.assertThat(TEST_MANAGER.canCraft(world, origin, world.getState())).isTrue();
-        Assertions.assertThat(TEST_MANAGER.craftItem(world,origin,world.getState() )).isNotEmpty();
+        Assertions.assertThat(TEST_MANAGER.canCraft(world, origin, world.getBlockState(pos))).isTrue();
+        Assertions.assertThat(TEST_MANAGER.craftItem(world, origin, world.getBlockState(pos))).isNotEmpty();
+        TEST_MANAGER.getRecipes().clear();
     }
 }
 

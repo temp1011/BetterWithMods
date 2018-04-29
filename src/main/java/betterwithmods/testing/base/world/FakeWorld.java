@@ -1,5 +1,6 @@
 package betterwithmods.testing.base.world;
 
+import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -9,10 +10,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public class FakeWorld extends World {
 
-    private IBlockState state;
+    private Map<BlockPos, IBlockState> states = Maps.newHashMap();
 
     public FakeWorld() {
         super(new FakeSaveHandler(), new FakeWorldInfo(), new FakeWorldProvider(), new Profiler(), false);
@@ -25,13 +27,13 @@ public class FakeWorld extends World {
 
     @Override
     public boolean setBlockState(BlockPos pos, IBlockState state) {
-        this.setState(state);
+        this.states.put(pos, state);
         return true;
     }
 
     @Override
     public IBlockState getBlockState(BlockPos pos) {
-        return getState();
+        return states.getOrDefault(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
@@ -45,19 +47,9 @@ public class FakeWorld extends World {
         return null;
     }
 
-    public IBlockState getState() {
-        if (state == null)
-            return Blocks.AIR.getDefaultState();
-        return state;
-    }
-
-    public void setState(IBlockState state) {
-        this.state = state;
-    }
-
     @Override
     public boolean setBlockToAir(BlockPos pos) {
-        setState(Blocks.AIR.getDefaultState());
+        setBlockState(pos, Blocks.AIR.getDefaultState());
         return true;
     }
 

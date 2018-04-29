@@ -10,6 +10,10 @@ import javax.annotation.Nullable;
 
 public class BlockDropIngredient extends BlockIngredient {
 
+    public BlockDropIngredient(String ore) {
+        super(ore);
+    }
+
     public BlockDropIngredient(ItemStack... stacks) {
         super(stacks);
     }
