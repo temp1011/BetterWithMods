@@ -1,8 +1,10 @@
 package betterwithmods.common.blocks.tile;
 
+import betterwithmods.common.advancements.BWAdvancements;
 import betterwithmods.common.blocks.BlockInfernalEnchanter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -13,6 +15,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+
+import java.util.List;
 
 /**
  * Created by primetoxinz on 9/11/16.
@@ -52,22 +56,26 @@ public class TileInfernalEnchanter extends TileBasic implements ITickable {
         }
 
         if (getWorld().getTotalWorldTime() % 5 == 0) {
-            boolean players = !world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(3)).isEmpty();
+            List<EntityPlayer> playerList = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(3));
+            boolean players = !playerList.isEmpty();
             if (active != players) {
                 active = players;
-                if(active)
+                if (active)
                     world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1, 1);
             }
             IBlockState state = world.getBlockState(pos);
             if (active) {
-                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE,true));
+                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE, true));
                 int x = pos.getX(), y = pos.getY(), z = pos.getZ();
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .125, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .125, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .875, y + .9, z + .875, 0, 0, 0);
                 getWorld().spawnParticle(EnumParticleTypes.FLAME, x + .125, y + .9, z + .875, 0, 0, 0);
+
+                playerList.stream().filter(p -> p instanceof EntityPlayerMP).map(p -> (EntityPlayerMP) p).forEach(player -> BWAdvancements.CONSTRUCT_LIBRARY.trigger(player, getBookcaseCount()));
+
             } else {
-                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE,false));
+                world.setBlockState(pos, state.withProperty(BlockInfernalEnchanter.ACTIVE, false));
             }
         }
     }

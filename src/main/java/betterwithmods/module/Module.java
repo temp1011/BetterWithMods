@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -262,4 +263,9 @@ public abstract class Module {
     public boolean isFeatureEnabled(Class<? extends Feature> clazz) {
         return enabledFeatures.stream().anyMatch(feature -> clazz.isAssignableFrom(feature.getClass()));
     }
+
+    public String getName() {
+        return StringUtils.capitalize(name);
+    }
 }
+

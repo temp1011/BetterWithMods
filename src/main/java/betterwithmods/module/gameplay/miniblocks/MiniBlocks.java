@@ -297,9 +297,7 @@ public class MiniBlocks extends Feature {
         names.put(Material.WOOD, "wood");
         names.put(Material.ROCK, "rock");
         names.put(Material.IRON, "iron");
-
         MiniType.registerTiles();
-        System.out.println(WHITELIST);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

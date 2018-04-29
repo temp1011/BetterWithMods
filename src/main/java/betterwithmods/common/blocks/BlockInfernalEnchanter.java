@@ -3,7 +3,6 @@ package betterwithmods.common.blocks;
 import betterwithmods.BWMod;
 import betterwithmods.client.BWGuiHandler;
 import betterwithmods.common.blocks.tile.TileInfernalEnchanter;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -21,10 +20,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by primetoxinz on 9/11/16.
  */
-public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvider {
+public class BlockInfernalEnchanter extends BWMBlock {
 
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
@@ -61,8 +62,9 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
         return new AxisAlignedBB(0, 0, 0, 1, 0.5d, 1);
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileInfernalEnchanter();
     }
 
@@ -107,5 +109,10 @@ public class BlockInfernalEnchanter extends BWMBlock implements ITileEntityProvi
     @Override
     public boolean isFullBlock(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
     }
 }

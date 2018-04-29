@@ -58,10 +58,10 @@ public abstract class ModuleLoader {
 
         setupConfig(event);
 
-        forEachModule(module -> BWMod.logger.info("[BWM] Module " + module.name + " is " + (module.enabled ? "enabled" : "disabled")));
+        forEachModule(module -> BWMod.logger.info("[BWM] Module " + module.getName() + " is " + (module.enabled ? "enabled" : "disabled")));
         enabledModules.sort(Comparator.comparingInt(Module::getPriority));
         forEachEnabled(module -> {
-            BWMod.logger.info("[BWM] Module PreInit : " + module.name);
+            BWMod.logger.info("[BWM] Module PreInit : " + module.getName());
             module.preInit(event);
         });
 
