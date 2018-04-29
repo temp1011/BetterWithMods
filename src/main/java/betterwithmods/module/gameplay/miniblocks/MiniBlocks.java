@@ -65,13 +65,16 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class MiniBlocks extends Feature {
     public static HashMap<MiniType, HashMap<Material, BlockCamo>> MINI_MATERIAL_BLOCKS = Maps.newHashMap();
     public static Multimap<Material, IBlockState> MATERIALS = HashMultimap.create();
     private static Map<Material, String> names = Maps.newHashMap();
     private static boolean autoGeneration;
+    private static boolean requiresAnvil;
+        private static Set<Ingredient> WHITELIST;
 
-    private static Set<Ingredient> WHITELIST;
+
 
     static {
         for (MiniType type : MiniType.VALUES) {
@@ -285,6 +288,7 @@ public class MiniBlocks extends Feature {
     @Override
     public void setupConfig() {
         autoGeneration = loadPropBool("Auto Generate Miniblocks", "Automatically add miniblocks for many blocks, based on heuristics and probably planetary alignments. WARNING: Exposure to this config option can kill pack developers.", false);
+        requiresAnvil = loadPropBool("Stone Miniblocks require Anvil recipe", "When enabled stone and metal miniblocks will require an anvil recipe, when disabled they will all be made with the saw", true);
     }
 
     @Override
@@ -352,11 +356,6 @@ public class MiniBlocks extends Feature {
         }
     }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-
-
-    }
 
     @Override
     public boolean hasSubscriptions() {
