@@ -16,8 +16,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "D": {
-      "item": "minecraft:cobblestone",
-      "data": 0
+      "ore": "cobblestone",
+      "type": "forge:ore_dict"
     },
     "S": {
       "ore": "stickWood",
