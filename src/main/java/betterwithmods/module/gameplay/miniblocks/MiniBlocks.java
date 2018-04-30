@@ -15,7 +15,6 @@ import betterwithmods.module.gameplay.AnvilRecipes;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.client.CamoModel;
 import betterwithmods.module.gameplay.miniblocks.client.MiniModel;
-import betterwithmods.util.InvUtils;
 import betterwithmods.util.JsonUtils;
 import betterwithmods.util.ReflectionHelperBlock;
 import com.google.common.collect.HashMultimap;
@@ -51,6 +50,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -71,8 +71,7 @@ public class MiniBlocks extends Feature {
     private static Map<Material, String> names = Maps.newHashMap();
     private static boolean autoGeneration;
     private static boolean requiresAnvil;
-        private static Set<Ingredient> WHITELIST;
-
+    private static Set<Ingredient> WHITELIST;
 
 
     static {
@@ -91,9 +90,6 @@ public class MiniBlocks extends Feature {
     }
 
     public static boolean isValidMini(IBlockState state, ItemStack stack) {
-        if (!autoGeneration && !InvUtils.applyIngredients(WHITELIST, stack))
-            return false;
-
         Block blk = state.getBlock();
         final ReflectionHelperBlock pb = new ReflectionHelperBlock();
         final Class<? extends Block> blkClass = blk.getClass();
@@ -190,7 +186,6 @@ public class MiniBlocks extends Feature {
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.NETHER_BRICK)));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.QUARTZ_BLOCK)));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITESTONE)));
-            System.out.println(DEFAULT_CONFIG);
             JsonUtils.writeFile(file, DEFAULT_CONFIG);
         }
         JsonObject[] objects = JsonUtils.readerFile(file);
@@ -322,16 +317,25 @@ public class MiniBlocks extends Feature {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void afterItemRegister(RegistryEvent.Register<Item> event) {
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void beforeRecipeRegistry(RegistryEvent.Register<IRecipe> event) {
+
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
         WHITELIST = loadMiniblockWhitelist();
 
         final NonNullList<ItemStack> list = NonNullList.create();
-        for (Item item : ForgeRegistries.ITEMS) {
+
+        Iterable<Item> items = ForgeRegistries.ITEMS;
+        if(!autoGeneration)
+            items = WHITELIST.stream().map(Ingredient::getMatchingStacks).flatMap(Arrays::stream).map(ItemStack::getItem).collect(Collectors.toSet());
+
+        for (Item item : items) {
             if (!(item instanceof ItemBlock))
                 continue;
             try {
-
                 final CreativeTabs ctab = item.getCreativeTab();
                 if (ctab != null) {
                     item.getSubItems(ctab, list);
@@ -339,9 +343,10 @@ public class MiniBlocks extends Feature {
                 for (final ItemStack stack : list) {
                     if (!(stack.getItem() instanceof ItemBlock))
                         continue;
-                    final IBlockState state = BWMRecipes.getStateFromStack(stack);
+                    IBlockState state = BWMRecipes.getStateFromStack(stack);
                     if (state != null && isValidMini(state, stack)) {
                         Material material = state.getMaterial();
+                        System.out.println(names.get(material));
                         if (names.containsKey(material)) {
                             MATERIALS.put(material, state);
                         }
@@ -352,7 +357,6 @@ public class MiniBlocks extends Feature {
             }
         }
     }
-
 
     @Override
     public boolean hasSubscriptions() {
