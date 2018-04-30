@@ -50,7 +50,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -173,7 +172,8 @@ public class MiniBlocks extends Feature {
     public Set<Ingredient> loadMiniblockWhitelist() {
         File file = new File(configHelper.path, "betterwithmods/miniblocks.json");
 
-        if (!Files.exists(file.toPath()) && file.getParentFile().mkdirs()) {
+        file.getParentFile().mkdirs();
+        if (!Files.exists(file.toPath())) {
             JsonArray DEFAULT_CONFIG = new JsonArray();
             DEFAULT_CONFIG.add(JsonUtils.fromOre("plankWood"));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.COBBLESTONE)));
@@ -185,6 +185,8 @@ public class MiniBlocks extends Feature {
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.BRICK_BLOCK)));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.NETHER_BRICK)));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.QUARTZ_BLOCK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.GOLD_BLOCK)));
+            DEFAULT_CONFIG.add(JsonUtils.fromStack(new ItemStack(Blocks.IRON_BLOCK)));
             DEFAULT_CONFIG.add(JsonUtils.fromStack(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITESTONE)));
             JsonUtils.writeFile(file, DEFAULT_CONFIG);
         }
@@ -194,8 +196,75 @@ public class MiniBlocks extends Feature {
         return Sets.newHashSet();
     }
 
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        names.put(Material.WOOD, "wood");
+        names.put(Material.ROCK, "rock");
+        names.put(Material.IRON, "iron");
+        MiniType.registerTiles();
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void beforeBlockRegister(RegistryEvent.Register<Block> event) {
+
+        for (Material material : names.keySet()) {
+            String name = names.get(material);
+            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "siding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "moulding", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "corner", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "column", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "pedestal", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).put(material, (BlockCamo) new BlockTable(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "table", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).put(material, (BlockCamo) new BlockBench(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "bench", name)));
+            MINI_MATERIAL_BLOCKS.get(MiniType.CHAIR).put(material, (BlockCamo) new BlockChair(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "chair", name)));
+        }
+
+        for (MiniType type : MiniType.VALUES) {
+            for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
+                BWMBlocks.registerBlock(mini, new ItemCamo(mini));
+            }
+        }
+    }
+
+    public void registerMiniblocks() {
+        WHITELIST = loadMiniblockWhitelist();
+
+        final NonNullList<ItemStack> list = NonNullList.create();
+
+        Iterable<Item> items = ForgeRegistries.ITEMS;
+        if(!autoGeneration)
+            items = WHITELIST.stream().map(Ingredient::getMatchingStacks).flatMap(Arrays::stream).map(ItemStack::getItem).collect(Collectors.toSet());
+
+        for (Item item : items) {
+            if (!(item instanceof ItemBlock))
+                continue;
+            try {
+                final CreativeTabs ctab = item.getCreativeTab();
+                if (ctab != null) {
+                    item.getSubItems(ctab, list);
+                }
+                for (final ItemStack stack : list) {
+                    if (!(stack.getItem() instanceof ItemBlock))
+                        continue;
+                    IBlockState state = BWMRecipes.getStateFromStack(stack);
+                    if (state != null && isValidMini(state, stack)) {
+                        Material material = state.getMaterial();
+                        if (names.containsKey(material)) {
+                            MATERIALS.put(material, state);
+                        }
+                    }
+                }
+                list.clear();
+            } catch (Throwable ignored) {
+            }
+        }
+    }
+
+
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+
+        registerMiniblocks();
 
         BWOreDictionary.registerOre("miniblocks",
                 new ItemStack(MiniBlocks.MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).get(Material.WOOD)),
@@ -288,74 +357,6 @@ public class MiniBlocks extends Feature {
         return "Dynamically generate Siding, Mouldings and Corners for many of the blocks in the game.";
     }
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        names.put(Material.WOOD, "wood");
-        names.put(Material.ROCK, "rock");
-        names.put(Material.IRON, "iron");
-        MiniType.registerTiles();
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void beforeBlockRegister(RegistryEvent.Register<Block> event) {
-        for (Material material : names.keySet()) {
-            String name = names.get(material);
-            MINI_MATERIAL_BLOCKS.get(MiniType.SIDING).put(material, (BlockMini) new BlockSiding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "siding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.MOULDING).put(material, (BlockMini) new BlockMoulding(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "moulding", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.CORNER).put(material, (BlockMini) new BlockCorner(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "corner", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.COLUMN).put(material, (BlockMini) new BlockColumn(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "column", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.PEDESTAL).put(material, (BlockMini) new BlockPedestals(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "pedestal", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.TABLE).put(material, (BlockCamo) new BlockTable(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "table", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.BENCH).put(material, (BlockCamo) new BlockBench(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "bench", name)));
-            MINI_MATERIAL_BLOCKS.get(MiniType.CHAIR).put(material, (BlockCamo) new BlockChair(material, m -> MATERIALS.get(m)).setRegistryName(String.format("%s_%s", "chair", name)));
-        }
-
-        for (MiniType type : MiniType.VALUES) {
-            for (BlockCamo mini : MINI_MATERIAL_BLOCKS.get(type).values()) {
-                BWMBlocks.registerBlock(mini, new ItemCamo(mini));
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void beforeRecipeRegistry(RegistryEvent.Register<IRecipe> event) {
-
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        WHITELIST = loadMiniblockWhitelist();
-
-        final NonNullList<ItemStack> list = NonNullList.create();
-
-        Iterable<Item> items = ForgeRegistries.ITEMS;
-        if(!autoGeneration)
-            items = WHITELIST.stream().map(Ingredient::getMatchingStacks).flatMap(Arrays::stream).map(ItemStack::getItem).collect(Collectors.toSet());
-
-        for (Item item : items) {
-            if (!(item instanceof ItemBlock))
-                continue;
-            try {
-                final CreativeTabs ctab = item.getCreativeTab();
-                if (ctab != null) {
-                    item.getSubItems(ctab, list);
-                }
-                for (final ItemStack stack : list) {
-                    if (!(stack.getItem() instanceof ItemBlock))
-                        continue;
-                    IBlockState state = BWMRecipes.getStateFromStack(stack);
-                    if (state != null && isValidMini(state, stack)) {
-                        Material material = state.getMaterial();
-                        if (names.containsKey(material)) {
-                            MATERIALS.put(material, state);
-                        }
-                    }
-                }
-                list.clear();
-            } catch (Throwable ignored) {
-            }
-        }
-    }
 
     @Override
     public boolean hasSubscriptions() {
