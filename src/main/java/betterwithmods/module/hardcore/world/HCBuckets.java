@@ -244,6 +244,7 @@ public class HCBuckets extends Feature {
         if (toCheck.isEmpty() || toCheck.getItem() == Items.WATER_BUCKET || !isNonVanillaBucket(toCheck))
             return;
 
+
         FluidStack fluid = FluidUtil.getFluidContained(toCheck);
 
         if (fluid == null || fluid.getFluid() == null || fluid.getFluid() != FluidRegistry.WATER)
@@ -252,10 +253,12 @@ public class HCBuckets extends Feature {
 
         World world = event.getWorld();
         if (!world.isRemote) {
-            event.setUseBlock(Event.Result.DENY);
+            IFluidHandler handler = FluidUtil.getFluidHandler(world, event.getPos(), event.getFace());
+            if (handler != null)
+                return;
             IBlockState state = world.getBlockState(event.getPos());
             Block block = state.getBlock();
-
+            event.setUseBlock(Event.Result.DENY);
             boolean replaceable = block.isReplaceable(world, event.getPos());
             BlockPos pos = replaceable ? event.getPos() : event.getPos().offset(event.getFace());
             if (!world.getBlockState(pos).getMaterial().isReplaceable())
