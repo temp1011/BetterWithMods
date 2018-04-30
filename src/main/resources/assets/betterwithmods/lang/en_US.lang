@@ -181,6 +181,9 @@ tile.bwm:platform.name=Platform
 tile.bwm:mining_charge.name=Mining Charge
 tile.bwm:fertile_farmland.name=Fertile Farmland
 tile.bwm:advanced_gearbox.name=Advanced Gearbox
+tile.bwm:barrel.name=Wooden Barrel
+tile.bwm:powder_keg.name=Powder Keg
+item.bwm:powder_keg_minecart.name=Powder Keg Minecart
 
 tile.bwm:raw_cake.name=Cake Batter
 tile.bwm:raw_pumpkin_pie.name=Oven Ready Pumpkin Pie

@@ -39,6 +39,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCBoating().recipes());
         registerFeature(new HCFishing().recipes());
         registerFeature(new HCTorches().recipes());
+        registerFeature(new PowderKegs().recipes());
 
         registerFeature(new HCArmor());
         registerFeature(new HCBeacons());

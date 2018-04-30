@@ -10,6 +10,7 @@
  */
 package betterwithmods.module;
 
+import betterwithmods.BWMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
@@ -192,6 +193,15 @@ public class Feature {
 
     public final List<ResourceLocation> loadRLList(String propName, String comment, String[] default_) {
         return configHelper.loadPropRLList(propName, configCategory, comment, default_);
+    }
+
+
+    public void overrideBlock(String str) {
+        BWMod.proxy.addResourceOverride("textures", "blocks", str, "png");
+    }
+
+    public void overrideItem(String str) {
+        BWMod.proxy.addResourceOverride("textures", "items", str, "png");
     }
 
 }

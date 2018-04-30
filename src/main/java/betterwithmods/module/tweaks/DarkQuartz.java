@@ -1,6 +1,5 @@
 package betterwithmods.module.tweaks;
 
-import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -30,11 +29,4 @@ public class DarkQuartz extends Feature {
         return true;
     }
 
-    private void overrideBlock(String str) {
-        BWMod.proxy.addResourceOverride("textures", "blocks", str, "png");
-    }
-
-    private void overrideItem(String str) {
-        BWMod.proxy.addResourceOverride("textures", "items", str, "png");
-    }
 }

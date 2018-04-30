@@ -346,7 +346,6 @@ public class MiniBlocks extends Feature {
                     IBlockState state = BWMRecipes.getStateFromStack(stack);
                     if (state != null && isValidMini(state, stack)) {
                         Material material = state.getMaterial();
-                        System.out.println(names.get(material));
                         if (names.containsKey(material)) {
                             MATERIALS.put(material, state);
                         }
