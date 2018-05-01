@@ -1,6 +1,7 @@
 package betterwithmods.module.hardcore.world.strata;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.math.BlockPos;
 import team.chisel.ctm.client.texture.ctx.TextureContextPosition;
 
@@ -12,7 +13,8 @@ public class TextureContextStrata extends TextureContextPosition{
     }
 
     public int getStrata() {
-        return HCStrata.getStratification(position.getY(), Minecraft.getMinecraft().world.getSeaLevel());
+        WorldClient world = Minecraft.getMinecraft().world;
+        return HCStrata.getStratification(position.getY(), world.getSeaLevel(), world.provider.getDimension());
     }
 
 
