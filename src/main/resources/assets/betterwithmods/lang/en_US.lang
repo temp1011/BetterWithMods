@@ -374,6 +374,7 @@ soulforgedsteel.name=Soulforged Steel
 soulforgedsteel.ability=Soul-Sucking
 fluid.molten.hellfire=Molten Hellfire
 fluid.molten.soulforge=Molten Soulforged Steel
+fluid.milk=Milk
 
 message.bwm:async.enabled=Asynchronous timer enabled
 message.bwm:async.disabled=Asynchronous timer disabled
@@ -444,6 +445,7 @@ bwm.message.horizontal_windmill.space=Not enough room to place the windmill. Nee
 bwm.message.vertical_windmill.space=Not enough room to place the windmill. Need a 9x9 area with a HEIGHT of seven to work.
 bwm.message.vertical_windmill.axle=Too few vertical axles in column to place here. (Need 7).
 
+bwm.message.barrel.info=%s : %d/%d
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works

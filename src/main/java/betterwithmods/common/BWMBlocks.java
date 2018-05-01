@@ -244,6 +244,7 @@ public final class BWMBlocks {
         GameRegistry.registerTileEntity(TileMerger.class, "bwm.steel_merger");
         GameRegistry.registerTileEntity(TileFurnace.class, "bwm.furnace");
         GameRegistry.registerTileEntity(TileBucket.class, "bwm.bucket");
+        GameRegistry.registerTileEntity(TileBarrel.class, "bwm.barrel");
     }
 
     public static void registerBlocks(Collection<? extends Block> blocks) {

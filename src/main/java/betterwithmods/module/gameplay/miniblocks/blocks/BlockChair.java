@@ -2,7 +2,7 @@ package betterwithmods.module.gameplay.miniblocks.blocks;
 
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.orientations.ChairOrientation;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileChair;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -67,10 +67,4 @@ public class BlockChair extends BlockMini implements ISittable {
     }
 
 
-    public static class TileChair extends TileMini {
-        @Override
-        public BaseOrientation deserializeOrientation(int ordinal) {
-            return ChairOrientation.VALUES[ordinal];
-        }
-    }
 }

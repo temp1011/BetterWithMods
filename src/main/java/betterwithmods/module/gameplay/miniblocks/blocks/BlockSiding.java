@@ -2,7 +2,7 @@ package betterwithmods.module.gameplay.miniblocks.blocks;
 
 import betterwithmods.module.gameplay.miniblocks.orientations.BaseOrientation;
 import betterwithmods.module.gameplay.miniblocks.orientations.SidingOrientation;
-import betterwithmods.module.gameplay.miniblocks.tiles.TileMini;
+import betterwithmods.module.gameplay.miniblocks.tiles.TileSiding;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,11 +37,5 @@ public class BlockSiding extends BlockMini {
     }
 
 
-    public static class TileSiding extends TileMini {
-        @Override
-        public BaseOrientation deserializeOrientation(int ordinal) {
-            return SidingOrientation.VALUES[ordinal];
-        }
-    }
 
 }
