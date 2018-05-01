@@ -102,12 +102,12 @@ public class GuiInfernalEnchanter extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
-
         int x, y;
         for (int levelIndex = 0; levelIndex < container.enchantLevels.length; levelIndex++) {
-            if (container.enchantLevels[levelIndex] != -1 && container.hasLevels(player, levelIndex) && container.hasBooks(levelIndex)) {
+            if (container.enchantLevels[levelIndex] > -1 && container.hasLevels(player, levelIndex) && container.hasBooks(levelIndex)) {
                 y = yPos + 17 + (19 * levelIndex);
                 x = xPos + 60;
                 if (mouseX >= x && mouseX <= x + 108 && mouseY >= y && mouseY <= y + 19) {

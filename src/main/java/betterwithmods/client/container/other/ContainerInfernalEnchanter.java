@@ -41,6 +41,7 @@ public class ContainerInfernalEnchanter extends Container {
     public ContainerInfernalEnchanter(EntityPlayer player, TileInfernalEnchanter tile) {
         this.tile = tile;
         this.enchantLevels = new int[5];
+        Arrays.fill(enchantLevels, -1);
         this.bookcaseCount = tile.getBookcaseCount();
         handler = new FilteredStackHandler(2, tile, stack -> stack.getItem() instanceof ItemArcaneScroll, stack -> true) {
             @Override
@@ -214,6 +215,7 @@ public class ContainerInfernalEnchanter extends Container {
             if (!player.world.isRemote) {
                 ItemStack item = this.handler.getStackInSlot(1);
                 ItemStack scroll = this.handler.getStackInSlot(0);
+
                 Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
                 if (enchantment != null) {
                     scroll.shrink(1);
