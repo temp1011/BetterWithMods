@@ -5,8 +5,11 @@ import betterwithmods.module.Feature;
 import betterwithmods.util.EntityUtils;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -33,11 +36,7 @@ public class ImprovedFlee extends Feature {
         if (evt.getEntity() instanceof EntityLiving) {
             EntityLiving entity = (EntityLiving) evt.getEntity();
             if (entity instanceof EntityAnimal && EntityUtils.hasAI(entity, EntityAIPanic.class)) {
-                float speed = 1.25F;
-                if (entity instanceof EntityCow)
-                    speed = 2.0F;
-                else if (entity instanceof EntityChicken)
-                    speed = 1.4F;
+                float speed = (float) entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 7;
                 EntityUtils.removeAI(entity, EntityAIPanic.class);
                 entity.tasks.addTask(0, new EntityAIFlee((EntityCreature) entity, speed));
             }
@@ -59,7 +58,7 @@ public class ImprovedFlee extends Feature {
     }
 
     @SubscribeEvent
-    public void onPlaceBreak(BlockEvent.BreakEvent event) {
+    public void onBreakBlock(BlockEvent.BreakEvent event) {
         if (!blockBreak)
             return;
         if (event.getPlayer() != null && !event.getState().getMaterial().isReplaceable()) {
