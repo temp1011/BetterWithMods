@@ -44,6 +44,10 @@ public class ItemBark extends Item {
         return BWOreDictionary.blockVariants.stream().map(b -> b.getVariant(IBlockVariants.EnumBlock.LOG, 1)).filter(s -> !s.isEmpty()).collect(Collectors.toList());
     }
 
+    public static List<ItemStack> getBarks(int count) {
+        return BWOreDictionary.blockVariants.stream().map(b -> b.getVariant(IBlockVariants.EnumBlock.BARK, count)).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+    }
+
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {

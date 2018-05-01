@@ -103,11 +103,13 @@ public class JEI implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
         subtypeRegistry.useNbtForSubtypes(getAllMiniBlocks());
+        subtypeRegistry.useNbtForSubtypes(BWMItems.BARK);
     }
 
     private Item[] getAllMiniBlocks() {
         return MiniBlocks.MINI_MATERIAL_BLOCKS.values().stream().map(HashMap::values).flatMap(Collection::stream).map(Item::getItemFromBlock).toArray(Item[]::new);
     }
+
 
     @Override
     public void register(@Nonnull IModRegistry reg) {
