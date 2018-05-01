@@ -207,6 +207,18 @@ public class ConfigHelper {
         return map;
     }
 
+    public static HashMap<Integer, Integer> loadIntIntMap(String propName, String category, String desc, String[] _default) {
+        HashMap<Integer, Integer> map = Maps.newHashMap();
+        String[] l = loadPropStringList(propName, category, desc, _default);
+        for (String s : l) {
+            String[] a = s.split("=");
+            if (a.length == 2) {
+                map.put(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
+            }
+        }
+        return map;
+    }
+
     private static void setNeedsRestart(Property prop) {
         if (needsRestart)
             prop.setRequiresMcRestart(needsRestart);

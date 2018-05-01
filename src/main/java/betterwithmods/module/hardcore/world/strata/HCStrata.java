@@ -3,6 +3,7 @@ package betterwithmods.module.hardcore.world.strata;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
+import betterwithmods.module.ConfigHelper;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.ToolsManager;
@@ -34,8 +35,10 @@ public class HCStrata extends Feature {
     public static boolean ENABLED;
 
     public static float[] STRATA_SPEEDS;
-    public static float MEDIUM_STRATA_DEPTH;
-    public static float DARK_STRATA_DEPTH;
+    public static HashMap<Integer, Integer> MEDIUM_STRATA_DEPTHS = Maps.newHashMap();
+    public static HashMap<Integer, Integer> DARK_STRATA_DEPTHS = Maps.newHashMap();
+    public static int MEDIUM_STRATA_DEFAULT_DEPTH;
+    public static int DARK_STRATA_DEFAULT_DEPTH;
     public static float INCORRECT_STRATA_SCALE;
 
     public HCStrata() {
@@ -49,8 +52,14 @@ public class HCStrata extends Feature {
                 (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 1.0)
         };
         INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
-        MEDIUM_STRATA_DEPTH = (float) loadPropInt("Depth Medium Strata", "Level below sealevel under which medium strata starts (So y < (sealevel - value) is medium strata)", 10);
-        DARK_STRATA_DEPTH = (float) loadPropInt("Depth Dark Strata", "Level below sealevel under which dark strata starts (So y < (sealevel - value) is dark strata)", 30);
+        MEDIUM_STRATA_DEFAULT_DEPTH = loadPropInt("Depth Medium Strata Default", "Default Level below sealevel under which medium strata starts (So y < (sealevel - value) is medium strata)", 10);
+        DARK_STRATA_DEFAULT_DEPTH = loadPropInt("Depth Dark Strata Default", "Default Level below sealevel under which dark strata starts (So y < (sealevel - value) is dark strata)", 30);
+        MEDIUM_STRATA_DEPTHS = ConfigHelper.loadIntIntMap("Depth Medium Strata",configCategory,"Level below sealevel under which medium strata starts on a per dimension basis. Syntax is dim_id=depth.", new String[] {
+                "0=10"
+        });
+        DARK_STRATA_DEPTHS = ConfigHelper.loadIntIntMap("Depth Dark Strata",configCategory,"Level below sealevel under which dark strata starts on a per dimension basis. Syntax is dim_id=depth.", new String[] {
+                "0=30"
+        });
     }
 
 
@@ -128,10 +137,18 @@ public class HCStrata extends Feature {
         return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.containsKey(state);
     }
 
-    public static int getStratification(int y, int topY) {
-        if (y >= (topY - MEDIUM_STRATA_DEPTH))
+    public static int getMediumStrataDepth(int dimension) {
+        return MEDIUM_STRATA_DEPTHS.getOrDefault(dimension, MEDIUM_STRATA_DEFAULT_DEPTH);
+    }
+
+    public static int getDarkStrataDepth(int dimension) {
+        return DARK_STRATA_DEPTHS.getOrDefault(dimension, DARK_STRATA_DEFAULT_DEPTH);
+    }
+
+    public static int getStratification(int y, int topY, int dimension) {
+        if (y >= (topY - getMediumStrataDepth(dimension)))
             return 0;
-        if (y >= (topY - DARK_STRATA_DEPTH))
+        if (y >= (topY - getDarkStrataDepth(dimension)))
             return 1;
         return 2;
     }
@@ -142,7 +159,7 @@ public class HCStrata extends Feature {
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(), event.getState());
-            int strata = getStratification(pos.getY(), world.getSeaLevel());
+            int strata = getStratification(pos.getY(), world.getSeaLevel(), world.provider.getDimension());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
                 if (level <= (strata)) {
@@ -159,7 +176,7 @@ public class HCStrata extends Feature {
         if (shouldStratify(world, pos)) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getEntityPlayer(), event.getState());
             float scale = ToolsManager.getSpeed(stack, event.getState());
-            int strata = getStratification(pos.getY(), world.getSeaLevel());
+            int strata = getStratification(pos.getY(), world.getSeaLevel(), world.provider.getDimension());
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getEntityPlayer(), event.getState()));
                 if (level <= (strata)) {
