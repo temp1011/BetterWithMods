@@ -34,6 +34,8 @@ public class HCStrata extends Feature {
     public static boolean ENABLED;
 
     public static float[] STRATA_SPEEDS;
+    public static float MEDIUM_STRATA_DEPTH;
+    public static float DARK_STRATA_DEPTH;
     public static float INCORRECT_STRATA_SCALE;
 
     public HCStrata() {
@@ -47,6 +49,8 @@ public class HCStrata extends Feature {
                 (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 1.0)
         };
         INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
+        MEDIUM_STRATA_DEPTH = (float) loadPropInt("Depth Medium Strata", "Level below sealevel under which medium strata starts (So y < (sealevel - value) is medium strata)", 10);
+        DARK_STRATA_DEPTH = (float) loadPropInt("Depth Dark Strata", "Level below sealevel under which dark strata starts (So y < (sealevel - value) is dark strata)", 30);
     }
 
 
@@ -125,9 +129,9 @@ public class HCStrata extends Feature {
     }
 
     public static int getStratification(int y, int topY) {
-        if (y >= (topY - 10))
+        if (y >= (topY - MEDIUM_STRATA_DEPTH))
             return 0;
-        if (y >= (topY - 30))
+        if (y >= (topY - DARK_STRATA_DEPTH))
             return 1;
         return 2;
     }
