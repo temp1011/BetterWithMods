@@ -138,25 +138,25 @@ tile.bwm:corner_rock.name=%s Corner
 tile.bwm:corner_wood.name=%s Corner
 tile.bwm:corner_iron.name=%s Corner
 
-tile.bwm:column_rock.name=Column
-tile.bwm:column_wood.name=Column
-tile.bwm:column_iron.name=Column
+tile.bwm:column_rock.name=%s Column
+tile.bwm:column_wood.name=%s Column
+tile.bwm:column_iron.name=%s Column
 
-tile.bwm:table_rock.name=Table
-tile.bwm:table_wood.name=Table
-tile.bwm:table_iron.name=Table
+tile.bwm:table_rock.name=%s Table
+tile.bwm:table_wood.name=%s Table
+tile.bwm:table_iron.name=%s Table
 
-tile.bwm:bench_rock.name=Bench
-tile.bwm:bench_wood.name=Bench
-tile.bwm:bench_iron.name=Bench
+tile.bwm:bench_rock.name=%s Bench
+tile.bwm:bench_wood.name=%s Bench
+tile.bwm:bench_iron.name=%s Bench
 
-tile.bwm:chair_rock.name=Chair
-tile.bwm:chair_wood.name=Chair
-tile.bwm:chair_iron.name=Chair
+tile.bwm:chair_rock.name=%s Chair
+tile.bwm:chair_wood.name=%s Chair
+tile.bwm:chair_iron.name=%s Chair
 
-tile.bwm:pedestal_rock.name=Pedestal
-tile.bwm:pedestal_wood.name=Pedestal
-tile.bwm:pedestal_iron.name=Pedestal
+tile.bwm:pedestal_rock.name=%s Pedestal
+tile.bwm:pedestal_wood.name=%s Pedestal
+tile.bwm:pedestal_iron.name=%s Pedestal
 
 tile.bwm:block_dispenser.name=Block Dispenser
 tile.bwm:companion_cube.name=Companion Cube
