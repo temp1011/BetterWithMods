@@ -4,10 +4,15 @@ import betterwithmods.BWMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -76,4 +81,27 @@ public class EntityShearedCreeper extends EntityMob {
     protected ResourceLocation getLootTable() {
         return LOOT;
     }
+
+    public void onDeath(DamageSource cause)
+    {
+        super.onDeath(cause);
+
+        if (this.world.getGameRules().getBoolean("doMobLoot"))
+        {
+            if (cause.getTrueSource() instanceof EntitySkeleton)
+            {
+                int i = Item.getIdFromItem(Items.RECORD_13);
+                int j = Item.getIdFromItem(Items.RECORD_WAIT);
+                int k = i + this.rand.nextInt(j - i + 1);
+                this.dropItem(Item.getItemById(k), 1);
+            }
+            else if (cause.getTrueSource() instanceof EntityCreeper && cause.getTrueSource() != this && ((EntityCreeper)cause.getTrueSource()).getPowered() && ((EntityCreeper)cause.getTrueSource()).ableToCauseSkullDrop())
+            {
+                ((EntityCreeper)cause.getTrueSource()).incrementDroppedSkulls();
+                this.entityDropItem(new ItemStack(Items.SKULL, 1, 4), 0.0F);
+            }
+        }
+    }
+
+
 }
