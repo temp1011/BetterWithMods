@@ -25,7 +25,7 @@ public class BlockSteelTank extends BWMBlock {
 
     private static boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing dir) {
         IBlockState state = world.getBlockState(pos.offset(dir));
-        return state.getBlock() instanceof BlockSteelTank;
+        return state.getBlock() instanceof BlockSteelTank || state.getBlock() instanceof BlockSteelTankValve;
     }
 
     @Override
