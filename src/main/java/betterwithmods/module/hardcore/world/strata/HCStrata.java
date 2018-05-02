@@ -71,10 +71,10 @@ public class HCStrata extends Feature {
     public static Stratification getStratification(int y, int dimension) {
         return STRATA_CONFIGS.getOrDefault(dimension, DEFAULT).getStrata(y);
     }
-
+    private static final Pattern PATTERN = Pattern.compile("(^\\d{1,255})=(\\d{1,255}),(\\d{1,255}).*");
     private static void loadStrataConfig(String entry) {
-        Pattern pattern = Pattern.compile("(^\\d{1,255})=(\\d{1,255}),(\\d{1,255}).*");
-        Matcher matcher = pattern.matcher(entry);
+
+        Matcher matcher = PATTERN.matcher(entry);
         if(matcher.matches()) {
             int dim = Integer.parseInt(matcher.group(1));
             int medium = Integer.parseInt(matcher.group(2));
