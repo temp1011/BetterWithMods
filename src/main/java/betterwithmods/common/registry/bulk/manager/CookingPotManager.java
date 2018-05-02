@@ -9,7 +9,6 @@ import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -81,8 +80,9 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
         return addRecipe(inputs, outputs, heat).setIgnoreHeat(true);
     }
 
+
     @Override
-    public boolean craftRecipe(World world, TileEntity tile, ItemStackHandler inv) {
+    public boolean craftRecipe(World world, IBulkTile tile, ItemStackHandler inv) {
         if (tile instanceof TileCookingPot) {
             TileCookingPot pot = (TileCookingPot) tile;
             if (canCraft(tile, inv)) {
@@ -96,7 +96,6 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
                 pot.cookProgress = 0;
             }
         }
-
         return false;
     }
 

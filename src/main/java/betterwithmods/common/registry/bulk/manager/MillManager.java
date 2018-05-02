@@ -1,20 +1,18 @@
 package betterwithmods.common.registry.bulk.manager;
 
+import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.BWSounds;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
+import betterwithmods.common.blocks.mechanical.tile.TileMill;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class MillManager extends CraftingManagerBulk<MillRecipe> {
@@ -59,9 +57,9 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
     }
 
     @Override
-    public boolean canCraft(TileEntity tile, ItemStackHandler inv) {
-        if (tile instanceof TileEntityMill) {
-            TileEntityMill mill = (TileEntityMill) tile;
+    public boolean canCraft(IBulkTile tile, ItemStackHandler inv) {
+        if (tile instanceof TileMill) {
+            TileMill mill = (TileMill) tile;
             MillRecipe recipe = findRecipe(recipes, tile, inv).orElse(null);
             if (recipe != null) {
                 return mill.grindCounter >= recipe.getTicks();
@@ -71,10 +69,11 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
         return false;
     }
 
+
     @Override
-    public boolean craftRecipe(World world, TileEntity tile, ItemStackHandler inv) {
-        if (tile instanceof TileEntityMill) {
-            TileEntityMill mill = (TileEntityMill) tile;
+    public boolean craftRecipe(World world, IBulkTile tile, ItemStackHandler inv) {
+        if (tile instanceof TileMill) {
+            TileMill mill = (TileMill) tile;
             MillRecipe recipe = findRecipe(recipes, tile, inv).orElse(null);
 
             if (mill.getBlockWorld().rand.nextInt(20) == 0)
@@ -105,9 +104,4 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
         return false;
     }
 
-    @Nonnull
-    @Override
-    public NonNullList<ItemStack> craftItem(World world, TileEntity tile, ItemStackHandler inv) {
-        return super.craftItem(world, tile, inv);
-    }
 }

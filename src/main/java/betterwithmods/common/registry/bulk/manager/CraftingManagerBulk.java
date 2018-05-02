@@ -30,7 +30,7 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
         return recipe;
     }
 
-    public abstract boolean craftRecipe(World world, TileEntity tile, ItemStackHandler inv);
+    public abstract boolean craftRecipe(World world, IBulkTile tile, ItemStackHandler inv);
 
     @Nonnull
     public NonNullList<ItemStack> craftItem(@Nullable World world, IBulkTile tile, ItemStackHandler inv) {
