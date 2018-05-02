@@ -110,6 +110,7 @@ public final class BWMBlocks {
     public static final Block SHAFT = new BlockShaft().setRegistryName("shaft");
     public static final Block BUCKET = new BlockBucket().setRegistryName("bucket");
     public static final Block BARREL = new BlockBarrel(Material.WOOD).setRegistryName("barrel");
+    public static final Block STEEL_TANKS = new BlockSteelTank().setRegistryName("steel_tank");
 
     private static final List<Block> BLOCKS = new ArrayList<>();
 
@@ -212,6 +213,7 @@ public final class BWMBlocks {
         registerBlock(BUCKET);
         registerBlock(DIRT_SLAB, new ItemSimpleSlab(DIRT_SLAB, Blocks.DIRT));
         registerBlock(BARREL);
+        registerBlock(STEEL_TANKS);
     }
 
     public static void registerTileEntities() {

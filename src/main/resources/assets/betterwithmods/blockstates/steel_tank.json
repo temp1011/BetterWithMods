@@ -1,0 +1,59 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "betterwithmods:blocks/steel_tank",
+      "particle": "#all"
+    },
+    "model": "betterwithmods:steel_tank/base",
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "connection": {
+      "none": {
+        "model": "betterwithmods:steel_tank/base"
+      },
+      "all": {
+        "model": "betterwithmods:steel_tank/all"
+      },
+      "north_east": {
+        "model": "betterwithmods:steel_tank/corner"
+      },
+      "north_west": {
+        "model": "betterwithmods:steel_tank/corner",
+        "y": 270
+      },
+      "south_east": {
+        "model": "betterwithmods:steel_tank/corner",
+        "y": 90
+      },
+      "south_west": {
+        "model": "betterwithmods:steel_tank/corner",
+        "y": 180
+      },
+      "north_south_east": {
+        "model": "betterwithmods:steel_tank/side",
+        "y": 180
+      },
+      "north_south_west": {
+        "model": "betterwithmods:steel_tank/side"
+      },
+      "east_west_north": {
+        "model": "betterwithmods:steel_tank/side",
+        "y": 90
+      },
+      "east_west_south": {
+        "model": "betterwithmods:steel_tank/side",
+        "y": 270
+      }
+    }
+  }
+}

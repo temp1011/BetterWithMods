@@ -205,6 +205,7 @@ tile.bwm:iron_wall.name=Iron Wall
 tile.bwm:nether_growth.name=Nether Growth Spore
 
 tile.bwm:steel_saw.name=Soulforged Steel Saw
+tile.bwm:steel_tank.name=Steel Tank
 
 tile.bwm:blood_log.name=Bloody Wood
 tile.bwm:blood_leaves.name=Bloody Leaves
