@@ -71,7 +71,7 @@ public class HCStrata extends Feature {
     public static Stratification getStratification(int y, int dimension) {
         return STRATA_CONFIGS.getOrDefault(dimension, DEFAULT).getStrata(y);
     }
-    private static final Pattern PATTERN = Pattern.compile("(^\\d{1,255})=(\\d{1,255}),(\\d{1,255}).*");
+    private static final Pattern PATTERN = Pattern.compile("^([\\-]?\\d+)=(\\d{1,255}),(\\d{1,255}).*");
     private static void loadStrataConfig(String entry) {
 
         Matcher matcher = PATTERN.matcher(entry);
