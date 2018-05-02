@@ -141,7 +141,7 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(Items.BREAD), 12);
 
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE), 3);
-        FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE,1,1), 3);
+        FoodHelper.registerFood(new ItemStack(Items.GOLDEN_APPLE, 1, 1), 3);
         FoodHelper.registerFood(new ItemStack(Items.GOLDEN_CARROT), 3);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_DINNER), 24);
         FoodHelper.registerFood(new ItemStack(BWMItems.BEEF_POTATOES), 18);
@@ -188,7 +188,7 @@ public class HCHunger extends CompatFeature {
     //Changes food to correct value.
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
-        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(event.foodValues.hunger * 3, event.foodValues.saturationModifier * 3));
+        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(Math.min(event.foodValues.hunger * 3, 60), event.foodValues.saturationModifier));
     }
 
     @SubscribeEvent
@@ -305,7 +305,6 @@ public class HCHunger extends CompatFeature {
             }
 
 
-
         }
     }
 
@@ -335,14 +334,14 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
-        if(event.isCanceled() || player == null || player.isCreative())
+        if (event.isCanceled() || player == null || player.isCreative())
             return;
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
         ItemStack stack = player.getHeldItemMainhand();
         String tooltype = state.getBlock().getHarvestTool(state);
-        if(tooltype != null && state.getBlockHardness(world,pos) <= 0 && stack.getItem().getHarvestLevel(stack,tooltype,player,state) < HCTools.noHungerThreshold)
+        if (tooltype != null && state.getBlockHardness(world, pos) <= 0 && stack.getItem().getHarvestLevel(stack, tooltype, player, state) < HCTools.noHungerThreshold)
             return; //doesn't consume hunger if using iron tier axes
         player.addExhaustion(blockBreakExhaustion - 0.005f);
     }
