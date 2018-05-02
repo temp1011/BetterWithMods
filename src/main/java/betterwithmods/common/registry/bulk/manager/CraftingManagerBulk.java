@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CraftingManagerBulk<T extends BulkRecipe> {
+public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     protected List<T> recipes;
 
     protected CraftingManagerBulk() {
@@ -28,6 +28,8 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
             recipes.add(recipe);
         return recipe;
     }
+
+    public abstract boolean craftRecipe(World world, TileEntity tile, ItemStackHandler inv);
 
     @Nonnull
     public NonNullList<ItemStack> craftItem(World world, TileEntity tile, ItemStackHandler inv) {
@@ -43,17 +45,17 @@ public class CraftingManagerBulk<T extends BulkRecipe> {
 
     protected List<T> findRecipe(List<ItemStack> outputs) {
         List<T> recipes = findRecipeExact(outputs);
-        if(recipes.isEmpty())
+        if (recipes.isEmpty())
             recipes = findRecipeFuzzy(outputs);
         return recipes;
     }
 
     protected List<T> findRecipeFuzzy(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(), outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeExact(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(), outputs)).collect(Collectors.toList());
     }
 
     public boolean canCraft(TileEntity tile, ItemStackHandler inv) {

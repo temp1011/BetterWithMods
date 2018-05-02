@@ -15,8 +15,16 @@ import java.util.List;
 public class MillRecipe extends BulkRecipe {
     private SoundEvent sound;
 
-    public MillRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs) {
+    private int ticks;
+
+    public MillRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int ticks) {
         super(inputs, outputs);
+        this.ticks = ticks;
+    }
+
+    public MillRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs) {
+        this(inputs, outputs,200);
+
     }
 
     public SoundEvent getSound() {
@@ -42,4 +50,13 @@ public class MillRecipe extends BulkRecipe {
     public MillRecipe setPriority(int priority) {
         return (MillRecipe) super.setPriority(priority);
     }
+
+    public int getTicks() {
+        return ticks;
+    }
+
+    public void setTicks(int ticks) {
+        this.ticks = ticks;
+    }
+
 }

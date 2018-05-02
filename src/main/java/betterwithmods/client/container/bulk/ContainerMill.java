@@ -11,8 +11,8 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMill extends Container {
     private final TileEntityMill mill;
-    private int lastMillCounter;
     public boolean blocked;
+    public int prevProgress, progress;
 
     public ContainerMill(EntityPlayer player, TileEntityMill mill) {
         this.mill = mill;
@@ -62,20 +62,23 @@ public class ContainerMill extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendWindowProperty(this, 0, this.mill.grindCounter);
+        int progress = (int) (mill.progress * 100);
+        listener.sendWindowProperty(this, 0, progress);
         listener.sendWindowProperty(this, 1, this.mill.blocked ? 0 : 1);
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
+        int progress = (int) (mill.progress * 100);
         for (IContainerListener craft : this.listeners) {
-            if (this.lastMillCounter != this.mill.grindCounter) {
-                craft.sendWindowProperty(this, 0, this.mill.grindCounter);
+
+            if (this.prevProgress != this.mill.progress) {
+                craft.sendWindowProperty(this, 0, progress);
             }
             craft.sendWindowProperty(this, 1, this.mill.blocked ? 1 : 0);
         }
-        this.lastMillCounter = this.mill.grindCounter;
+        this.prevProgress = progress;
         this.blocked = this.mill.blocked;
     }
 
@@ -83,7 +86,7 @@ public class ContainerMill extends Container {
     public void updateProgressBar(int index, int value) {
         switch (index) {
             case 0:
-                this.mill.grindCounter = value;
+                progress = value;
                 break;
             case 1:
                 blocked = value == 1;

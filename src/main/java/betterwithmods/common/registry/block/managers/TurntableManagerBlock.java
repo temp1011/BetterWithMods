@@ -53,9 +53,9 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
     }
 
     public TileEntityTurntable findTurntable(World world, BlockPos craftingPos) {
-        for(int i = 1; i < 2;i++) {
+        for (int i = 1; i < 2; i++) {
             TileEntity tile = world.getTileEntity(craftingPos.down(i));
-            if(tile instanceof TileEntityTurntable) {
+            if (tile instanceof TileEntityTurntable) {
                 return (TileEntityTurntable) tile;
             }
         }
@@ -63,10 +63,16 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
     }
 
     @Override
-    public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {
-        TileEntityTurntable turntable = findTurntable(world,pos);
+    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
+        TileEntityTurntable turntable = findTurntable(world, pos);
         TurntableRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        if (recipe != null && turntable.getPotteryRotation() == recipe.getRotations()) {
+        return recipe != null && turntable.getPotteryRotation() == recipe.getRotations();
+    }
+
+    @Override
+    public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {
+        TurntableRecipe recipe = findRecipe(world, pos, state).orElse(null);
+        if (recipe != null && canCraft(world, pos, state)) {
             InvUtils.ejectStackWithOffset(world, pos, craftItem(world, pos, state));
             state.getBlock().onBlockHarvested(world, pos, state, FakePlayerHandler.getPlayer());
             world.setBlockState(pos, recipe.getProductState(), world.isRemote ? 11 : 3);
