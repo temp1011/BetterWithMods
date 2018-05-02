@@ -102,6 +102,6 @@ public class ItemMini extends ItemBlock {
                 type = itemBlock.getItemStackDisplayName(block);
             }
         }
-        return String.format("%s %s", type, I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim());
+        return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack) + ".name", type);
     }
 }
