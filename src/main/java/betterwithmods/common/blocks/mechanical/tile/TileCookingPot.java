@@ -146,15 +146,7 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
                 if (this.cookTime != time) {
                     this.cookTime = time;
                 }
-                if (manager.canCraft(this, inventory)) {
-                    if (this.cookProgress >= getCookTime()) {
-                        InvUtils.insert(inventory, manager.craftItem(world, this, inventory), false);
-                        cookProgress = 0;
-                    }
-                    cookProgress++;
-                } else {
-                    cookProgress = 0;
-                }
+                manager.craftRecipe(world,this,inventory);
             }
             if (facing != state.getValue(DirUtils.TILTING)) {
                 world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
@@ -180,7 +172,7 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
         return cookProgress;
     }
 
-    private int getCookTime() {
+    public int getCookTime() {
         return cookTime;
     }
 

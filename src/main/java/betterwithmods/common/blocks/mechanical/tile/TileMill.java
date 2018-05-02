@@ -8,15 +8,17 @@ import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
+import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.TileBasicInventory;
-import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,19 +29,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TileMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable, IBulkTile {
-
-    public static final int GRIND_TIME = 200;
-
+    public boolean blocked;
     public int power;
     public int grindCounter;
-    public boolean blocked;
-    private SoundEvent grindType;
-    private boolean validateContents;
-    private boolean containsIngredientsToGrind;
+    public double progress;
+
+    private int increment;
+
 
     public TileMill() {
         this.grindCounter = 0;
-        this.validateContents = true;
+        this.increment = 1;
+    }
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
+    }
+
+    public int getIncrement() {
+        return increment;
     }
 
     public boolean isActive() {
@@ -80,32 +88,12 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
         this.blocked = findIfBlocked();
         getBlock().setActive(world, pos, isActive());
 
-        validateContents();
-
         if (isBlocked()) {
             return;
         }
 
         if (isActive()) {
-            if (getBlockWorld().rand.nextInt(20) == 0)
-                getBlockWorld().playSound(null, pos, BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F, 0.5F + getBlockWorld().rand.nextFloat() * 0.1F);
-        }
-
-        if (this.containsIngredientsToGrind && isActive()) {
-
-            if (!this.getBlockWorld().isRemote) {
-                if (grindType != null) {
-                    if (this.getBlockWorld().rand.nextInt(25) < 2) {
-                        getBlockWorld().playSound(null, pos, grindType, SoundCategory.BLOCKS, 1F, getBlockWorld().rand.nextFloat() * 0.4F + 0.8F);
-                    }
-                }
-            }
-            this.grindCounter++;
-            if (this.grindCounter > GRIND_TIME - 1) {
-                grindContents();
-                this.grindCounter = 0;
-
-            }
+            BWRegistry.MILLSTONE.craftRecipe(world,this,inventory);
         }
     }
 
@@ -116,6 +104,8 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
             this.blocked = tag.getBoolean("blocked");
         if (tag.hasKey("GrindCounter"))
             this.grindCounter = tag.getInteger("GrindCounter");
+        if (tag.hasKey("increment"))
+            this.increment = tag.getInteger("increment");
         this.power = tag.getInteger("power");
     }
 
@@ -124,6 +114,7 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
         super.writeToNBT(tag);
         tag.setInteger("GrindCounter", this.grindCounter);
         tag.setInteger("power", power);
+        tag.setInteger("increment", increment);
         tag.setBoolean("blocked", blocked);
         return tag;
     }
@@ -131,15 +122,6 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
     @Override
     public int getInventorySize() {
         return 3;
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        validateContents();
-        if (this.getBlockWorld() != null && !this.getBlockWorld().isRemote) {
-            this.validateContents = true;
-        }
     }
 
     private boolean canEject(EnumFacing facing) {
@@ -158,44 +140,18 @@ public class TileMill extends TileBasicInventory implements ITickable, IMechanic
         InvUtils.ejectStackWithOffset(getBlockWorld(), pos.offset(validDirections.get(getBlockWorld().rand.nextInt(validDirections.size()))), stack);
     }
 
-    public double getGrindProgress() {
-        return this.grindCounter / (double) GRIND_TIME;
+    public void ejectRecipe(NonNullList<ItemStack> output) {
+        if (!output.isEmpty()) {
+            for (ItemStack anOutput : output) {
+                ItemStack stack = anOutput.copy();
+                if (!stack.isEmpty())
+                    ejectStack(stack);
+            }
+        }
     }
 
     public boolean isGrinding() {
         return this.grindCounter > 0;
-    }
-
-    private boolean grindContents() {
-        if (BWRegistry.MILLSTONE.canCraft(this, inventory)) {
-            NonNullList<ItemStack> output = BWRegistry.MILLSTONE.craftItem(world, this, inventory);
-            if (!output.isEmpty()) {
-                for (ItemStack anOutput : output) {
-                    ItemStack stack = anOutput.copy();
-                    if (!stack.isEmpty())
-                        ejectStack(stack);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private void validateContents() {
-        SoundEvent oldGrindType = grindType;
-        SoundEvent newGrindType = null;
-        MillRecipe recipe = BWRegistry.MILLSTONE.getRecipe(this, inventory);
-        if (recipe != null) {
-            this.containsIngredientsToGrind = true;
-            newGrindType = recipe.getSound();
-        } else {
-            this.grindCounter = 0;
-            this.containsIngredientsToGrind = false;
-        }
-        this.validateContents = false;
-        if (oldGrindType != newGrindType) {
-            this.grindType = newGrindType;
-        }
     }
 
     @Override

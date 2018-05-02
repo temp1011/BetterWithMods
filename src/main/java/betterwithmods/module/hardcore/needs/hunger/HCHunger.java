@@ -182,7 +182,7 @@ public class HCHunger extends CompatFeature {
     //Changes food to correct value.
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
-        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(event.foodValues.hunger * 3, event.foodValues.saturationModifier * 3));
+        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(Math.min(event.foodValues.hunger * 3, 60), event.foodValues.saturationModifier));
     }
 
     @SubscribeEvent

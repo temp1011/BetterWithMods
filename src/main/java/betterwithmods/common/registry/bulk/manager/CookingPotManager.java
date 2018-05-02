@@ -2,11 +2,15 @@ package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.api.tile.IHeated;
+import betterwithmods.common.blocks.mechanical.tile.TileCookingPot;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -75,6 +79,25 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
 
     public CookingPotRecipe addHeatlessRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {
         return addRecipe(inputs, outputs, heat).setIgnoreHeat(true);
+    }
+
+    @Override
+    public boolean craftRecipe(World world, TileEntity tile, ItemStackHandler inv) {
+        if (tile instanceof TileCookingPot) {
+            TileCookingPot pot = (TileCookingPot) tile;
+            if (canCraft(tile, inv)) {
+                if (pot.cookProgress >= pot.getCookTime()) {
+                    InvUtils.insert(inv, craftItem(world, tile, inv), false);
+                    pot.cookProgress = 0;
+                    return true;
+                }
+                pot.cookProgress++;
+            } else {
+                pot.cookProgress = 0;
+            }
+        }
+
+        return false;
     }
 
     @Override

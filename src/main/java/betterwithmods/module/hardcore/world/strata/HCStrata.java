@@ -26,81 +26,25 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HCStrata extends Feature {
+    private static final Pattern PARSE = Pattern.compile("(^\\d{1,255})=(\\d{1,255}),(\\d{1,255}).*");
     public static boolean ENABLED;
-
     public static float[] STRATA_SPEEDS;
     public static float INCORRECT_STRATA_SCALE;
+    public static HashMap<IBlockState, BlockType> STATES = Maps.newHashMap();
+    public static HashMap<Integer, StrataConfig> STRATA_CONFIGS = Maps.newHashMap();
+    public static StrataConfig DEFAULT = new StrataConfig(-1, -1);
 
     public HCStrata() {
         enabledByDefault = false;
     }
-
-    @Override
-    public void setupConfig() {
-        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 1.0),
-                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 1.0),
-                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 1.0)
-        };
-        INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
-    }
-
-
-    @Override
-    public String getFeatureDescription() {
-        return "Divides the underground into three strata. Each strata requires the next tool tier to properly mine";
-    }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-
-        if(Loader.isModLoaded("ctm")) {
-            try {
-                Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
-                Class clazz1 = Class.forName("team.chisel.ctm.api.texture.ITextureType");
-                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureTypeStrata");
-                Method register = ReflectionHelper.findMethod(clazz,"register","register",String.class,clazz1);
-                register.invoke(null,"bwm_strata", clazz2.newInstance());
-            } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        ENABLED = BWMod.MODULE_LOADER.isFeatureEnabled(HCStrata.class);
-        for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
-            for (ItemStack stack : ore.getOres()) {
-                if (stack.getItem() instanceof ItemBlock) {
-                    addOre(((ItemBlock) stack.getItem()).getBlock());
-                }
-            }
-        }
-        List<ItemStack> stones = loadItemStackList("Strata Stones", "Blocks that are considered as stone to HCStrata", new ItemStack[]{new ItemStack(Blocks.STONE, 1, OreDictionary.WILDCARD_VALUE)});
-        stones.stream().map(BWMRecipes::getStatesFromStack).flatMap(Set::stream).forEach(HCStrata::addStone);
-    }
-
-    private enum BlockType {
-        STONE(0),
-        ORE(1);
-        private int level;
-
-        BlockType(int level) {
-            this.level = level;
-        }
-
-        public int getLevel() {
-            return level;
-        }
-    }
-
-    public static HashMap<IBlockState, BlockType> STATES = Maps.newHashMap();
-
 
     public static void addStone(IBlockState state) {
         STATES.put(state, BlockType.STONE);
@@ -124,12 +68,67 @@ public class HCStrata extends Feature {
         return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.containsKey(state);
     }
 
-    public static int getStratification(int y, int topY) {
-        if (y >= (topY - 10))
-            return 0;
-        if (y >= (topY - 30))
-            return 1;
-        return 2;
+    public static Stratification getStratification(int y, int dimension) {
+        return STRATA_CONFIGS.getOrDefault(dimension, DEFAULT).getStrata(y);
+    }
+    private static final Pattern PATTERN = Pattern.compile("^([\\-]?\\d+)=(\\d{1,255}),(\\d{1,255}).*");
+    private static void loadStrataConfig(String entry) {
+
+        Matcher matcher = PATTERN.matcher(entry);
+        if(matcher.matches()) {
+            int dim = Integer.parseInt(matcher.group(1));
+            int medium = Integer.parseInt(matcher.group(2));
+            int hard = Integer.parseInt(matcher.group(3));
+            STRATA_CONFIGS.put(dim, new StrataConfig(medium, hard));
+        }
+    }
+
+    @Override
+    public void setupConfig() {
+        STRATA_SPEEDS = new float[]{(float) loadPropDouble("Light Strata", "Speed for Light Strata", 1.0),
+                (float) loadPropDouble("Medium Strata", "Speed for Medium Strata", 1.0),
+                (float) loadPropDouble("Dark Strata", "Speed for Dark Strata", 1.0)
+        };
+        INCORRECT_STRATA_SCALE = (float) loadPropDouble("Incorrect Strata", "Speed scale for when the Strata is higher than the tool", 0.35);
+
+        Arrays.stream(loadPropStringList("Strata Configs", "Set the strata levels for a given dimension, <dim>=< medium start y>,<hard start y>", new String[]{
+                "0=42,21"
+        })).map( s -> s.replaceAll(" ", "")).forEach(HCStrata::loadStrataConfig);
+    }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Divides the underground into three strata. Each strata requires the next tool tier to properly mine";
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+
+        if (Loader.isModLoaded("ctm")) {
+            try {
+                Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
+                Class clazz1 = Class.forName("team.chisel.ctm.api.texture.ITextureType");
+                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureTypeStrata");
+                Method register = ReflectionHelper.findMethod(clazz, "register", "register", String.class, clazz1);
+                register.invoke(null, "bwm_strata", clazz2.newInstance());
+            } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        ENABLED = BWMod.MODULE_LOADER.isFeatureEnabled(HCStrata.class);
+        for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
+            for (ItemStack stack : ore.getOres()) {
+                if (stack.getItem() instanceof ItemBlock) {
+                    addOre(((ItemBlock) stack.getItem()).getBlock());
+                }
+            }
+        }
+        List<ItemStack> stones = loadItemStackList("Strata Stones", "Blocks that are considered as stone to HCStrata", new ItemStack[]{new ItemStack(Blocks.STONE, 1, OreDictionary.WILDCARD_VALUE)});
+        stones.stream().map(BWMRecipes::getStatesFromStack).flatMap(Set::stream).forEach(HCStrata::addStone);
     }
 
     @SubscribeEvent
@@ -138,10 +137,10 @@ public class HCStrata extends Feature {
         BlockPos pos = event.getPos();
         if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(), event.getState());
-            int strata = getStratification(pos.getY(), world.getSeaLevel());
+            int strata = getStratification(pos.getY(), world.provider.getDimension()).ordinal();
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getHarvester(), event.getState()));
-                if (level <= (strata)) {
+                if (level <= strata) {
                     event.getDrops().clear();
                 }
             }
@@ -155,10 +154,10 @@ public class HCStrata extends Feature {
         if (shouldStratify(world, pos)) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getEntityPlayer(), event.getState());
             float scale = ToolsManager.getSpeed(stack, event.getState());
-            int strata = getStratification(pos.getY(), world.getSeaLevel());
+            int strata = getStratification(pos.getY(), world.provider.getDimension()).ordinal();
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
                 int level = Math.max(1, stack.getItem().getHarvestLevel(stack, "pickaxe", event.getEntityPlayer(), event.getState()));
-                if (level <= (strata)) {
+                if (level <= strata) {
                     scale = INCORRECT_STRATA_SCALE;
                 }
             }
@@ -171,5 +170,44 @@ public class HCStrata extends Feature {
     public boolean hasSubscriptions() {
         return true;
     }
+
+
+    private enum BlockType {
+        STONE(0),
+        ORE(1);
+        private int level;
+
+        BlockType(int level) {
+            this.level = level;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+    }
+
+    public enum Stratification {
+        NORMAL,
+        MEDIUM,
+        HARD
+    }
+
+    private static class StrataConfig {
+
+
+        private int medium;
+        private int hard;
+
+
+        public StrataConfig(int medium, int hard) {
+            this.medium = medium;
+            this.hard = hard;
+        }
+
+        public Stratification getStrata(int y) {
+            return y <= hard ? Stratification.HARD : y <= medium ? Stratification.MEDIUM : Stratification.NORMAL;
+        }
+    }
+
 
 }
