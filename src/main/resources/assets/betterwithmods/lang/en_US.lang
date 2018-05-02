@@ -234,7 +234,6 @@ tile.bwm:metal_chime.2.name=Birch Wind Chime
 tile.bwm:metal_chime.3.name=Jungle Wind Chime
 tile.bwm:metal_chime.4.name=Acacia Wind Chime
 tile.bwm:metal_chime.5.name=Dark Oak Wind Chime
-tile.bwm:immersive_axle.name=Treated Wood Axle
 tile.bwm:buddy_block.name=Buddy Block
 tile.bwm:creative_generator.name=Creative Mechanical Generator
 tile.bwm:light.name=Light Block
@@ -267,18 +266,6 @@ tile.bwm:stake.name=Stake
 
 tile.bwm:iron_wall.name=Iron Wall
 tile.bwm:nether_growth.name=Nether Growth Spore
-
-tile.bwm:ie_siding.0.name=Horizontal Treated Wood Siding
-tile.bwm:ie_moulding.0.name=Horizontal Treated Wood Moulding
-tile.bwm:ie_corner.0.name=Horizontal Treated Wood Corner
-
-tile.bwm:ie_siding.1.name=Vertical Treated Wood Siding
-tile.bwm:ie_moulding.1.name=Vertical Treated Wood Moulding
-tile.bwm:ie_corner.1.name=Vertical Treated Wood Corner
-
-tile.bwm:ie_siding.2.name=Packaged Treated Wood Siding
-tile.bwm:ie_moulding.2.name=Packaged Treated Wood Moulding
-tile.bwm:ie_corner.2.name=Packaged Treated Wood Corner
 
 tile.bwm:steel_saw.name=Soulforged Steel Saw
 
