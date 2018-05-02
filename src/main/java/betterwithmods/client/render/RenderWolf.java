@@ -29,7 +29,6 @@ public class RenderWolf extends RenderLiving<EntityWolf> {
      * Renders the desired {@code T} type Entity.
      */
     public void doRender(EntityWolf entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        mainModel = new ModelLongBoi();
         if (entity.isWolfWet()) {
             float f = entity.getBrightness() * entity.getShadingWhileWet(partialTicks);
             GlStateManager.color(f, f, f);
