@@ -3,6 +3,7 @@ package betterwithmods.common.blocks;
 import betterwithmods.api.block.PropertyObject;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.tile.TileKiln;
+import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -53,6 +54,19 @@ public class BlockKiln extends BWMBlock {
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (!KilnStructureManager.isValidKiln(world, pos)) {
+            IExtendedBlockState extendedBlockState = (IExtendedBlockState) getExtendedState(state, world, pos);
+            if (state instanceof IExtendedBlockState) {
+                IBlockState held_state = extendedBlockState.getValue(HELD_STATE);
+                if (held_state != null) {
+                    world.removeTileEntity(pos);
+                    world.setBlockState(pos, held_state);
+                    return;
+                }
+            }
+            world.setBlockToAir(pos);
+            return;
+        }
         int oldCookTime = getCookCounter(world, pos);
         BlockPos craftPos = pos.up();
         int currentTickRate = 20;
