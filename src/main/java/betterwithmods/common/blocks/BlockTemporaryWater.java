@@ -1,6 +1,5 @@
 package betterwithmods.common.blocks;
 
-import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.mechanical.BlockPump;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -11,6 +10,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -28,13 +29,23 @@ public class BlockTemporaryWater extends BlockLiquid {
         this.setTickRandomly(true);
     }
 
+    private boolean canStay(World world, BlockPos pos) {
+        IBlockState stateBelow = world.getBlockState(pos.down());
+        if (stateBelow.getBlock() instanceof BlockPump && stateBelow.getValue(BlockPump.ACTIVE)) {
+            BlockPump pump = (BlockPump) stateBelow.getBlock();
+            FluidStack fluidStack = pump.getFluidStack(world, pos.down());
+            return fluidStack != null && fluidStack.getFluid() == FluidRegistry.WATER;
+        }
+        return false;
+    }
+
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         int level = state.getValue(LEVEL);
 
         IBlockState stateBelow = worldIn.getBlockState(pos.down());
 
-        if (!(stateBelow.getBlock() == BWMBlocks.PUMP && stateBelow.getValue(BlockPump.ACTIVE) && BlockPump.hasWaterToPump(worldIn, pos.down()))) {
+        if (!canStay(worldIn, pos)) {
             worldIn.setBlockToAir(pos);
             return;
         }

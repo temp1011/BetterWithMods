@@ -1,12 +1,16 @@
 package betterwithmods.util;
 
+import betterwithmods.util.fluids.BlockLiquidWrapper;
+import betterwithmods.util.fluids.FluidBlockWrapper;
 import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +20,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -133,6 +141,40 @@ public final class WorldUtils {
             }
         }
         return false;
+    }
+
+
+    @Nullable
+    public static IFluidHandler getFluidContainer(World world, BlockPos blockPos, @Nullable EnumFacing side) {
+        IBlockState state = world.getBlockState(blockPos);
+        Block block = state.getBlock();
+
+        if (block.hasTileEntity(state)) {
+            TileEntity tileEntity = world.getTileEntity(blockPos);
+            if (tileEntity != null && tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) {
+                return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static IFluidHandler getFluidHandler(World world, BlockPos blockPos, @Nullable EnumFacing side) {
+        IBlockState state = world.getBlockState(blockPos);
+        Block block = state.getBlock();
+
+        if (block.hasTileEntity(state)) {
+            TileEntity tileEntity = world.getTileEntity(blockPos);
+            if (tileEntity != null && tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) {
+                return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            }
+        } else if (block instanceof IFluidBlock) {
+            return new FluidBlockWrapper((IFluidBlock) block, world, blockPos);
+        } else if (block instanceof BlockLiquid) {
+            return new BlockLiquidWrapper((BlockLiquid) block, world, blockPos);
+        }
+
+        return null;
     }
 
     public static boolean isWater(World world, BlockPos pos) {

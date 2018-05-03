@@ -6,8 +6,8 @@ import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BWMBlock;
 import betterwithmods.common.blocks.mechanical.tile.TilePump;
 import betterwithmods.util.DirUtils;
+import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,8 +19,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -41,20 +43,19 @@ public class BlockPump extends BWMBlock implements IBlockActive, IOverpower {
         setSoundType(SoundType.WOOD);
     }
 
-    public static boolean hasWaterToPump(World world, BlockPos pos) {
+    public FluidStack getFluidStack(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         EnumFacing direction = state.getValue(DirUtils.HORIZONTAL);
-        BlockPos source = DirUtils.movePos(pos, direction);
-        IBlockState sourceState = world.getBlockState(source);
-        Block block = sourceState.getBlock();
-        Material mat = block.getMaterial(state);
-        return (block instanceof BlockFluidBase && ((BlockFluidBase) block).getFluid() == FluidRegistry.WATER) || (block instanceof BlockLiquid && mat == Material.WATER);
+        IFluidHandler handler = WorldUtils.getFluidHandler(world, pos.offset(direction), direction);
+        if (handler != null) {
+            return handler.drain(Fluid.BUCKET_VOLUME, false);
+        }
+        return null;
     }
-
 
     @Override
     public int tickRate(World world) {
-        return 5;
+        return 20;
     }
 
     @Override
@@ -112,8 +113,14 @@ public class BlockPump extends BWMBlock implements IBlockActive, IOverpower {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         withTile(world, pos).ifPresent(TilePump::onChanged);
         if (isActive(state)) {
-            if (world.isAirBlock(pos.up()) && hasWaterToPump(world, pos)) {
-                world.setBlockState(pos.up(), BWMBlocks.TEMP_LIQUID_SOURCE.getDefaultState());
+            FluidStack fluidStack = getFluidStack(world, pos);
+            if (fluidStack != null && fluidStack.getFluid() == FluidRegistry.WATER) {
+                IFluidHandler handler = WorldUtils.getFluidContainer(world, pos.up(), EnumFacing.DOWN);
+                if (handler != null) {
+                    handler.fill(fluidStack, true);
+                } else if (world.isAirBlock(pos.up())) {
+                    world.setBlockState(pos.up(), BWMBlocks.TEMP_LIQUID_SOURCE.getDefaultState());
+                }
             }
         }
         world.scheduleBlockUpdate(pos, this, tickRate(world), 5);
