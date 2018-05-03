@@ -25,34 +25,28 @@
         "model": "betterwithmods:steel_tank/all"
       },
       "north_east": {
-        "model": "betterwithmods:steel_tank/corner"
+        "model": "betterwithmods:steel_tank/north_east"
       },
       "north_west": {
-        "model": "betterwithmods:steel_tank/corner",
-        "y": 270
+        "model": "betterwithmods:steel_tank/north_west"
       },
       "south_east": {
-        "model": "betterwithmods:steel_tank/corner",
-        "y": 90
+        "model": "betterwithmods:steel_tank/south_east"
       },
       "south_west": {
-        "model": "betterwithmods:steel_tank/corner",
-        "y": 180
+        "model": "betterwithmods:steel_tank/south_west"
       },
       "north_south_east": {
-        "model": "betterwithmods:steel_tank/side",
-        "y": 180
+        "model": "betterwithmods:steel_tank/north_south_east"
       },
       "north_south_west": {
-        "model": "betterwithmods:steel_tank/side"
+        "model": "betterwithmods:steel_tank/north_south_west"
       },
       "east_west_north": {
-        "model": "betterwithmods:steel_tank/side",
-        "y": 90
+        "model": "betterwithmods:steel_tank/east_west_north"
       },
       "east_west_south": {
-        "model": "betterwithmods:steel_tank/side",
-        "y": 270
+        "model": "betterwithmods:steel_tank/east_west_south"
       }
     }
   }
