@@ -17,6 +17,12 @@ public class TileKiln extends TileCamo implements ITickable {
 
     @Override
     public void update() {
+
+        if (!KilnStructureManager.isValidKiln(world, pos)) {
+            world.setBlockState(pos, this.state);
+            return;
+        }
+
         BlockPos cookPos = pos.up();
         IBlockState cookState = world.getBlockState(cookPos);
         KilnRecipe recipe = BWRegistry.KILN.findRecipe(world, cookPos, cookState).orElse(null);
@@ -66,7 +72,7 @@ public class TileKiln extends TileCamo implements ITickable {
 
     private int calculateSpeed() {
         int speed = 0;
-        int centerFire = KilnStructureManager.getKiln().getHeat(world,pos);
+        int centerFire = KilnStructureManager.getKiln().getHeat(world, pos);
 
         for (int xP = -1; xP < 2; xP++) {
             for (int zP = -1; zP < 2; zP++) {
@@ -76,7 +82,7 @@ public class TileKiln extends TileCamo implements ITickable {
                     speed += currentFire;
             }
         }
-        return speed/centerFire;
+        return speed / centerFire;
     }
 
 
