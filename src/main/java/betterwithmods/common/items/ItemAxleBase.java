@@ -58,10 +58,19 @@ public abstract class ItemAxleBase extends ItemBlock {
         AxisAlignedBB box = getBounds(axis);
         if (box == null)
             return false;
-        for (BlockPos p : WorldUtils.getPosInBox(box.offset(pos))) {
-            if (onAxis(world, player, pos, p, axis))
-                continue;
-            if (!world.isAirBlock(p)) {
+        Iterable<BlockPos> positions = WorldUtils.getPosInBox(box.offset(pos));
+        for (BlockPos p : positions) {
+            if (onAxis(world, player, pos, p, axis)) {
+                IBlockState state = world.getBlockState(p);
+                if (state.getBlock() instanceof BlockAxle) {
+                    continue;
+                } else {
+                    showErrorMessage(player, Error.SPACE);
+                    return false;
+                }
+            }
+            IBlockState state = world.getBlockState(p);
+            if (!state.getBlock().isAir(state, world, p)) {
                 return false;
             }
         }
@@ -69,11 +78,6 @@ public abstract class ItemAxleBase extends ItemBlock {
     }
 
     private boolean onAxis(World world, EntityPlayer player, BlockPos base, BlockPos test, EnumFacing.Axis axis) {
-        IBlockState state = world.getBlockState(test);
-        if (!(state.getBlock() instanceof BlockAxle)) {
-            showErrorMessage(player, Error.SPACE);
-            return false;
-        }
         switch (axis) {
             case X:
                 return base.getZ() == test.getZ() && base.getY() == test.getY();
@@ -88,6 +92,9 @@ public abstract class ItemAxleBase extends ItemBlock {
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote)
+            return EnumActionResult.PASS;
+        IBlockState state = worldIn.getBlockState(pos);
         EnumFacing.Axis axis = getAxleAxis(worldIn, pos);
         if (axis != null) {
             if (isValidArea(worldIn, player, pos, axis)) {
