@@ -140,14 +140,14 @@ public class ItemAxleGenerator extends Item implements IMultiLocations {
     }
 
     private boolean isNearMechMachine(World world, BlockPos pos, EnumFacing.Axis axis) {
-        for (int i = -3; i < 4; i++) {
-            int xP = axis == EnumFacing.Axis.X ? i : 0;
-            int zP = axis == EnumFacing.Axis.Z ? i : 0;
-            BlockPos check = pos.add(xP, 0, zP);
-            if (world.getBlockState(check).getBlock() instanceof BlockAxleGenerator) {
-                return true;
-            }
-        }
+//        for (int i = -3; i < 4; i++) {
+//            int xP = axis == EnumFacing.Axis.X ? i : 0;
+//            int zP = axis == EnumFacing.Axis.Z ? i : 0;
+//            BlockPos check = pos.add(xP, 0, zP);
+//            if (world.getBlockState(check).getBlock() instanceof BlockAxleGenerator) {
+//                return true;
+//            }
+//        }
         return false;
     }
 
