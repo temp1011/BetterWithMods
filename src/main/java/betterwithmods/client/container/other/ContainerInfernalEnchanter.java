@@ -4,7 +4,7 @@ import betterwithmods.common.blocks.tile.FilteredStackHandler;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
 import betterwithmods.common.items.ItemArcaneScroll;
-import betterwithmods.module.hardcore.creatures.HCEnchanting;
+import betterwithmods.util.InfernalEnchantment;
 import betterwithmods.util.InvUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -103,7 +103,7 @@ public class ContainerInfernalEnchanter extends Container {
 
     public boolean areValidItems(ItemStack scroll, ItemStack item) {
         if (!scroll.isEmpty() && !item.isEmpty()) {
-            Enchantment enchantment = ItemArcaneScroll.getEnchantment(scroll);
+            Enchantment enchantment = new InfernalEnchantment(ItemArcaneScroll.getEnchantment(scroll));
             if (enchantment == null)
                 return false;
             Set<Enchantment> enchantments = EnchantmentHelper.getEnchantments(item).keySet();
@@ -113,7 +113,8 @@ public class ContainerInfernalEnchanter extends Container {
                 if (!e.isCompatibleWith(enchantment))
                     return false;
             }
-            if (HCEnchanting.InfernalEnchantmentType.fromEnchantment(enchantment).canEnchantItem(item.getItem())) {
+
+            if (item.getItem().canApplyAtEnchantingTable(item, enchantment)) {
                 return true;
             }
         }

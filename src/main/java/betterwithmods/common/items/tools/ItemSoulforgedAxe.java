@@ -21,6 +21,6 @@ public class ItemSoulforgedAxe extends ItemAxe {
     }
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return HCEnchanting.canEnchantSteel() && super.canApplyAtEnchantingTable(stack,enchantment);
+        return HCEnchanting.canEnchantSteel(enchantment) && super.canApplyAtEnchantingTable(stack,enchantment);
     }
 }

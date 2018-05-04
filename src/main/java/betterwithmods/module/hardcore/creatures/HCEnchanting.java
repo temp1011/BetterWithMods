@@ -2,9 +2,9 @@ package betterwithmods.module.hardcore.creatures;
 
 import betterwithmods.common.items.ItemArcaneScroll;
 import betterwithmods.module.Feature;
+import betterwithmods.util.InfernalEnchantment;
 import betterwithmods.util.WorldUtils;
 import com.google.common.collect.Maps;
-import net.minecraft.block.BlockPumpkin;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -13,48 +13,24 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.init.Enchantments;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
-import java.util.function.Predicate;
 
 public class HCEnchanting extends Feature {
+    private static final HashMap<Class<? extends EntityLivingBase>, ScrollDrop> SCROLL_DROPS = Maps.newHashMap();
+
+    private static double dropChance;
+    private static boolean fuckMending;
     private static boolean steelRequiresInfernal;
 
-
-    public static boolean canEnchantSteel() {
-        return !steelRequiresInfernal;
+    public static boolean canEnchantSteel(Enchantment enchantment) {
+        return !steelRequiresInfernal || enchantment instanceof InfernalEnchantment;
     }
-
-    public static double dropChance;
-    public static boolean fuckMending;
-    @Override
-    public void setupConfig() {
-        steelRequiresInfernal = loadPropBool("Steel Requires Infernal Enchanter", "Soulforged Steel tools can only be enchanted with the Infernal Enchanter", true);
-        dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.001);
-        fuckMending = loadPropBool("Disable Mending", "Mending is a bad unbalanced pile of poo", true);
-    }
-
-    @Override
-    public String getFeatureDescription() {
-        return "Adds Arcane Scroll drops to specific mobs, used for enchanting with the Infernal Enchanter";
-    }
-
-    @FunctionalInterface
-    public interface ScrollDrop {
-        ItemStack getScroll(EntityLivingBase entity);
-
-        default double getChance() {
-            return dropChance;
-        }
-    }
-
-    private static final HashMap<Class<? extends EntityLivingBase>, ScrollDrop> SCROLL_DROPS = Maps.newHashMap();
 
     public static void addScrollDrop(Class<? extends EntityLivingBase> clazz, Enchantment enchantment) {
         addScrollDrop(clazz, (entity) -> ItemArcaneScroll.getScrollWithEnchant(enchantment));
@@ -68,6 +44,17 @@ public class HCEnchanting extends Feature {
         SCROLL_DROPS.put(clazz, scroll);
     }
 
+    @Override
+    public void setupConfig() {
+        steelRequiresInfernal = loadPropBool("Steel Requires Infernal Enchanter", "Soulforged Steel tools can only be enchanted with the Infernal Enchanter", true);
+        dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.001);
+        fuckMending = loadPropBool("Disable Mending", "Mending is a bad unbalanced pile of poo", true);
+    }
+
+    @Override
+    public String getFeatureDescription() {
+        return "Adds Arcane Scroll drops to specific mobs, used for enchanting with the Infernal Enchanter";
+    }
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -91,7 +78,7 @@ public class HCEnchanting extends Feature {
         addScrollDrop(EntityBlaze.class, Enchantments.FLAME);
         addScrollDrop(EntityPolarBear.class, Enchantments.FROST_WALKER);
         addScrollDrop(EntityGuardian.class, Enchantments.DEPTH_STRIDER);
-        if(!fuckMending) {
+        if (!fuckMending) {
             addScrollDrop(EntityShulker.class, new ScrollDrop() {
                 @Override
                 public ItemStack getScroll(EntityLivingBase entity) {
@@ -168,38 +155,13 @@ public class HCEnchanting extends Feature {
         }
     }
 
+    @FunctionalInterface
+    public interface ScrollDrop {
+        ItemStack getScroll(EntityLivingBase entity);
 
-    public enum InfernalEnchantmentType {
-        ALL(item -> false),
-        ARMOR(item -> item instanceof ItemArmor),
-        ARMOR_FEET(item -> item instanceof ItemArmor && ((ItemArmor) item).armorType == EntityEquipmentSlot.FEET),
-        ARMOR_LEGS(item -> item instanceof ItemArmor && ((ItemArmor) item).armorType == EntityEquipmentSlot.LEGS),
-        ARMOR_CHEST(item -> item instanceof ItemArmor && ((ItemArmor) item).armorType == EntityEquipmentSlot.CHEST),
-        ARMOR_HEAD(item -> item instanceof ItemArmor && ((ItemArmor) item).armorType == EntityEquipmentSlot.HEAD),
-        WEAPON(item -> item instanceof ItemSword),
-        TOOL(item -> item instanceof ItemTool),
-        FISHING_ROD(item -> item instanceof ItemFishingRod),
-        BREAKABLE(Item::isDamageable),
-        BOW(item -> item instanceof ItemBow),
-        WEARABLE(item -> item instanceof ItemArmor || item instanceof ItemElytra || item instanceof ItemSkull || (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockPumpkin));
-
-        private Predicate<Item> delegate = null;
-
-        InfernalEnchantmentType(Predicate<Item> delegate) {
-            this.delegate = delegate;
-        }
-
-        public boolean canEnchantItem(Item item) {
-            return this.delegate != null && this.delegate.test(item);
-        }
-
-        public static InfernalEnchantmentType[] VALUES = values();
-
-        public static InfernalEnchantmentType fromEnchantment(Enchantment enchantment) {
-            if (enchantment.type != null) {
-                return VALUES[enchantment.type.ordinal()];
-            }
-            return ALL;
+        default double getChance() {
+            return dropChance;
         }
     }
+
 }
