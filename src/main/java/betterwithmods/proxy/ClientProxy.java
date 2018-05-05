@@ -42,7 +42,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
@@ -64,7 +63,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -188,13 +186,6 @@ public class ClientProxy implements IProxy {
                 cap.setHarness(harness);
             }
         }
-    }
-
-    @Override
-    public NonNullList<ItemStack> getSubItems(Item item) {
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        Arrays.stream(item.getCreativeTabs()).forEach(tab -> item.getSubItems(tab,stacks));
-        return stacks;
     }
 
     private Entity getEntityByID(int id) {

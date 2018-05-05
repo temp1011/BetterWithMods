@@ -5,6 +5,7 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.registry.block.recipe.IngredientSpecial;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.module.Feature;
 import betterwithmods.module.gameplay.miniblocks.MiniBlockIngredient;
@@ -40,7 +41,9 @@ public class CauldronRecipes extends Feature {
 
     private void stoked() {
 
-
+        Ingredient dung = new OreIngredient("dung");
+        Ingredient food = StackIngredient.fromIngredient(8, new IngredientSpecial(stack -> stack.getItem() instanceof ItemFood));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(food, dung), Lists.newArrayList(new ItemStack(BWMItems.FERTILIZER, 8)));
 
         StackIngredient meat = StackIngredient.mergeStacked(Lists.newArrayList(
                 StackIngredient.fromOre(1, "meatPork"),
