@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class HCEnchanting extends Feature {
     private static final HashMap<Class<? extends EntityLivingBase>, ScrollDrop> SCROLL_DROPS = Maps.newHashMap();
 
-    private static double dropChance;
+    private static double dropChance, lootingDropBonus;
     private static boolean fuckMending;
     private static boolean steelRequiresInfernal;
 
@@ -48,6 +48,7 @@ public class HCEnchanting extends Feature {
     public void setupConfig() {
         steelRequiresInfernal = loadPropBool("Steel Requires Infernal Enchanter", "Soulforged Steel tools can only be enchanted with the Infernal Enchanter", true);
         dropChance = loadPropDouble("Arcane Scroll Drop Chance", "Percentage chance that an arcane scroll will drop, does not effect some scrolls.", 0.001);
+        lootingDropBonus = loadPropDouble("Arcane Scroll Looting Bonus Multiplier", "Increase the chance of getting a scroll with looting enchants baseChance * ( lootingDropBonus * lootingLevel)", 0.1);
         fuckMending = loadPropBool("Disable Mending", "Mending is a bad unbalanced pile of poo", true);
     }
 
@@ -147,7 +148,8 @@ public class HCEnchanting extends Feature {
             if (entity.isAssignableFrom(event.getEntityLiving().getClass())) {
                 ScrollDrop drop = SCROLL_DROPS.get(entity);
                 if (drop.getScroll(event.getEntityLiving()) != null) {
-                    if (event.getEntityLiving().getRNG().nextDouble() <= drop.getChance()) {
+                    double chance = event.getEntityLiving().getRNG().nextDouble() + (lootingDropBonus * event.getLootingLevel());
+                    if (chance <= drop.getChance()) {
                         WorldUtils.addDrop(event, drop.getScroll(event.getEntityLiving()));
                     }
                 }
