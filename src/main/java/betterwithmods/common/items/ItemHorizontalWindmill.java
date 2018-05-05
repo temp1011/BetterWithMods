@@ -8,7 +8,7 @@ public class ItemHorizontalWindmill extends ItemAxleBase {
 
     public ItemHorizontalWindmill(Block block) {
         super(block);
-        this.radius = 4;
+        this.radius = 6;
     }
 
     @Override

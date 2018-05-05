@@ -23,7 +23,7 @@ public class ItemVerticalWindmill extends ItemAxleBase {
     }
 
     @Override
-    public AxisAlignedBB getBounds(EnumFacing.Axis axis) {
+    public AxisAlignedBB getBounds(EnumFacing.Axis axis, int radius) {
         switch (axis) {
             case Y:
                 return new AxisAlignedBB(-radius, -radius + 1, -radius, radius, radius - 1, radius);

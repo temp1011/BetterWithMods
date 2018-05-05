@@ -43,7 +43,7 @@ public abstract class ItemAxleBase extends ItemBlock {
         player.sendMessage(new TextComponentTranslation(error.format(block)));
     }
 
-    public AxisAlignedBB getBounds(EnumFacing.Axis axis) {
+    public AxisAlignedBB getBounds(EnumFacing.Axis axis, int radius) {
         switch (axis) {
             case X:
                 return new AxisAlignedBB(0, -radius, -radius, 0, radius, radius);
@@ -54,13 +54,26 @@ public abstract class ItemAxleBase extends ItemBlock {
         }
     }
 
+    private boolean containsOtherGenerator(World world, BlockPos center, EnumFacing.Axis axis) {
+        int d = radius * 2;
+        AxisAlignedBB box = getBounds(DirUtils.rotateAroundY(axis), d);
+        Iterable<BlockPos> positions = WorldUtils.getPosInBox(box.offset(center));
+        for (BlockPos p : positions) {
+            IBlockState state = world.getBlockState(p);
+            if(state.getBlock() instanceof BlockAxleGenerator) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isValidArea(World world, EntityPlayer player, BlockPos pos, EnumFacing.Axis axis) {
-        AxisAlignedBB box = getBounds(axis);
+        AxisAlignedBB box = getBounds(axis, radius);
         if (box == null)
             return false;
         Iterable<BlockPos> positions = WorldUtils.getPosInBox(box.offset(pos));
         for (BlockPos p : positions) {
-            if (onAxis(world, player, pos, p, axis)) {
+            if (onAxis(pos, p, axis)) {
                 IBlockState state = world.getBlockState(p);
                 if (state.getBlock() instanceof BlockAxle) {
                     continue;
@@ -70,14 +83,14 @@ public abstract class ItemAxleBase extends ItemBlock {
                 }
             }
             IBlockState state = world.getBlockState(p);
-            if (!state.getBlock().isAir(state, world, p)) {
+            if (!state.getMaterial().isReplaceable()) {
                 return false;
             }
         }
-        return true;
+        return !containsOtherGenerator(world, pos, axis);
     }
 
-    private boolean onAxis(World world, EntityPlayer player, BlockPos base, BlockPos test, EnumFacing.Axis axis) {
+    private boolean onAxis(BlockPos base, BlockPos test, EnumFacing.Axis axis) {
         switch (axis) {
             case X:
                 return base.getZ() == test.getZ() && base.getY() == test.getY();
@@ -94,7 +107,6 @@ public abstract class ItemAxleBase extends ItemBlock {
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote)
             return EnumActionResult.PASS;
-        IBlockState state = worldIn.getBlockState(pos);
         EnumFacing.Axis axis = getAxleAxis(worldIn, pos);
         if (axis != null) {
             if (isValidArea(worldIn, player, pos, axis)) {
@@ -122,6 +134,7 @@ public abstract class ItemAxleBase extends ItemBlock {
         tooltip.add(tooltip());
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
+
 
     @SideOnly(Side.CLIENT)
     public enum Error {

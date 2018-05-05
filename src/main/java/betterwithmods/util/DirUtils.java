@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
+import static net.minecraft.util.EnumFacing.Axis.*;
+
 public class DirUtils {
 
     public static final EnumFacing[] X_AXIS = new EnumFacing[]{EnumFacing.WEST, EnumFacing.EAST};
@@ -107,6 +109,18 @@ public class DirUtils {
         }
 
         return facing;
+    }
+
+    public static EnumFacing.Axis rotateAroundY(EnumFacing.Axis axis) {
+        switch (axis) {
+            case X:
+                return Z;
+            case Y:
+                return Y;
+            case Z:
+                return X;
+        }
+        return Y;
     }
 
     public static EnumFacing.Axis getAxis(int axis) {
