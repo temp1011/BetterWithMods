@@ -23,7 +23,7 @@ public class TileEntitySteelAnvil extends TileBasicInventory {
 
     @Override
     public int getInventorySize() {
-        return 17;
+        return 16;
     }
 
     public void setInventorySlotContents(int slot, ItemStack stack) {
