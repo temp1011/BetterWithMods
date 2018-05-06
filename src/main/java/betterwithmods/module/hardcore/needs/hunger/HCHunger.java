@@ -66,10 +66,7 @@ import java.util.UUID;
  * Created by primetoxinz on 6/20/17.
  */
 public class HCHunger extends CompatFeature {
-    public HCHunger() {
-        super("applecore");
-    }
-
+    private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     public static float blockBreakExhaustion;
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
@@ -78,7 +75,13 @@ public class HCHunger extends CompatFeature {
 
     public static boolean overridePumpkinSeeds;
     public static boolean overrideMushrooms;
+    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
+    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
+    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
 
+    public HCHunger() {
+        super("applecore");
+    }
 
     @Override
     public void setupConfig() {
@@ -91,10 +94,6 @@ public class HCHunger extends CompatFeature {
         overridePumpkinSeeds = loadPropBool("Edible Pumpkin Seeds", "Override Pumpkin Seeds to be edible", true);
 //		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
     }
-
-    public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
-    public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
-    public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -244,8 +243,12 @@ public class HCHunger extends CompatFeature {
     //Chaneg speed based on Hunger
     @SubscribeEvent
     public void givePenalties(LivingEvent.LivingUpdateEvent event) {
+        if (!event.getEntity().getEntityWorld().isRemote)
+            return;
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (!PlayerHelper.isSurvival(player))
+                return;
             PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getHungerPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
         }
     }
@@ -268,8 +271,6 @@ public class HCHunger extends CompatFeature {
     public void denyFatRegen(HealthRegenEvent.AllowSaturatedRegen event) {
         event.setResult(Event.Result.DENY);
     }
-
-    private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
 
     @SubscribeEvent
     public void entityConstruct(EntityEvent.EntityConstructing e) {
@@ -303,8 +304,6 @@ public class HCHunger extends CompatFeature {
             } else {
                 setExhaustionTick(player, getExhaustionTick(player) + 1);
             }
-
-
         }
     }
 
