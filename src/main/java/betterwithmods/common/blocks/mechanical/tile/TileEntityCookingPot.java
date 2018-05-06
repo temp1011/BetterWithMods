@@ -114,15 +114,12 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public void update() {
-
         if (getBlock() instanceof BlockCookingPot) {
-
-
-
             IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (isPowered()) {
                 this.cookProgress = 0;
                 this.facing = getPoweredSide();
+
                 ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
             } else {
                 if (this.facing != EnumFacing.UP)
@@ -244,6 +241,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     public void ejectStack(World world, BlockPos pos, EnumFacing facing, ItemStack stack) {
+        if(world.isRemote)
+            return;
         Vec3i vec = new BlockPos(0, 0, 0).offset(facing);
         EntityItem item = new EntityItem(world, pos.getX() + 0.5F - (vec.getX() / 4d), pos.getY() + 0.25D, pos.getZ() + 0.5D - (vec.getZ() / 4d), stack);
         float velocity = 0.05F;
