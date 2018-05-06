@@ -112,7 +112,7 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-        getAllMiniBlocks().forEach(item -> subtypeRegistry.registerSubtypeInterpreter(item, (ISubtypeRegistry.ISubtypeInterpreter) itemStack -> {
+        getAllMiniBlocks().forEach(item -> subtypeRegistry.registerSubtypeInterpreter(item, itemStack -> {
             NBTTagCompound compound = itemStack.getSubCompound("texture");
             return compound != null ? compound.toString() : "";
         }));
@@ -133,8 +133,8 @@ public class JEI implements IModPlugin {
         registerHeatBasedRecipes(reg);
 
         reg.handleRecipes(MillRecipe.class, r -> new BulkRecipeWrapper<>(HELPER, r), MillRecipeCategory.UID);
-        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SawRecipeCategory.UID);
-        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper(HELPER, r), SteelSawRecipeCategory.UID);
+        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper<>(HELPER, r), SawRecipeCategory.UID);
+        reg.handleRecipes(SawRecipe.class, r -> new BlockRecipeWrapper<>(HELPER, r), SteelSawRecipeCategory.UID);
         reg.handleRecipes(TurntableRecipe.class, recipe -> new TurntableRecipeWrapper(HELPER, recipe), TurntableRecipeCategory.UID);
         reg.handleRecipes(HopperRecipe.class, recipe -> recipe instanceof SoulUrnRecipe ? new HopperRecipeWrapper.SoulUrn((SoulUrnRecipe) recipe) : new HopperRecipeWrapper(recipe), HopperRecipeCategory.UID);
         reg.handleRecipes(ShapedAnvilRecipe.class, recipe -> new ShapedAnvilRecipeWrapper(HELPER, recipe), SteelCraftingCategory.UID);
@@ -207,7 +207,7 @@ public class JEI implements IModPlugin {
 
             reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), cauldronUID);
             reg.handleRecipes(CookingPotRecipe.class, recipe -> new BulkRecipeWrapper<>(HELPER, recipe), crucibleUID);
-            reg.handleRecipes(KilnRecipe.class, recipe -> new BlockRecipeWrapper(HELPER, recipe), kilnUID);
+            reg.handleRecipes(KilnRecipe.class, recipe -> new KilnRecipeWrapper(HELPER, recipe), kilnUID);
 
             reg.addRecipes(BWRegistry.CAULDRON.getRecipesForHeat(heat), cauldronUID);
             reg.addRecipes(BWRegistry.CRUCIBLE.getRecipesForHeat(heat), crucibleUID);

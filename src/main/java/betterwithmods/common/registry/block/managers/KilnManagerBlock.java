@@ -26,7 +26,6 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
         return addRecipe(input, outputs, BWMHeatRegistry.STOKED_HEAT);
     }
 
-
     public KilnRecipe addUnstokedRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
     }

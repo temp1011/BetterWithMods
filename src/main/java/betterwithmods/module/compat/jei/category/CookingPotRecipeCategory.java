@@ -27,29 +27,14 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
     private static final ResourceLocation guiTexture = new ResourceLocation(BWMod.MODID, "textures/gui/jei/cooking.png");
     @Nonnull
     private final ICraftingGridHelper craftingGrid;
-    private final String uid;
     @Nonnull
     private IDrawableAnimated flame;
     private IGuiHelper helper;
 
     public CookingPotRecipeCategory(IGuiHelper helper, String uid) {
-        super(helper.createDrawable(guiTexture, 0, 0, width, height), String.format("inv.%s.name", uid.substring(4)));
+        super(helper.createDrawable(guiTexture, 0, 0, width, height), uid, String.format("inv.%s.name", uid.substring(4)));
         this.helper = helper;
-        this.uid = uid;
-        craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlot);
-        IDrawableStatic flameDrawable = helper.createDrawable(guiTexture, 166, 0, 14, 14);
-        this.flame = helper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
-    }
-
-    @Nonnull
-    @Override
-    public String getUid() {
-        return this.uid;
-    }
-
-    @Override
-    public String getModName() {
-        return BWMod.NAME;
+        this.craftingGrid = helper.createCraftingGridHelper(inputSlots, outputSlot);
     }
 
     @Override
@@ -67,24 +52,23 @@ public class CookingPotRecipeCategory extends BWMRecipeCategory<BulkRecipeWrappe
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                int index =  i + (j * 3);
+                int index = i + (j * 3);
                 stacks.init(inputSlots + index, true, 7 + i * 18, 2 + j * 18);
                 stacks.init(outputSlot + index, false, 105 + i * 18, 2 + j * 18);
             }
         }
 
+        int heat = wrapper.getRecipe().getHeat();
+        List<ItemStack> heatSources = BWMHeatRegistry.getStacks(heat);
+        if (!heatSources.isEmpty()) {
+            stacks.init(19, true, 75, 38);
+            stacks.set(19, heatSources);
+        }
         int index = 0;
         List<List<ItemStack>> outputs = InvUtils.splitIntoBoxes(wrapper.getRecipe().getOutputs(), 9);
         for (List<ItemStack> outputStacks : outputs)
             stacks.set(index++, outputStacks);
         List<List<ItemStack>> inputList = ingredients.getInputs(ItemStack.class);
         craftingGrid.setInputs(stacks, inputList);
-        
-        int heat = wrapper.getRecipe().getHeat();
-        List<ItemStack> heatSources = BWMHeatRegistry.getStacks(heat);
-        if (!heatSources.isEmpty()) {
-            stacks.init(index+1, true, 75, 38);
-            stacks.set(index+1, heatSources);
-        }
     }
 }
