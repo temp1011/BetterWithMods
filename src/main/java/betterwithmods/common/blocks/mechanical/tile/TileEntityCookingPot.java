@@ -114,8 +114,11 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     @Override
     public void update() {
-        spawnParticles();
+
         if (getBlock() instanceof BlockCookingPot) {
+
+
+
             IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (isPowered()) {
                 this.cookProgress = 0;
@@ -124,6 +127,8 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
             } else {
                 if (this.facing != EnumFacing.UP)
                     this.facing = EnumFacing.UP;
+
+                spawnParticles();
 
                 entityCollision();
                 int heat = findHeat(getPos());
@@ -181,10 +186,9 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
 
     private void spawnParticles() {
         Random random = this.getBlockWorld().rand;
-
-        if(facing == EnumFacing.UP && heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
-            double xOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
-            double zOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
+        if(heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
+            double xOffset = 0.25 + random.nextDouble() * 0.5;
+            double zOffset = 0.25 + random.nextDouble() * 0.5;
             this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
         }
     }
