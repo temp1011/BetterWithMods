@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static net.minecraft.block.material.Material.ROCK;
 import static net.minecraft.block.material.Material.WOOD;
@@ -29,13 +28,8 @@ import static net.minecraft.block.material.Material.WOOD;
 public class DefinitionPathProvider implements PathProvider {
     public static Set<ItemStack> blacklist = Sets.newHashSet(ItemStack.EMPTY);
 
-    BiFunction<World, IBlockState, String> customPath = (world, state) -> {
-        Block block = state.getBlock();
-        return null;
-    };
-
     public static boolean isBlacklisted(ItemStack stack) {
-        return blacklist.stream().anyMatch(s -> stack.isItemEqual(s));
+        return blacklist.stream().anyMatch(stack::isItemEqual);
     }
 
     @Nullable
@@ -44,7 +38,7 @@ public class DefinitionPathProvider implements PathProvider {
         if (isBlacklisted(stack) || !stack.getItem().getRegistryName().getResourceDomain().equals(BWMod.MODID))
             return null;
         String path = stack.getUnlocalizedName().replace("item.bwm:", "");
-        return "%LANGUAGE/items/" + path + ".md";
+        return "%LANGUAGE/items/" + path;
     }
 
     @Nullable
@@ -56,40 +50,40 @@ public class DefinitionPathProvider implements PathProvider {
         int meta = block.damageDropped(state);
 
         if (block instanceof BlockKiln)
-            return "%LANGUAGE%/blocks/kiln.md";
+            return "%LANGUAGE%/blocks/kiln";
 
         ItemStack stack = new ItemStack(block, 1, meta);
 
         if (isBlacklisted(stack) || !stack.getItem().getRegistryName().getResourceDomain().equals(BWMod.MODID))
             return null;
         else if (block instanceof BlockRope)
-            return "%LANGUAGE%/items/rope.md";
+            return "%LANGUAGE%/items/rope";
         else if (block == BWMBlocks.PLANTER)
-            return "%LANGUAGE%/blocks/planter.md";
+            return "%LANGUAGE%/blocks/planter";
         else if (block == BWMBlocks.BLOOD_SAPLING || block == BWMBlocks.BLOOD_LOG || block == BWMBlocks.BLOOD_LEAVES) {
-            return "%LANGUAGE%/blocks/blood_wood.md";
+            return "%LANGUAGE%/blocks/blood_wood";
         } else if (block instanceof BlockChime) {
-            return "%LANGUAGE%/blocks/wind_chime.md";
+            return "%LANGUAGE%/blocks/wind_chime";
         } else if (block instanceof BlockCookingPot) {
-            return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName() + ".md";
+            return "%LANGUAGE%/blocks/" + state.getValue(BlockCookingPot.TYPE).getName();
         } else if (block instanceof BlockMechMachines) {
-            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.TYPE).getName() + ".md";
+            return "%LANGUAGE%/blocks/" + state.getValue(BlockMechMachines.TYPE).getName();
         } else if (block instanceof BlockFurniture || block instanceof BlockPane || block instanceof BlockIronWall) {
-            return "%LANGUAGE%/blocks/decoration.md";
+            return "%LANGUAGE%/blocks/decoration";
         } else if (block instanceof BlockMini) {
             Material mat = state.getMaterial();
             if (mat == WOOD || mat == BlockMini.MINI) {
-                return "%LANGUAGE%/blocks/minimized_wood.md";
+                return "%LANGUAGE%/blocks/minimized_wood";
             } else if (mat == ROCK) {
-                return "%LANGUAGE%/blocks/minimized_stone.md";
+                return "%LANGUAGE%/blocks/minimized_stone";
             }
         } else if (block instanceof BlockEnderchest || state.equals(BlockAesthetic.getVariant(BlockAesthetic.EnumType.ENDERBLOCK))) {
-            return "%LANGUAGE%/hardcore/beacons.md";
+            return "%LANGUAGE%/hardcore/beacons";
         } else if (block instanceof BlockWindmill) {
-            return "%LANGUAGE%/blocks/windmill.md";
+            return "%LANGUAGE%/blocks/windmill";
         }
 
         String path = stack.getUnlocalizedName().replace("tile.bwm:", "");
-        return "%LANGUAGE%/blocks/" + path + ".md";
+        return "%LANGUAGE%/blocks/" + path;
     }
 }

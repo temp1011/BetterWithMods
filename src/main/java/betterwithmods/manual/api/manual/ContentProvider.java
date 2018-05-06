@@ -1,6 +1,6 @@
 package betterwithmods.manual.api.manual;
 
-import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
+import betterwithmods.manual.client.manual.provider.ResourceContentProvider;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
  *
  * @see ResourceContentProvider
  */
-public interface ContentProvider {
+public interface ContentProvider extends Comparable<ContentProvider> {
     /**
      * Called to get the content of a path pointed to by the specified path.
      * <p>
@@ -30,4 +30,7 @@ public interface ContentProvider {
      */
     @Nullable
     Iterable<String> getContent(final String path);
+
+    @Override
+    int compareTo(ContentProvider contentProvider);
 }

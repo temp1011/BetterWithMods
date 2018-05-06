@@ -548,5 +548,5 @@ bwm.manual.blocks=Block
 bwm.manual.items=Items
 bwm.manual.mechanical=Mechanical Power
 bwm.manual.error.0=Document not found:
-bwm.manual.error.1=Please report this
-bwm.manual.error.2=In the mean time, try the
+bwm.manual.error.1=Please report this %s
+bwm.manual.error.2=In the mean time, try the %s

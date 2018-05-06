@@ -16,7 +16,6 @@ import betterwithmods.common.blocks.tile.TileEntityBeacon;
 import betterwithmods.common.blocks.tile.TileEntityBucket;
 import betterwithmods.common.entity.*;
 import betterwithmods.manual.api.ManualAPI;
-import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
 import betterwithmods.manual.api.prefab.manual.TextureTabIconRenderer;
 import betterwithmods.manual.client.manual.provider.*;
 import betterwithmods.module.ModuleLoader;
@@ -103,7 +102,7 @@ public class ClientProxy implements IProxy {
         ModuleLoader.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());
-        ManualAPI.addProvider(new ResourceContentProvider("betterwithmods", "docs/"));
+        ManualAPI.addProvider(new DirectoryDefaultProvider("betterwithmods", "docs/"));
         ManualAPI.addProvider("", new TextureImageProvider());
         ManualAPI.addProvider("item", new ItemImageProvider());
         ManualAPI.addProvider("block", new BlockImageProvider());
@@ -113,6 +112,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+
         ModuleLoader.postInitClient(event);
         RenderUtils.registerFilters();
     }
