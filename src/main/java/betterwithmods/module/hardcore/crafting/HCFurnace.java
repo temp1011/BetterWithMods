@@ -29,7 +29,7 @@ import java.util.OptionalInt;
 public class HCFurnace extends Feature {
     public static final Block FURNACE = new BlockFurnace(false).setRegistryName("minecraft:furnace");
     public static final Block LIT_FURNACE = new BlockFurnace(true).setRegistryName("minecraft:lit_furnace");
-    public static boolean CONSUME_FUEL_WHEN_IDLE;
+    public static boolean CONSUME_FUEL_WHEN_IDLE, TOOLTIP;
     public static int DEFAULT_FURNACE_TIMING = 200;
     public static HashMap<Ingredient, Integer> FURNACE_TIMINGS = Maps.newHashMap();
     public static HashMap<Ingredient, Integer> FUEL_TIMINGS = Maps.newHashMap();
@@ -46,6 +46,7 @@ public class HCFurnace extends Feature {
     public void setupConfig() {
         CONSUME_FUEL_WHEN_IDLE = loadPropBool("Consume Fuel When Idle", "Furnaces will consume fuel even if no smeltable items are present.", true);
         DEFAULT_FURNACE_TIMING = loadPropInt("Default Furnace Timing", "Default number of ticks for an item to smelt in the furnace (vanilla is 200)", "", 200, 1, Integer.MAX_VALUE);
+        TOOLTIP = loadPropBool("Tooltip for modified cooking time", "Shows a tooltip for items with modified cooking time", true);
     }
 
     @Override
@@ -142,6 +143,8 @@ public class HCFurnace extends Feature {
 
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
+        if(!TOOLTIP)
+            return;
         if (!FurnaceRecipes.instance().getSmeltingResult(event.getItemStack()).isEmpty()) {
             event.getToolTip().add(I18n.translateToLocalFormatted("bwm.hcfurnace.cook_time.tooltip", HCFurnace.getCookingTime(event.getItemStack()).orElse(HCFurnace.DEFAULT_FURNACE_TIMING)));
         }
