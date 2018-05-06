@@ -122,7 +122,7 @@ public abstract class TileAxleGenerator extends TileBasic implements ITickable, 
     @Override
     @SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared() {
-       return Gameplay.generatorRenderDistance;
+       return Gameplay.generatorRenderDistance * Gameplay.generatorRenderDistance;
     }
 
     @Override
