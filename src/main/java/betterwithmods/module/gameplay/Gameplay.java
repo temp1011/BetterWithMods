@@ -8,13 +8,11 @@ import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -22,6 +20,8 @@ import java.util.stream.Collectors;
  * Created by primetoxinz on 4/20/17.
  */
 public class Gameplay extends Module {
+    public static double generatorRenderDistance;
+
     public static double crankExhaustion;
     public static boolean kidFriendly;
     public static float cauldronNormalSpeedFactor, cauldronStokedSpeedFactor, cauldronMultipleFiresFactor;
@@ -54,6 +54,7 @@ public class Gameplay extends Module {
 
     @Override
     public void setupConfig() {
+        generatorRenderDistance = loadPropDouble("Render Distance for Axle Generators", "Allows expanding the render distance for Windmills and Waterwheels", 12288.0);
         crankExhaustion = loadPropDouble("Crank Exhaustion", "How much saturation turning the crank eats. Set to 0.0 to disable.", 6.0, 0.0, 6.0);
         kidFriendly = loadPropBool("Kid Friendly", "Makes some features more kid friendly", false);
         loadRecipeCondition("higheff", "High Efficiency Recipes", "Enables High Efficiency Recipes", true);
