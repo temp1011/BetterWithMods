@@ -109,7 +109,11 @@ public final class ManualAPIImpl implements ManualAPI {
         } else {
             final int lastSlash = base.lastIndexOf('/');
             if (lastSlash >= 0) {
-                return base.substring(0, lastSlash + 1) + path;
+
+                String uri = base.substring(0, lastSlash + 1) + path;
+                if(!uri.endsWith(".md"))
+                    uri += "/index.md";
+                return uri;
             } else {
                 return path;
             }
