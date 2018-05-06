@@ -519,7 +519,8 @@ bwm.message.vertical_windmill.1=Too few vertical axles in column to place here. 
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
-bwm.config.pulley.tooltip=Limitations of the platforms of the pulley 
+bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
+bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
 
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight

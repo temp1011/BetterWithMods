@@ -9,12 +9,14 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,19 +24,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalInt;
 
 public class HCFurnace extends Feature {
-    public HCFurnace() {
-        enabledByDefault = false;
-    }
-
+    public static final Block FURNACE = new BlockFurnace(false).setRegistryName("minecraft:furnace");
+    public static final Block LIT_FURNACE = new BlockFurnace(true).setRegistryName("minecraft:lit_furnace");
     public static boolean CONSUME_FUEL_WHEN_IDLE;
     public static int DEFAULT_FURNACE_TIMING = 200;
     public static HashMap<Ingredient, Integer> FURNACE_TIMINGS = Maps.newHashMap();
     public static HashMap<Ingredient, Integer> FUEL_TIMINGS = Maps.newHashMap();
 
-    public static final Block FURNACE = new BlockFurnace(false).setRegistryName("minecraft:furnace");
-    public static final Block LIT_FURNACE = new BlockFurnace(true).setRegistryName("minecraft:lit_furnace");
+    public HCFurnace() {
+        enabledByDefault = false;
+    }
+
+    public static OptionalInt getCookingTime(ItemStack stack) {
+        return FURNACE_TIMINGS.entrySet().stream().filter(e -> e.getKey().apply(stack)).mapToInt(Map.Entry::getValue).findAny();
+    }
 
     @Override
     public void setupConfig() {
@@ -134,6 +140,12 @@ public class HCFurnace extends Feature {
         }
     }
 
+    @SubscribeEvent
+    public void onTooltip(ItemTooltipEvent event) {
+        if (!FurnaceRecipes.instance().getSmeltingResult(event.getItemStack()).isEmpty()) {
+            event.getToolTip().add(I18n.translateToLocalFormatted("bwm.hcfurnace.cook_time.tooltip", HCFurnace.getCookingTime(event.getItemStack()).orElse(HCFurnace.DEFAULT_FURNACE_TIMING)));
+        }
+    }
 
 }
 

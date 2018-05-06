@@ -12,8 +12,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Map;
-
 public class TileFurnace extends TileEntityFurnace {
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
@@ -30,7 +28,7 @@ public class TileFurnace extends TileEntityFurnace {
 
     @Override
     public int getCookTime(ItemStack stack) {
-        return HCFurnace.FURNACE_TIMINGS.entrySet().stream().filter(e -> e.getKey().apply(stack)).mapToInt(Map.Entry::getValue).findAny().orElse(HCFurnace.DEFAULT_FURNACE_TIMING);
+        return HCFurnace.getCookingTime(stack).orElse(HCFurnace.DEFAULT_FURNACE_TIMING);
     }
 
     public void update() {
