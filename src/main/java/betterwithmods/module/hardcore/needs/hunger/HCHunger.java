@@ -166,14 +166,15 @@ public class HCHunger extends CompatFeature {
         FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_MYSTERY_MEAT), 12);
         FoodHelper.registerFood(new ItemStack(BWMItems.BAT_WING), 3);
         FoodHelper.registerFood(new ItemStack(BWMItems.COOKED_BAT_WING), 6);
+        FoodHelper.registerFood(new ItemStack(Items.CHORUS_FRUIT), 3, 0, true);
 
-        FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 0.5f, true);
-        FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 9, 1.6f, true);
+        FoodHelper.registerFood(new ItemStack(BWMItems.DONUT), 3, 1.5f, true);
+        FoodHelper.registerFood(new ItemStack(BWMItems.APPLE_PIE), 9, 12, true);
         FoodHelper.registerFood(new ItemStack(BWMItems.CHOCOLATE), 6, 3, true);
-        FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 1, true);
-        FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 9, 1.6f, true);
-        FoodHelper.registerFood(new ItemStack(Items.CAKE), 4, 3, true);
-        FoodHelper.registerFood(new ItemStack(Items.CHORUS_FRUIT), 3, 0f, true);
+        FoodHelper.registerFood(new ItemStack(Items.COOKIE), 3, 3, true);
+        FoodHelper.registerFood(new ItemStack(Items.PUMPKIN_PIE), 9, 12, true);
+        FoodHelper.registerFood(new ItemStack(Items.CAKE), 4, 12, true);
+
 
         ((IEdibleBlock) Blocks.CAKE).setEdibleAtMaxHunger(true);
     }
@@ -187,7 +188,20 @@ public class HCHunger extends CompatFeature {
     //Changes food to correct value.
     @SubscribeEvent
     public void modifyFoodValues(FoodEvent.GetFoodValues event) {
-        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(Math.min(event.foodValues.hunger * 3, 60), event.foodValues.saturationModifier));
+        event.foodValues = FoodHelper.getFoodValue(event.food).orElseGet(() -> new FoodValues(Math.min(event.foodValues.hunger * 3, 60), 0));
+    }
+
+    @SubscribeEvent
+    public void onFoodStatsAdd(FoodEvent.FoodStatsAddition event) {
+        event.setCanceled(true);
+
+        int maxHunger = AppleCoreAPI.accessor.getMaxHunger(event.player);
+        int newHunger = Math.min(event.player.getFoodStats().getFoodLevel() + event.foodValuesToBeAdded.hunger, maxHunger);
+        AppleCoreAPI.mutator.setHunger(event.player, newHunger);
+
+        float saturationIncrement = event.foodValuesToBeAdded.saturationModifier;
+        float newSaturation = Math.min(event.player.getFoodStats().getSaturationLevel() + saturationIncrement, newHunger);
+        AppleCoreAPI.mutator.setSaturation(event.player, newSaturation);
     }
 
     @SubscribeEvent
@@ -198,10 +212,9 @@ public class HCHunger extends CompatFeature {
         int max = AppleCoreAPI.accessor.getMaxHunger(event.player);
         int newFood = (foodLevel + playerFoodLevel);
         if (newFood <= max) {
-            event.foodValues = new FoodValues(foodLevel, 0);
+            event.foodValues = new FoodValues(foodLevel, event.foodValues.saturationModifier);
         } else {
-            float modifier = event.foodValues.saturationModifier == 0 ? 0.5f : event.foodValues.saturationModifier;
-            float fat = modifier / 2f;
+            float fat = event.foodValues.saturationModifier == 0 ? (newFood - max) : event.foodValues.saturationModifier;
             event.foodValues = new FoodValues(foodLevel, fat);
         }
     }
@@ -243,8 +256,6 @@ public class HCHunger extends CompatFeature {
     //Chaneg speed based on Hunger
     @SubscribeEvent
     public void givePenalties(LivingEvent.LivingUpdateEvent event) {
-        if (!event.getEntity().getEntityWorld().isRemote)
-            return;
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             if (!PlayerHelper.isSurvival(player))
