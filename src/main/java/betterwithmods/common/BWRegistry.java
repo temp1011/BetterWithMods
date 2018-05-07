@@ -20,6 +20,7 @@ import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.block.managers.KilnManagerBlock;
 import betterwithmods.common.registry.block.managers.SawManagerBlock;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.StateIngredient;
 import betterwithmods.common.registry.bulk.manager.CookingPotManager;
 import betterwithmods.common.registry.bulk.manager.MillManager;
@@ -42,6 +43,7 @@ import betterwithmods.util.MechanicalUtil;
 import betterwithmods.util.VillagerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityChicken;
@@ -265,6 +267,25 @@ public class BWRegistry {
         String potionName = potion.getRegistryName().getResourcePath();
         potion.setPotionName("bwm.effect." + potionName);
         return potion;
+    }
+
+    private static void registerFireInfo() {
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_AXLE, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_BROKEN_GEARBOX, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WOODEN_GEARBOX, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WINDMILL, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.WATERWHEEL, 5, 20);
+        Blocks.FIRE.setFireInfo(BWMBlocks.VINE_TRAP, 5, 20);
+
+        registerFireInfo(new BlockIngredient("blockCandle"), 5, 20);
+        registerFireInfo(new BlockIngredient("slats"), 5, 20);
+        registerFireInfo(new BlockIngredient("grates"), 5, 20);
+    }
+
+    public static void registerFireInfo(BlockIngredient ingredient,  int encouragement, int flammability) {
+        for(IBlockState state: ingredient.getStates()) {
+            Blocks.FIRE.setFireInfo(state.getBlock(), encouragement, flammability);
+        }
     }
 
     public static void registerRecipes() {
