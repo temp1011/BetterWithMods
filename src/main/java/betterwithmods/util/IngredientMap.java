@@ -30,4 +30,8 @@ public class IngredientMap<V> extends HashMap<Ingredient, V> {
         put(new OreIngredient(ore), value);
     }
 
+    @Override
+    public V get(Object o) {
+        return getOrDefault(o, defaultValue);
+    }
 }
