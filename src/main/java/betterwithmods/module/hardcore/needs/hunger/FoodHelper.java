@@ -27,7 +27,7 @@ public class FoodHelper {
     public static void registerFood(ItemStack item, int hunger) {
         registerFood(item, hunger, 0, false);
     }
-    
+
     public static void registerFood(ItemStack stack, int hunger, float fat, boolean alwaysEdible) {
         registerFood(stack, new FoodValues(hunger, fat), alwaysEdible);
     }
