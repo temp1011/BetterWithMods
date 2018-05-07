@@ -11,9 +11,7 @@
       {}
     ],
     "inventory": [
-      {
-        "transform": "forge:default-block"
-      }
+      {}
     ],
     "powered" : {
       "true": {},
