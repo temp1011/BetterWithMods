@@ -4,33 +4,13 @@ import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
 import betterwithmods.module.tweaks.AxeLeaves;
 import betterwithmods.util.item.ToolsManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by primetoxinz on 4/20/17.
  */
 public class HCHardness extends Feature {
-
-    @Override
-    public String getFeatureDescription() {
-        return "Makes certain block hardness more \"realistic\"";
-    }
-
-    @Override
-    public boolean requiresMinecraftRestartToEnable() {
-        return true;
-    }
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        applyHCHardness();
-    }
 
     private static void rebalanceVanillaHardness() {
         Blocks.STONE.setHardness(2.25F).setResistance(10.0F);
@@ -76,42 +56,13 @@ public class HCHardness extends Feature {
         Blocks.QUARTZ_STAIRS.setHardness(2.0F);
     }
 
-
-    public static void applyHCHardness() {
+    private static void applyHCHardness() {
         Blocks.FIRE.setFireInfo(Blocks.LEAVES, 60, 100);
         Blocks.FIRE.setFireInfo(Blocks.LEAVES2, 60, 100);
         rebalanceVanillaHardness();
 
         ToolsManager.setAxesAsEffectiveAgainst(Blocks.COCOA, Blocks.SKULL, Blocks.VINE, Blocks.WEB, Blocks.CACTUS);
 
-        if (BWMod.MODULE_LOADER.isFeatureEnabled(AxeLeaves.class)) {
-            ToolsManager.setAxesAsEffectiveAgainst(Blocks.LEAVES, Blocks.LEAVES2);
-            for (ItemStack stack : OreDictionary.getOres("treeLeaves")) {
-                if (stack.getItem() instanceof ItemBlock) {
-                    Block block = ((ItemBlock) stack.getItem()).getBlock();
-                    if (block == Blocks.LEAVES || block == Blocks.LEAVES2) continue;
-                    if (block instanceof BlockLeaves) {
-                        ToolsManager.setAxesAsEffectiveAgainst(block);
-                        block.setHarvestLevel("axe", 0);
-                    } else {
-                        ToolsManager.setAxesAsEffectiveAgainst(block);
-                        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-                            block.setHarvestLevel("axe", 0);
-                        else if (stack.getItemDamage() < 16) {
-                            for (int i = 0; i < 4; i++) {
-                                int multi = 4 * i;
-                                int meta = stack.getMetadata() + multi;
-                                if (meta < 16) {
-                                    IBlockState state = block.getStateFromMeta(meta);
-                                    block.setHarvestLevel("axe", 0, state);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
         ToolsManager.setPickaxesAsEffectiveAgainst(Blocks.LEVER, Blocks.GLASS, Blocks.STAINED_GLASS, Blocks.GLASS_PANE, Blocks.STAINED_GLASS_PANE,
                 Blocks.STONE_BUTTON, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_EXTENSION,
                 Blocks.GLOWSTONE, Blocks.BEACON, Blocks.MONSTER_EGG,
@@ -119,9 +70,19 @@ public class HCHardness extends Feature {
         );
     }
 
+    @Override
+    public String getFeatureDescription() {
+        return "Makes certain block hardness more \"realistic\"";
+    }
 
-//    @Override
-//    public boolean hasSubscriptions() {
-//        return true;
-//    }
+    @Override
+    public boolean requiresMinecraftRestartToEnable() {
+        return true;
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        applyHCHardness();
+    }
+
 }

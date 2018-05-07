@@ -1,9 +1,10 @@
 package betterwithmods.common.registry.block.recipe;
 
-import betterwithmods.BWMod;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -38,7 +39,14 @@ public class IngredientSpecial extends Ingredient {
     public void cacheMatchingStacks() {
         ArrayList<ItemStack> matches = new ArrayList<>();
         for (Item item : ForgeRegistries.ITEMS) {
-            BWMod.proxy.getSubItems(item).stream().filter(matcher::test).forEach(matches::add);
+            CreativeTabs[] tabs = item.getCreativeTabs();
+            for (CreativeTabs tab : tabs) {
+                if (tab == null)
+                    continue;
+                NonNullList<ItemStack> items = NonNullList.create();
+                item.getSubItems(tab, items);
+                items.stream().filter(matcher::test).forEach(matches::add);
+            }
         }
         matchingStacks = matches.toArray(matchingStacks);
         matchingStacksCached = true;

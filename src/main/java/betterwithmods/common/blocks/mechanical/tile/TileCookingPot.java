@@ -115,25 +115,18 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
 
     @Override
     public void update() {
-        if (this.getBlockWorld().isRemote) {
-            Random random = this.getBlockWorld().rand;
-
-            if(facing == EnumFacing.UP && heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
-                double xOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
-                double zOffset = 4 / 16.0 + random.nextDouble() * (8 / 16.0);
-                this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
-            }
-            return;
-        }
         if (getBlock() instanceof BlockCookingPot) {
             IBlockState state = this.getBlockWorld().getBlockState(this.pos);
             if (isPowered()) {
                 this.cookProgress = 0;
                 this.facing = getPoweredSide();
+
                 ejectInventory(DirUtils.rotateFacingAroundY(this.facing, false));
             } else {
                 if (this.facing != EnumFacing.UP)
                     this.facing = EnumFacing.UP;
+
+                spawnParticles();
 
                 entityCollision();
                 int heat = findHeat(getPos());
@@ -189,12 +182,22 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
         return BWMHeatRegistry.getHeat(world,pos.down());
     }
 
+    private void spawnParticles() {
+        Random random = this.getBlockWorld().rand;
+        if(heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
+            double xOffset = 0.25 + random.nextDouble() * 0.5;
+            double zOffset = 0.25 + random.nextDouble() * 0.5;
+            this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
+        }
+    }
+
     private void entityCollision() {
         if (captureDroppedItems()) {
             getBlockWorld().scheduleBlockUpdate(pos, this.getBlockType(), this.getBlockType().tickRate(getBlockWorld()), 5);
             this.markDirty();
         }
     }
+
 
     public List<EntityItem> getCaptureItems(World worldIn, BlockPos pos) {
         return worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1D, pos.getY() + 1.5D, pos.getZ() + 1D), EntitySelectors.IS_ALIVE);
@@ -239,6 +242,8 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
     }
 
     public void ejectStack(World world, BlockPos pos, EnumFacing facing, ItemStack stack) {
+        if(world.isRemote)
+            return;
         Vec3i vec = new BlockPos(0, 0, 0).offset(facing);
         EntityItem item = new EntityItem(world, pos.getX() + 0.5F - (vec.getX() / 4d), pos.getY() + 0.25D, pos.getZ() + 0.5D - (vec.getZ() / 4d), stack);
         float velocity = 0.05F;

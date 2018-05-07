@@ -6,6 +6,7 @@ import betterwithmods.client.gui.GuiManual;
 import betterwithmods.manual.api.detail.ManualAPI;
 import betterwithmods.manual.api.manual.*;
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -48,7 +48,7 @@ public final class ManualAPIImpl implements ManualAPI {
     /**
      * The list of registered content providers, used for resolving paths to page content.
      */
-    private final List<ContentProvider> contentProviders = new ArrayList<>();
+    private final TreeSet<ContentProvider> contentProviders = Sets.newTreeSet();
     /**
      * The list of registered image providers, used for drawing images.
      */
@@ -134,7 +134,7 @@ public final class ManualAPIImpl implements ManualAPI {
     public void addTab(final TabIconRenderer renderer, @Nullable final String tooltip, final String path) {
         tabs.add(new Tab(renderer, tooltip, path));
         if (tabs.size() > 7) {
-            FMLLog.warning("Gosh I'm popular! Too many tabs were added to the in-game manual, so some won't be shown. In case this actually happens, let me know and I'll look into making them scrollable or something...");
+            BWMod.logger.warn("Gosh I'm popular! Too many tabs were added to the in-game manual, so some won't be shown. In case this actually happens, let me know and I'll look into making them scrollable or something...");
         }
     }
 
@@ -179,10 +179,7 @@ public final class ManualAPIImpl implements ManualAPI {
     @Nullable
     public Iterable<String> contentFor(final String path) {
         final Optional<Iterable<String>> result = contentForWithRedirects(fixLanguage(path));
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return contentForWithRedirects(fixLanguage(path, FALLBACK_LANGUAGE)).orElse(null);
+        return result.orElseGet(() -> contentForWithRedirects(fixLanguage(path, FALLBACK_LANGUAGE)).orElse(null));
     }
 
     @Override
@@ -197,7 +194,7 @@ public final class ManualAPIImpl implements ManualAPI {
                         return image;
                     }
                 } catch (final Throwable t) {
-                    FMLLog.warning(MESSAGE_IMAGE_PROVIDER_EXCEPTION, t);
+                    BWMod.logger.warn(MESSAGE_IMAGE_PROVIDER_EXCEPTION, t);
                 }
             }
         }
@@ -241,7 +238,7 @@ public final class ManualAPIImpl implements ManualAPI {
                     return path;
                 }
             } catch (final Throwable t) {
-                FMLLog.warning(warning, t);
+                BWMod.logger.warn(warning, t);
             }
         }
         return null;
@@ -277,14 +274,15 @@ public final class ManualAPIImpl implements ManualAPI {
     }
 
     private Optional<Iterable<String>> doContentLookup(final String path) {
+        final String finalPath = (path.startsWith("/") ? path.substring(1) : path);
         for (final ContentProvider provider : contentProviders) {
             try {
-                final Iterable<String> lines = provider.getContent(path);
+                final Iterable<String> lines = provider.getContent(finalPath);
                 if (lines != null) {
                     return Optional.of(lines);
                 }
             } catch (final Throwable t) {
-                FMLLog.warning(MESSAGE_CONTENT_LOOKUP_EXCEPTION, t);
+                BWMod.logger.warn(MESSAGE_CONTENT_LOOKUP_EXCEPTION, t);
             }
         }
         return Optional.empty();

@@ -389,7 +389,7 @@ inv.mill.name=Mill Stone
 inv.dispenser.name=Block Dispenser
 inv.saw.name=Saw
 inv.kiln.name=Kiln
-inv.kiln.stoked.name=Kiln
+inv.kiln.stoked.name=Stoked Kiln
 inv.pulley.name=Pulley
 inv.turntable.name=Turntable
 inv.steel_anvil.name=Soulforged Steel Anvil
@@ -449,7 +449,8 @@ bwm.message.barrel.info=%s : %d/%d
 bwm.config.hardcore.tooltip=Hardcore Features
 bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
-bwm.config.pulley.tooltip=Limitations of the platforms of the pulley 
+bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
+bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
 
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight
@@ -479,8 +480,8 @@ bwm.manual.blocks=Block
 bwm.manual.items=Items
 bwm.manual.mechanical=Mechanical Power
 bwm.manual.error.0=Document not found:
-bwm.manual.error.1=Please report this
-bwm.manual.error.2=In the mean time, try the
+bwm.manual.error.1=Please report this %s
+bwm.manual.error.2=In the mean time, try the %s
 
 
 advancement.betterwithmods.crucible.desc=

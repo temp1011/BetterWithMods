@@ -36,6 +36,6 @@ public class ItemSteelSaw extends ItemBlock {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return HCEnchanting.canEnchantSteel();
+        return HCEnchanting.canEnchantSteel(enchantment);
     }
 }

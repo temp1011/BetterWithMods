@@ -1,5 +1,6 @@
 package betterwithmods.manual.client.manual.provider;
 
+import betterwithmods.BWMod;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.api.manual.ImageProvider;
 import betterwithmods.manual.api.manual.ImageRenderer;
@@ -9,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
@@ -54,14 +54,14 @@ public final class OreDictImageProvider implements ImageProvider {
             try {
                 item.getSubItems(itemTab, subItems);
             } catch (RuntimeException | LinkageError e) {
-                FMLLog.warning("Caught a crash while getting sub-items of {}", item, e);
+                BWMod.logger.warn("Caught a crash while getting sub-items of {}", item, e);
             }
 
             for (ItemStack subItem : subItems) {
                 if (subItem == null) {
-                    FMLLog.warning("Found a null subItem of {}", item);
+                    BWMod.logger.warn("Found a null subItem of {}", item);
                 } else if (subItem.isEmpty()) {
-                    FMLLog.warning("Found an empty subItem of {}", item);
+                    BWMod.logger.warn("Found an empty subItem of {}", item);
                 } else {
                     if (subItem.getCount() != stackSize) {
                         ItemStack subItemCopy = subItem.copy();
