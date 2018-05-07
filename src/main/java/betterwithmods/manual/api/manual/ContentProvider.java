@@ -1,6 +1,5 @@
 package betterwithmods.manual.api.manual;
 
-import betterwithmods.manual.client.manual.provider.ResourceContentProvider;
 
 import javax.annotation.Nullable;
 
@@ -11,8 +10,6 @@ import javax.annotation.Nullable;
  * arbitrary paths. Note that content providers have <em>lower</em> priority
  * than content found in resource packs, i.e. content providers will only be
  * queried for missing pages, so to speak.
- *
- * @see ResourceContentProvider
  */
 public interface ContentProvider extends Comparable<ContentProvider> {
     /**
