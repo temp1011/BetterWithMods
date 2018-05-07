@@ -44,7 +44,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
@@ -57,7 +56,6 @@ import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.C
 import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
 import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
 
-@Mod.EventBusSubscriber
 @mezz.jei.api.JEIPlugin
 public class JEI implements IModPlugin {
     public static IJeiHelpers HELPER;
