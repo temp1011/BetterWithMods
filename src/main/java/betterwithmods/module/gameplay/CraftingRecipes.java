@@ -24,6 +24,7 @@ public class CraftingRecipes extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         //TODO 1.13 will allow these to go away :)
+        GameRegistry.addSmelting(Items.EGG, new ItemStack(BWMItems.BOILED_EGG), 0.1F);
         GameRegistry.addSmelting(BWMItems.RAW_EGG, new ItemStack(BWMItems.COOKED_EGG), 0.1F);
         GameRegistry.addSmelting(BWMItems.RAW_SCRAMBLED_EGG, new ItemStack(BWMItems.COOKED_SCRAMBLED_EGG), 0.1F);
         GameRegistry.addSmelting(BWMItems.RAW_OMELET, new ItemStack(BWMItems.COOKED_OMELET), 0.1F);

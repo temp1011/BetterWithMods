@@ -116,15 +116,6 @@ public class CauldronRecipes extends Feature {
 
         //TODO 1.13 tags?
         StackIngredient bark = StackIngredient.fromStacks(ItemBark.getBarks(8));
-//        StackIngredient bark = StackIngredient.mergeStacked(Lists.newArrayList(
-//                StackIngredient.fromOre(5, "barkOak"),
-//                StackIngredient.fromOre(3, "barkSpruce"),
-//                StackIngredient.fromOre(2, "barkBirch"),
-//                StackIngredient.fromOre(4, "barkJungle"),
-//                StackIngredient.fromOre(8, "barkAcacia"),
-//                StackIngredient.fromOre(8, "barkDarkOak"),
-//                StackIngredient.fromOre(8, "barkBlood")
-//        ));
         BWRegistry.CAULDRON.addUnstokedRecipe(Lists.newArrayList(
                 Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SCOURED_LEATHER)),
                 bark
@@ -218,6 +209,8 @@ public class CauldronRecipes extends Feature {
         ), new ItemStack(BWMBlocks.BLOOD_SAPLING));
 
         BWRegistry.CAULDRON.addUnstokedRecipe(Ingredient.fromItem(Items.CHORUS_FRUIT), new ItemStack(Items.CHORUS_FRUIT_POPPED));
+        BWRegistry.CAULDRON.addUnstokedRecipe(Ingredient.fromItem(Items.EGG), new ItemStack(BWMItems.BOILED_EGG));
+
     }
 
     @Override
