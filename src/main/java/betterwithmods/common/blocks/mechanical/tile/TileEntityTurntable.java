@@ -164,9 +164,7 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         if (getBlockWorld().isAirBlock(pos))
             return null;
         IBlockState input = getBlockWorld().getBlockState(pos);
-        if (BWRegistry.TURNTABLE.canCraft(world, pos, input)) {
-            rotateCraftable(world, pos, input);
-        }
+        rotateCraftable(world, pos, input);
         return TurntableRotationManager.rotate(world, pos, rotation);
     }
 
