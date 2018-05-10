@@ -17,9 +17,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.RandomUtils;
 
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -60,38 +60,39 @@ public class MossGeneration extends Feature {
     @SubscribeEvent
     public void generateMossNearSpawner(TickEvent.WorldTickEvent event) {
         World world = event.world;
+        List<BlockPos> positions;
         if (world.isRemote || event.phase != TickEvent.Phase.END || event.side != Side.SERVER)
             return;
-        try {
-            List<BlockPos> positions = world.loadedTileEntityList.stream().filter(t -> t instanceof TileEntityMobSpawner).map(TileEntity::getPos).collect(Collectors.toList());
-            positions.forEach(pos -> {
-                BlockPos min = pos.add(-RADIUS, -RADIUS, -RADIUS), max = pos.add(RADIUS, RADIUS, RADIUS);
-                BlockPos set = randomPosition(world, min, max);
-                if (set != null) {
-                    mossify(world, set);
-                }
-            });
-        } catch (ConcurrentModificationException ignored) {
-            ignored.printStackTrace();
+        if (world.rand.nextInt(RATE) != 0)
+            return;
+        synchronized (world.loadedTileEntityList) {
+            positions = world.loadedTileEntityList
+                    .stream()
+                    .filter(t -> t instanceof TileEntityMobSpawner)
+                    .map(TileEntity::getPos)
+                    .collect(Collectors.toList());
         }
+        positions.forEach(pos -> {
+            BlockPos min = pos.add(-RADIUS, -RADIUS, -RADIUS), max = pos.add(RADIUS, RADIUS, RADIUS);
+            randomPosition(world, min, max).ifPresent(p ->
+                    getMossyVariant(world.getBlockState(p)).ifPresent(mossy -> world.setBlockState(p, mossy))
+            );
+        });
     }
 
-    public static BlockPos randomPosition(World world, BlockPos start, BlockPos end) {
+    private static Optional<BlockPos> randomPosition(World world, BlockPos start, BlockPos end) {
         if (world.isAreaLoaded(start, end)) {
-            return new BlockPos(randomRange(start.getX(), end.getX()), randomRange(start.getY(), end.getY()), randomRange(start.getZ(), end.getZ()));
+            return Optional.of(new BlockPos(
+                    randomRange(start.getX(), end.getX()),
+                    randomRange(start.getY(), end.getY()),
+                    randomRange(start.getZ(), end.getZ())
+            ));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public static void mossify(World world, BlockPos pos) {
-        IBlockState mossy;
-        if (world.rand.nextInt(RATE) == 0 && (mossy = getMossyVariant(world.getBlockState(pos))) != null) {
-            world.setBlockState(pos, mossy);
-        }
-    }
-
-    public static IBlockState getMossyVariant(IBlockState state) {
-        return CONVERTED_BLOCKS.get(state.getBlock());
+    private static Optional<IBlockState> getMossyVariant(IBlockState state) {
+        return Optional.ofNullable(CONVERTED_BLOCKS.get(state.getBlock()));
     }
 
     @Override
@@ -104,7 +105,7 @@ public class MossGeneration extends Feature {
         return "Cobblestone or Stonebrick within the spawning radius of a Mob Spawner will randomly grow into the Mossy version.";
     }
 
-    public static int randomRange(int start, int end) {
+    private static int randomRange(int start, int end) {
         int d = end - start;
         return start + RandomUtils.nextInt(0, d);
     }
