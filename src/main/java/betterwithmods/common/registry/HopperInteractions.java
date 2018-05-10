@@ -175,6 +175,8 @@ public class HopperInteractions {
 
         public void craft(EntityItem inputStack, World world, BlockPos pos) {
             TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            if(hopper == null)
+                return;
             SimpleStackHandler inventory = hopper.inventory;
             for (ItemStack output : outputs) {
                 ItemStack remainder = InvUtils.insert(inventory, output, false);
