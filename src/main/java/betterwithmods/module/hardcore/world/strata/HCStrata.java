@@ -13,7 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -34,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HCStrata extends Feature {
-    private static final Pattern PARSE = Pattern.compile("(^\\d{1,255})=(\\d{1,255}),(\\d{1,255}).*");
+    private static final Pattern PATTERN = Pattern.compile("^([\\-]?\\d+)=(\\d{1,255}),(\\d{1,255}).*");
     public static boolean ENABLED;
     public static float[] STRATA_SPEEDS;
     public static float INCORRECT_STRATA_SCALE;
@@ -65,17 +64,17 @@ public class HCStrata extends Feature {
     }
 
     public static boolean shouldStratify(World world, IBlockState state) {
-        return world.provider.getDimensionType() == DimensionType.OVERWORLD && STATES.containsKey(state);
+        return STRATA_CONFIGS.containsKey(world.provider.getDimension()) && STATES.keySet().stream().anyMatch(s -> s.equals(state));
     }
 
     public static Stratification getStratification(int y, int dimension) {
         return STRATA_CONFIGS.getOrDefault(dimension, DEFAULT).getStrata(y);
     }
-    private static final Pattern PATTERN = Pattern.compile("^([\\-]?\\d+)=(\\d{1,255}),(\\d{1,255}).*");
+
     private static void loadStrataConfig(String entry) {
 
         Matcher matcher = PATTERN.matcher(entry);
-        if(matcher.matches()) {
+        if (matcher.matches()) {
             int dim = Integer.parseInt(matcher.group(1));
             int medium = Integer.parseInt(matcher.group(2));
             int hard = Integer.parseInt(matcher.group(3));
@@ -93,7 +92,7 @@ public class HCStrata extends Feature {
 
         Arrays.stream(loadPropStringList("Strata Configs", "Set the strata levels for a given dimension, <dim>=< medium start y>,<hard start y>", new String[]{
                 "0=42,21"
-        })).map( s -> s.replaceAll(" ", "")).forEach(HCStrata::loadStrataConfig);
+        })).map(s -> s.replaceAll(" ", "")).forEach(HCStrata::loadStrataConfig);
     }
 
     @Override
@@ -103,7 +102,6 @@ public class HCStrata extends Feature {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-
         if (Loader.isModLoaded("ctm")) {
             try {
                 Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
@@ -135,7 +133,10 @@ public class HCStrata extends Feature {
     public void onHarvest(BlockEvent.HarvestDropsEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        if (shouldStratify(world, event.getState()) && event.getHarvester() != null) {
+        if (event.getHarvester() == null)
+            return;
+        IBlockState state = event.getState();
+        if (shouldStratify(world, state)) {
             ItemStack stack = BrokenToolRegistry.findItem(event.getHarvester(), event.getState());
             int strata = getStratification(pos.getY(), world.provider.getDimension()).ordinal();
             if (STATES.getOrDefault(event.getState(), BlockType.STONE) == BlockType.STONE) {
