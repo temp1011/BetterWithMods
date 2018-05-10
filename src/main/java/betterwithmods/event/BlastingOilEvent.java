@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +62,7 @@ public class BlastingOilEvent {
         if (Gameplay.disableBlastingOilEvents)
             return;
         World world = event.world;
-        if(world.isRemote)
+        if (world.isRemote || event.phase != TickEvent.Phase.END)
             return;
         List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
         HashSet<EntityItem> toRemove = new HashSet<>();
