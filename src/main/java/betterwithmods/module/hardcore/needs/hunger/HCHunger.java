@@ -331,7 +331,7 @@ public class HCHunger extends CompatFeature {
 
     @SubscribeEvent
     public void onStarve(StarvationEvent.AllowStarvation event) {
-        if (event.player.getFoodStats().getFoodLevel() <= 0)
+        if (event.player.getFoodStats().getFoodLevel() <= 0 && event.player.getFoodStats().getSaturationLevel() <= 0)
             event.setResult(Event.Result.ALLOW);
     }
 
