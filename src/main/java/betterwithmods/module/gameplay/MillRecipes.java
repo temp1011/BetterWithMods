@@ -1,10 +1,13 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.BWMod;
+import betterwithmods.api.recipe.RandomOutput;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockRawPastry;
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import betterwithmods.module.Feature;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
@@ -91,6 +94,20 @@ public class MillRecipes extends Feature {
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropOats"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropRye"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropRice"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
+
+
+        if(BWMod.isDev()) {
+
+            RandomOutput.WeightedItemStack coal = new RandomOutput.WeightedItemStack(new ItemStack(Items.COAL), 0.75);
+            RandomOutput.WeightedItemStack cobble = new RandomOutput.WeightedItemStack(new ItemStack(Blocks.COBBLESTONE), 0.25);
+
+            BWRegistry.MILLSTONE.addRecipe(
+                    new MillRecipe(
+                            Lists.newArrayList(new OreIngredient("oreCoal")),
+                            new RandomOutput(Lists.newArrayList(coal, cobble)), 0, SoundEvents.ENTITY_PLAYER_BURP, 5));
+
+
+        }
     }
 }
 

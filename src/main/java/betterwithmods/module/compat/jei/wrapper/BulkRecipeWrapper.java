@@ -21,7 +21,7 @@ public class BulkRecipeWrapper<T extends BulkRecipe> implements IRecipeWrapper {
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInputLists(ItemStack.class, helpers.getStackHelper().expandRecipeItemStackInputs(recipe.getInputs()));
-        ingredients.setOutputs(ItemStack.class, recipe.getOutputs());
+        ingredients.setOutputLists(ItemStack.class, recipe.getRecipeOutput().getDisplayOutputs());
     }
 
     @Nonnull

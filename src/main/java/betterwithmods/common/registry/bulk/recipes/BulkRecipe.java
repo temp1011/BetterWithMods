@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.recipe.IRecipeOutput;
+import betterwithmods.api.recipe.ListOutput;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -18,17 +20,21 @@ import java.util.stream.Collectors;
 public class BulkRecipe implements Comparable<BulkRecipe> {
 
     protected NonNullList<Ingredient> inputs;
-    protected List<ItemStack> outputs;
+    protected IRecipeOutput recipeOutput;
     protected int priority;
+
+    public BulkRecipe(List<Ingredient> inputs, IRecipeOutput outputs, int priority) {
+        this.inputs = InvUtils.asNonnullList(inputs);
+        this.recipeOutput = outputs;
+        this.priority = priority;
+    }
 
     public BulkRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs) {
         this(inputs, outputs, 0);
     }
 
     public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
-        this.outputs = outputs;
-        this.inputs = InvUtils.asNonnullList(inputs);
-        this.priority = priority;
+        this(inputs, new ListOutput(outputs), priority);
     }
 
     public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
@@ -40,8 +46,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return NonNullList.create();
     }
 
+    public IRecipeOutput getRecipeOutput() {
+        return recipeOutput;
+    }
+
     public List<ItemStack> getOutputs() {
-        return outputs.stream().map(ItemStack::copy).collect(Collectors.toList());
+        return recipeOutput.getOutputs().stream().map(ItemStack::copy).collect(Collectors.toList());
     }
 
     public List<Ingredient> getInputs() {
@@ -63,7 +73,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
 
     @Override
     public String toString() {
-        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.inputs, this.outputs);
+        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.inputs, this.recipeOutput);
     }
 
     /**
@@ -88,7 +98,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     public int matches(ItemStackHandler inventory) {
         int index = Integer.MAX_VALUE;
         for (Ingredient ingredient : inputs) {
-            if ((index = Math.min(index,InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
+            if ((index = Math.min(index, InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
                 return -1;
         }
         return index;
