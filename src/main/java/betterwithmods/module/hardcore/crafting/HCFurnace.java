@@ -141,6 +141,7 @@ public class HCFurnace extends Feature {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
         if(!TOOLTIP)
