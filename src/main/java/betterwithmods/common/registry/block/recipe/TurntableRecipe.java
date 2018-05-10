@@ -1,17 +1,12 @@
 package betterwithmods.common.registry.block.recipe;
 
-import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 import java.util.Optional;
-
-import static betterwithmods.common.registry.block.managers.TurntableManagerBlock.findTurntable;
 
 /**
  * Created by primetoxinz on 4/20/17.
@@ -54,9 +49,4 @@ public class TurntableRecipe extends BlockRecipe {
         return getInput().isSimple() && ArrayUtils.isEmpty(getInput().getMatchingStacks());
     }
 
-    @Override
-    public boolean matches(World world, BlockPos pos, IBlockState state) {
-        TileEntityTurntable turntable = findTurntable(world, pos);
-        return turntable != null && turntable.getPotteryRotation() >= getRotations();
-    }
 }

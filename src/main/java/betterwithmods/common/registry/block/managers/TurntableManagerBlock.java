@@ -48,6 +48,13 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
     }
 
     @Override
+    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
+        TileEntityTurntable turntable = findTurntable(world, pos);
+        TurntableRecipe recipe = findRecipe(world, pos, state).orElse(null);
+        return turntable != null && recipe != null && turntable.getPotteryRotation() >= recipe.getRotations();
+    }
+
+    @Override
     public TurntableRecipe addRecipe(TurntableRecipe recipe) {
         return super.addRecipe(recipe);
     }
