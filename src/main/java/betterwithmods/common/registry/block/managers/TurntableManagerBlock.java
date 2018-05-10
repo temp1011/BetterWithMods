@@ -52,7 +52,7 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
         return super.addRecipe(recipe);
     }
 
-    public TileEntityTurntable findTurntable(World world, BlockPos craftingPos) {
+    public static TileEntityTurntable findTurntable(World world, BlockPos craftingPos) {
         for (int i = 1; i <= 2; i++) {
             TileEntity tile = world.getTileEntity(craftingPos.down(i));
             if (tile instanceof TileEntityTurntable) {
@@ -62,12 +62,6 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
         return null;
     }
 
-    @Override
-    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
-        TileEntityTurntable turntable = findTurntable(world, pos);
-        TurntableRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        return turntable != null && recipe != null && turntable.getPotteryRotation() >= recipe.getRotations();
-    }
 
     @Override
     public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {

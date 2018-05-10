@@ -1,6 +1,7 @@
 package betterwithmods.common.registry.block.recipe;
 
 import betterwithmods.util.InvUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -52,5 +53,9 @@ public class BlockRecipe {
 
     public boolean isInvalid() {
         return (input.isSimple() && ArrayUtils.isEmpty(input.getMatchingStacks())) || (outputs == null || outputs.isEmpty());
+    }
+
+    public boolean matches(World world, BlockPos pos, IBlockState state) {
+        return getInput().apply(world, pos, state);
     }
 }

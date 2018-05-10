@@ -1,6 +1,5 @@
 package betterwithmods.common.registry.block.managers;
 
-import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -41,12 +40,6 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
     @Override
     public KilnRecipe addRecipe(KilnRecipe recipe) {
         return super.addRecipe(recipe);
-    }
-
-    @Override
-    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
-        KilnRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        return recipe != null && (recipe.ignore() || KilnStructureManager.getKiln().getHeat(world, pos.down()) == recipe.getHeat());
     }
 
     public boolean craftRecipe(World world, BlockPos pos, Random random, IBlockState state) {
