@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class HCInjury extends Feature {
 
-
     @SubscribeEvent
     public void attack(LivingAttackEvent event) {
         if (event.getSource().getTrueSource() instanceof EntityPlayer) {
@@ -44,18 +43,16 @@ public class HCInjury extends Feature {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             if (!PlayerHelper.isSurvival(player))
                 return;
-            if (player != null) {
-                if (!ModuleLoader.isFeatureEnabled(HCHunger.class)) {
-                    PlayerHelper.changeSpeed(player, "Health speed penalty", PlayerHelper.getHealthPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
-                }
-                HealthPenalty healthPenalty = PlayerHelper.getHealthPenalty(player);
-                double mod = healthPenalty.getModifier();
-                if (mod <= 0.25) {
-                    if (player.world.getWorldTime() % 60 == 0) {
-                        player.playSound(BWSounds.OOF, 0.75f, 1f);
-                        if (mod <= 0.20)
-                            player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 80, 0, false, false));
-                    }
+            if (!ModuleLoader.isFeatureEnabled(HCHunger.class)) {
+                PlayerHelper.changeSpeed(player, "Health speed penalty", PlayerHelper.getHealthPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
+            }
+            HealthPenalty healthPenalty = PlayerHelper.getHealthPenalty(player);
+            double mod = healthPenalty.getModifier();
+            if (mod <= 0.25) {
+                if (player.world.getWorldTime() % 60 == 0) {
+                    player.playSound(BWSounds.OOF, 0.75f, 1f);
+                    if (mod <= 0.20)
+                        player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 80, 0, false, false));
                 }
             }
         }

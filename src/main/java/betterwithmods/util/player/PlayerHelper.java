@@ -105,9 +105,9 @@ public final class PlayerHelper {
 
     public static HungerPenalty getHungerPenalty(EntityPlayer player) {
         if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
-            return HungerPenalty.NO_PENALTY;
+            return HungerPenalty.NONE;
         int level = player.getFoodStats().getFoodLevel();
-        if (level > 24) return HungerPenalty.NO_PENALTY;
+        if (level > 24) return HungerPenalty.NONE;
         else if (level > 18) return HungerPenalty.PECKISH;
         else if (level > 12) return HungerPenalty.HUNGRY;
         else if (level > 6) return HungerPenalty.FAMISHED;
@@ -266,7 +266,7 @@ public final class PlayerHelper {
         ItemStack block = BWMRecipes.getStackFromState(state);
 
         Material material = state.getMaterial();
-        if(effective_materials.contains(material))
+        if (effective_materials.contains(material))
             return true;
         for (String type : stack.getItem().getToolClasses(stack)) {
             if (Objects.equals(type, "mattock"))
@@ -307,4 +307,5 @@ public final class PlayerHelper {
             return profile.getId();
         return player.getUniqueID();
     }
+
 }

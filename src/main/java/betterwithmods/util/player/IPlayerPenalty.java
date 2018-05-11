@@ -6,9 +6,12 @@ package betterwithmods.util.player;
  * @author Koward
  */
 public interface IPlayerPenalty {
+
     float getModifier();
 
     String getDescription();
 
     boolean canJump();
+
+    boolean canSprint();
 }

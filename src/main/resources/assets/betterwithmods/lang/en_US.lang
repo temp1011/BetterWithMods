@@ -522,6 +522,24 @@ bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
 bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
 bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
 
+bwm.fat_penalty.none=
+bwm.fat_penalty.plump=Plump
+bwm.fat_penalty.chubby=Chubby
+bwm.fat_penalty.fat=Fat
+bwm.fat_penalty.obese=Obese
+
+bwm.gloom_penalty.none=
+bwm.gloom_penalty.gloom=Gloom
+bwm.gloom_penalty.dread=Dread
+bwm.gloom_penalty.terror=Terror
+
+bwm.hunger_penalty.none=
+bwm.hunger_penalty.peckish=Peckish
+bwm.hunger_penalty.hungry=Hungry
+bwm.hunger_penalty.famished=Famished
+bwm.hunger_penalty.starving=Starving
+bwm.hunger_penalty.dying=Starving
+
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight
 bwm.effect.fortune=Fortune

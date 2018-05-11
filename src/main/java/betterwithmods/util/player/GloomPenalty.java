@@ -4,10 +4,10 @@ package betterwithmods.util.player;
  * Created by primetoxinz on 5/13/17.
  */
 public enum GloomPenalty implements IPlayerPenalty {
-    NO_PENALTY(1.0f, 0, 0, "", true),
-    GLOOM(1.5f, 1, 1200, "Gloom", true),
-    DREAD(2f, 1200, 2400, "Dread", true),
-    TERROR(3f, 2400, 10000000, "Terror", false);
+    NO_PENALTY(1.0f, 0, 0, "bwm.gloom_penalty.none", true),
+    GLOOM(1.5f, 1, 1200, "bwm.gloom_penalty.gloom", true),
+    DREAD(2f, 1200, 2400, "bwm.gloom_penalty.dread", true),
+    TERROR(3f, 2400, 10000000, "bwm.gloom_penalty.terror", false);
 
     private final float modifier;
     private final int timeLower, timeUpper;

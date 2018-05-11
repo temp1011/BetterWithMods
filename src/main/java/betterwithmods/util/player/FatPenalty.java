@@ -6,15 +6,16 @@ package betterwithmods.util.player;
  * @author Koward
  */
 public enum FatPenalty implements IPlayerPenalty {
-    NO_PENALTY(1, "", true),
-    PLUMP(0.9f, "Plump", true),
-    CHUBBY(0.75F, "Chubby", true),
-    FAT(0.5F, "Fat", true),
-    OBESE(0.25F, "Obese", false);
+    NO_PENALTY(1, "bwm.fat_penalty.none", true),
+    PLUMP(0.9f, "bwm.fat_penalty.plump", true),
+    CHUBBY(0.75F, "bwm.fat_penalty.chubby", true),
+    FAT(0.5F, "bwm.fat_penalty.fat", true),
+    OBESE(0.25F, "bwm.fat_penalty.obese", false);
 
     private final float modifier;
     private final String description;
     private final boolean canJump;
+
     FatPenalty(float modifier, String description, boolean canJump) {
         this.modifier = modifier;
         this.description = description;

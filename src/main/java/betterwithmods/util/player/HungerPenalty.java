@@ -5,43 +5,25 @@ package betterwithmods.util.player;
  *
  * @author Koward
  */
-public enum HungerPenalty implements IPlayerPenalty {
-    NO_PENALTY(1, "", true, true),
-    PECKISH(0.75F, "Peckish", true, false),
-    HUNGRY(0.75F, "Hungry", true, false),
-    FAMISHED(0.5F, "Famished", false, false),
-    STARVING(0.25F, "Starving", false, false),
-    DYING(0.25F, "Starving", false, false);
+public class HungerPenalty extends BasicPenalty {
+    public static HungerPenalty NONE;
+    public static HungerPenalty PECKISH;
+    public static HungerPenalty HUNGRY;
+    public static HungerPenalty FAMISHED;
+    public static HungerPenalty STARVING;
+    public static HungerPenalty DYING;
 
-    private final float modifier;
-    private final String description;
-    private final boolean canJump;
-    private final boolean canSprint;
-    HungerPenalty(float modifier, String description, boolean canJump, boolean canSprint) {
-        this.modifier = modifier;
-        this.description = description;
-        this.canJump = canJump;
-        this.canSprint = canSprint;
+    public HungerPenalty(String name, String description, float modifier, boolean canSprint, boolean canJump) {
+        super("hardcore.hchunger", name, description, modifier, canSprint, canJump);
     }
 
-
-    @Override
-    public boolean canJump() {
-        return canJump;
-    }
-
-
-    @Override
-    public float getModifier() {
-        return modifier;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean canSprint() {
-        return canSprint;
+    public static void init() {
+        NONE = new HungerPenalty("none", "bwm.hunger_penalty.none", 1f, true, true);
+        PECKISH = new HungerPenalty("peckish", "bwm.hunger_penalty.peckish", .75F, true, false);
+        HUNGRY = new HungerPenalty("hungry", "bwm.hunger_penalty.hungry", 0.75F, true, false);
+        FAMISHED = new HungerPenalty("famished", "bwm.hunger_penalty.famished", 0.5F, false, false);
+        STARVING = new HungerPenalty("starving", "bwm.hunger_penalty.starving", 0.25F, false, false);
+        DYING = new HungerPenalty("dying", "bwm.hunger_penalty.dying", .25F, false, false);
     }
 }
+

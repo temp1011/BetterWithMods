@@ -5,6 +5,7 @@ import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,9 +41,9 @@ public class GuiStatus {
 		} else {
 			int y = top;
 			FontRenderer fontRenderer = this.mc.fontRenderer;
-			String injury = PlayerHelper.getHealthPenalty(mc.player).getDescription();
-			String gloom = PlayerHelper.getGloomPenalty(mc.player).getDescription();
-			String hunger = PlayerHelper.getWorstPenalty(mc.player).getDescription();
+			String injury = I18n.format(PlayerHelper.getHealthPenalty(mc.player).getDescription());
+			String gloom = I18n.format(PlayerHelper.getGloomPenalty(mc.player).getDescription());
+			String hunger = I18n.format(PlayerHelper.getWorstPenalty(mc.player).getDescription());
 
 			if (isInjuryLoaded && !injury.isEmpty()) {
 				int width = fontRenderer.getStringWidth(injury);
