@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static betterwithmods.util.ReflectionLib.*;
+
 public class HCStrata extends Feature {
     private static final Pattern PATTERN = Pattern.compile("^([\\-]?\\d+)=(\\d{1,255}),(\\d{1,255}).*");
     public static boolean ENABLED;
@@ -104,10 +106,10 @@ public class HCStrata extends Feature {
     public void preInit(FMLPreInitializationEvent event) {
         if (Loader.isModLoaded("ctm")) {
             try {
-                Class clazz = Class.forName("team.chisel.ctm.client.texture.type.TextureTypeRegistry");
-                Class clazz1 = Class.forName("team.chisel.ctm.api.texture.ITextureType");
-                Class clazz2 = Class.forName("betterwithmods.module.hardcore.world.strata.TextureTypeStrata");
-                Method register = ReflectionHelper.findMethod(clazz, "register", "register", String.class, clazz1);
+                Class clazz = Class.forName(CTM_TTR);
+                Class clazz1 = Class.forName(CTM_ITT);
+                Class clazz2 = Class.forName(CTM_TTS);
+                Method register = ReflectionHelper.findMethod(clazz, CTM_REGISTER.getKey(), CTM_REGISTER.getValue(), String.class, clazz1);
                 register.invoke(null, "bwm_strata", clazz2.newInstance());
             } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 e.printStackTrace();

@@ -55,7 +55,6 @@ public class HCVillagers extends Feature {
             VillagerUtils.clearTrades();
         }
 
-        VillagerUtils.addTrades("minecraft:priest", "cleric", 1, VillagerTrades.CLERIC_1);
     }
 
     @SubscribeEvent
