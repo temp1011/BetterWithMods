@@ -3,19 +3,16 @@ package betterwithmods.module.hardcore.needs;
 import betterwithmods.module.Feature;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.util.item.StackMap;
-import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -118,16 +115,16 @@ public class HCArmor extends Feature {
         }
         initWeights();
     }
-
-    @SubscribeEvent
-    public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer))
-            return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (PlayerHelper.isSurvival(player) && player.isInWater() && !PlayerHelper.canSwim(player) && !PlayerHelper.isNearBottom(player)) {
-            player.motionY -= 0.02;
-        }
-    }
+//
+//    @SubscribeEvent
+//    public void swimmingPenalty(LivingEvent.LivingUpdateEvent event) {
+//        if (!(event.getEntityLiving() instanceof EntityPlayer))
+//            return;
+//        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+//        if (PlayerHelper.isSurvival(player) && player.isInWater() && !PlayerHelper.canSwim(player) && !PlayerHelper.isNearBottom(player)) {
+//            player.motionY -= 0.02;
+//        }
+//    }
 
     @Override
     public boolean hasSubscriptions() {

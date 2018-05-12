@@ -3,6 +3,7 @@ package betterwithmods;
 import betterwithmods.client.BWGuiHandler;
 import betterwithmods.common.BWIMCHandler;
 import betterwithmods.common.BWRegistry;
+import betterwithmods.common.penalties.attribute.BWMAttributes;
 import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.network.MessageFat;
@@ -43,6 +44,7 @@ public class BWMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         logger = evt.getModLog();
+        BWMAttributes.registerAttributes();
         ModuleLoader.preInit(evt);
         BWRegistry.preInit();
         NetworkHandler.register(MessageGuiShake.class, Side.CLIENT);

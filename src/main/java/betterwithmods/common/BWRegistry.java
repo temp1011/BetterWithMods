@@ -11,6 +11,7 @@ import betterwithmods.common.blocks.behaviors.BehaviorDiodeDispense;
 import betterwithmods.common.blocks.behaviors.BehaviorSilkTouch;
 import betterwithmods.common.entity.*;
 import betterwithmods.common.entity.item.EntityFallingBlockCustom;
+import betterwithmods.common.penalties.PenaltyHandlerRegistry;
 import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
@@ -81,6 +82,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
+
+    public static final PenaltyHandlerRegistry PENALTY_HANDLERS = new PenaltyHandlerRegistry();
 
     public static final CookingPotManager CAULDRON = new CookingPotManager();
     public static final CookingPotManager CRUCIBLE = new CookingPotManager();
@@ -282,8 +285,8 @@ public class BWRegistry {
         registerFireInfo(new BlockIngredient("grates"), 5, 20);
     }
 
-    public static void registerFireInfo(BlockIngredient ingredient,  int encouragement, int flammability) {
-        for(IBlockState state: ingredient.getStates()) {
+    public static void registerFireInfo(BlockIngredient ingredient, int encouragement, int flammability) {
+        for (IBlockState state : ingredient.getStates()) {
             Blocks.FIRE.setFireInfo(state.getBlock(), encouragement, flammability);
         }
     }

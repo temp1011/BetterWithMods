@@ -1,8 +1,6 @@
 package betterwithmods.client.gui;
 
 
-import betterwithmods.util.player.HungerPenalty;
-import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -67,12 +65,12 @@ public class GuiHunger {
             } else if (i < roll) {
                 background = 1;
             }
-
-            if (PlayerHelper.getHungerPenalty(player) != HungerPenalty.NO_PENALTY && mc.ingameGUI.getUpdateCounter() % (food * 5 + 1) == 0) {
-                y = top + (rand.nextInt(3) - 1);
-            } else if (shakeCounter > 0) {
-                y = top + (rand.nextInt(3) - 1);
-            }
+            //TODO
+//            if (PlayerHelper.getHungerPenalty(player) != HungerPenalty.NO_PENALTY && mc.ingameGUI.getUpdateCounter() % (food * 5 + 1) == 0) {
+//                y = top + (rand.nextInt(3) - 1);
+//            } else if (shakeCounter > 0) {
+//                y = top + (rand.nextInt(3) - 1);
+//            }
 
             int x = left - i * 8 - 9;
 

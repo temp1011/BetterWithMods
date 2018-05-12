@@ -3,11 +3,7 @@ package betterwithmods.util.player;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.registry.BrokenToolRegistry;
-import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.needs.HCArmor;
-import betterwithmods.module.hardcore.needs.HCGloom;
-import betterwithmods.module.hardcore.needs.HCInjury;
-import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
@@ -78,76 +74,72 @@ public final class PlayerHelper {
     }
 
     public static boolean isSurvival(EntityPlayer player) {
-        return !player.isCreative() && !player.isSpectator() && !player.isSpectator();
+        return player != null && !player.isCreative() && !player.isSpectator() && !player.isSpectator();
     }
 
 
-    public static GloomPenalty getGloomPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
-            return GloomPenalty.NO_PENALTY;
-        int gloom = HCGloom.getGloomTime(player);
-        GloomPenalty penalty = GloomPenalty.NO_PENALTY;
-        for (GloomPenalty p : GloomPenalty.VALUES) {
-            if (p.isInRange(gloom))
-                penalty = p;
-        }
-        return penalty;
-    }
+//    public static GloomPenalty getGloomPenalty(EntityPlayer player) {
+//        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
+//            return GloomPenalty.NO_PENALTY;
+//        int gloom = HCGloom.getGloomTime(player);
+//        GloomPenalty penalty = GloomPenalty.NO_PENALTY;
+//        for (GloomPenalty p : GloomPenalty.VALUES) {
+//            if (p.isInRange(gloom))
+//                penalty = p;
+//        }
+//        return penalty;
+//    }
+//
+//    public static IPlayerPenalty getWorstPenalty(EntityPlayer player) {
+//        HungerPenalty hungerPenalty = getHungerPenalty(player);
+//        FatPenalty fatPenalty = getFatPenalty(player);
+//        int maximumOrdinal = Math.max(hungerPenalty.ordinal(), fatPenalty.ordinal());
+//        if (maximumOrdinal == hungerPenalty.ordinal()) return hungerPenalty;
+//        else if (maximumOrdinal == fatPenalty.ordinal()) return fatPenalty;
+//        else return hungerPenalty;
+//    }
 
-    public static IPlayerPenalty getWorstPenalty(EntityPlayer player) {
-        HungerPenalty hungerPenalty = getHungerPenalty(player);
-        FatPenalty fatPenalty = getFatPenalty(player);
-        int maximumOrdinal = Math.max(hungerPenalty.ordinal(), fatPenalty.ordinal());
-        if (maximumOrdinal == hungerPenalty.ordinal()) return hungerPenalty;
-        else if (maximumOrdinal == fatPenalty.ordinal()) return fatPenalty;
-        else return hungerPenalty;
-    }
+//    public static HungerPenalty getHungerPenalty(EntityPlayer player) {
+//        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
+//            return HungerPenalty.NONE;
+//        int level = player.getFoodStats().getFoodLevel();
+//        if (level > 24) return HungerPenalty.NONE;
+//        else if (level > 18) return HungerPenalty.PECKISH;
+//        else if (level > 12) return HungerPenalty.HUNGRY;
+//        else if (level > 6) return HungerPenalty.FAMISHED;
+//        else if (level > 0 || player.getFoodStats().getSaturationLevel() > 0) return HungerPenalty.STARVING;
+//        else return HungerPenalty.DYING;
+//    }
 
-    public static HungerPenalty getHungerPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
-            return HungerPenalty.NONE;
-        int level = player.getFoodStats().getFoodLevel();
-        if (level > 24) return HungerPenalty.NONE;
-        else if (level > 18) return HungerPenalty.PECKISH;
-        else if (level > 12) return HungerPenalty.HUNGRY;
-        else if (level > 6) return HungerPenalty.FAMISHED;
-        else if (level > 0 || player.getFoodStats().getSaturationLevel() > 0) return HungerPenalty.STARVING;
-        else return HungerPenalty.DYING;
-    }
-
-    public static FatPenalty getFatPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
-            return FatPenalty.NO_PENALTY;
-        int level = (int) player.getFoodStats().getSaturationLevel();
-        if (level < 36) return FatPenalty.NO_PENALTY;
-        else if (level < 42) return FatPenalty.PLUMP;
-        else if (level < 48) return FatPenalty.CHUBBY;
-        else if (level < 52) return FatPenalty.FAT;
-        else return FatPenalty.OBESE;
-    }
-
-    public static HealthPenalty getHealthPenalty(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCInjury.class))
-            return HealthPenalty.NO_PENALTY;
-        double max = player.getMaxHealth();
-        double level = player.getHealth();
-        double frac = level / max;
-
-        if (frac > 0.5d) return HealthPenalty.NO_PENALTY;
-        else if (frac > 0.4d) return HealthPenalty.HURT;
-        else if (frac > 0.3d) return HealthPenalty.INJURED;
-        else if (frac > 0.2d) return HealthPenalty.WOUNDED;
-        else if (frac > 0.1d) return HealthPenalty.CRIPPLED;
-        else return HealthPenalty.DYING;
-    }
-
-    public static boolean canJump(EntityPlayer player) {
-        return getHungerPenalty(player).canJump() && getHealthPenalty(player).canJump() && getFatPenalty(player).canJump() && getGloomPenalty(player).canJump();
-    }
-
-    public static boolean canSwim(EntityPlayer player) {
-        return (!isWeighted(player)) && canJump(player);
-    }
+    //    public static FatPenalty getFatPenalty(EntityPlayer player) {
+//        if (!ModuleLoader.isFeatureEnabled(HCHunger.class))
+//            return FatPenalty.NO_PENALTY;
+//        int level = (int) player.getFoodStats().getSaturationLevel();
+//        if (level < 36) return FatPenalty.NO_PENALTY;
+//        else if (level < 42) return FatPenalty.PLUMP;
+//        else if (level < 48) return FatPenalty.CHUBBY;
+//        else if (level < 52) return FatPenalty.FAT;
+//        else return FatPenalty.OBESE;
+//    }
+//
+//    public static HealthPenalty getHealthPenalty(EntityPlayer player) {
+//        if (!ModuleLoader.isFeatureEnabled(HCInjury.class))
+//            return HealthPenalty.NO_PENALTY;
+//        double max = player.getMaxHealth();
+//        double level = player.getHealth();
+//        double frac = level / max;
+//
+//        if (frac > 0.5d) return HealthPenalty.NO_PENALTY;
+////        else if (frac > 0.4d) return HealthPenalty.HURT;
+////        else if (frac > 0.3d) return HealthPenalty.INJURED;
+////        else if (frac > 0.2d) return HealthPenalty.WOUNDED;
+////        else if (frac > 0.1d) return HealthPenalty.CRIPPLED;
+////        else return HealthPenalty.DYING;
+////    }
+//
+//    public static boolean canSwim(EntityPlayer player) {
+//        return (!isWeighted(player)) && canJump(player);
+//    }
 
     /**
      * This will at least keep players from sticking to the bottom of a pool.
@@ -184,7 +176,8 @@ public final class PlayerHelper {
      */
     public static void changeSpeed(EntityLivingBase entity,
                                    String name, double modifier, UUID penaltySpeedUuid) {
-        AttributeModifier speedModifier = (new AttributeModifier(penaltySpeedUuid, name, modifier - 1, 2));
+        //2 operator multiples the current value by 1+x, thus modifier-1 neutralizes the extra 1
+        AttributeModifier speedModifier = (new AttributeModifier(penaltySpeedUuid, name, modifier-1, 2));
         IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
         if (iattributeinstance.getModifier(penaltySpeedUuid) != null) {
@@ -210,14 +203,14 @@ public final class PlayerHelper {
         return player.isRiding() && player.getRidingEntity() instanceof EntitySquid;
     }
 
-    public static float getGloomExhaustionModifier(EntityPlayer player) {
-        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
-            return 1.0f;
-        GloomPenalty gloom = getGloomPenalty(player);
-        if (gloom != null)
-            return gloom.getModifier();
-        return 1.0f;
-    }
+//    public static float getGloomExhaustionModifier(EntityPlayer player) {
+//        if (!ModuleLoader.isFeatureEnabled(HCGloom.class))
+//            return 1.0f;
+//        GloomPenalty gloom = getGloomPenalty(player);
+//        if (gloom != null)
+//            return gloom.getModifier();
+//        return 1.0f;
+//    }
 
     public static float getArmorExhaustionModifier(EntityPlayer player) {
         float modifier = 1.0F;
@@ -307,5 +300,7 @@ public final class PlayerHelper {
             return profile.getId();
         return player.getUniqueID();
     }
+
+
 
 }

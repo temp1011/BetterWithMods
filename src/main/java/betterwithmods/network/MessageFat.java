@@ -1,6 +1,5 @@
 package betterwithmods.network;
 
-import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -27,7 +26,8 @@ public class MessageFat extends NetworkMessage {
 
     @Override
     public IMessage handleMessage(MessageContext context) {
-        HCHunger.ClientSide.doFat(uuid);
+        //TODO
+//        HCHunger.ClientSide.doFat(uuid);
         return super.handleMessage(context);
     }
 

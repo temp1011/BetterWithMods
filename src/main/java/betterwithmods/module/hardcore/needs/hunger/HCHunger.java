@@ -2,22 +2,21 @@ package betterwithmods.module.hardcore.needs.hunger;
 
 import betterwithmods.client.gui.GuiHunger;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.items.ItemBlockEdible;
 import betterwithmods.common.items.ItemEdibleSeeds;
+import betterwithmods.common.penalties.HungerPenalties;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.hardcore.needs.HCTools;
 import betterwithmods.network.MessageFat;
 import betterwithmods.network.MessageGuiShake;
 import betterwithmods.network.NetworkHandler;
-import betterwithmods.util.player.FatPenalty;
-import betterwithmods.util.player.HungerPenalty;
 import betterwithmods.util.player.PlayerHelper;
 import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,24 +59,24 @@ import squeek.applecore.api.hunger.HungerEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
 
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Created by primetoxinz on 6/20/17.
  */
 public class HCHunger extends CompatFeature {
+
     private static final DataParameter<Integer> EXHAUSTION_TICK = EntityDataManager.createKey(EntityPlayer.class, DataSerializers.VARINT);
     public static float blockBreakExhaustion;
     public static float passiveExhaustion;
     public static int passiveExhaustionTick;
     public static boolean rawMeatDangerous;
-//	public static boolean fat;
-
     public static boolean overridePumpkinSeeds;
+    //	public static boolean fat;
     public static boolean overrideMushrooms;
     public static Item PUMPKIN_SEEDS = new ItemEdibleSeeds(Blocks.PUMPKIN_STEM, Blocks.FARMLAND, 1, 0).setRegistryName("minecraft:pumpkin_seeds").setUnlocalizedName("seeds_pumpkin");
     public static Item BROWN_MUSHROOM = new ItemBlockEdible(Blocks.BROWN_MUSHROOM, 1, 0, false).setRegistryName("minecraft:brown_mushroom");
     public static Item RED_MUSHROOM = new ItemBlockEdible(Blocks.RED_MUSHROOM, 1, 0, false).setPotionEffect(new PotionEffect(MobEffects.POISON, 100, 0), 1).setRegistryName("minecraft:red_mushroom");
+
 
     public HCHunger() {
         super("applecore");
@@ -85,6 +84,8 @@ public class HCHunger extends CompatFeature {
 
     @Override
     public void setupConfig() {
+        BWRegistry.PENALTY_HANDLERS.add(new HungerPenalties());
+
         blockBreakExhaustion = (float) loadPropDouble("Block Breaking Exhaustion", "Set Exhaustion from breaking a block", 0.1);
         passiveExhaustion = (float) loadPropDouble("Passive Exhaustion", "Passive Exhaustion value", 4f);
         passiveExhaustionTick = loadPropInt("Passive Exhaustion Tick", "Passive exhaustion tick time", 900);
@@ -92,7 +93,6 @@ public class HCHunger extends CompatFeature {
 
         overrideMushrooms = loadPropBool("Edible Mushrooms", "Override Mushrooms to be edible, be careful with the red one ;)", true);
         overridePumpkinSeeds = loadPropBool("Edible Pumpkin Seeds", "Override Pumpkin Seeds to be edible", true);
-//		fat = loadPropBool("Fat", "Fat replaces saturation and only decreases when hunger is depleted completely", true);
     }
 
     @Override
@@ -239,11 +239,6 @@ public class HCHunger extends CompatFeature {
     public void onJump(LivingEvent.LivingJumpEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            if (!PlayerHelper.canJump(player)) {
-                event.getEntityLiving().motionX = 0;
-                event.getEntityLiving().motionY = 0;
-                event.getEntityLiving().motionZ = 0;
-            }
             player.addExhaustion(0.5f);
         }
     }
@@ -251,24 +246,6 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent
     public void setMaxFood(HungerEvent.GetMaxHunger event) {
         event.maxHunger = 60;
-    }
-
-    //Chaneg speed based on Hunger
-    @SubscribeEvent
-    public void givePenalties(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            if (!PlayerHelper.isSurvival(player))
-                return;
-            PlayerHelper.changeSpeed(player, "Hunger Speed Modifier", PlayerHelper.getHungerPenalty(player).getModifier(), PlayerHelper.PENALTY_SPEED_UUID);
-        }
-    }
-
-    //Max Health only regen when above Peckish
-    @SubscribeEvent
-    public void allowHealthRegen(HealthRegenEvent.AllowRegen event) {
-        if (!event.player.world.getGameRules().getBoolean("naturalRegeneration")) return;
-        event.setResult(PlayerHelper.getHungerPenalty(event.player) == HungerPenalty.NO_PENALTY ? Event.Result.ALLOW : Event.Result.DENY);
     }
 
     //Change Health Regen speed to take 30 seconds
@@ -290,11 +267,11 @@ public class HCHunger extends CompatFeature {
         }
     }
 
-    public int getExhaustionTick(EntityPlayer player) {
+    private int getExhaustionTick(EntityPlayer player) {
         return player.getDataManager().get(EXHAUSTION_TICK);
     }
 
-    public void setExhaustionTick(EntityPlayer player, int tick) {
+    private void setExhaustionTick(EntityPlayer player, int tick) {
         player.getDataManager().set(EXHAUSTION_TICK, tick);
     }
 
@@ -304,10 +281,8 @@ public class HCHunger extends CompatFeature {
             EntityPlayer player = event.player;
             if (event.player instanceof EntityPlayerMP)
                 NetworkHandler.INSTANCE.sendTo(new MessageFat(event.player.getUniqueID()), (EntityPlayerMP) event.player);
-            if (player.isCreative() || player.world.getDifficulty() == EnumDifficulty.PEACEFUL)
+            if (!PlayerHelper.isSurvival(player) || player.world.getDifficulty() == EnumDifficulty.PEACEFUL)
                 return;
-            if (!PlayerHelper.getHungerPenalty(player).canSprint())
-                player.setSprinting(false);
             int tick = getExhaustionTick(player);
             if (tick > passiveExhaustionTick) {
                 player.addExhaustion(passiveExhaustion);
@@ -321,7 +296,7 @@ public class HCHunger extends CompatFeature {
     //Shake Hunger bar whenever any exhaustion is given?
     @SubscribeEvent
     public void onExhaustAdd(ExhaustionEvent.ExhaustionAddition event) {
-        if (event.player.world.getTotalWorldTime() % 20 == 0 && event.deltaExhaustion > 0.05) {
+        if (event.deltaExhaustion > 0.05) {
             if (event.player instanceof EntityPlayerMP)
                 NetworkHandler.INSTANCE.sendTo(new MessageGuiShake(), (EntityPlayerMP) event.player);
             else
@@ -344,7 +319,7 @@ public class HCHunger extends CompatFeature {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvest(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
-        if (event.isCanceled() || player == null || player.isCreative())
+        if (event.isCanceled() || !PlayerHelper.isSurvival(player))
             return;
         World world = event.getWorld();
         BlockPos pos = event.getPos();
@@ -398,20 +373,20 @@ public class HCHunger extends CompatFeature {
             return getRenderPlayer(player).getMainModel();
         }
 
-        public static void putFat(AbstractClientPlayer player, FatPenalty fat) {
-            ModelBiped model = getPlayerModel(player);
-            float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 2f) : 0.0f;
-            model.bipedBody = new ModelRenderer(model, 16, 16);
-            model.bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
-        }
-
-        public static void doFat(String uuid) {
-            World world = Minecraft.getMinecraft().world;
-            EntityPlayer player = world.getPlayerEntityByUUID(UUID.fromString(uuid));
-            FatPenalty fat = PlayerHelper.getFatPenalty(player);
-            if (player != null && player instanceof AbstractClientPlayer)
-                putFat((AbstractClientPlayer) player, fat);
-        }
+//        public static void putFat(AbstractClientPlayer player, FatPenalty fat) {
+//            ModelBiped model = getPlayerModel(player);
+//            float scale = fat != FatPenalty.NO_PENALTY ? Math.max(0, fat.ordinal() / 2f) : 0.0f;
+//            model.bipedBody = new ModelRenderer(model, 16, 16);
+//            model.bipedBody.addBox(-4.0F, 0, -2.0F, 8, 12, 4, scale);
+//        }
+//
+//        public static void doFat(String uuid) {
+//            World world = Minecraft.getMinecraft().world;
+//            EntityPlayer player = world.getPlayerEntityByUUID(UUID.fromString(uuid));
+//            FatPenalty fat = PlayerHelper.getFatPenalty(player);
+//            if (player != null && player instanceof AbstractClientPlayer)
+//                putFat((AbstractClientPlayer) player, fat);
+//        }
     }
 
 

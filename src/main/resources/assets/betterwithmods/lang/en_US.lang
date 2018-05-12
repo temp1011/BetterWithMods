@@ -540,6 +540,13 @@ bwm.hunger_penalty.famished=Famished
 bwm.hunger_penalty.starving=Starving
 bwm.hunger_penalty.dying=Starving
 
+bwm.health_penalty.none=
+bwm.health_penalty.hurt=Hurt
+bwm.health_penalty.injured=Injured
+bwm.health_penalty.wounded=Wounded
+bwm.health_penalty.crippled=Crippled
+bwm.health_penalty.dying=Dying
+
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight
 bwm.effect.fortune=Fortune
