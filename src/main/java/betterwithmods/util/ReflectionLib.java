@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class ReflectionLib {
 
-
     public static final String[] ITEMTOOL_EFFECTIVE_BLOCKS = new String[]{"effectiveBlocks", "field_150914_c"};
 
     public static final String[] DEFAULT_RESOURCE_PACKS = new String[]{"field_110449_ao", "defaultResourcePacks"};
