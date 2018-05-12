@@ -480,7 +480,7 @@ fluid.betterwithmods:hellfire.name=Molten Hellfire
 material.soulforged_steel.name=Soulforged Steel
 material.hellfire.name=Hellfire
 modifier.mending.name=Mending
-modifier.mending.desc=??oKillsteal!??r\nAbsorbs experience to repair the tool.
+modifier.mending.desc=??oKillsteal!?? Absorbs experience to repair the tool.
 
 entity.entity_sheared_creeper.name=Sheared Creeper
 entity.bwm_jungle_spider.name=Jungle Spider
@@ -542,7 +542,7 @@ tooltip.windmill.name=Windmills spin quicker when it's Raining or Storming, chec
 tooltip.bwm_book.name=The Book of Single
 
 
-bwm.manual.message=You have been given a Better With Mods Manual. This mod might be different than what you are expecting.\nPlease read the Crash Course section.
+bwm.manual.message=You have been given a Better With Mods Manual. This mod might be different than what you are expecting. Please read the Crash Course section.
 
 bwm.manual.home=Home
 bwm.manual.blocks=Block
