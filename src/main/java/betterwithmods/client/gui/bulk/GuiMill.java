@@ -1,21 +1,22 @@
-package betterwithmods.client.container.bulk;
+package betterwithmods.client.gui.bulk;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.container.bulk.ContainerMill;
+import betterwithmods.client.gui.GuiProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class GuiMill extends GuiContainer {
+public class GuiMill extends GuiProgress {
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID, "textures/gui/mill.png");
     private static final String NAME = "inv.mill.name";
     private final TileEntityMill mill;
     private ContainerMill container;
 
     public GuiMill(EntityPlayer player, TileEntityMill mill) {
-        super(new ContainerMill(player, mill));
+        super(new ContainerMill(player, mill), TEXTURE, mill);
         this.container = (ContainerMill) inventorySlots;
         this.ySize = 158;
         this.mill = mill;
@@ -30,6 +31,7 @@ public class GuiMill extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
+        super.drawGuiContainerForegroundLayer(x,y);
         String s = I18n.format(NAME);
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
     }
@@ -37,24 +39,14 @@ public class GuiMill extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f,
                                                    int x, int y) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/mill.png"));
-        int xPos = (this.width - this.xSize) / 2;
-        int yPos = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
-
-
-        if (this.mill.isGrinding()) {
-            int progress = (int) (12 * container.progress / 100d);
-            drawTexturedModalRect(xPos + 80, yPos + 18 + 12 - progress, 176, 12 - progress, 14, 14);
-        }
-
-        if (container.blocked) {
-            String str = "Blocked";
-            int width = fontRenderer.getStringWidth(str) / 2;
-            drawString(fontRenderer, str, xPos + this.xSize / 2 - width, yPos + 32, EnumDyeColor.RED.getColorValue());
-            drawToolTip(x, y, xPos + this.xSize / 2 - width, yPos + 32, 32, 32, "The Millstone has too many solid blocks around it.");
-        }
+        super.drawGuiContainerBackgroundLayer(f, x, y);
+        //TODO
+//        if (container.blocked) {
+//            String str = "Blocked";
+//            int width = fontRenderer.getStringWidth(str) / 2;
+//            drawString(fontRenderer, str, xPos + this.xSize / 2 - width, yPos + 32, EnumDyeColor.RED.getColorValue());
+//            drawToolTip(x, y, xPos + this.xSize / 2 - width, yPos + 32, 32, 32, "The Millstone has too many solid blocks around it.");
+//        }
 
     }
 
@@ -63,5 +55,38 @@ public class GuiMill extends GuiContainer {
             drawHoveringText(text, mouseX, mouseY);
         }
     }
+
+
+    @Override
+    public int getX() {
+        return 80;
+    }
+
+    @Override
+    public int getY() {
+        return 18;
+    }
+
+    @Override
+    public int getTextureX() {
+        return 176;
+    }
+
+    @Override
+    public int getTextureY() {
+        return 14;
+    }
+
+    @Override
+    public int getHeight() {
+        return 14;
+    }
+
+    @Override
+    public int getWidth() {
+        return 14;
+    }
+
+
 
 }

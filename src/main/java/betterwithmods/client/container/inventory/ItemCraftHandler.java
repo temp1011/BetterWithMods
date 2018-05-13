@@ -1,4 +1,4 @@
-package betterwithmods.client.container.util;
+package betterwithmods.client.container.inventory;
 
 import betterwithmods.common.blocks.tile.TileEntitySteelAnvil;
 import betterwithmods.common.registry.anvil.AnvilCraftingManager;

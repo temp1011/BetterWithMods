@@ -1,6 +1,7 @@
-package betterwithmods.client.container.other;
+package betterwithmods.client.gui;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.container.other.ContainerInfernalEnchanter;
 import betterwithmods.common.blocks.tile.TileEntityInfernalEnchanter;
 import com.google.common.collect.Maps;
 import net.minecraft.client.gui.FontRenderer;

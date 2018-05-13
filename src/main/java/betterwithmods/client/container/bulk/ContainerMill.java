@@ -1,20 +1,18 @@
 package betterwithmods.client.container.bulk;
 
+import betterwithmods.client.container.ContainerProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerMill extends Container {
+public class ContainerMill extends ContainerProgress {
     private final TileEntityMill mill;
-    public boolean blocked;
-    public int prevProgress, progress;
 
     public ContainerMill(EntityPlayer player, TileEntityMill mill) {
+        super(mill);
         this.mill = mill;
 
         for (int j = 0; j < 3; j++) {
@@ -59,38 +57,4 @@ public class ContainerMill extends Container {
         return stack;
     }
 
-    @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-        int progress = (int) (mill.progress * 100);
-        listener.sendWindowProperty(this, 0, progress);
-        listener.sendWindowProperty(this, 1, this.mill.blocked ? 0 : 1);
-    }
-
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-        int progress = (int) (mill.progress * 100);
-        for (IContainerListener craft : this.listeners) {
-
-            if (this.prevProgress != this.mill.progress) {
-                craft.sendWindowProperty(this, 0, progress);
-            }
-            craft.sendWindowProperty(this, 1, this.mill.blocked ? 1 : 0);
-        }
-        this.prevProgress = progress;
-        this.blocked = this.mill.blocked;
-    }
-
-    @Override
-    public void updateProgressBar(int index, int value) {
-        switch (index) {
-            case 0:
-                progress = value;
-                break;
-            case 1:
-                blocked = value == 1;
-                break;
-        }
-    }
 }

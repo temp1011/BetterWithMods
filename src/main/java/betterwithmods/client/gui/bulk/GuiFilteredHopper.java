@@ -1,18 +1,19 @@
-package betterwithmods.client.container.bulk;
+package betterwithmods.client.gui.bulk;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.container.bulk.ContainerFilteredHopper;
+import betterwithmods.client.gui.GuiProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class GuiFilteredHopper extends GuiContainer {
+public class GuiFilteredHopper extends GuiProgress {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID, "textures/gui/hopper.png");
     private final TileEntityFilteredHopper tile;
 
     public GuiFilteredHopper(EntityPlayer player, TileEntityFilteredHopper tile) {
-        super(new ContainerFilteredHopper(player, tile));
+        super(new ContainerFilteredHopper(player, tile), TEXTURE, tile);
         this.ySize = 193;
         this.tile = tile;
     }
@@ -32,18 +33,33 @@ public class GuiFilteredHopper extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f,
-                                                   int x, int y) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/hopper.png"));
-
-        int xPos = (this.width - this.xSize) / 2;
-        int yPos = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
-
-        if (tile.power > 0) {
-            drawTexturedModalRect(xPos + 80, yPos + 18, 176, 0, 14, 14);
-        }
-
+    public int getX() {
+        return 80;
     }
+
+    @Override
+    public int getY() {
+        return 18;
+    }
+
+    @Override
+    public int getTextureX() {
+        return 176;
+    }
+
+    @Override
+    public int getTextureY() {
+        return 14;
+    }
+
+    @Override
+    public int getHeight() {
+        return 14;
+    }
+
+    @Override
+    public int getWidth() {
+        return 14;
+    }
+
 }

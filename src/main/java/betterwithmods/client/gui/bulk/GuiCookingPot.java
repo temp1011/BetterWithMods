@@ -1,6 +1,7 @@
-package betterwithmods.client.container.bulk;
+package betterwithmods.client.gui.bulk;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.container.bulk.ContainerCookingPot;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

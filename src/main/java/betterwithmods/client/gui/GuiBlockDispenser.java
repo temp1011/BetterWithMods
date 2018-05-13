@@ -1,6 +1,7 @@
-package betterwithmods.client.container.other;
+package betterwithmods.client.gui;
 
 import betterwithmods.BWMod;
+import betterwithmods.client.container.other.ContainerBlockDispenser;
 import betterwithmods.common.blocks.tile.TileEntityBlockDispenser;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

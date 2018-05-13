@@ -2,9 +2,9 @@ package betterwithmods.module.compat.jei;
 
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.client.container.anvil.GuiSteelAnvil;
-import betterwithmods.client.container.bulk.GuiCauldron;
-import betterwithmods.client.container.bulk.GuiCrucible;
-import betterwithmods.client.container.bulk.GuiMill;
+import betterwithmods.client.gui.bulk.GuiCauldron;
+import betterwithmods.client.gui.bulk.GuiCrucible;
+import betterwithmods.client.gui.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
