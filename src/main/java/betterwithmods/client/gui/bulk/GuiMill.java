@@ -4,22 +4,20 @@ import betterwithmods.BWMod;
 import betterwithmods.client.container.bulk.ContainerMill;
 import betterwithmods.client.gui.GuiProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiMill extends GuiProgress {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID, "textures/gui/mill.png");
     private static final String NAME = "inv.mill.name";
-    private final TileEntityMill mill;
     private ContainerMill container;
 
     public GuiMill(EntityPlayer player, TileEntityMill mill) {
         super(new ContainerMill(player, mill), TEXTURE, mill);
         this.container = (ContainerMill) inventorySlots;
         this.ySize = 158;
-        this.mill = mill;
     }
 
     @Override
@@ -30,24 +28,25 @@ public class GuiMill extends GuiProgress {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        super.drawGuiContainerForegroundLayer(x,y);
-        String s = I18n.format(NAME);
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+    public String getTitle() {
+        return NAME;
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f,
-                                                   int x, int y) {
-        super.drawGuiContainerBackgroundLayer(f, x, y);
-        //TODO
-//        if (container.blocked) {
-//            String str = "Blocked";
-//            int width = fontRenderer.getStringWidth(str) / 2;
-//            drawString(fontRenderer, str, xPos + this.xSize / 2 - width, yPos + 32, EnumDyeColor.RED.getColorValue());
-//            drawToolTip(x, y, xPos + this.xSize / 2 - width, yPos + 32, 32, 32, "The Millstone has too many solid blocks around it.");
-//        }
+    public int getTitleY() {
+        return 6;
+    }
 
+    @Override
+    protected void drawExtras(float partialTicks, int mouseX, int mouseY, int centerX, int centerY) {
+        super.drawExtras(partialTicks, mouseX, mouseY, centerX, centerY);
+        if (container.blocked) {
+            String str = "Blocked";
+            int width = fontRenderer.getStringWidth(str) / 2;
+            drawString(fontRenderer, str, centerX + this.xSize / 2 - width, centerY + 32, EnumDyeColor.RED.getColorValue());
+            //TODO lang entry
+            drawToolTip(mouseX, mouseY, centerX + this.xSize / 2 - width, centerY + 32, 32, 32, "The Millstone has too many solid blocks around it.");
+        }
     }
 
     private void drawToolTip(int mouseX, int mouseY, int x, int y, int w, int h, String text) {

@@ -4,7 +4,6 @@ import betterwithmods.BWMod;
 import betterwithmods.client.container.bulk.ContainerCookingPot;
 import betterwithmods.client.gui.GuiProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -21,19 +20,17 @@ public class GuiCookingPot extends GuiProgress {
         this.tile = tile;
     }
 
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
-    }
-
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        String s = I18n.format(tile.getName());
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+    public String getTitle() {
+        return tile.getName();
     }
+
+    @Override
+    public int getTitleY() {
+        return 6;
+    }
+
 
     @Override
     public int getX() {

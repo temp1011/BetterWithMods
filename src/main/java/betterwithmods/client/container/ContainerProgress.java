@@ -5,7 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 
 public abstract class ContainerProgress extends Container {
-
     private IProgressSource progressSource;
 
     public ContainerProgress(IProgressSource progressSource) {

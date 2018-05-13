@@ -1,17 +1,13 @@
 package betterwithmods.client;
 
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
-import betterwithmods.client.container.anvil.GuiSteelAnvil;
 import betterwithmods.client.container.bulk.ContainerCookingPot;
 import betterwithmods.client.container.bulk.ContainerFilteredHopper;
 import betterwithmods.client.container.bulk.ContainerMill;
 import betterwithmods.client.container.other.ContainerBlockDispenser;
 import betterwithmods.client.container.other.ContainerInfernalEnchanter;
 import betterwithmods.client.container.other.ContainerPulley;
-import betterwithmods.client.gui.GuiBlockDispenser;
-import betterwithmods.client.gui.GuiInfernalEnchanter;
-import betterwithmods.client.gui.GuiManual;
-import betterwithmods.client.gui.GuiPulley;
+import betterwithmods.client.gui.*;
 import betterwithmods.client.gui.bulk.GuiCauldron;
 import betterwithmods.client.gui.bulk.GuiCrucible;
 import betterwithmods.client.gui.bulk.GuiFilteredHopper;

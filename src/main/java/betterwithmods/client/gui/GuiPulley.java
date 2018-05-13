@@ -3,7 +3,6 @@ package betterwithmods.client.gui;
 import betterwithmods.BWMod;
 import betterwithmods.client.container.other.ContainerPulley;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityPulley;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -20,9 +19,13 @@ public class GuiPulley extends GuiProgress {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        String s = I18n.format(tile.getName());
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+    public String getTitle() {
+        return tile.getName();
+    }
+
+    @Override
+    public int getTitleY() {
+        return 6;
     }
 
     @Override

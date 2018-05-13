@@ -1,7 +1,7 @@
 package betterwithmods.module.compat.jei;
 
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
-import betterwithmods.client.container.anvil.GuiSteelAnvil;
+import betterwithmods.client.gui.GuiSteelAnvil;
 import betterwithmods.client.gui.bulk.GuiCauldron;
 import betterwithmods.client.gui.bulk.GuiCrucible;
 import betterwithmods.client.gui.bulk.GuiMill;

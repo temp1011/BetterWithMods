@@ -3,20 +3,22 @@ package betterwithmods.client.container.bulk;
 import betterwithmods.client.container.ContainerProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityMill;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerMill extends ContainerProgress {
-    private final TileEntityMill mill;
+    private final TileEntityMill tile;
+    public boolean blocked;
 
-    public ContainerMill(EntityPlayer player, TileEntityMill mill) {
-        super(mill);
-        this.mill = mill;
+    public ContainerMill(EntityPlayer player, TileEntityMill tile) {
+        super(tile);
+        this.tile = tile;
 
         for (int j = 0; j < 3; j++) {
-            addSlotToContainer(new SlotItemHandler(mill.inventory, j, 62 + j * 18, 43));
+            addSlotToContainer(new SlotItemHandler(tile.inventory, j, 62 + j * 18, 43));
         }
 
         for (int i = 0; i < 3; i++) {
@@ -32,7 +34,7 @@ public class ContainerMill extends ContainerProgress {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return mill.isUseableByPlayer(player);
+        return tile.isUseableByPlayer(player);
     }
 
     @Override
@@ -55,6 +57,35 @@ public class ContainerMill extends ContainerProgress {
                 slot.onSlotChanged();
         }
         return stack;
+    }
+
+
+    @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        listener.sendWindowProperty(this, 2, this.tile.blocked ? 1 : 0);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        boolean b = tile.blocked;
+        if (blocked != b) {
+            blocked = b;
+            for (IContainerListener craft : this.listeners) {
+                craft.sendWindowProperty(this, 2, blocked ? 1 : 0);
+            }
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int index, int value) {
+        super.updateProgressBar(index, value);
+        switch (index) {
+            case 2:
+                blocked = value == 1;
+                break;
+        }
     }
 
 }
