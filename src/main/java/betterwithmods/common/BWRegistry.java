@@ -45,10 +45,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -199,23 +196,14 @@ public class BWRegistry {
                     return stack;
                 });
         BlockBDispenser.BLOCK_COLLECT_REGISTRY.putObject(Blocks.STONE, new BehaviorSilkTouch());
-        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityWolf.class, (world, pos, entity, stack) -> {
-            if (((EntityAgeable) entity).isChild())
-                return NonNullList.create();
-            InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.STRING, 1 + world.rand.nextInt(3)));
-            world.playSound(null, pos, SoundEvents.ENTITY_WOLF_HURT, SoundCategory.NEUTRAL, 0.75F, 1.0F);
-            entity.setDead();
-            return InvUtils.asNonnullList(new ItemStack(BWMBlocks.WOLF));
-        });
-
-        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntitySheep.class, (world, pos, entity, stack) -> {
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(new ResourceLocation("minecraft:sheep"), (world, pos, entity, stack) -> {
             EntitySheep sheep = (EntitySheep) entity;
             if (sheep.isShearable(new ItemStack(Items.SHEARS), world, pos)) {
                 return InvUtils.asNonnullList(sheep.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
             }
             return NonNullList.create();
         });
-        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityChicken.class, (world, pos, entity, stack) -> {
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(new ResourceLocation("minecraft:chicken"), (world, pos, entity, stack) -> {
             if (((EntityAgeable) entity).isChild())
                 return NonNullList.create();
             InvUtils.ejectStackWithOffset(world, pos, new ItemStack(Items.FEATHER, 1 + world.rand.nextInt(2)));
@@ -223,7 +211,7 @@ public class BWRegistry {
             entity.setDead();
             return InvUtils.asNonnullList(new ItemStack(Items.EGG));
         });
-        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(EntityCow.class, (world, pos, entity, stack) -> {
+        BlockBDispenser.ENTITY_COLLECT_REGISTRY.putObject(new ResourceLocation("minecraft:cow"), (world, pos, entity, stack) -> {
             if (((EntityAgeable) entity).isChild())
                 return NonNullList.create();
             if (stack.isItemEqual(new ItemStack(Items.BUCKET))) {
@@ -242,11 +230,17 @@ public class BWRegistry {
      */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,
                                       int updateFrequency, boolean sendsVelocityUpdates) {
-        EntityRegistry.registerModEntity(new ResourceLocation("betterwithmods:" + entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
+        EntityRegistry.registerModEntity(new ResourceLocation(BWMod.MODID, entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
                 updateFrequency, sendsVelocityUpdates);
         availableEntityId++;
     }
 
+
+    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int primaryColor, int secondaryColor) {
+        EntityRegistry.registerModEntity(new ResourceLocation(BWMod.MODID, entityName), entityClass, entityName, availableEntityId, BWMod.instance, trackingRange,
+                updateFrequency, sendsVelocityUpdates, primaryColor, secondaryColor);
+        availableEntityId++;
+    }
 
     public static void registerHeatSources() {
         BWMHeatRegistry.addHeatSource(new StateIngredient(Blocks.FIRE, Items.AIR), 1);
@@ -280,8 +274,8 @@ public class BWRegistry {
         registerFireInfo(new BlockIngredient("grates"), 5, 20);
     }
 
-    public static void registerFireInfo(BlockIngredient ingredient,  int encouragement, int flammability) {
-        for(IBlockState state: ingredient.getStates()) {
+    public static void registerFireInfo(BlockIngredient ingredient, int encouragement, int flammability) {
+        for (IBlockState state : ingredient.getStates()) {
             Blocks.FIRE.setFireInfo(state.getBlock(), encouragement, flammability);
         }
     }

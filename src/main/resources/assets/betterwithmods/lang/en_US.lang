@@ -221,6 +221,7 @@ tile.bwm:debarked_new.1.name=Dark Oak Debarked Log
 
 tile.bwm:block_dispenser.name=Block Dispenser
 tile.bwm:companion_cube.name=Companion Cube
+tile.bwm:long_friend.name=Long Friend
 
 tile.bwm:bamboo_chime.0.name=Oak Bamboo Chime
 tile.bwm:bamboo_chime.1.name=Spruce Bamboo Chime
