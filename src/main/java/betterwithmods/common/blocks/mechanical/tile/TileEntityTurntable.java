@@ -137,7 +137,6 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
                 break;
             if (handler.canTransmitHorizontally(world, pos))
                 TurntableRotationManager.rotateAttachments(world, pos, rotation);
-
             if (!handler.canTransmitVertically(world, pos))
                 break;
         }
@@ -171,20 +170,19 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         if(state.getMaterial() != Material.AIR) {
             world.playSound(null, pos, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.8F);
             ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
-        } else {
-
         }
     }
 
     private void rotateCraftable(World world, BlockPos pos, IBlockState input) {
         this.potteryRotation++;
         if (BWRegistry.TURNTABLE.findRecipe(world, pos, input).isPresent()) {
+            spawnParticlesAndSound(input);
             if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
                 this.potteryRotation = 0;
         } else {
             this.potteryRotation = 0;
         }
-        spawnParticlesAndSound(input);
+
     }
 
     @Override
