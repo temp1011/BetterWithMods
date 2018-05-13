@@ -227,13 +227,13 @@ public class HCBrewing extends Feature {
                         AbstractBrewingRecipe abstractRecipe = (AbstractBrewingRecipe) recipe;
                         if (abstractRecipe.isIngredient(extenderToReplace) && isExtended(abstractRecipe.getInput(), abstractRecipe.getOutput())) {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WITCH_WART), abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getStack(ItemMaterial.EnumMaterial.WITCH_WART), abstractRecipe.getOutput()));
                         } else if (abstractRecipe.isIngredient(strengthenerToReplace) && isStrong(abstractRecipe.getInput(), abstractRecipe.getOutput())) {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE), abstractRecipe.getOutput()));
                         } else if (abstractRecipe.isIngredient(inverterToReplace) && isInverted(abstractRecipe.getInput(), abstractRecipe.getOutput())) {
                             iterator.remove();
-                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POISON_SAC), abstractRecipe.getOutput()));
+                            iterator.add(new BrewingRecipe(abstractRecipe.getInput(), ItemMaterial.getStack(ItemMaterial.EnumMaterial.POISON_SAC), abstractRecipe.getOutput()));
                         } else if (abstractRecipe.isIngredient(splashToReplace) && isSplash(abstractRecipe.getInput(), abstractRecipe.getOutput())) {
                             iterator.remove();
                             iterator.add(new BrewingRecipe(abstractRecipe.getInput(), new ItemStack(BWMItems.CREEPER_OYSTER), abstractRecipe.getOutput()));

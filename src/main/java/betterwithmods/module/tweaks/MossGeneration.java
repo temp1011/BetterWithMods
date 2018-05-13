@@ -36,13 +36,6 @@ public class MossGeneration extends Feature {
         CONVERTED_BLOCKS.put(ingredient, mossyState);
     }
 
-    public static BlockPos randomPosition(World world, BlockPos start, BlockPos end) {
-        if (world.isAreaLoaded(start, end)) {
-            return new BlockPos(randomRange(start.getX(), end.getX()), randomRange(start.getY(), end.getY()), randomRange(start.getZ(), end.getZ()));
-        }
-        return null;
-    }
-
     public static void mossify(World world, BlockPos pos) {
         IBlockState mossy;
         if (world.rand.nextInt(RATE) == 0 && (mossy = getMossyVariant(world, pos, world.getBlockState(pos))) != null) {
@@ -57,6 +50,38 @@ public class MossGeneration extends Feature {
     public static int randomRange(int start, int end) {
         int d = end - start;
         return start + RandomUtils.nextInt(0, d);
+    }
+
+    private static Optional<BlockPos> randomPosition(World world, BlockPos start, BlockPos end) {
+        if (world.isAreaLoaded(start, end)) {
+            return Optional.of(new BlockPos(
+                    randomRange(start.getX(), end.getX()),
+                    randomRange(start.getY(), end.getY()),
+                    randomRange(start.getZ(), end.getZ())
+            ));
+        }
+        return Optional.empty();
+    }
+
+    @SubscribeEvent
+    public void generateMossNearSpawner(TickEvent.WorldTickEvent event) {
+        World world = event.world;
+        List<BlockPos> positions;
+        if (world.isRemote || event.phase != TickEvent.Phase.END || event.side != Side.SERVER)
+            return;
+        if (world.rand.nextInt(RATE) != 0)
+            return;
+        synchronized (world.loadedTileEntityList) {
+            positions = world.loadedTileEntityList
+                    .stream()
+                    .filter(t -> t instanceof TileEntityMobSpawner)
+                    .map(TileEntity::getPos)
+                    .collect(Collectors.toList());
+        }
+        positions.forEach(pos -> {
+            BlockPos min = pos.add(-RADIUS, -RADIUS, -RADIUS), max = pos.add(RADIUS, RADIUS, RADIUS);
+            randomPosition(world, min, max).ifPresent(p -> mossify(world, p));
+        });
     }
 
     @Override
@@ -80,44 +105,6 @@ public class MossGeneration extends Feature {
         addBlockConversion(new BlockIngredient(new ItemStack(Blocks.STONEBRICK)), Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
     }
 
-    @SubscribeEvent
-    public void generateMossNearSpawner(TickEvent.WorldTickEvent event) {
-        World world = event.world;
-        List<BlockPos> positions;
-        if (world.isRemote || event.phase != TickEvent.Phase.END || event.side != Side.SERVER)
-            return;
-        if (world.rand.nextInt(RATE) != 0)
-            return;
-        synchronized (world.loadedTileEntityList) {
-            positions = world.loadedTileEntityList
-                    .stream()
-                    .filter(t -> t instanceof TileEntityMobSpawner)
-                    .map(TileEntity::getPos)
-                    .collect(Collectors.toList());
-        }
-        positions.forEach(pos -> {
-            BlockPos min = pos.add(-RADIUS, -RADIUS, -RADIUS), max = pos.add(RADIUS, RADIUS, RADIUS);
-            randomPosition(world, min, max).ifPresent(p ->
-                    getMossyVariant(world.getBlockState(p)).ifPresent(mossy -> world.setBlockState(p, mossy))
-            );
-        });
-    }
-
-    private static Optional<BlockPos> randomPosition(World world, BlockPos start, BlockPos end) {
-        if (world.isAreaLoaded(start, end)) {
-            return Optional.of(new BlockPos(
-                    randomRange(start.getX(), end.getX()),
-                    randomRange(start.getY(), end.getY()),
-                    randomRange(start.getZ(), end.getZ())
-            ));
-        }
-        return Optional.empty();
-    }
-
-    private static Optional<IBlockState> getMossyVariant(IBlockState state) {
-        return Optional.ofNullable(CONVERTED_BLOCKS.get(state.getBlock()));
-    }
-
     @Override
     public boolean hasSubscriptions() {
         return true;
@@ -128,8 +115,5 @@ public class MossGeneration extends Feature {
         return "Cobblestone or Stonebrick within the spawning radius of a Mob Spawner will randomly grow into the Mossy version.";
     }
 
-    private static int randomRange(int start, int end) {
-        int d = end - start;
-        return start + RandomUtils.nextInt(0, d);
-    }
+
 }

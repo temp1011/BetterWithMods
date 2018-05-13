@@ -16,7 +16,6 @@ import betterwithmods.common.blocks.tile.TileBeacon;
 import betterwithmods.common.blocks.tile.TileBucket;
 import betterwithmods.common.entity.*;
 import betterwithmods.manual.api.ManualAPI;
-import betterwithmods.manual.api.prefab.manual.ResourceContentProvider;
 import betterwithmods.manual.api.prefab.manual.TextureTabIconRenderer;
 import betterwithmods.manual.client.manual.provider.*;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
@@ -109,7 +108,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
+        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), ReflectionLib.DEFAULT_RESOURCE_PACKS);
         BWMod.MODULE_LOADER.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());
