@@ -52,8 +52,8 @@ public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe>
         return super.addRecipe(recipe);
     }
 
-    public TileTurntable findTurntable(World world, BlockPos craftingPos) {
-        for(int i = 1; i < 2;i++) {
+    public static TileTurntable findTurntable(World world, BlockPos craftingPos) {
+        for (int i = 1; i <= 2; i++) {
             TileEntity tile = world.getTileEntity(craftingPos.down(i));
             if(tile instanceof TileTurntable) {
                 return (TileTurntable) tile;

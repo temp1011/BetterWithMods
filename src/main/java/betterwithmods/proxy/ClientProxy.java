@@ -23,6 +23,7 @@ import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import betterwithmods.module.gameplay.breeding_harness.CapabilityHarness;
 import betterwithmods.module.hardcore.crafting.HCFurnace;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
+import betterwithmods.util.ReflectionLib;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -75,12 +76,11 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = BWMod.MODID, value = Side.CLIENT)
 
 public class ClientProxy implements IProxy {
-    // Minecraft
-    public static final String[] DEFAULT_RESOURCE_PACKS = new String[]{"field_110449_ao", "defaultResourcePacks"};
+
     private static ResourceProxy resourceProxy;
 
     static {
-        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), DEFAULT_RESOURCE_PACKS);
+        List<IResourcePack> packs = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), ReflectionLib.DEFAULT_RESOURCE_PACKS);
         resourceProxy = new ResourceProxy();
         packs.add(resourceProxy);
     }
@@ -113,7 +113,7 @@ public class ClientProxy implements IProxy {
         BWMod.MODULE_LOADER.initClient(event);
         registerColors();
         ManualAPI.addProvider(new DefinitionPathProvider());
-        ManualAPI.addProvider(new ResourceContentProvider("betterwithmods", "docs/"));
+        ManualAPI.addProvider(new DirectoryDefaultProvider("betterwithmods", "docs/"));
         ManualAPI.addProvider("", new TextureImageProvider());
         ManualAPI.addProvider("item", new ItemImageProvider());
         ManualAPI.addProvider("block", new BlockImageProvider());

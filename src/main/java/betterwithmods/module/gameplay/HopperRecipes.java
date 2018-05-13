@@ -100,7 +100,7 @@ public class HopperRecipes extends Feature {
                 TileFilteredHopper hopper = (TileFilteredHopper) world.getTileEntity(pos);
                 if (hopper != null) {
                     SimpleStackHandler inventory = hopper.inventory;
-                    ItemStack sand = secondaryOutputs.get(world.rand.nextInt(secondaryOutputs.size())).copy();
+                    ItemStack sand = outputs.get(world.rand.nextInt(outputs.size())).copy();
                     ItemStack remainder = InvUtils.insert(inventory, sand, false);
                     if (!remainder.isEmpty())
                         InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);

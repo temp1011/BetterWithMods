@@ -234,13 +234,12 @@ tile.bwm:metal_chime.2.name=白桦木风铃
 tile.bwm:metal_chime.3.name=丛林木风铃
 tile.bwm:metal_chime.4.name=金合欢木风铃
 tile.bwm:metal_chime.5.name=深色橡木风铃
-tile.bwm:immersive_axle.name=精制传动木轴
 tile.bwm:buddy_block.name=方块更新检测器
 tile.bwm:creative_generator.name=创造模式机械能发生器
 tile.bwm:light.name=泛光灯
 tile.bwm:platform.name=平台
 tile.bwm:mining_charge.name=矿用炸药
-tile.bwm:fertile_farmland.name=肥沃的田地
+tile.bwm:fertile_farmland.name=肥沃的耕地
 tile.bwm:advanced_gearbox.name=高级变速箱
 tile.bwm:raw_pastry.0.name=蛋糕胚
 tile.bwm:raw_pastry.1.name=未烤制的南瓜派
@@ -267,18 +266,6 @@ tile.bwm:stake.name=标线桩
 
 tile.bwm:iron_wall.name=铁墙
 tile.bwm:nether_growth.name=地狱孢子
-
-tile.bwm:ie_siding.0.name=防腐木板半板（水平花纹）
-tile.bwm:ie_moulding.0.name=防腐木板木条（水平花纹）
-tile.bwm:ie_corner.0.name=防腐木板边角（水平花纹）
-
-tile.bwm:ie_siding.1.name=防腐木板半板（垂直花纹）
-tile.bwm:ie_moulding.1.name=防腐木板木条（垂直花纹）
-tile.bwm:ie_corner.1.name=防腐木板边角（垂直花纹）
-
-tile.bwm:ie_siding.2.name=防腐木板半板（板条花纹）
-tile.bwm:ie_moulding.2.name=防腐木板木条（板条花纹）
-tile.bwm:ie_corner.2.name=防腐木板边角（板条花纹）
 
 tile.bwm:steel_saw.name=熔魂钢锯片
 
@@ -493,7 +480,7 @@ fluid.betterwithmods:hellfire.name=熔融炼狱之火
 material.soulforged_steel.name=熔魂钢
 material.hellfire.name=炼狱之火
 modifier.mending.name=修复
-modifier.mending.desc=§o抢人头！§r\n吸收经验修复工具。
+modifier.mending.desc=§o抢人头！§r 吸收经验修复工具。
 
 entity.entity_sheared_creeper.name=剪过的爬行者
 entity.bwm_jungle_spider.name=丛林蜘蛛
@@ -524,8 +511,8 @@ bwm.message.needs_bait=鱼可能不会咬钩，需要一些诱饵。
 bwm.message.needs_open_sky=没有钓到任何东西，请尝试更换水源。
 bwm.message.needs_deep_water=没有钓到任何东西，可能是水太浅了。
 
-bwm.message.waterwheel.0=没有足够的空间放置水车。 需要一个5×5的工作区域。
-bwm.message.windmill.0=没有足够的空间放置风车。 需要一个13x13的工作区域。
+bwm.message.waterwheel.0=没有足够的空间放置水车，需要一个5×5的工作区域。
+bwm.message.windmill.0=没有足够的空间放置风车，需要一个13x13的工作区域。
 bwm.message.vertical_windmill.0=没有足够的空间放置风车。需要一个9x9且高度为7的区域才能工作。
 bwm.message.vertical_windmill.1=这里需要垂直放置一些轴（需要7根）。
 
@@ -533,11 +520,12 @@ bwm.config.hardcore.tooltip=硬核功能
 bwm.config.debug.tooltip=某些功能的调试信息
 bwm.config.vanilla_tweaks.tooltip=原版Minecraft的变化
 bwm.config.pulley.tooltip=滑车能影响的平台的大小
+bwm.hcfurnace.cook_time.tooltip=剩余时间：%s ticks
 
-bwm.effect.slow_fall=缓速下降
+bwm.effect.slow_fall=缓落
 bwm.effect.true_sight=真实视觉
 bwm.effect.fortune=时运
-bwm.effect.looting=掠夺
+bwm.effect.looting=抢夺
 
 bwm.item.containment=包含：
 
@@ -554,12 +542,12 @@ tooltip.windmill.name=风车在雨天或者雷暴天会旋转过快，记得检�
 tooltip.bwm_book.name=从零开始
 
 
-bwm.manual.message=你获得了一本来自BetterWithMods模组的指导手册，这个模组的玩法可能与你预想的不同。\n请认真阅读其中的介绍。
+bwm.manual.message=你获得了一本来自BetterWithMods模组的指导手册，这个模组的玩法可能与你预想的不同。请认真阅读其中的介绍。
 
 bwm.manual.home=主页
 bwm.manual.blocks=方块
 bwm.manual.items=物品
 bwm.manual.mechanical=机械动力
 bwm.manual.error.0=文档无法找到：
-bwm.manual.error.1=请向此处报告
-bwm.manual.error.2=或者重新进行尝试。
+bwm.manual.error.1=请向此处报告%s
+bwm.manual.error.2=同时重新进行尝试%s。

@@ -34,7 +34,6 @@ import betterwithmods.network.BWNetwork;
 import betterwithmods.util.DispenserBehaviorDynamite;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.MechanicalUtil;
-import betterwithmods.util.VillagerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
@@ -148,7 +147,7 @@ public class BWRegistry {
 
     public static void init() {
         BWRegistry.registerHeatSources();
-        VillagerUtils.initVillagerInfo();
+        BWOreDictionary.registerOres();
     }
 
     public static void postInit() {

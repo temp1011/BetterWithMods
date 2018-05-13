@@ -34,17 +34,17 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
 
     protected List<T> findRecipe(List<ItemStack> outputs) {
         List<T> recipes = findRecipeExact(outputs);
-        if(recipes.isEmpty())
+        if (recipes.isEmpty())
             recipes = findRecipeFuzzy(outputs);
         return recipes;
     }
 
     protected List<T> findRecipeFuzzy(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(),outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(), outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeExact(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(),outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(), outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeByInput(ItemStack input) {
@@ -52,7 +52,7 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
     }
 
     public List<T> findRecipes(World world, BlockPos pos, IBlockState state) {
-        return recipes.stream().filter(r -> r.getInput().apply(world, pos, state)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> r.matches(world, pos, state)).collect(Collectors.toList());
     }
 
     public Optional<T> findRecipe(World world, BlockPos pos, IBlockState state) {

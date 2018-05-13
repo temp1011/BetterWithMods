@@ -54,24 +54,8 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
         return super.addRecipe(recipe);
     }
 
-    public TileKiln findKiln(World world, BlockPos craftingPos) {
-        TileEntity tile = world.getTileEntity(craftingPos.down());
-        if (tile instanceof TileKiln) {
-            return (TileKiln) tile;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean canCraft(World world, BlockPos pos, IBlockState state) {
-        KilnRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        return recipe != null && (recipe.ignore() || KilnStructureManager.getKiln().getHeat(world,pos) == recipe.getHeat());
-    }
-
     public boolean craftRecipe(World world, BlockPos pos, Random random, IBlockState state) {
-        TileKiln turntable = findKiln(world, pos);
-        KilnRecipe recipe = findRecipe(world, pos, state).orElse(null);
-        if (recipe != null && turntable.getCookTicks() >= recipe.getCookTime()) {
+        if (canCraft(world, pos, state)) {
             InvUtils.ejectStackWithOffset(world, pos, craftItem(world, pos, state));
             state.getBlock().onBlockHarvested(world, pos, state, FakePlayerHandler.getPlayer());
             world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);

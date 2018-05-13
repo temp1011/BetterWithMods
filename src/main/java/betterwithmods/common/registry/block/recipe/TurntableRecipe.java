@@ -22,7 +22,7 @@ public class TurntableRecipe extends BlockRecipe {
     }
 
     public TurntableRecipe(BlockIngredient input, IBlockState productState, List<ItemStack> outputs, int rotations) {
-        this(input, productState, new ItemStack(productState.getBlock(),1,productState.getBlock().getMetaFromState(productState)), outputs, rotations);
+        this(input, productState, new ItemStack(productState.getBlock(), 1, productState.getBlock().getMetaFromState(productState)), outputs, rotations);
     }
 
     public TurntableRecipe(BlockIngredient input, IBlockState productState, ItemStack representative, List<ItemStack> outputs, int rotations) {
@@ -48,4 +48,5 @@ public class TurntableRecipe extends BlockRecipe {
     public boolean isInvalid() {
         return getInput().isSimple() && ArrayUtils.isEmpty(getInput().getMatchingStacks());
     }
+
 }

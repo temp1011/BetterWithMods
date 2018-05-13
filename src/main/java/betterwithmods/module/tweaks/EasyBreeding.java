@@ -5,12 +5,12 @@ import betterwithmods.common.BWMItems;
 import betterwithmods.common.entity.ai.EntityAISearchFood;
 import betterwithmods.module.Feature;
 import betterwithmods.module.hardcore.creatures.HCChickens;
+import betterwithmods.util.ReflectionLib;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -74,7 +73,7 @@ public class EasyBreeding extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        Set<Item> items = ReflectionHelper.getPrivateValue(EntityPig.class, null, "TEMPTATION_ITEMS", "field_184764_bw");
+        Set<Item> items = ReflectionHelper.getPrivateValue(EntityPig.class, null, ReflectionLib.ENTITY_PIG_TEMPTATIONITEM);
         items.addAll(Sets.newHashSet(BWMItems.CHOCOLATE, BWMItems.KIBBLE));
     }
 
@@ -86,12 +85,7 @@ public class EasyBreeding extends Feature {
     }
 
     public static void removeTask(EntityLiving entity, Class<? extends EntityAIBase> clazz) {
-        for (Iterator<EntityAITasks.EntityAITaskEntry> iter = entity.tasks.taskEntries.iterator(); iter.hasNext(); ) {
-            EntityAITasks.EntityAITaskEntry task = iter.next();
-            if (clazz.isAssignableFrom(task.action.getClass())) {
-                iter.remove();
-            }
-        }
+        entity.tasks.taskEntries.removeIf(task -> clazz.isAssignableFrom(task.action.getClass()));
     }
 
     @SubscribeEvent

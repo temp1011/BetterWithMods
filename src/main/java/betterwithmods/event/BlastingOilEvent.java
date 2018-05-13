@@ -1,6 +1,7 @@
 package betterwithmods.event;
 
 import betterwithmods.common.items.ItemMaterial;
+import betterwithmods.module.gameplay.Gameplay;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -27,10 +28,13 @@ import java.util.stream.Collectors;
  */
 @Mod.EventBusSubscriber
 public class BlastingOilEvent {
+    // TODO: Instead of disabling this module consider on performance tweaks for massive-multiplayer servers with A LOT of entities
 
 
     @SubscribeEvent
     public static void onPlayerTakeDamage(LivingHurtEvent e) {
+        if (Gameplay.disableBlastingOilEvents)
+            return;
         DamageSource BLAST_OIL = new DamageSource("blastingoil");
         EntityLivingBase living = e.getEntityLiving();
         if (living.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
@@ -55,8 +59,10 @@ public class BlastingOilEvent {
 
     @SubscribeEvent
     public static void onHitGround(TickEvent.WorldTickEvent event) {
+        if (Gameplay.disableBlastingOilEvents)
+            return;
         World world = event.world;
-        if(world.isRemote)
+        if (world.isRemote || event.phase != TickEvent.Phase.END)
             return;
         List<EntityItem> items = world.loadedEntityList.stream().filter(e -> e instanceof EntityItem && ((EntityItem) e).getItem().isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL))).map(e -> (EntityItem) e).collect(Collectors.toList());
         HashSet<EntityItem> toRemove = new HashSet<>();
