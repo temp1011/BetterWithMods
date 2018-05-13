@@ -12,6 +12,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -30,6 +31,7 @@ public final class BWMRecipes {
     private static File RECIPE_DIR = null;
     private static final Map<String, List<IRecipe>> HARDCORE_RECIPES = new HashMap<>();
     public static final List<ItemStack> REMOVE_RECIPE_BY_OUTPUT = Lists.newArrayList();
+    public static final List<Ingredient> REMOVE_RECIPE_BY_INPUT = Lists.newArrayList();
     public static final List<ResourceLocation> REMOVE_RECIPE_BY_RL = Lists.newArrayList();
 
     public static List<IRecipe> getHardcoreRecipes(String ID) {
@@ -65,7 +67,9 @@ public final class BWMRecipes {
         return null;
     }
 
-
+    public static void removeRecipe(Ingredient input) {
+        REMOVE_RECIPE_BY_INPUT.add(input);
+    }
     public static void removeRecipe(ItemStack output) {
         REMOVE_RECIPE_BY_OUTPUT.add(output);
     }

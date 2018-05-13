@@ -136,7 +136,11 @@ public class BWRegistry {
             for (ItemStack output : BWMRecipes.REMOVE_RECIPE_BY_OUTPUT) {
                 if (InvUtils.matches(recipe.getRecipeOutput(), output)) {
                     reg.remove(recipe.getRegistryName());
-                    break;
+                }
+            }
+            for (Ingredient inputs : BWMRecipes.REMOVE_RECIPE_BY_INPUT) {
+                if (InvUtils.containsIngredient(recipe.getIngredients(), inputs)) {
+                    reg.remove(recipe.getRegistryName());
                 }
             }
         }
