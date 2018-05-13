@@ -103,5 +103,11 @@ public class LongBoi extends Feature {
         public boolean isInvalid() {
             return false;
         }
+
+        @Override
+        public boolean isHidden() {
+            return true;
+        }
     }
+
 }

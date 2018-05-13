@@ -53,6 +53,6 @@ public class KilnManagerBlock extends CraftingManagerBlock<KilnRecipe> {
     }
 
     public List<KilnRecipe> getRecipesForHeat(int heat) {
-        return getRecipes().stream().filter( r -> r.getHeat() == heat).collect(Collectors.toList());
+        return getDisplayRecipes().stream().filter( r -> r.getHeat() == heat).collect(Collectors.toList());
     }
 }

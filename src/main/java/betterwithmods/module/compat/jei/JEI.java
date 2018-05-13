@@ -147,8 +147,8 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), "minecraft.crafting");
 
         reg.addRecipes(BWRegistry.MILLSTONE.getRecipes(), MillRecipeCategory.UID);
-        reg.addRecipes(BWRegistry.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
-        reg.addRecipes(BWRegistry.TURNTABLE.getRecipes(), TurntableRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.WOOD_SAW.getDisplayRecipes(), SawRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.TURNTABLE.getDisplayRecipes(), TurntableRecipeCategory.UID);
         ArrayList<HopperRecipe> hopperRecipes = new ArrayList<>();
         HopperInteractions.RECIPES.forEach(recipe -> {
             if (recipe instanceof SoulUrnRecipe)
