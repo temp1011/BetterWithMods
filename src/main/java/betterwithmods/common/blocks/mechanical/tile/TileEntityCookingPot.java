@@ -5,6 +5,7 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.common.blocks.mechanical.BlockCookingPot;
 import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
@@ -29,12 +30,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
 
 
-public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower, IHeated, ICrankable {
+public abstract class TileEntityCookingPot extends TileEntityVisibleInventory implements IMechanicalPower, IHeated, ICrankable, IProgressSource {
+    private static final int MAX_TIME = 1000;
     public int cookProgress, cookTime;
     public EnumFacing facing;
     public int heat;
@@ -111,7 +115,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         return t;
     }
 
-
     @Override
     public void update() {
         if (getBlock() instanceof BlockCookingPot) {
@@ -138,15 +141,13 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
                 if (this.cookTime != time) {
                     this.cookTime = time;
                 }
-                manager.craftRecipe(world,this,inventory);
+                manager.craftRecipe(world, this, inventory);
             }
             if (facing != state.getValue(DirUtils.TILTING)) {
                 world.setBlockState(pos, state.withProperty(DirUtils.TILTING, facing));
             }
         }
     }
-
-    private static final int MAX_TIME = 1000;
 
     private int findCookTime() {
         int divisor = -heat;
@@ -160,17 +161,6 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
         return MAX_TIME;
     }
 
-    private int getCookProgress() {
-        return cookProgress;
-    }
-
-    public int getCookTime() {
-        return cookTime;
-    }
-
-    public int getPercentProgress() {
-        return (int) (((double) getCookProgress()) / ((double) getCookTime()) * 100);
-    }
 
     @Override
     public int getHeat(World world, BlockPos pos) {
@@ -178,12 +168,12 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     private int findHeat(BlockPos pos) {
-        return BWMHeatRegistry.getHeat(world,pos.down());
+        return BWMHeatRegistry.getHeat(world, pos.down());
     }
 
     private void spawnParticles() {
         Random random = this.getBlockWorld().rand;
-        if(heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
+        if (heat >= BWMHeatRegistry.STOKED_HEAT && random.nextDouble() < 0.2) {
             double xOffset = 0.25 + random.nextDouble() * 0.5;
             double zOffset = 0.25 + random.nextDouble() * 0.5;
             this.getBlockWorld().spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + xOffset, pos.getY() + 0.75F, pos.getZ() + zOffset, 0, 0.05 + random.nextDouble() * 0.05, 0);
@@ -241,7 +231,7 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     }
 
     public void ejectStack(World world, BlockPos pos, EnumFacing facing, ItemStack stack) {
-        if(world.isRemote)
+        if (world.isRemote)
             return;
         Vec3i vec = new BlockPos(0, 0, 0).offset(facing);
         EntityItem item = new EntityItem(world, pos.getX() + 0.5F - (vec.getX() / 4d), pos.getY() + 0.25D, pos.getZ() + 0.5D - (vec.getZ() / 4d), stack);
@@ -304,5 +294,32 @@ public abstract class TileEntityCookingPot extends TileEntityVisibleInventory im
     @Override
     public Block getBlock() {
         return getBlockType();
+    }
+
+    @Override
+    public int getProgress() {
+        return cookProgress;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setProgress(int progress) {
+        this.cookProgress = progress;
+    }
+
+    @Override
+    public int getMax() {
+        return cookTime;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setMax(int max) {
+        this.cookTime = max;
+    }
+
+    @Override
+    public boolean showProgress() {
+        return cookProgress > 0;
     }
 }

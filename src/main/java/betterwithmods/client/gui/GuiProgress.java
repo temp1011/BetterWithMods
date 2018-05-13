@@ -33,9 +33,7 @@ public abstract class GuiProgress extends GuiBase {
         return (double) progressSource.getProgress() / (double) progressSource.getMax();
     }
 
-    protected int toPixels() {
-        return (int) (getHeight() * getPercentage());
-    }
+    protected abstract int toPixels();
 
     public abstract int getX();
 
@@ -48,5 +46,7 @@ public abstract class GuiProgress extends GuiBase {
     public abstract int getHeight();
 
     public abstract int getWidth();
+
+
 
 }

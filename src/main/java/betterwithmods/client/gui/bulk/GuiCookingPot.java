@@ -2,21 +2,20 @@ package betterwithmods.client.gui.bulk;
 
 import betterwithmods.BWMod;
 import betterwithmods.client.container.bulk.ContainerCookingPot;
+import betterwithmods.client.gui.GuiProgress;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class GuiCookingPot extends GuiContainer {
-    private static final int fireHeight = 12;
-    private static final int stokedHeight = 28;
+public class GuiCookingPot extends GuiProgress {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BWMod.MODID, "textures/gui/cooking_pot.png");
+
     private final TileEntityCookingPot tile;
     private final ContainerCookingPot container;
 
     public GuiCookingPot(EntityPlayer player, TileEntityCookingPot tile) {
-        super(new ContainerCookingPot(player, tile));
+        super(new ContainerCookingPot(player, tile), TEXTURE, tile);
         this.container = (ContainerCookingPot) this.inventorySlots;
         this.ySize = 193;
         this.tile = tile;
@@ -37,19 +36,37 @@ public class GuiCookingPot extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f,
-                                                   int x, int y) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public int getX() {
+        return 81;
+    }
 
-        this.mc.renderEngine.bindTexture(new ResourceLocation(BWMod.MODID, "textures/gui/cooking_pot.png"));
-        int xPos = (this.width - this.xSize) / 2;
-        int yPos = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
+    @Override
+    public int getY() {
+        return 19;
+    }
 
-        if (container.getProgress() > 0) {
-            int scaledIconHeight = (int) (14*(container.getProgress()/100d));
-            int iconHeight = container.getHeat() > 1 ? stokedHeight : fireHeight;
-            drawTexturedModalRect(xPos + 81, yPos + 19 + 12 - scaledIconHeight, 176, iconHeight - scaledIconHeight, 14, scaledIconHeight + 2);
-        }
+    @Override
+    public int getTextureX() {
+        return 176 + (container.getHeat() > 1 ? getWidth(): 0);
+    }
+
+    @Override
+    public int getTextureY() {
+        return 14;
+    }
+
+    @Override
+    public int getHeight() {
+        return 14;
+    }
+
+    @Override
+    public int getWidth() {
+        return 14;
+    }
+
+    @Override
+    protected int toPixels() {
+        return (int) (14 * getPercentage());
     }
 }

@@ -54,4 +54,9 @@ public class GuiPulley extends GuiProgress {
     public int getWidth() {
         return 14;
     }
+
+    @Override
+    protected int toPixels() {
+        return (int) (getHeight() * getPercentage());
+    }
 }

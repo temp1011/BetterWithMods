@@ -62,4 +62,8 @@ public class GuiFilteredHopper extends GuiProgress {
         return 14;
     }
 
+    @Override
+    protected int toPixels() {
+        return (int) (getHeight() * getPercentage());
+    }
 }

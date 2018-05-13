@@ -85,7 +85,7 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
         if (tile instanceof TileEntityCookingPot) {
             TileEntityCookingPot pot = (TileEntityCookingPot) tile;
             if (canCraft(tile, inv)) {
-                if (pot.cookProgress >= pot.getCookTime()) {
+                if (pot.cookProgress >= pot.getMax()) {
                     InvUtils.insert(inv, craftItem(world, tile, inv), false);
                     pot.cookProgress = 0;
                     return true;
