@@ -24,6 +24,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
@@ -77,7 +79,7 @@ public final class BWMBlocks {
     public static final Block HORIZONTAL_WINDMILL = new BlockWindmill(EnumFacing.Axis.X).setRegistryName("horizontal_windmill");
     public static final Block VERTICAL_WINDMILL = new BlockWindmill(EnumFacing.Axis.Y).setRegistryName("vertical_windmill");
     public static final Block WATERWHEEL = new BlockWaterwheel().setRegistryName("waterwheel");
-    public static final Block WOLF = new BlockWolf().setRegistryName("companion_cube");
+    public static final Block WOLF = new BlockWolf(new ResourceLocation("minecraft:wolf")).setRegistryName("companion_cube");
     public static final Block BLOCK_DISPENSER = new BlockBDispenser().setRegistryName("block_dispenser");
     public static final Block BUDDY_BLOCK = new BlockBUD().setRegistryName("buddy_block");
     public static final Block CREATIVE_GENERATOR = new BlockCreativeGenerator().setRegistryName("creative_generator");
@@ -271,13 +273,22 @@ public final class BWMBlocks {
             BWMItems.registerItem(item.setRegistryName(block.getRegistryName()));
     }
 
-    /**
-     * Register a Block and a new ItemBlock generated from it.
-     *
-     * @param block Block instance to register.
-     * @return Registered block.
-     */
-    public static void registerBlock(Block block) {
-        registerBlock(block, new ItemBlock(block));
-    }
+	/**
+	 * Register a Block and a new ItemBlock generated from it.
+	 *
+	 * @param block Block instance to register.
+	 * @return Registered block.
+	 */
+	public static Block registerBlock(Block block) {
+		return registerBlock(block, new ItemBlock(block));
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void setInventoryModel(Block block) {
+		BWMItems.setInventoryModel(Item.getItemFromBlock(block));
+	}
+
+
+
+	///CLIENT END
 }

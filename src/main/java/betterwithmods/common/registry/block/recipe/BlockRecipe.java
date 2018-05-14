@@ -58,4 +58,8 @@ public class BlockRecipe {
     public boolean matches(World world, BlockPos pos, IBlockState state) {
         return getInput().apply(world, pos, state);
     }
+
+    public boolean isHidden() {
+        return false;
+    }
 }

@@ -1,4 +1,4 @@
-package betterwithmods.client.container.bulk;
+package betterwithmods.client.gui.bulk;
 
 import betterwithmods.common.blocks.mechanical.tile.TileCrucible;
 import net.minecraft.entity.player.EntityPlayer;

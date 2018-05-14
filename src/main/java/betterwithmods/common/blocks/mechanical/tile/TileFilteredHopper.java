@@ -5,6 +5,7 @@ import betterwithmods.api.block.ISoulContainer;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IHopperFilter;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
@@ -34,7 +35,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class TileFilteredHopper extends TileVisibleInventory implements IMechanicalPower {
+public class TileFilteredHopper extends TileVisibleInventory implements IMechanicalPower, IProgressSource {
 
     private final int STACK_SIZE = 8;
     public SimpleStackHandler filter;
@@ -99,14 +100,13 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
             EntityItem item = (EntityItem) entity;
             if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item)) {
                 this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-            }
-            else if (canFilterProcessItem(item.getItem())) {
+            } else if (canFilterProcessItem(item.getItem())) {
                 if (InvUtils.insertFromWorld(inventory, item, 0, 18, false))
                     this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         }
 
-        hopperFilter.onInsert(world,pos,this, entity);
+        hopperFilter.onInsert(world, pos, this, entity);
 
     }
 
@@ -236,7 +236,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     private ISoulContainer prevContainer;
 
     public void decreaseSoulCount(int numSouls) {
-        this.soulsRetained = Math.max(soulsRetained - numSouls,0);
+        this.soulsRetained = Math.max(soulsRetained - numSouls, 0);
         markDirty();
     }
 
@@ -358,8 +358,27 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
         return maxExperienceCount;
     }
 
-    public void setExperienceCount(int experienceCount) {
-        this.experienceCount = experienceCount;
+    @Override
+    public boolean showProgress() {
+        return isPowered();
+    }
+
+    @Override
+    public int getMax() {
+        return 1;
+    }
+
+    @Override
+    public void setMax(int max) { /* NOOP */ }
+
+    @Override
+    public int getProgress() {
+        return Math.min(power, 1);
+    }
+
+    @Override
+    public void setProgress(int progress) {
+        this.power = (byte) progress;
     }
 
     private class HopperHandler extends SimpleStackHandler {
@@ -390,7 +409,6 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
             return slot == 18 ? 1 : super.getSlotLimit(slot);
         }
     }
-
 
 
 }

@@ -8,6 +8,7 @@ import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.TurntableRotationManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -135,7 +136,6 @@ public class TileTurntable extends TileBasic implements IMechSubtype, ITickable,
                 break;
             if (handler.canTransmitHorizontally(world, pos))
                 TurntableRotationManager.rotateAttachments(world, pos, rotation);
-
             if (!handler.canTransmitVertically(world, pos))
                 break;
         }
@@ -160,23 +160,28 @@ public class TileTurntable extends TileBasic implements IMechSubtype, ITickable,
     }
 
     private TurntableRotationManager.IRotation rotateBlock(BlockPos pos, Rotation rotation) {
-        if (getBlockWorld().isAirBlock(pos))
-            return null;
         IBlockState input = getBlockWorld().getBlockState(pos);
         rotateCraftable(world, pos, input);
         return TurntableRotationManager.rotate(world, pos, rotation);
     }
 
-    private void spawnParticles(IBlockState state) {
-        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+    private void spawnParticlesAndSound(IBlockState state) {
+        if(state.getMaterial() != Material.AIR) {
+            world.playSound(null, pos, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.8F);
+            ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+        }
     }
 
     private void rotateCraftable(World world, BlockPos pos, IBlockState input) {
         this.potteryRotation++;
-        if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
+        if (BWRegistry.TURNTABLE.findRecipe(world, pos, input).isPresent()) {
+            spawnParticlesAndSound(input);
+            if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
+                this.potteryRotation = 0;
+        } else {
             this.potteryRotation = 0;
-        world.playSound(null, pos, input.getBlock().getSoundType(input, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.8F);
-        spawnParticles(input);
+        }
+
     }
 
     @Override

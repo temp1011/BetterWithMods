@@ -160,6 +160,7 @@ tile.bwm:pedestal_iron.name=%s Pedestal
 
 tile.bwm:block_dispenser.name=Block Dispenser
 tile.bwm:companion_cube.name=Companion Cube
+tile.bwm:long_friend.name=Long Friend
 
 tile.bwm:bamboo_chime_oak.name=Oak Bamboo Chime
 tile.bwm:bamboo_chime_spruce.name=Spruce Bamboo Chime

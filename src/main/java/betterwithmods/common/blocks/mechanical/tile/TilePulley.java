@@ -5,6 +5,7 @@ import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IMechanicalPower;
 import betterwithmods.api.tile.IRopeConnector;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.blocks.BlockRope;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
@@ -40,14 +41,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TilePulley extends TileVisibleInventory implements IMechanicalPower {
+public class TilePulley extends TileEntityVisibleInventory implements IMechanicalPower, IProgressSource {
 
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
     private int power;
 
 
-    public boolean isMechanicallyPowered() {
+    public boolean isPowered() {
         return power > 0;
     }
 
@@ -57,11 +58,11 @@ public class TilePulley extends TileVisibleInventory implements IMechanicalPower
     }
 
     public boolean isRaising() {
-        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && isMechanicallyPowered();
+        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && isPowered();
     }
 
     public boolean isLowering() {
-        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && !isMechanicallyPowered();
+        return !BWMAPI.IMPLEMENTATION.isRedstonePowered(world, pos) && !isPowered();
     }
 
     @Override
@@ -418,4 +419,29 @@ public class TilePulley extends TileVisibleInventory implements IMechanicalPower
     public Block getBlock() {
         return getBlockType();
     }
+
+    @Override
+    public boolean showProgress() {
+        return isPowered();
+    }
+
+    @Override
+    public int getMax() {
+        return 1;
+    }
+
+    @Override
+    public void setMax(int max) { /* NOOP */ }
+
+    @Override
+    public int getProgress() {
+        return Math.min(power, 1);
+    }
+
+    @Override
+    public void setProgress(int progress) {
+        this.power = (byte) progress;
+    }
+
+
 }

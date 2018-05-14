@@ -93,5 +93,9 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
         return recipes;
     }
 
+    public List<T> getDisplayRecipes() {
+        return getRecipes().stream().filter(r -> !r.isHidden()).collect(Collectors.toList());
+    }
+
     public abstract boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state);
 }

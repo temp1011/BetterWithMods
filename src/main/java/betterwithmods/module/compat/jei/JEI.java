@@ -1,10 +1,10 @@
 package betterwithmods.module.compat.jei;
 
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
-import betterwithmods.client.container.anvil.GuiSteelAnvil;
-import betterwithmods.client.container.bulk.GuiCauldron;
-import betterwithmods.client.container.bulk.GuiCrucible;
-import betterwithmods.client.container.bulk.GuiMill;
+import betterwithmods.client.gui.GuiSteelAnvil;
+import betterwithmods.client.gui.bulk.GuiCauldron;
+import betterwithmods.client.gui.bulk.GuiCrucible;
+import betterwithmods.client.gui.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWRegistry;
@@ -132,8 +132,8 @@ public class JEI implements IModPlugin {
         reg.handleRecipes(ToolDamageRecipe.class, recipe -> new ShapelessRecipeWrapper<>(HELPER, recipe), "minecraft.crafting");
 
         reg.addRecipes(BWRegistry.MILLSTONE.getRecipes(), MillRecipeCategory.UID);
-        reg.addRecipes(BWRegistry.WOOD_SAW.getRecipes(), SawRecipeCategory.UID);
-        reg.addRecipes(BWRegistry.TURNTABLE.getRecipes(), TurntableRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.WOOD_SAW.getDisplayRecipes(), SawRecipeCategory.UID);
+        reg.addRecipes(BWRegistry.TURNTABLE.getDisplayRecipes(), TurntableRecipeCategory.UID);
         ArrayList<HopperRecipe> hopperRecipes = new ArrayList<>();
         HopperInteractions.RECIPES.forEach(recipe -> {
             if (recipe instanceof SoulUrnRecipe)

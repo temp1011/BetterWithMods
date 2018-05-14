@@ -32,6 +32,10 @@ import java.util.stream.IntStream;
 
 public class InvUtils {
 
+    public static boolean containsIngredient(Collection<Ingredient> collection, Ingredient ingredient) {
+        return collection.stream().anyMatch( i -> Arrays.stream(i.getMatchingStacks()).allMatch(ingredient::apply));
+    }
+
     public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
         return InventoryIterator.stream(handler).anyMatch(ingredient::apply);
     }
