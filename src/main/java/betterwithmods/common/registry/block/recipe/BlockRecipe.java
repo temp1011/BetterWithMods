@@ -1,15 +1,15 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.IRecipeOutput;
+import betterwithmods.api.recipe.ListOutput;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -19,11 +19,15 @@ import java.util.stream.Collectors;
  */
 public class BlockRecipe {
     private final BlockIngredient input;
-    private final NonNullList<ItemStack> outputs;
+    private final IRecipeOutput recipeOutput;
 
     public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
+        this(input, new ListOutput(outputs));
+    }
+
+    public BlockRecipe(BlockIngredient input, IRecipeOutput recipeOutput) {
         this.input = input;
-        this.outputs = outputs == null ? NonNullList.create() : InvUtils.asNonnullList(outputs.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList()));
+        this.recipeOutput = recipeOutput;
     }
 
     public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
@@ -42,8 +46,12 @@ public class BlockRecipe {
         return input;
     }
 
+    public IRecipeOutput getRecipeOutput() {
+        return recipeOutput;
+    }
+
     public NonNullList<ItemStack> getOutputs() {
-        return outputs;
+        return recipeOutput.getOutputs();
     }
 
     @Override
@@ -52,7 +60,7 @@ public class BlockRecipe {
     }
 
     public boolean isInvalid() {
-        return (input.isSimple() && ArrayUtils.isEmpty(input.getMatchingStacks())) || (outputs == null || outputs.isEmpty());
+        return (input.isSimple() && InvUtils.isIngredientValid(input) || recipeOutput.isInvalid());
     }
 
     public boolean matches(World world, BlockPos pos, IBlockState state) {

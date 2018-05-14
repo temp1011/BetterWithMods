@@ -2,11 +2,12 @@ package betterwithmods.api.recipe;
 
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import java.util.List;
 
 public interface IRecipeOutput {
-    List<ItemStack> getOutputs();
+    NonNullList<ItemStack> getOutputs();
 
     default List<List<ItemStack>> getDisplayOutputs() {
         return Lists.<List<ItemStack>>newArrayList(getOutputs());
@@ -15,4 +16,6 @@ public interface IRecipeOutput {
     boolean matches(List<ItemStack> outputs);
 
     boolean matchesFuzzy(List<ItemStack> outputs);
+
+    boolean isInvalid();
 }

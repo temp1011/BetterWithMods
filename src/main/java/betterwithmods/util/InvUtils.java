@@ -25,6 +25,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -32,6 +33,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class InvUtils {
+
+    public static boolean isIngredientValid(Ingredient ingredient) {
+        return ArrayUtils.isEmpty(ingredient.getMatchingStacks());
+    }
 
     public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
         return InventoryIterator.stream(handler).anyMatch(ingredient::apply);

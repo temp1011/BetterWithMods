@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.recipe.RandomOutput;
+import betterwithmods.api.recipe.WeightedOutput;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
@@ -98,13 +98,13 @@ public class MillRecipes extends Feature {
 
         if(BWMod.isDev()) {
 
-            RandomOutput.WeightedItemStack coal = new RandomOutput.WeightedItemStack(new ItemStack(Items.COAL), 0.75);
-            RandomOutput.WeightedItemStack cobble = new RandomOutput.WeightedItemStack(new ItemStack(Blocks.COBBLESTONE), 0.25);
+            WeightedOutput.WeightedItemStack coal = new WeightedOutput.WeightedItemStack(new ItemStack(Items.COAL), 0.75);
+            WeightedOutput.WeightedItemStack cobble = new WeightedOutput.WeightedItemStack(new ItemStack(Blocks.COBBLESTONE), 0.25);
 
             BWRegistry.MILLSTONE.addRecipe(
                     new MillRecipe(
                             Lists.newArrayList(new OreIngredient("oreCoal")),
-                            new RandomOutput(Lists.newArrayList(coal, cobble)), 0, SoundEvents.ENTITY_PLAYER_BURP, 5));
+                            new WeightedOutput(Lists.newArrayList(coal, cobble)), 0, SoundEvents.ENTITY_PLAYER_BURP, 5));
 
 
         }

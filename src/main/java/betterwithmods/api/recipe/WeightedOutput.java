@@ -1,18 +1,24 @@
 package betterwithmods.api.recipe;
 
+import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class RandomOutput implements IRecipeOutput {
+public class WeightedOutput implements IRecipeOutput {
     private static final Random RANDOM = new Random();
 
     protected List<WeightedItemStack> weightedItemStacks;
 
-    public RandomOutput(List<WeightedItemStack> weightedItemStacks) {
+    public WeightedOutput(WeightedItemStack... weightedItemStacks) {
+        this(Lists.newArrayList(weightedItemStacks));
+    }
+
+    public WeightedOutput(List<WeightedItemStack> weightedItemStacks) {
         this.weightedItemStacks = weightedItemStacks;
     }
 
@@ -22,8 +28,8 @@ public class RandomOutput implements IRecipeOutput {
     }
 
     @Override
-    public List<ItemStack> getOutputs() {
-        return Lists.newArrayList(findResult());
+    public NonNullList<ItemStack> getOutputs() {
+        return InvUtils.asNonnullList(findResult());
     }
 
     @Override
@@ -34,6 +40,11 @@ public class RandomOutput implements IRecipeOutput {
     @Override
     public boolean matchesFuzzy(List<ItemStack> outputs) {
         return false;
+    }
+
+    @Override
+    public boolean isInvalid() {
+        return weightedItemStacks.isEmpty();
     }
 
     private ItemStack findResult() {

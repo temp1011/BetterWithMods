@@ -7,8 +7,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Purpose:
@@ -28,9 +26,7 @@ public class BlockRecipeWrapper<T extends BlockRecipe> implements IRecipeWrapper
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, helpers.getStackHelper().toItemStackList(recipe.getInput()));
-        ArrayList<List<ItemStack>> newList = new ArrayList<>();
-        newList.add(recipe.getOutputs());
-        ingredients.setOutputLists(ItemStack.class, newList);
+        ingredients.setOutputLists(ItemStack.class, recipe.getRecipeOutput().getDisplayOutputs());
     }
 
     public T getRecipe() {
