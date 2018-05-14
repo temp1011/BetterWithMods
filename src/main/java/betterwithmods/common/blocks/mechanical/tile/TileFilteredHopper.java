@@ -358,6 +358,10 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
         return maxExperienceCount;
     }
 
+    public void setExperienceCount(int experienceCount) {
+        this.experienceCount = experienceCount;
+    }
+
     @Override
     public boolean showProgress() {
         return isPowered();

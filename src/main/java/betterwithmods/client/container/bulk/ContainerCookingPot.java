@@ -12,7 +12,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCookingPot extends ContainerProgress {
-    private final TileEntityCookingPot tile;
+    private final TileCookingPot tile;
     private int heat;
 
     public ContainerCookingPot(EntityPlayer player, TileCookingPot tile) {

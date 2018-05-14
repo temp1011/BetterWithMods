@@ -24,9 +24,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -280,7 +281,8 @@ public final class BWMBlocks {
 	 * @return Registered block.
 	 */
 	public static Block registerBlock(Block block) {
-		return registerBlock(block, new ItemBlock(block));
+	    registerBlock(block, new ItemBlock(block));
+	    return block;
 	}
 
 	@SideOnly(Side.CLIENT)

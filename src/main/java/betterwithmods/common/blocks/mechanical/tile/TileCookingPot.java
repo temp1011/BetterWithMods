@@ -5,11 +5,9 @@ import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.common.blocks.mechanical.cookingpot.BlockCookingPot;
 import betterwithmods.common.blocks.tile.TileVisibleInventory;
-import betterwithmods.api.util.IProgressSource;
-import betterwithmods.common.blocks.mechanical.BlockCookingPot;
-import betterwithmods.common.blocks.tile.TileEntityVisibleInventory;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
@@ -150,6 +148,8 @@ public abstract class TileCookingPot extends TileVisibleInventory implements IMe
             }
         }
     }
+
+    private static final int MAX_TIME = 1000;
 
     private int findCookTime() {
         int divisor = -heat;

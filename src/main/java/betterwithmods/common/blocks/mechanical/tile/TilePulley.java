@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TilePulley extends TileEntityVisibleInventory implements IMechanicalPower, IProgressSource {
+public class TilePulley extends TileVisibleInventory implements IMechanicalPower, IProgressSource {
 
     private EntityExtendingRope rope;
     private NBTTagCompound ropeTag = null;
