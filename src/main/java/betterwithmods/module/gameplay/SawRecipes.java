@@ -1,6 +1,7 @@
 package betterwithmods.module.gameplay;
 
-import betterwithmods.api.recipe.RandomCountOutput;
+import betterwithmods.api.recipe.impl.RandomCountOutputs;
+import betterwithmods.api.recipe.impl.RandomOutput;
 import betterwithmods.api.util.IWood;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
@@ -46,8 +47,7 @@ public class SawRecipes extends Feature {
             BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.RED_FLOWER, 1, i));
         BWRegistry.WOOD_SAW.addRecipe(new SawRecipe(
                 new BlockIngredient(new ItemStack(Blocks.MELON_BLOCK)),
-                new RandomCountOutput(Lists.newArrayList(new ItemStack(Items.MELON)), 3, 8)
-        ));
+                new RandomCountOutputs(new RandomOutput(new ItemStack(Items.MELON), 3, 8))));
     }
 
     @Override

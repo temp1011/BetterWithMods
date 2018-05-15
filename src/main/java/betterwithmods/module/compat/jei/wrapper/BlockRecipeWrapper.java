@@ -1,5 +1,6 @@
 package betterwithmods.module.compat.jei.wrapper;
 
+import betterwithmods.api.recipe.IOutput;
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
@@ -26,7 +27,7 @@ public class BlockRecipeWrapper<T extends BlockRecipe> implements IRecipeWrapper
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, helpers.getStackHelper().toItemStackList(recipe.getInput()));
-        ingredients.setOutputLists(ItemStack.class, recipe.getRecipeOutput().getDisplayOutputs());
+        ingredients.setOutputLists(IOutput.class, recipe.getRecipeOutput().getExpandedOutputs());
     }
 
     public T getRecipe() {

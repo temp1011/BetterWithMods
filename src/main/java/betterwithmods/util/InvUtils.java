@@ -34,6 +34,7 @@ import java.util.stream.IntStream;
 
 public class InvUtils {
 
+
     public static boolean isIngredientValid(Ingredient ingredient) {
         return ArrayUtils.isEmpty(ingredient.getMatchingStacks());
     }
@@ -587,10 +588,10 @@ public class InvUtils {
         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 
-    public static ItemStack setCount(ItemStack input, int count) {
-        ItemStack stack = input.copy();
-        stack.setCount(count);
-        return stack;
+        public static ItemStack setCount(ItemStack input, int count) {
+            ItemStack stack = input.copy();
+            stack.setCount(count);
+            return stack;
     }
 
 

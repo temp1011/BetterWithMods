@@ -3,7 +3,6 @@ package betterwithmods.module.compat.jei.wrapper;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockUrn;
 import betterwithmods.common.registry.HopperInteractions;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;

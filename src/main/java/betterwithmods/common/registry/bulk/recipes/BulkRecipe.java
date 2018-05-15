@@ -1,7 +1,7 @@
 package betterwithmods.common.registry.bulk.recipes;
 
-import betterwithmods.api.recipe.IRecipeOutput;
-import betterwithmods.api.recipe.ListOutput;
+import betterwithmods.api.recipe.IRecipeOutputs;
+import betterwithmods.api.recipe.impl.ListOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -18,10 +18,10 @@ import java.util.List;
 public class BulkRecipe implements Comparable<BulkRecipe> {
 
     protected NonNullList<Ingredient> inputs;
-    protected IRecipeOutput recipeOutput;
+    protected IRecipeOutputs recipeOutput;
     protected int priority;
 
-    public BulkRecipe(List<Ingredient> inputs, IRecipeOutput outputs, int priority) {
+    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int priority) {
         this.inputs = InvUtils.asNonnullList(inputs);
         this.recipeOutput = outputs;
         this.priority = priority;
@@ -32,7 +32,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
-        this(inputs, new ListOutput(outputs), priority);
+        this(inputs, new ListOutputs(outputs), priority);
     }
 
     public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
@@ -44,7 +44,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return NonNullList.create();
     }
 
-    public IRecipeOutput getRecipeOutput() {
+    public IRecipeOutputs getRecipeOutput() {
         return recipeOutput;
     }
 

@@ -1,7 +1,7 @@
 package betterwithmods.common.registry.block.recipe;
 
-import betterwithmods.api.recipe.IRecipeOutput;
-import betterwithmods.api.recipe.ListOutput;
+import betterwithmods.api.recipe.IRecipeOutputs;
+import betterwithmods.api.recipe.impl.ListOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class BlockRecipe {
     private final BlockIngredient input;
-    private final IRecipeOutput recipeOutput;
+    private final IRecipeOutputs recipeOutput;
 
     public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
-        this(input, new ListOutput(outputs));
+        this(input, new ListOutputs(outputs));
     }
 
-    public BlockRecipe(BlockIngredient input, IRecipeOutput recipeOutput) {
+    public BlockRecipe(BlockIngredient input, IRecipeOutputs recipeOutput) {
         this.input = input;
         this.recipeOutput = recipeOutput;
     }
@@ -46,7 +46,7 @@ public class BlockRecipe {
         return input;
     }
 
-    public IRecipeOutput getRecipeOutput() {
+    public IRecipeOutputs getRecipeOutput() {
         return recipeOutput;
     }
 

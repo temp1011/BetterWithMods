@@ -1,6 +1,8 @@
 package betterwithmods.module.compat.jei.wrapper;
 
+import betterwithmods.api.recipe.IOutput;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
+import com.google.common.collect.Lists;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -21,11 +23,13 @@ public class BulkRecipeWrapper<T extends BulkRecipe> implements IRecipeWrapper {
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInputLists(ItemStack.class, helpers.getStackHelper().expandRecipeItemStackInputs(recipe.getInputs()));
-        ingredients.setOutputLists(ItemStack.class, recipe.getRecipeOutput().getDisplayOutputs());
+        ingredients.setOutputLists(IOutput.class, Lists.newArrayList(recipe.getRecipeOutput().getExpandedOutputs()));
     }
 
     @Nonnull
     public T getRecipe() {
         return recipe;
     }
+
+
 }
