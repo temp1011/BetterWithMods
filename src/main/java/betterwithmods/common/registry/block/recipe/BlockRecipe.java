@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
  * @author primetoxinz
  * @version 03/19/2018
  */
-public class BlockRecipe {
+public abstract class BlockRecipe {
     private final BlockIngredient input;
     private final NonNullList<ItemStack> outputs;
 
@@ -25,6 +26,8 @@ public class BlockRecipe {
         this.input = input;
         this.outputs = outputs == null ? NonNullList.create() : InvUtils.asNonnullList(outputs.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList()));
     }
+
+    public abstract boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state);
 
     public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
         NonNullList<ItemStack> items = NonNullList.create();

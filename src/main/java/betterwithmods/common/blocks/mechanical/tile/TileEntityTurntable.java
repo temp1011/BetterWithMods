@@ -8,6 +8,7 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.tile.IMechSubtype;
 import betterwithmods.common.blocks.tile.TileBasic;
 import betterwithmods.common.registry.TurntableRotationManager;
+import betterwithmods.common.registry.block.recipe.TurntableRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -177,12 +178,14 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
         if (BWRegistry.TURNTABLE.findRecipe(world, pos, input).isPresent()) {
             this.potteryRotation++;
             spawnParticlesAndSound(input);
-            if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
-                this.potteryRotation = 0;
+            TurntableRecipe recipe = BWRegistry.TURNTABLE.findRecipe(world,pos, input).orElse(null);
+            if(recipe != null) {
+                if(recipe.craftRecipe(world,pos, world.rand, input))
+                    this.potteryRotation = 0;
+            }
         } else {
             this.potteryRotation = 0;
         }
-
     }
 
     @Override
