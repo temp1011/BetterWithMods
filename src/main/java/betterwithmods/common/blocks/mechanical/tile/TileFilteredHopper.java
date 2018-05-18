@@ -14,7 +14,6 @@ import betterwithmods.common.blocks.tile.TileVisibleInventory;
 import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
 import betterwithmods.util.InvUtils;
-import betterwithmods.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -45,6 +44,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     public byte power;
     private int ejectCounter, ejectXPCounter;
     private int experienceCount, maxExperienceCount = 1000;
+    private ISoulContainer prevContainer;
 
     public TileFilteredHopper() {
         this.ejectCounter = 0;
@@ -230,8 +230,6 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
         return null;
     }
 
-    private ISoulContainer prevContainer;
-
     public void decreaseSoulCount(int numSouls) {
         this.soulsRetained = Math.max(soulsRetained - numSouls, 0);
         markDirty();
@@ -240,6 +238,12 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     public void increaseSoulCount(int numSouls) {
         this.soulsRetained += numSouls;
         ISoulContainer container = getSoulContainer();
+
+        if(this.soulsRetained > 7 && !isPowered()) {
+            overpower();
+            return;
+        }
+
         if (container != null && container.getMaxSouls() != 0) {
             if (prevContainer != container)
                 soulsRetained = numSouls;
@@ -247,15 +251,16 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
                 soulsRetained -= container.getMaxSouls();
                 container.onFull(world, pos.down());
             }
-        } else {
-            if (this.soulsRetained > 7 && !isPowered()) {
-                if (WorldUtils.spawnGhast(world, pos))
-                    this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
-                overpower();
-            }
         }
         prevContainer = container;
         markDirty();
+    }
+
+    @Override
+    public void overpower() {
+        getBlock().overpower(getBlockWorld(), getBlockPos());
+        if (this.soulsRetained > 7)
+            this.getBlockWorld().playSound(null, this.pos, SoundEvents.ENTITY_GHAST_SCREAM, SoundCategory.BLOCKS, 1.0F, getBlockWorld().rand.nextFloat() * 0.1F + 0.8F);
     }
 
     @Override
@@ -279,7 +284,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     }
 
     public ModelWithResource getModel() {
-        if(getFilterStack().isEmpty())
+        if (getFilterStack().isEmpty())
             return null;
         return getHopperFilter().getModelOverride(getFilterStack());
     }
@@ -351,12 +356,12 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
         return experienceCount;
     }
 
-    public int getMaxExperienceCount() {
-        return maxExperienceCount;
-    }
-
     public void setExperienceCount(int experienceCount) {
         this.experienceCount = experienceCount;
+    }
+
+    public int getMaxExperienceCount() {
+        return maxExperienceCount;
     }
 
     @Override
