@@ -174,8 +174,8 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     private void rotateCraftable(World world, BlockPos pos, IBlockState input) {
-        this.potteryRotation++;
         if (BWRegistry.TURNTABLE.findRecipe(world, pos, input).isPresent()) {
+            this.potteryRotation++;
             spawnParticlesAndSound(input);
             if (BWRegistry.TURNTABLE.craftRecipe(world, pos, world.rand, input))
                 this.potteryRotation = 0;
