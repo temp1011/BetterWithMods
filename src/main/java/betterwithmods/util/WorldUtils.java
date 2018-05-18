@@ -91,9 +91,9 @@ public final class WorldUtils {
         ExtendedBlockStorage extendedblockstorage = chunkIn.getBlockStorageArray()[j >> 4];
 
         if (extendedblockstorage == NULL_BLOCK_STORAGE) {
-            return !chunkIn.getWorld().provider.isNether() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
+            return chunkIn.getWorld().provider.hasSkyLight() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
         } else {
-            int l = chunkIn.getWorld().provider.isNether() ? 0 : extendedblockstorage.getSkyLight(i, j & 15, k);
+            int l = !chunkIn.getWorld().provider.hasSkyLight() ? 0 : extendedblockstorage.getSkyLight(i, j & 15, k);
             l = l - amount;
 
             if (l < 0) {
@@ -105,8 +105,8 @@ public final class WorldUtils {
     }
 
     public static double getDistance(BlockPos pos1, BlockPos pos2) {
-        assert(pos1!=null);
-        assert(pos2!=null);
+        assert (pos1 != null);
+        assert (pos2 != null);
         return new Vec3d(pos1).distanceTo(new Vec3d(pos2));
     }
 
@@ -114,9 +114,9 @@ public final class WorldUtils {
         EntityGhast ghast = new EntityGhast(world);
         double failures = 1;
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
             double yPos = pos.getY() + failures;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
             AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));
@@ -190,8 +190,7 @@ public final class WorldUtils {
         return phase.ordinal() == world.provider.getMoonPhase(world.getWorldTime());
     }
 
-    public static boolean isSpecialDay()
-    {
+    public static boolean isSpecialDay() {
         Calendar date = Calendar.getInstance();
         return date.get(Calendar.MONTH) == Calendar.APRIL && date.get(Calendar.DAY_OF_MONTH) == 1;
     }
