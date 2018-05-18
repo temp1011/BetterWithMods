@@ -70,7 +70,7 @@ public class HCTools extends Feature {
             ToolMaterialOverride newValues = ToolMaterialOverride.getOverride(tool.getToolMaterialName());
             if (newValues == null) continue;
             tool.setMaxDamage(newValues.getMaxUses());
-            ReflectionHelper.setPrivateValue(ItemTool.class, tool, newValues.getEfficiencyOnProperMaterial(), ReflectionLib.TOOLMATERIAL_EFFICIENCY);
+            ReflectionHelper.setPrivateValue(ItemTool.class, tool, newValues.getEfficiencyOnProperMaterial(), ReflectionLib.ITEMTOOL_EFFICIENCY);
         }
     }
 

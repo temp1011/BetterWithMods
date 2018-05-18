@@ -67,6 +67,13 @@ public class ItemMaterial extends Item {
                 return 3200;
             case SAWDUST:
                 return 25;
+            case WINDMILL_BLADE:
+                return 75;
+            case WOOD_BLADE:
+                return 37;
+            case HAFT:
+                return 150;
+
         }
         return -1;
     }

@@ -25,10 +25,12 @@ public class ReflectionLib {
     public static final String[] TOOLMATERIAL_EFFICIENCY = new String[]{"field_78010_h", "efficiency"};
     public static final String[] TOOLMATERIAL_ENCHANTABILITIY = new String[]{"field_78008_j", "enchantability"};
 
+    public static final String[] ITEMTOOL_EFFICIENCY = new String[]{"field_77864_a", "efficiency"};
+
     public static final String[] POTIONHELPER_TYPE_CONVERSIONS = new String[]{"field_185213_a", "POTION_TYPE_CONVERSIONS"};
     public static final String[] POTIONHELPER_ITEM_CONVERSIONS = new String[]{"field_185214_b", "POTION_ITEM_CONVERSIONS"};
 
-    public static final String[] ENCHANTMENT_APPLICIBLE_EQUIPMENT_TYPES= new String[]{"field_185263_a", "applicableEquipmentTypes"};
+    public static final String[] ENCHANTMENT_APPLICIBLE_EQUIPMENT_TYPES = new String[]{"field_185263_a", "applicableEquipmentTypes"};
 
     public static final String CTM_TTR = "team.chisel.ctm.client.texture.type.TextureTypeRegistry";
     public static final String CTM_ITT = "team.chisel.ctm.api.texture.ITextureType";
