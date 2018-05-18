@@ -31,7 +31,7 @@ public final class BWMRecipes {
     private static File RECIPE_DIR = null;
     private static final Map<String, List<IRecipe>> HARDCORE_RECIPES = new HashMap<>();
     public static final List<ItemStack> REMOVE_RECIPE_BY_OUTPUT = Lists.newArrayList();
-    public static final List<Ingredient> REMOVE_RECIPE_BY_INPUT = Lists.newArrayList();
+    public static final List<List<Ingredient>> REMOVE_RECIPE_BY_INPUT = Lists.newArrayList();
     public static final List<ResourceLocation> REMOVE_RECIPE_BY_RL = Lists.newArrayList();
 
     public static List<IRecipe> getHardcoreRecipes(String ID) {
@@ -67,8 +67,8 @@ public final class BWMRecipes {
         return null;
     }
 
-    public static void removeRecipe(Ingredient input) {
-        REMOVE_RECIPE_BY_INPUT.add(input);
+    public static void removeRecipe(Ingredient... inputs) {
+        REMOVE_RECIPE_BY_INPUT.add(Lists.newArrayList(inputs));
     }
     public static void removeRecipe(ItemStack output) {
         REMOVE_RECIPE_BY_OUTPUT.add(output);

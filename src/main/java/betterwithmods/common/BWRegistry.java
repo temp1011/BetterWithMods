@@ -138,7 +138,7 @@ public class BWRegistry {
                     reg.remove(recipe.getRegistryName());
                 }
             }
-            for (Ingredient inputs : BWMRecipes.REMOVE_RECIPE_BY_INPUT) {
+            for (List<Ingredient> inputs : BWMRecipes.REMOVE_RECIPE_BY_INPUT) {
                 if (InvUtils.containsIngredient(recipe.getIngredients(), inputs)) {
                     reg.remove(recipe.getRegistryName());
                 }
