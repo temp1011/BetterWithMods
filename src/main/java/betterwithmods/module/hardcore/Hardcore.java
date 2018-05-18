@@ -28,6 +28,7 @@ public class Hardcore extends CompatModule {
     public void addCompatFeatures() {
         registerCompatFeature("applecore", HCHunger.class.getName());
         registerCompatFeature("hardcorebuoy", HCBuoy.class.getName());
+        registerCompatFeature("betterwithlib", HCMobEquipment.class.getName());
     }
 
     @Override

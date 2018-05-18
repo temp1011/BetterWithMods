@@ -105,9 +105,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
                     this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         }
-
         hopperFilter.onInsert(world, pos, this, entity);
-
     }
 
     private void extract() {
@@ -149,7 +147,6 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
 
     @Override
     public void update() {
-
         if (!this.world.isRemote) {
             byte power = (byte) calculateInput();
             if (this.power != power) {
