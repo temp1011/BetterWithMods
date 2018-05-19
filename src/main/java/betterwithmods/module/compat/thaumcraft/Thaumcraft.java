@@ -13,6 +13,7 @@ import betterwithmods.module.gameplay.miniblocks.ItemMini;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
 import betterwithmods.module.gameplay.miniblocks.MiniType;
 import betterwithmods.module.gameplay.miniblocks.blocks.BlockMini;
+import betterwithmods.module.tweaks.LongBoi;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -98,7 +99,9 @@ public class Thaumcraft extends CompatFeature {
 
         AspectList tmp = new AspectList();
         for (ItemStack stack : stacks) {
-            tmp.add(new AspectList(stack));
+            AspectList l = new AspectList(stack);
+            for(int i = 0; i < stack.getCount();i++);
+                tmp.add(l);
         }
         return tmp;
     }
@@ -184,9 +187,18 @@ public class Thaumcraft extends CompatFeature {
     }
 
     public void registerAspects() {
+
+        ThaumcraftApi.registerEntityTag("longboi", (new AspectList()).add(Aspect.BEAST, 15).add(Aspect.EARTH, 10).add(Aspect.CRAFT, 5).add(Aspect.MAN, 5));
+        ThaumcraftApi.registerEntityTag("bwm_jungle_spider", (new AspectList()).add(Aspect.BEAST, 5).add(Aspect.DEATH, 10).add(Aspect.TRAP, 10));
+
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.WOLF), (new AspectList()).add(Aspect.BEAST, 15).add(Aspect.EARTH, 10).add(Aspect.AVERSION, 5));
+        ThaumcraftApi.registerObjectTag(new ItemStack(LongBoi.LONG_FRIEND), (new AspectList()).add(Aspect.BEAST, 15).add(Aspect.EARTH, 10).add(Aspect.CRAFT, 5).add(Aspect.MAN, 5));
+
         //Wood
         ThaumcraftApi.registerObjectTag("barkWood", new AspectList().add(Aspect.PLANT, 2));
         ThaumcraftApi.registerObjectTag("dustWood", new AspectList().add(Aspect.PLANT, 2));
+        ThaumcraftApi.registerComplexObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_DUST), new AspectList().add(Aspect.SOUL, 2));
 
         //Hemp
         ThaumcraftApi.registerObjectTag("cropHemp", new AspectList().add(Aspect.PLANT, 6).add(Aspect.CRAFT, 6));
@@ -211,24 +223,47 @@ public class Thaumcraft extends CompatFeature {
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.GROUND_NETHERRACK), new AspectList(new ItemStack(Blocks.NETHERRACK)));
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST), new AspectList().add(Aspect.FIRE, 4));
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.CONCENTRATED_HELLFIRE), new AspectList().add(Aspect.FIRE, 32));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOAP), fromItemStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POTASH), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW)));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NETHERCOAL), new AspectList().add(Aspect.FIRE, 10).add(Aspect.ENERGY, 10));
+
 
         ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.NETHERCLAY), new AspectList(new ItemStack(BWMBlocks.NETHER_CLAY)).add(Aspect.FIRE, 2));
-        ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.ROPE), fromItemStacks(new ItemStack(BWMBlocks.ROPE, 9)));
         ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.PADDING), fromItemStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PADDING, 9)));
-        ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), new AspectList().add(Aspect.EARTH,5));
+        ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), new AspectList().add(Aspect.EARTH, 5).add(Aspect.ENTROPY,1));
+        ThaumcraftApi.registerObjectTag(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITESTONE), new AspectList().add(Aspect.EARTH, 5));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.FERTILIZER), new AspectList().add(Aspect.LIFE,5).add(Aspect.UNDEAD,1).add(Aspect.PLANT,1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.FERTILIZER), new AspectList().add(Aspect.LIFE,5).add(Aspect.UNDEAD,1).add(Aspect.PLANT,1));
+
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.ENDER_SLAG), new AspectList().add(Aspect.DARKNESS, 5));
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SOUL_FLUX), new AspectList().add(Aspect.MAGIC, 5));
-        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), new AspectList().add(Aspect.ALCHEMY, 5).add(Aspect.ENTROPY,5));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BRIMSTONE), new AspectList().add(Aspect.ALCHEMY, 5).add(Aspect.ENTROPY, 5));
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL), fromItemStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)).add(Aspect.ALCHEMY, 5));
-        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER),new AspectList().add(Aspect.ENTROPY, 5));
-        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE),fromItemStacks(new ItemStack(Items.GUNPOWDER), new ItemStack(Items.STRING)));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.NITER), new AspectList().add(Aspect.ENTROPY, 5));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.FUSE), fromItemStacks(new ItemStack(Items.GUNPOWDER), new ItemStack(Items.STRING)));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.DIAMOND_NUGGET), new AspectList().add(Aspect.METAL, 1).add(Aspect.CRYSTAL, 1).add(Aspect.DESIRE, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.KIBBLE), new AspectList().add(Aspect.LIFE,10).add(Aspect.MAN,10).add(Aspect.ENTROPY,10).add(Aspect.SENSES, 5).add(Aspect.ENERGY,1));
 
         ThaumcraftApi.registerComplexObjectTag(new ItemStack(BWMBlocks.SAW), new AspectList().add(Aspect.TRAP, 5));
+        ThaumcraftApi.registerComplexObjectTag(new ItemStack(BWMBlocks.DETECTOR), new AspectList().add(Aspect.SENSES, 5));
+        ThaumcraftApi.registerComplexObjectTag(new ItemStack(BWMBlocks.BUDDY_BLOCK), new AspectList().add(Aspect.SENSES, 5));
+
+        ThaumcraftApi.registerComplexObjectTag("blockCandle", new AspectList().add(Aspect.LIGHT, 8));
+        ThaumcraftApi.registerComplexObjectTag(new ItemStack(BWMBlocks.STEEL_PRESSURE_PLATE), new AspectList().add(Aspect.MECHANISM, 5));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.NETHER_GROWTH), fromItemStacks(
+                BlockUrn.getStack(BlockUrn.EnumType.FULL, 8),
+                new ItemStack(Blocks.BROWN_MUSHROOM),
+                new ItemStack(Blocks.RED_MUSHROOM),
+                new ItemStack(Items.NETHER_WART),
+                new ItemStack(Items.ROTTEN_FLESH)
+        ));
 
 
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.FERTILE_FARMLAND), new AspectList(new ItemStack(Blocks.FARMLAND)).merge(new AspectList(new ItemStack(Items.DYE, EnumDyeColor.WHITE.getDyeDamage()))));
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.DIRT_SLAB, 1, BlockDirtSlab.DirtSlabType.GRASS.getMetadata()), new AspectList().add(Aspect.PLANT, 1).add(Aspect.EARTH, 1));
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.DIRT_SLAB, 1, BlockDirtSlab.DirtSlabType.MYCELIUM.getMetadata()), new AspectList().add(Aspect.PLANT, 1).add(Aspect.EARTH, 1).add(Aspect.FLUX, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.SHAFT), new AspectList(new ItemStack(Items.STICK)));
 
         //Leather
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SCOURED_LEATHER), new AspectList().add(Aspect.BEAST, 5).add(Aspect.PROTECT, 5));
@@ -255,9 +290,14 @@ public class Thaumcraft extends CompatFeature {
         ThaumcraftApi.registerObjectTag("blockUrn", new AspectList(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN)).add(Aspect.FIRE, 1));
         ThaumcraftApi.registerObjectTag("blockSoulUrn", new AspectList(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN)).add(Aspect.FIRE, 1).add(Aspect.SOUL, 16));
         ThaumcraftApi.registerObjectTag(BlockCookingPot.getStack(BlockCookingPot.EnumType.CRUCIBLE), new AspectList(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE)).add(Aspect.FIRE, 1).add(Aspect.VOID, 10));
+        ThaumcraftApi.registerObjectTag(BlockCookingPot.getStack(BlockCookingPot.EnumType.DRAGONVESSEL), new AspectList().add(Aspect.MIND, 10).add(Aspect.ELDRITCH, 10).add(Aspect.MAGIC,10).add(Aspect.VOID, 10));
 
-        ThaumcraftApi.registerObjectTag("slats", new AspectList().add(Aspect.PLANT, 1));
-        ThaumcraftApi.registerObjectTag("grates", new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag("slats", new AspectList().add(Aspect.PLANT, 1).add(Aspect.CRAFT,1));
+        ThaumcraftApi.registerObjectTag("grates", new AspectList().add(Aspect.PLANT, 1).add(Aspect.CRAFT,1));
+        ThaumcraftApi.registerObjectTag("blockWoodTable", new AspectList().add(Aspect.PLANT, 1).add(Aspect.CRAFT,1));
+        ThaumcraftApi.registerObjectTag("blockWoodBench", new AspectList().add(Aspect.PLANT, 1).add(Aspect.CRAFT,1));
+
+
 
         //Planters
         ThaumcraftApi.registerObjectTag(BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY), new AspectList(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.PLANTER)).add(Aspect.FIRE, 1));
@@ -279,8 +319,10 @@ public class Thaumcraft extends CompatFeature {
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COAL_DUST), new AspectList().add(Aspect.ENERGY, 10).add(Aspect.FIRE, 10));
 
         ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL), new AspectList().add(Aspect.METAL, 15).add(Aspect.ENERGY, 10).add(Aspect.FIRE, 10).add(Aspect.SOUL, 16));
-        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new AspectList().add(Aspect.BEAST, 5).add(Aspect.LIFE, 5).add(Aspect.FIRE, 1).add(Aspect.EARTH, 5));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.PLATE_STEEL), new AspectList(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)));
 
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.TALLOW), new AspectList().add(Aspect.BEAST, 5).add(Aspect.LIFE, 5).add(Aspect.FIRE, 1).add(Aspect.EARTH, 5));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BROADHEAD), new AspectList().add(Aspect.METAL, 1).add(Aspect.ENERGY, 1).add(Aspect.FIRE, 1).add(Aspect.SOUL, 1));
 
         //Food
         AspectList milk = new AspectList().add(Aspect.BEAST, 5).add(Aspect.LIFE, 5).add(Aspect.WATER, 5);
@@ -311,14 +353,23 @@ public class Thaumcraft extends CompatFeature {
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.WOLF_CHOP), new AspectList(new ItemStack(Items.PORKCHOP)).add(Aspect.AVERSION, 1));
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.COOKED_WOLF_CHOP), new AspectList(new ItemStack(BWMItems.WOLF_CHOP)).add(Aspect.CRAFT, 1));
 
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER), new AspectList().add(Aspect.DESIRE, 2).add(Aspect.ENERGY, 2));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.POISON_SAC), new AspectList().add(Aspect.DEATH, 2).add(Aspect.BEAST, 2).add(Aspect.TRAP, 2).add(Aspect.ALCHEMY, 2));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.MYSTERY_GLAND), new AspectList().add(Aspect.LIFE, 2).add(Aspect.BEAST, 2).add(Aspect.WATER, 1).add(Aspect.ALCHEMY, 2));
+        ThaumcraftApi.registerObjectTag(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.WITCH_WART), new AspectList().add(Aspect.MAN, 5).add(Aspect.MAGIC, 5).add(Aspect.ALCHEMY, 5));
+
+
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.CHICKEN_SOUP), fromItemStacks(new ItemStack(Items.BOWL), new ItemStack(Items.POTATO), new ItemStack(Items.CARROT), new ItemStack(Items.CHICKEN)));
+
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.CHOCOLATE), fromItemStacks(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.COCOA_POWDER), new ItemStack(Items.SUGAR)).add(milk));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.DONUT), new AspectList().add(Aspect.LIFE, 1).add(Aspect.ENERGY, 1).add(Aspect.DESIRE, 1));
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.CHOWDER), fromItemStacks(new ItemStack(Items.BOWL), new ItemStack(Items.FISH)).add(milk));
 
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMItems.HEARTY_STEW), fromItemStacks(new ItemStack(Items.BOWL), new ItemStack(Items.POTATO), new ItemStack(Items.CARROT), new ItemStack(Items.COOKED_BEEF), new ItemStack(Items.BOWL), new ItemStack(Blocks.BROWN_MUSHROOM, 3)));
 
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.BLOOD_SAPLING), fromItemStacks(new ItemStack(Blocks.SAPLING, 6), new ItemStack(Items.NETHER_WART), BlockUrn.getStack(BlockUrn.EnumType.FULL, 1)));
-        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.BLOOD_LOG), new AspectList().add(Aspect.PLANT,20).add(Aspect.DEATH, 5).add(Aspect.SOUL,2));
-        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.BLOOD_LEAVES), new AspectList().add(Aspect.PLANT,5).add(Aspect.DEATH, 1).add(Aspect.SOUL,1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.BLOOD_LOG), new AspectList().add(Aspect.PLANT, 20).add(Aspect.DEATH, 5).add(Aspect.SOUL, 2));
+        ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.BLOOD_LEAVES), new AspectList().add(Aspect.PLANT, 5).add(Aspect.DEATH, 1).add(Aspect.SOUL, 1));
 
 
         ThaumcraftApi.registerObjectTag(new ItemStack(BWMBlocks.WOODEN_BROKEN_GEARBOX), new AspectList().add(Aspect.ENERGY, 10).add(Aspect.DESIRE, 3).add(Aspect.METAL, 3).add(Aspect.PLANT, 9));
