@@ -168,21 +168,19 @@ public class TileEntityTurntable extends TileBasic implements IMechSubtype, ITic
     }
 
     private void spawnParticlesAndSound(IBlockState state) {
-        if(state.getMaterial() != Material.AIR) {
+        if (state.getMaterial() != Material.AIR) {
             world.playSound(null, pos, state.getBlock().getSoundType(state, world, pos, null).getPlaceSound(), SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.8F);
             ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 30, 0.0D, 0.5D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
         }
     }
 
     private void rotateCraftable(World world, BlockPos pos, IBlockState input) {
-        if (BWRegistry.TURNTABLE.findRecipe(world, pos, input).isPresent()) {
+        TurntableRecipe recipe = BWRegistry.TURNTABLE.findRecipe(world, pos, input).orElse(null);
+        if (recipe != null) {
             this.potteryRotation++;
             spawnParticlesAndSound(input);
-            TurntableRecipe recipe = BWRegistry.TURNTABLE.findRecipe(world,pos, input).orElse(null);
-            if(recipe != null) {
-                if(recipe.craftRecipe(world,pos, world.rand, input))
-                    this.potteryRotation = 0;
-            }
+            if (recipe.craftRecipe(world, pos, world.rand, input))
+                this.potteryRotation = 0;
         } else {
             this.potteryRotation = 0;
         }
