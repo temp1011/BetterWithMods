@@ -76,6 +76,7 @@ public class HopperRecipes extends Feature {
                 new IngredientSpecial(stack -> true)
         )));
 
+        HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker", new OreIngredient("dustRedstone"), Lists.newArrayList(new ItemStack(Items.GLOWSTONE_DUST)), Lists.newArrayList(new ItemStack(Items.GUNPOWDER))));
 
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustNetherrack"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.HELLFIRE_DUST)));
         HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUrnRecipe(new OreIngredient("dustSoul"), ItemStack.EMPTY, ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.SAWDUST)));
@@ -87,11 +88,11 @@ public class HopperRecipes extends Feature {
                 TileEntityFilteredHopper hopper = (TileEntityFilteredHopper) world.getTileEntity(pos);
                 if (hopper != null) {
                     SimpleStackHandler inventory = hopper.inventory;
-                    ItemStack sand = outputs.get(world.rand.nextInt(outputs.size())).copy();
+                    ItemStack sand = getOutputs().get(world.rand.nextInt(getOutputs().size()));
                     ItemStack remainder = InvUtils.insert(inventory, sand, false);
                     if (!remainder.isEmpty())
                         InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
-                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), secondaryOutputs);
+                    InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), getSecondaryOutputs());
                     onCraft(world, pos, inputStack);
                 }
             }
