@@ -100,7 +100,7 @@ public class BlockBDispenser extends BlockDispenser implements IMultiVariants {
             BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
             Block block = world.getBlockState(check).getBlock();
 
-            if (world.getTileEntity(check) != null || world.getBlockState(check).getBlockHardness(world, check) < 0)
+            if (world.getBlockState(check).getBlockHardness(world, check) < 0)
                 return;
             IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
             if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
@@ -124,8 +124,8 @@ public class BlockBDispenser extends BlockDispenser implements IMultiVariants {
             else {
                 IBehaviorDispenseItem behavior = this.getBehavior(stack);
                 if (behavior != null) {
-                    ItemStack stacks = behavior.dispense(impl, stack);
-                    //InvUtils.insert(tile.inventory, stacks, false);
+
+                    behavior.dispense(impl, stack);
                 }
             }
         }
