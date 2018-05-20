@@ -282,7 +282,6 @@ public class MiniBlocks extends Feature {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
 
-
         for (Material material : names.keySet()) {
             BlockMini siding = SIDINGS.get(material);
             BlockMini moulding = MOULDINGS.get(material);

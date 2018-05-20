@@ -2,6 +2,8 @@ package betterwithmods.util;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityGhast;
@@ -18,6 +20,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -27,7 +30,23 @@ import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
  * @author Koward
  */
 public final class WorldUtils {
+
+    private static final HashSet<Material> SOLID_MATERIALS = Sets.newHashSet(
+            Material.ROCK,
+            Material.ANVIL,
+            Material.GLASS,
+            Material.IRON,
+            Material.ICE,
+            Material.PACKED_ICE,
+            Material.REDSTONE_LIGHT,
+            Material.PISTON
+    );
+
     private WorldUtils() {
+    }
+
+    public static boolean isSolid(World world, BlockPos pos, EnumFacing facing, IBlockState state) {
+        return SOLID_MATERIALS.contains(state.getMaterial()) && state.getBlockFaceShape(world,pos,facing.getOpposite()) == BlockFaceShape.SOLID;
     }
 
     /**
@@ -91,9 +110,9 @@ public final class WorldUtils {
         ExtendedBlockStorage extendedblockstorage = chunkIn.getBlockStorageArray()[j >> 4];
 
         if (extendedblockstorage == NULL_BLOCK_STORAGE) {
-            return !chunkIn.getWorld().provider.isNether() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
+            return chunkIn.getWorld().provider.hasSkyLight() && amount < EnumSkyBlock.SKY.defaultLightValue ? EnumSkyBlock.SKY.defaultLightValue - amount : 0;
         } else {
-            int l = chunkIn.getWorld().provider.isNether() ? 0 : extendedblockstorage.getSkyLight(i, j & 15, k);
+            int l = !chunkIn.getWorld().provider.hasSkyLight() ? 0 : extendedblockstorage.getSkyLight(i, j & 15, k);
             l = l - amount;
 
             if (l < 0) {
@@ -105,8 +124,8 @@ public final class WorldUtils {
     }
 
     public static double getDistance(BlockPos pos1, BlockPos pos2) {
-        assert(pos1!=null);
-        assert(pos2!=null);
+        assert (pos1 != null);
+        assert (pos2 != null);
         return new Vec3d(pos1).distanceTo(new Vec3d(pos2));
     }
 
@@ -114,9 +133,9 @@ public final class WorldUtils {
         EntityGhast ghast = new EntityGhast(world);
         double failures = 1;
         for (int i = 0; i < 200; i++) {
-            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double xPos = pos.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
             double yPos = pos.getY() + failures;
-            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20,failures);
+            double zPos = pos.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * Math.max(20, failures);
 
             ghast.setLocationAndAngles(xPos, yPos, zPos, world.rand.nextFloat() * 360.0F, 0.0F);
             AxisAlignedBB box = ghast.getEntityBoundingBox().offset(ghast.getPosition().up(5));
@@ -190,8 +209,7 @@ public final class WorldUtils {
         return phase.ordinal() == world.provider.getMoonPhase(world.getWorldTime());
     }
 
-    public static boolean isSpecialDay()
-    {
+    public static boolean isSpecialDay() {
         Calendar date = Calendar.getInstance();
         return date.get(Calendar.MONTH) == Calendar.APRIL && date.get(Calendar.DAY_OF_MONTH) == 1;
     }

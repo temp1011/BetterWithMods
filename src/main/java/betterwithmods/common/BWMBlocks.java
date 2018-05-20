@@ -18,6 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -65,7 +66,7 @@ public final class BWMBlocks {
 	public static final Block WOOD_CORNER = new BlockCorner(BlockMini.MINI).setRegistryName("wood_corner");
 	public static final Block WOOD_BENCH = new BlockWoodBench().setRegistryName("wood_bench");
 	public static final Block WOOD_TABLE = new BlockWoodTable().setRegistryName("wood_table");
-	public static final Block WOLF = new BlockWolf().setRegistryName("companion_cube");
+	public static final Block WOLF = new BlockWolf(new ResourceLocation("minecraft:wolf")).setRegistryName("companion_cube");
 	public static final Block BLOCK_DISPENSER = new BlockBDispenser().setRegistryName("block_dispenser");
 	public static final Block BAMBOO_CHIME = new BlockChime(Material.WOOD).setRegistryName("bamboo_chime");
 	public static final Block METAL_CHIME = new BlockChime(Material.IRON).setRegistryName("metal_chime");

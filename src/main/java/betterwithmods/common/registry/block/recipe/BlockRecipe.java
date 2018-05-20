@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -17,7 +19,7 @@ import java.util.List;
  * @author primetoxinz
  * @version 03/19/2018
  */
-public class BlockRecipe {
+public abstract class BlockRecipe {
     private final BlockIngredient input;
     private final IRecipeOutputs recipeOutput;
 
@@ -29,6 +31,8 @@ public class BlockRecipe {
         this.input = input;
         this.recipeOutput = recipeOutput;
     }
+
+    public abstract boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state);
 
     public NonNullList<ItemStack> onCraft(World world, BlockPos pos) {
         NonNullList<ItemStack> items = NonNullList.create();
@@ -65,5 +69,9 @@ public class BlockRecipe {
 
     public boolean matches(World world, BlockPos pos, IBlockState state) {
         return getInput().apply(world, pos, state);
+    }
+
+    public boolean isHidden() {
+        return false;
     }
 }

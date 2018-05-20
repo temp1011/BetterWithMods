@@ -66,7 +66,6 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
             if (recipe != null) {
                 return mill.grindCounter >= recipe.getTicks();
             }
-
         }
         return false;
     }
@@ -81,24 +80,22 @@ public class MillManager extends CraftingManagerBulk<MillRecipe> {
                 mill.getBlockWorld().playSound(null, mill.getBlockPos(), BWSounds.STONEGRIND, SoundCategory.BLOCKS, 0.5F + mill.getBlockWorld().rand.nextFloat() * 0.1F, 0.5F + mill.getBlockWorld().rand.nextFloat() * 0.1F);
 
             if (recipe != null) {
+                mill.grindMax = recipe.getTicks();
                 //Play sounds
                 if (mill.getBlockWorld().rand.nextInt(25) < 2)
                     mill.getBlockWorld().playSound(null, mill.getBlockPos(), recipe.getSound(), SoundCategory.BLOCKS, 1F, mill.getBlockWorld().rand.nextFloat() * 0.4F + 0.8F);
 
                 if (canCraft(tile, inv)) {
                     mill.ejectRecipe(BWRegistry.MILLSTONE.craftItem(world, tile, inv));
-
                     mill.grindCounter = 0;
-                    mill.progress = 0;
-
                     return true;
                 } else {
-                    mill.grindCounter+=mill.getIncrement();
-                    mill.progress = ((double) mill.grindCounter) / ((double) recipe.getTicks());
+                    mill.grindCounter += mill.getIncrement();
                 }
+                mill.markDirty();
             } else {
                 mill.grindCounter = 0;
-                mill.progress = 0;
+                mill.grindMax = -1;
             }
         }
 

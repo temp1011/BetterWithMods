@@ -4,6 +4,7 @@ import betterwithmods.api.BWMAPI;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.ICrankable;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.BlockMechMachines;
 import betterwithmods.common.blocks.tile.TileBasicInventory;
@@ -19,16 +20,18 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable {
+public class TileEntityMill extends TileBasicInventory implements ITickable, IMechanicalPower, ICrankable, IProgressSource {
     public boolean blocked;
     public int power;
     public int grindCounter;
-    public double progress;
+    public int grindMax;
 
     private int increment;
 
@@ -38,12 +41,12 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         this.increment = 1;
     }
 
-    public void setIncrement(int increment) {
-        this.increment = increment;
-    }
-
     public int getIncrement() {
         return increment;
+    }
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
     }
 
     public boolean isActive() {
@@ -89,7 +92,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
         }
 
         if (isActive()) {
-            BWRegistry.MILLSTONE.craftRecipe(world,this,inventory);
+            BWRegistry.MILLSTONE.craftRecipe(world, this, inventory);
         }
     }
 
@@ -100,6 +103,8 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
             this.blocked = tag.getBoolean("blocked");
         if (tag.hasKey("GrindCounter"))
             this.grindCounter = tag.getInteger("GrindCounter");
+        if (tag.hasKey("GrindMax"))
+            this.grindMax = tag.getInteger("GrindMax");
         if (tag.hasKey("increment"))
             this.increment = tag.getInteger("increment");
         this.power = tag.getInteger("power");
@@ -109,6 +114,7 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("GrindCounter", this.grindCounter);
+        tag.setInteger("GrindMax", this.grindMax);
         tag.setInteger("power", power);
         tag.setInteger("increment", increment);
         tag.setBoolean("blocked", blocked);
@@ -118,11 +124,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     @Override
     public int getInventorySize() {
         return 3;
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
     }
 
     private boolean canEject(EnumFacing facing) {
@@ -149,10 +150,6 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
                     ejectStack(stack);
             }
         }
-    }
-
-    public double getGrindProgress() {
-        return this.progress;
     }
 
     public boolean isGrinding() {
@@ -212,4 +209,31 @@ public class TileEntityMill extends TileBasicInventory implements ITickable, IMe
     public boolean isUseableByPlayer(EntityPlayer player) {
         return this.getBlockWorld().getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
+
+    @Override
+    public boolean showProgress() {
+        return isGrinding();
+    }
+
+    @Override
+    public int getMax() {
+        return grindMax;
+    }
+
+    @Override
+    public int getProgress() {
+        return this.grindCounter;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setProgress(int progress) {
+        this.grindCounter = progress;
+    }
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void setMax(int max) {
+        this.grindMax = max;
+    }
+
 }

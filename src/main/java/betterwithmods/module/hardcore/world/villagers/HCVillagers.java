@@ -2,7 +2,6 @@ package betterwithmods.module.hardcore.world.villagers;
 
 import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.util.VillagerUtils;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -52,10 +51,8 @@ public class HCVillagers extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
         if (clearTrades) {
-            VillagerUtils.clearTrades();
         }
 
-        VillagerUtils.addTrades("minecraft:priest", "cleric", 1, VillagerTrades.CLERIC_1);
     }
 
     @SubscribeEvent

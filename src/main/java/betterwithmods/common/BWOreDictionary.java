@@ -150,6 +150,7 @@ public class BWOreDictionary {
         registerOre("pileGravel", new ItemStack(BWMItems.GRAVEL_PILE));
 
         registerOre("blockVase", new ItemStack(BWMBlocks.VASE, 1, OreDictionary.WILDCARD_VALUE));
+        registerOre("blockUrn", new ItemStack(BWMBlocks.URN, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("treeSapling", new ItemStack(BWMBlocks.BLOOD_SAPLING));
         registerOre("treeLeaves", new ItemStack(BWMBlocks.BLOOD_LEAVES));
         registerOre("logWood", new ItemStack(BWMBlocks.BLOOD_LOG));

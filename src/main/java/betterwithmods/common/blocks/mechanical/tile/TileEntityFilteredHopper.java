@@ -5,6 +5,7 @@ import betterwithmods.api.block.ISoulSensitive;
 import betterwithmods.api.capabilities.CapabilityMechanicalPower;
 import betterwithmods.api.tile.IHopperFilter;
 import betterwithmods.api.tile.IMechanicalPower;
+import betterwithmods.api.util.IProgressSource;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.BWRegistry;
@@ -35,7 +36,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechanicalPower {
+public class TileEntityFilteredHopper extends TileEntityVisibleInventory implements IMechanicalPower, IProgressSource {
 
     private final int STACK_SIZE = 8;
     public SimpleStackHandler filter;
@@ -101,15 +102,12 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             EntityItem item = (EntityItem) entity;
             if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item)) {
                 this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-            }
-            else if (canFilterProcessItem(item.getItem())) {
+            } else if (canFilterProcessItem(item.getItem())) {
                 if (InvUtils.insertFromWorld(inventory, item, 0, 18, false))
                     this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         }
-
-        hopperFilter.onInsert(world,pos,this, entity);
-
+        hopperFilter.onInsert(world, pos, this, entity);
     }
 
     private void extract() {
@@ -151,7 +149,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
 
     @Override
     public void update() {
-
         if (!this.world.isRemote) {
             byte power = (byte) calculateInput();
             if (this.power != power) {
@@ -236,7 +233,7 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
     }
 
     public void decreaseSoulCount(int numSouls) {
-        this.soulsRetained = Math.max(soulsRetained - numSouls,0);
+        this.soulsRetained = Math.max(soulsRetained - numSouls, 0);
         markDirty();
     }
 
@@ -352,12 +349,35 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
         return experienceCount;
     }
 
+    public void setExperienceCount(int experienceCount) {
+        this.experienceCount = experienceCount;
+    }
+
     public int getMaxExperienceCount() {
         return maxExperienceCount;
     }
 
-    public void setExperienceCount(int experienceCount) {
-        this.experienceCount = experienceCount;
+    @Override
+    public boolean showProgress() {
+        return isPowered();
+    }
+
+    @Override
+    public int getMax() {
+        return 1;
+    }
+
+    @Override
+    public void setMax(int max) { /* NOOP */ }
+
+    @Override
+    public int getProgress() {
+        return Math.min(power, 1);
+    }
+
+    @Override
+    public void setProgress(int progress) {
+        this.power = (byte) progress;
     }
 
     private class HopperHandler extends SimpleStackHandler {
@@ -388,7 +408,6 @@ public class TileEntityFilteredHopper extends TileEntityVisibleInventory impleme
             return slot == 18 ? 1 : super.getSlotLimit(slot);
         }
     }
-
 
 
 }

@@ -29,11 +29,19 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class InvUtils {
 
+    public static boolean containsIngredient(List<Ingredient> collection, List<Ingredient> ingredient) {
+        return matchesPredicate(collection, ingredient, (a,b) -> {
+            if(a.getMatchingStacks().length > 0)
+                return Arrays.stream(a.getMatchingStacks()).allMatch(b::apply);
+            return false;
+        });
+    }
 
     public static boolean isIngredientValid(Ingredient ingredient) {
         return ArrayUtils.isEmpty(ingredient.getMatchingStacks());
@@ -588,10 +596,10 @@ public class InvUtils {
         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
     }
 
-        public static ItemStack setCount(ItemStack input, int count) {
-            ItemStack stack = input.copy();
-            stack.setCount(count);
-            return stack;
+    public static ItemStack setCount(ItemStack input, int count) {
+        ItemStack stack = input.copy();
+        stack.setCount(count);
+        return stack;
     }
 
 
@@ -607,32 +615,28 @@ public class InvUtils {
         return one.getCount() == two.getCount() && matches(one, two);
     }
 
-    public static boolean matchesExact(List<ItemStack> oneList, List<ItemStack> twoList) {
+
+    public static <T> boolean matchesPredicate(List<T> oneList, List<T> twoList, BiPredicate<T,T> matches) {
         if (oneList.size() != twoList.size())
             return false; //trivial case
-        HashSet<ItemStack> alreadyMatched = new HashSet<>();
-        for (ItemStack one : oneList) {
-            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matchesSize(one, two)).findFirst();
+        HashSet<T> alreadyMatched = new HashSet<>();
+        for (T one : oneList) {
+            Optional<T> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matches.test(one,two)).findFirst();
             if (found.isPresent())
                 alreadyMatched.add(found.get()); //Don't match twice
             else
-                return false; //This itemstack doesn't match, thus the two lists don't match
+                return false; //This T doesn't match, thus the two lists don't match
         }
         return true;
     }
 
+
+    public static boolean matchesExact(List<ItemStack> oneList, List<ItemStack> twoList) {
+        return matchesPredicate(oneList, twoList, InvUtils::matchesSize);
+    }
+
     public static boolean matches(List<ItemStack> oneList, List<ItemStack> twoList) {
-        if (oneList.size() != twoList.size())
-            return false; //trivial case
-        HashSet<ItemStack> alreadyMatched = new HashSet<>();
-        for (ItemStack one : oneList) {
-            Optional<ItemStack> found = twoList.stream().filter(two -> !alreadyMatched.contains(two) && matches(one, two)).findFirst();
-            if (found.isPresent())
-                alreadyMatched.add(found.get()); //Don't match twice
-            else
-                return false; //This itemstack doesn't match, thus the two lists don't match
-        }
-        return true;
+        return matchesPredicate(oneList,twoList, InvUtils::matches);
     }
 
     public static <T> List<List<T>> splitIntoBoxes(List<T> stacks, int boxes) {
