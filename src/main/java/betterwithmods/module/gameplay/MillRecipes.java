@@ -86,7 +86,7 @@ public class MillRecipes extends Feature {
         BWRegistry.MILLSTONE.addMillRecipe(new OreIngredient("cropRice"), BlockRawPastry.getStack(BlockRawPastry.EnumType.BREAD));
 
         //TODO remove
-        if(BWMod.isDev()) {
+        if (BWMod.isDev()) {
 
             WeightedOutput coal = new WeightedOutput(new ItemStack(Items.COAL), 0.75);
             WeightedOutput cobble = new WeightedOutput(new ItemStack(Blocks.COBBLESTONE), 0.25);
@@ -96,8 +96,6 @@ public class MillRecipes extends Feature {
                             Lists.newArrayList(new OreIngredient("oreCoal")),
                             new WeightedOutputs(Lists.newArrayList(coal, cobble)), 0, SoundEvents.ENTITY_PLAYER_BURP, 5)
             );
-
-
         }
     }
 }

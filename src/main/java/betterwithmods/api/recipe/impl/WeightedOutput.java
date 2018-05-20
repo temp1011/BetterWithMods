@@ -2,6 +2,7 @@ package betterwithmods.api.recipe.impl;
 
 import betterwithmods.api.recipe.IOutput;
 import betterwithmods.util.InvUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 public class WeightedOutput extends StackOutput {
@@ -18,8 +19,7 @@ public class WeightedOutput extends StackOutput {
 
     @Override
     public String getTooltip() {
-        //TODO lang?
-        return String.format("%s", weight);
+        return I18n.format("bwm.weighted_output.tooltip", weight*100);
     }
 
     @Override

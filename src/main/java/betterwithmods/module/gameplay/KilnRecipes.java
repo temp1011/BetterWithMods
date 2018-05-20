@@ -33,7 +33,6 @@ public class KilnRecipes extends Feature {
     @Override
     public void init(FMLInitializationEvent event) {
 
-        BWRegistry.KILN.addUnstokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE), BlockCookingPot.getStack(BlockCookingPot.EnumType.CRUCIBLE));
         BWRegistry.KILN.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.CRUCIBLE), BlockCookingPot.getStack(BlockCookingPot.EnumType.CRUCIBLE));
         BWRegistry.KILN.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.PLANTER), BlockPlanter.getStack(BlockPlanter.EnumType.EMPTY));
         BWRegistry.KILN.addStokedRecipe(BlockUnfiredPottery.getStack(BlockUnfiredPottery.EnumType.URN), BlockUrn.getStack(BlockUrn.EnumType.EMPTY, 1));

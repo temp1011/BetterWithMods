@@ -1,10 +1,9 @@
 package betterwithmods.api.recipe;
 
-import com.google.common.collect.Lists;
+import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +19,8 @@ public interface IRecipeOutputs {
     boolean isInvalid();
 
 
-    default List<List<IOutput>> getExpandedOutputs() {
-        return Lists.<List<IOutput>>newArrayList(new ArrayList<>(getDisplayOutputs()));
+    default List<List<IOutput>> getExpandedOutputs(int boxes) {
+        return InvUtils.splitIntoBoxes(getDisplayOutputs(), boxes);
     }
 
     default List<IOutput> cast(List<? extends IOutput> list) {

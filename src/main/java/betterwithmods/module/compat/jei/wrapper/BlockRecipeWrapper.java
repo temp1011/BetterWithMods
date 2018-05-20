@@ -17,17 +17,19 @@ import javax.annotation.Nonnull;
  */
 public class BlockRecipeWrapper<T extends BlockRecipe> implements IRecipeWrapper {
     public final T recipe;
+    private int boxes;
     protected final IJeiHelpers helpers;
 
-    public BlockRecipeWrapper(IJeiHelpers helpers, T recipe) {
+    public BlockRecipeWrapper(IJeiHelpers helpers, T recipe, int boxes) {
         this.helpers = helpers;
         this.recipe = recipe;
+        this.boxes = boxes;
     }
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, helpers.getStackHelper().toItemStackList(recipe.getInput()));
-        ingredients.setOutputLists(IOutput.class, recipe.getRecipeOutput().getExpandedOutputs());
+        ingredients.setOutputLists(IOutput.class, recipe.getRecipeOutput().getExpandedOutputs(boxes));
     }
 
     public T getRecipe() {

@@ -3,13 +3,14 @@ package betterwithmods.api.recipe.impl;
 import betterwithmods.api.recipe.IOutput;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class StackOutput implements IOutput {
     protected ItemStack output;
 
     public StackOutput(ItemStack stack) {
         this.output = stack;
-        ALL_OUTPUTS.add(this);
     }
 
     @Override
@@ -17,6 +18,7 @@ public class StackOutput implements IOutput {
         return output;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public String getTooltip() {
         return "";

@@ -597,6 +597,8 @@ public class InvUtils {
     }
 
     public static ItemStack setCount(ItemStack input, int count) {
+        if(input.isEmpty())
+            return input;
         ItemStack stack = input.copy();
         stack.setCount(count);
         return stack;
@@ -647,4 +649,6 @@ public class InvUtils {
         }
         return splitStacks;
     }
+
+
 }

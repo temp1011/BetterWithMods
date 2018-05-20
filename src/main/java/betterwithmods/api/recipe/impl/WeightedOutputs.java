@@ -62,5 +62,4 @@ public class WeightedOutputs implements IRecipeOutputs {
         return result;
     }
 
-
 }

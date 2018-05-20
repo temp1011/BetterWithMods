@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 
-public class OutputHelper implements IIngredientHelper<IOutput> {
+public class OutputHelper<V extends IOutput> implements IIngredientHelper<V> {
 
     private final StackHelper stackHelper;
 
@@ -21,14 +21,14 @@ public class OutputHelper implements IIngredientHelper<IOutput> {
     }
 
     @Override
-    public List<IOutput> expandSubtypes(List<IOutput> contained) {
+    public List<V> expandSubtypes(List<V> contained) {
         return contained;
     }
 
     @Nullable
     @Override
-    public IOutput getMatch(Iterable<IOutput> ingredients, IOutput ingredientToMatch) {
-        for (IOutput r : ingredients) {
+    public V getMatch(Iterable<V> ingredients, V ingredientToMatch) {
+        for (V r : ingredients) {
             if (r.equals(ingredientToMatch)) {
                 return r;
             }
@@ -37,24 +37,24 @@ public class OutputHelper implements IIngredientHelper<IOutput> {
     }
 
     @Override
-    public String getDisplayName(IOutput ingredient) {
+    public String getDisplayName(V ingredient) {
         return ErrorUtil.checkNotNull(ingredient.getOutput().getDisplayName(), "itemStack.getDisplayName()");
     }
 
     @Override
-    public String getUniqueId(IOutput ingredient) {
+    public String getUniqueId(V ingredient) {
         ErrorUtil.checkNotEmpty(ingredient.getOutput());
         return stackHelper.getUniqueIdentifierForStack(ingredient.getOutput());
     }
 
     @Override
-    public String getWildcardId(IOutput ingredient) {
+    public String getWildcardId(V ingredient) {
         ErrorUtil.checkNotEmpty(ingredient.getOutput());
         return stackHelper.getUniqueIdentifierForStack(ingredient.getOutput(), StackHelper.UidMode.WILDCARD);
     }
 
     @Override
-    public String getModId(IOutput ingredient) {
+    public String getModId(V ingredient) {
         ErrorUtil.checkNotEmpty(ingredient.getOutput());
 
         Item item = ingredient.getOutput().getItem();
@@ -68,12 +68,12 @@ public class OutputHelper implements IIngredientHelper<IOutput> {
     }
 
     @Override
-    public Iterable<Color> getColors(IOutput ingredient) {
+    public Iterable<Color> getColors(V ingredient) {
         return ColorGetter.getColors(ingredient.getOutput(), 2);
     }
 
     @Override
-    public String getResourceId(IOutput ingredient) {
+    public String getResourceId(V ingredient) {
         ErrorUtil.checkNotEmpty(ingredient.getOutput());
 
         Item item = ingredient.getOutput().getItem();
@@ -88,12 +88,12 @@ public class OutputHelper implements IIngredientHelper<IOutput> {
     }
 
     @Override
-    public IOutput copyIngredient(IOutput ingredient) {
-        return ingredient.copy();
+    public V copyIngredient(V ingredient) {
+        return (V) ingredient.copy();
     }
 
     @Override
-    public String getErrorInfo(IOutput ingredient) {
+    public String getErrorInfo(V ingredient) {
         return ErrorUtil.getItemStackInfo(ingredient.getOutput());
     }
 }

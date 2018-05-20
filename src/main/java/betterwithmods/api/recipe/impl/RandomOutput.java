@@ -2,6 +2,7 @@ package betterwithmods.api.recipe.impl;
 
 import betterwithmods.api.recipe.IOutput;
 import betterwithmods.util.InvUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import java.util.Random;
@@ -38,12 +39,12 @@ public class RandomOutput extends StackOutput {
     }
 
     public String getTooltip() {
-        return String.format("%s-%s", min, max);
+        return I18n.format("bwm.random_output.tooltip", min, max);
     }
 
     @Override
     public boolean equals(IOutput output) {
-        if(output instanceof RandomOutput) {
+        if (output instanceof RandomOutput) {
             RandomOutput other = (RandomOutput) output;
             return this.getMax() == other.getMax() && this.getMin() == other.getMin() && InvUtils.matches(other.getOutput(), this.getOutput());
         }

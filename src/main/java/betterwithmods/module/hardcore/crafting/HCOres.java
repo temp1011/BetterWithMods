@@ -40,8 +40,8 @@ public class HCOres extends Feature {
     public void setupConfig() {
         oreNuggetSmelting = loadPropBool("Ore to Nugget Smelting", "Make Ores (oredict ore.* )smelt into nuggets instead of ingots", true);
 
-        oreExclude = Arrays.stream(loadPropStringList("Ore Exclude", "Oredictionary entries to exclude from ore to nugget smelting. Remove the prefix of the oredictionary. example 'oreIron' would be just 'iron' ", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
-        dustExclude = Arrays.stream(loadPropStringList("Dust Exclude", "Oredictionary entries to exclude from dust to nugget smelting  Remove the prefix of the oredictionary. example 'dustIron' would be just 'iron'", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
+        oreExclude = Arrays.stream(loadPropStringList("Ore Exclude", "Oredictionary entries to exclude from ore to nugget smelting. To disable Iron Ore, simply do 'oreIron' ", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
+        dustExclude = Arrays.stream(loadPropStringList("Dust Exclude", "Oredictionary entries to exclude from dust to nugget smelting. To disable Iron Dust, simply do 'dustIron' ", new String[0])).map(String::toLowerCase).collect(Collectors.toSet());
 
         dustNuggetSmelting = loadPropBool("Dust to Nugget Smelting", "Make Dusts ( oredict dust.* ) smelt into nuggets instead of ingots", true);
         fixVanillaRecipes = loadPropBool("Fix Vanilla Recipes", "Make certain recipes cheaper to be more reasonable with nugget smelting, including Compass, Clock, and Bucket", true);
