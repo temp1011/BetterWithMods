@@ -18,6 +18,7 @@ import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -26,11 +27,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.capabilities.IPlayerKnowledge;
+import thaumcraft.api.capabilities.ThaumcraftCapabilities;
+import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 import java.lang.reflect.InvocationTargetException;
@@ -41,6 +51,17 @@ public class Thaumcraft extends CompatFeature {
 
     public Thaumcraft() {
         super("thaumcraft");
+    }
+
+    public static boolean changeStart;
+
+    @Override
+    public void setupConfig() {
+        changeStart = loadPropBool("Change Thaumcraft Start", "Due to HCBeds stopping sleeping, Thaumcraft can not be started the normal way. This changes it to only require you to right click on a bed to have the dream", true);
+        if(changeStart) {
+            MinecraftForge.EVENT_BUS.register(new StartChanges());
+        }
+
     }
 
     private static AspectList getMini(ItemStack stack) {
@@ -397,6 +418,27 @@ public class Thaumcraft extends CompatFeature {
                         ThaumcraftApi.registerComplexObjectTag(stack, getMini(stack));
                     }
                 }
+            }
+        }
+    }
+
+
+    public static class StartChanges {
+        @SubscribeEvent
+        public void  onAttemptSleep(PlayerSleepInBedEvent event) {
+            IPlayerKnowledge knowledge = ThaumcraftCapabilities.getKnowledge(event.getEntityPlayer());
+            if (event.getEntityPlayer() != null && !event.getEntityPlayer().world.isRemote && knowledge.isResearchKnown("!gotcrystals") && !knowledge.isResearchKnown("!gotdream")) {
+                knowledge.addResearch("!gotdream");
+                knowledge.sync((EntityPlayerMP)event.getEntityPlayer());
+                ItemStack book = ConfigItems.startBook.copy();
+                book.getTagCompound().setString("author", event.getEntityPlayer().getName());
+                if (!event.getEntityPlayer().inventory.addItemStackToInventory(book)) {
+                    event.getEntityPlayer().entityDropItem(book, 2.0F);
+                }
+
+                try {
+                    event.getEntityPlayer().sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + I18n.translateToLocal("bwm.got.feverdream")));
+                } catch (Exception ignore) { }
             }
         }
     }

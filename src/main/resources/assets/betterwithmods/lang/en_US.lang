@@ -126,7 +126,7 @@ tile.bwm:unfired_pottery.3.name=Unfired Vase
 tile.bwm:unfired_pottery.4.name=Unfired Brick
 tile.bwm:unfired_pottery.5.name=Unfired Netherbrick
 
-tile.bwm:anchor.name=Anchor
+tile.bwm:anchor.name=Anchorbwm.got.feverdream
 tile.bwm:rope.name=Hemp Rope
 tile.bwm:hibachi.name=Hibachi
 tile.bwm:hemp.name=Hemp Seeds
@@ -552,3 +552,6 @@ bwm.manual.mechanical=Mechanical Power
 bwm.manual.error.0=Document not found:
 bwm.manual.error.1=Please report this %s
 bwm.manual.error.2=In the mean time, try the %s
+
+
+bwm.got.feverdream=You never could get to sleep, in your insomnia you scribbled some notes. What do they mean?
