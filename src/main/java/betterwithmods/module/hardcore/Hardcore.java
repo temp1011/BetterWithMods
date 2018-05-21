@@ -6,6 +6,7 @@ import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.hardcore.beacons.HCBeacons;
 import betterwithmods.module.hardcore.crafting.*;
 import betterwithmods.module.hardcore.creatures.*;
+import betterwithmods.module.hardcore.creatures.hccow.HCCows;
 import betterwithmods.module.hardcore.needs.*;
 import betterwithmods.module.hardcore.needs.hunger.HCHunger;
 import betterwithmods.module.hardcore.world.*;
@@ -73,6 +74,7 @@ public class Hardcore extends CompatModule {
         registerFeature(new HCEnchanting());
         registerFeature(new HCStrata());
         registerFeature(new HCFurnace());
+        registerFeature(new HCCows());
 
         registerFeature(new ExplosiveRecipes());
 //        registerFeature(new HCSquid());

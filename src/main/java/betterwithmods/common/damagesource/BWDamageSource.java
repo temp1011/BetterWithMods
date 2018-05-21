@@ -8,12 +8,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BWDamageSource extends DamageSource {
     public static final BWDamageSource gloom = new BWDamageSource("gloom", true);
     public static final BWDamageSource growth = new BWDamageSource("growth", false);
+
     private static FakeDamageSource saw = null;
     private static MultiFakeSource steel_saw = null;
     private static FakeDamageSource choppingBlock = null;
@@ -91,6 +94,32 @@ public class BWDamageSource extends DamageSource {
             return false;
         }
     }
+
+    public static class MultiDamageSource extends BWDamageSource {
+
+        private static final Random RANDOM = new Random();
+
+        private String[] damageChoices;
+
+        public MultiDamageSource(String... damageTypes) {
+            super("", true);
+            this.damageChoices = damageTypes;
+        }
+
+        public String getChoice() {
+            int c = RANDOM.nextInt(damageChoices.length);
+            return damageChoices[c];
+        }
+
+        @Override
+        public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+            EntityLivingBase entitylivingbase = entityLivingBaseIn.getAttackingEntity();
+            String s = "death.attack." + getChoice();
+            String s1 = s + ".player";
+            return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()) : new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName());
+        }
+    }
+
 
     public static class MultiFakeSource extends FakeDamageSource {
 
