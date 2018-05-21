@@ -5,10 +5,10 @@ import betterwithmods.util.InvUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
-public class WeightedOutput extends StackOutput {
+public class ChanceOutput extends StackOutput {
     private double weight;
 
-    public WeightedOutput(ItemStack stack, double weight) {
+    public ChanceOutput(ItemStack stack, double weight) {
         super(stack);
         this.weight = weight;
     }
@@ -19,13 +19,13 @@ public class WeightedOutput extends StackOutput {
 
     @Override
     public String getTooltip() {
-        return I18n.format("bwm.weighted_output.tooltip", weight*100);
+        return I18n.format("bwm.chance_output.tooltip", weight*100);
     }
 
     @Override
     public boolean equals(IOutput output) {
-        if (output instanceof WeightedOutput) {
-            WeightedOutput other = (WeightedOutput) output;
+        if (output instanceof ChanceOutput) {
+            ChanceOutput other = (ChanceOutput) output;
             return other.getWeight() == this.getWeight() && InvUtils.matches(other.getOutput(), this.getOutput());
         }
         return false;

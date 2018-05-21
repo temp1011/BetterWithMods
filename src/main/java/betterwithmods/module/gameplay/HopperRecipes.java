@@ -1,8 +1,8 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
+import betterwithmods.api.recipe.impl.ChanceOutput;
 import betterwithmods.api.recipe.impl.ListOutputs;
-import betterwithmods.api.recipe.impl.WeightedOutput;
 import betterwithmods.api.recipe.impl.WeightedOutputs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
@@ -87,7 +87,7 @@ public class HopperRecipes extends Feature {
 
         HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(BWMod.MODID + ":wicker",
                 Ingredient.fromStacks(new ItemStack(Blocks.GRAVEL)),
-                new WeightedOutputs(new WeightedOutput(new ItemStack(Blocks.SAND), 0.5), new WeightedOutput(new ItemStack(Blocks.SAND, 1, 1), 0.5)),
+                new WeightedOutputs(new ChanceOutput(new ItemStack(Blocks.SAND), 0.5), new ChanceOutput(new ItemStack(Blocks.SAND, 1, 1), 0.5)),
                 new ListOutputs(new ItemStack(Items.FLINT))
         ));
 

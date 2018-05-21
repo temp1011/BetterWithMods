@@ -31,6 +31,11 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         this(inputs, outputs, 0);
     }
 
+    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs) {
+        this.inputs = InvUtils.asNonnullList(inputs);
+        this.recipeOutput = outputs;
+    }
+
     public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
         this(inputs, new ListOutputs(outputs), priority);
     }

@@ -15,7 +15,7 @@ public class StackOutput implements IOutput {
 
     @Override
     public ItemStack getOutput() {
-        return output;
+        return output.copy();
     }
 
     @SideOnly(Side.CLIENT)

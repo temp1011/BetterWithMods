@@ -524,7 +524,7 @@ bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
 bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
 
 bwm.random_output.tooltip=Count: %s-%s
-bwm.weighted_output.tooltip=Weight: %d%%
+bwm.chance_output.tooltip=Chance: %d%%
 
 
 bwm.effect.slow_fall=Slow Fall

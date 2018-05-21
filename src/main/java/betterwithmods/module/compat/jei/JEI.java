@@ -1,9 +1,9 @@
 package betterwithmods.module.compat.jei;
 
 import betterwithmods.api.recipe.IOutput;
+import betterwithmods.api.recipe.impl.ChanceOutput;
 import betterwithmods.api.recipe.impl.RandomOutput;
 import betterwithmods.api.recipe.impl.StackOutput;
-import betterwithmods.api.recipe.impl.WeightedOutput;
 import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.client.gui.GuiSteelAnvil;
 import betterwithmods.client.gui.bulk.GuiCauldron;
@@ -78,7 +78,7 @@ public class JEI implements IModPlugin {
         ALL_OUTPUTS.add(IOutput.class);
         ALL_OUTPUTS.add(StackOutput.class);
         ALL_OUTPUTS.add(RandomOutput.class);
-        ALL_OUTPUTS.add(WeightedOutput.class);
+        ALL_OUTPUTS.add(ChanceOutput.class);
     }
 
     public static void doAllOutputs(Consumer<Class<? extends IOutput>> consumer) {
