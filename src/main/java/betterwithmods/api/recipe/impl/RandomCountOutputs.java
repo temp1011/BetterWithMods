@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class RandomCountOutputs implements IRecipeOutputs {
 
     private List<RandomOutput> outputs;
+    private List<ItemStack> itemStackList;
 
     public RandomCountOutputs(RandomOutput... outputs) {
         this(Lists.newArrayList(outputs));
@@ -20,6 +21,7 @@ public class RandomCountOutputs implements IRecipeOutputs {
 
     public RandomCountOutputs(List<RandomOutput> outputs) {
         this.outputs = outputs;
+        this.itemStackList = outputs.stream().map(RandomOutput::getOutput).collect(Collectors.toList());
     }
 
     @Override
@@ -34,12 +36,12 @@ public class RandomCountOutputs implements IRecipeOutputs {
 
     @Override
     public boolean matches(List<ItemStack> outputs) {
-        return false;
+        return InvUtils.matchesExact(outputs, itemStackList);
     }
 
     @Override
     public boolean matchesFuzzy(List<ItemStack> outputs) {
-        return false;
+        return InvUtils.matches(outputs, itemStackList);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class RandomOutput extends StackOutput {
         return InvUtils.setCount(getOutput(), rand());
     }
 
+
     public RandomOutput copy() {
         return new RandomOutput(getOutput(), min, max);
     }

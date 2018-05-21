@@ -8,6 +8,7 @@ import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.client.gui.GuiSteelAnvil;
 import betterwithmods.client.gui.bulk.GuiCauldron;
 import betterwithmods.client.gui.bulk.GuiCrucible;
+import betterwithmods.client.gui.bulk.GuiFilteredHopper;
 import betterwithmods.client.gui.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
@@ -192,6 +193,7 @@ public class JEI implements IModPlugin {
 
         reg.addRecipeClickArea(GuiMill.class, 81, 19, 14, 14, MillRecipeCategory.UID);
         reg.addRecipeClickArea(GuiSteelAnvil.class, 88, 41, 28, 23, SteelAnvilRecipeCategory.UID);
+        reg.addRecipeClickArea(GuiFilteredHopper.class, 81, 19, 14, 14, HopperRecipeCategory.UID);
 
         registerAnvil(reg);
 
@@ -244,6 +246,7 @@ public class JEI implements IModPlugin {
 
         reg.addRecipeClickArea(GuiCauldron.class, 81, 19, 14, 14, cauldron.stream().toArray(String[]::new));
         reg.addRecipeClickArea(GuiCrucible.class, 81, 19, 14, 14, crucible.stream().toArray(String[]::new));
+
     }
 
 

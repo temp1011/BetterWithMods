@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,11 +72,11 @@ public class HopperInteractions {
     }
 
     protected static List<HopperRecipe> findRecipeFuzzy(List<ItemStack> outputs, List<ItemStack> secondary) {
-        return RECIPES.stream().filter(r -> InvUtils.matches(r.getOutputs(), outputs) && InvUtils.matches(r.getOutputs(), secondary)).collect(Collectors.toList());
+        return RECIPES.stream().filter(recipe -> recipe.getRecipeOutputInsert().matchesFuzzy(outputs) && recipe.getRecipeOutputWorld().matchesFuzzy(secondary)).collect(Collectors.toList());
     }
 
     protected static List<HopperRecipe> findRecipeExact(List<ItemStack> outputs, List<ItemStack> secondary) {
-        return RECIPES.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(), outputs) && InvUtils.matchesExact(r.getSecondaryOutputs(), secondary)).collect(Collectors.toList());
+        return RECIPES.stream().filter(recipe -> recipe.getRecipeOutputInsert().matches(outputs) && recipe.getRecipeOutputWorld().matches(secondary)).collect(Collectors.toList());
     }
 
     protected static List<HopperRecipe> findRecipeByInput(ItemStack input) {
@@ -99,7 +98,7 @@ public class HopperInteractions {
     public static class DummySoulUrnRecipe extends SoulUrnRecipe {
 
         public DummySoulUrnRecipe(SoulUrnRecipe parent) {
-            super(StackIngredient.fromIngredient(8, parent.input), parent.output , parent.secondaryOutput == null ? new ItemStack[0] : Arrays.stream(parent.secondaryOutput).map( s -> InvUtils.setCount(s,8)).toArray(ItemStack[]::new));
+            super(StackIngredient.fromIngredient(8, parent.input), parent.getOutputs(), parent.getSecondaryOutputs().stream().map(s -> InvUtils.setCount(s, 8)).collect(Collectors.toList()));
         }
 
         @Override
@@ -115,18 +114,13 @@ public class HopperInteractions {
 
 
     public static class SoulUrnRecipe extends HopperRecipe {
-        protected Ingredient input;
-        protected ItemStack output;
-        protected ItemStack[] secondaryOutput;
-
         public SoulUrnRecipe(Ingredient input, ItemStack output, ItemStack... secondaryOutput) {
             super("betterwithmods:soul_sand", input, output, secondaryOutput);
-            this.input = input;
-            this.output = output;
-            this.secondaryOutput = secondaryOutput;
         }
 
-
+        public SoulUrnRecipe(Ingredient input, List<ItemStack> output, List<ItemStack> secondaryOutput) {
+            super("betterwithmods:soul_sand", input, output, secondaryOutput);
+        }
 
         @Override
         public void onCraft(World world, BlockPos pos, EntityItem item, TileEntityFilteredHopper tile) {
@@ -144,13 +138,13 @@ public class HopperInteractions {
         protected final String filterName;
         protected final Ingredient input;
 
-        private IRecipeOutputs recipeOutputWorld, recipeOutputInsert;
+        protected IRecipeOutputs recipeOutputWorld, recipeOutputInsert;
 
         public HopperRecipe(String filterName, Ingredient input, ItemStack output, ItemStack... secondaryOutput) {
             this(filterName, input, Lists.newArrayList(output), Lists.newArrayList(secondaryOutput));
         }
 
-        public HopperRecipe(String filterName, Ingredient input, IRecipeOutputs recipeOutputWorld, IRecipeOutputs recipeOutputInsert) {
+        public HopperRecipe(String filterName, Ingredient input, IRecipeOutputs recipeOutputInsert, IRecipeOutputs recipeOutputWorld) {
             this.filterName = filterName;
             this.input = input;
             this.recipeOutputWorld = recipeOutputWorld;
@@ -230,6 +224,8 @@ public class HopperInteractions {
             if (tile != null) {
                 ItemStackHandler inventory = tile.inventory;
                 List<ItemStack> outputs = getOutputs();
+                if (outputs.isEmpty())
+                    return true;
                 return outputs.stream().allMatch(stack -> InvUtils.insert(inventory, stack, true).isEmpty());
             }
             return true;

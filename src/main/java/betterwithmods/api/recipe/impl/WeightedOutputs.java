@@ -9,11 +9,13 @@ import net.minecraft.util.NonNullList;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class WeightedOutputs implements IRecipeOutputs {
     private static final Random RANDOM = new Random();
 
     protected List<WeightedOutput> weightedItemStacks;
+    private List<ItemStack> itemStacksList;
 
     public WeightedOutputs(WeightedOutput... weightedItemStacks) {
         this(Lists.newArrayList(weightedItemStacks));
@@ -21,6 +23,7 @@ public class WeightedOutputs implements IRecipeOutputs {
 
     public WeightedOutputs(List<WeightedOutput> weightedItemStacks) {
         this.weightedItemStacks = weightedItemStacks;
+        this.itemStacksList = weightedItemStacks.stream().map(WeightedOutput::getOutput).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -36,12 +39,12 @@ public class WeightedOutputs implements IRecipeOutputs {
 
     @Override
     public boolean matches(List<ItemStack> outputs) {
-        return false;
+        return InvUtils.matchesExact(outputs, itemStacksList);
     }
 
     @Override
     public boolean matchesFuzzy(List<ItemStack> outputs) {
-        return false;
+        return InvUtils.matches(outputs, itemStacksList);
     }
 
     @Override

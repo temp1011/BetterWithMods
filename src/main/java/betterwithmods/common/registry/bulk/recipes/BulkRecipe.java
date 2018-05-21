@@ -48,7 +48,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return recipeOutput;
     }
 
-    public NonNullList<ItemStack> getOutputs() {
+    public List<ItemStack> getOutputs() {
         return recipeOutput.getOutputs();
     }
 

@@ -64,8 +64,8 @@ public class HopperRecipeCategory extends BWMRecipeCategory<HopperRecipeWrapper>
         guiItemStacks.init(1, true, x - 27, y + 27); //filter
         guiItemStacks.init(2, true, x, y + 45); //urn
 
-        createSlotsHorizontal(outputs, false, 2, secondaryOutputSlot, x + 29, y + 1);
-        createSlotsHorizontal(outputs, false, 2, outputSlot, x + 29, y + 28);
+        createSlotsHorizontal(outputs, false, 2, outputSlot, x + 29, y + 1);
+        createSlotsHorizontal(outputs, false, 2, secondaryOutputSlot, x + 29, y + 28);
 
         guiItemStacks.init(7, false, x, y + 27); //hopper
         guiItemStacks.init(8, false, x + 27, y + 45); //urn
