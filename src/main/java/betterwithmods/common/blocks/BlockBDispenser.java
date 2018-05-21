@@ -96,33 +96,31 @@ public class BlockBDispenser extends BlockDispenser  {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
                 Block block = world.getBlockState(check).getBlock();
 
-                if (world.getTileEntity(check) != null || world.getBlockState(check).getBlockHardness(world, check) < 0)
-                    return;
-                IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
-                if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
-                    NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
-                    InvUtils.insert(tile.inventory, stacks, false);
-                }
+            if (world.getBlockState(check).getBlockHardness(world, check) < 0)
+                return;
+            IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
+            if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
+                NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
+                InvUtils.insert(tile.inventory, stacks, false);
+            }
 
-                Optional<Entity> entity = getEntity(world, check);
-                if (entity.isPresent()) {
-                    Entity e = entity.get();
-                    ResourceLocation name = EntityList.getKey(e);
-                    IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(name);
-                    NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, e, tile.getCurrentSlot());
-                    InvUtils.insert(tile.inventory, stacks, false);
-                }
-            } else {
-                int index = tile.nextIndex;
-                ItemStack stack = tile.getNextStackFromInv();
-                if (index == -1 || stack.isEmpty())
-                    world.playEvent(1001, pos, 0);
-                else {
-                    IBehaviorDispenseItem behavior = this.getBehavior(stack);
-                    if (behavior != null) {
-                        ItemStack stacks = behavior.dispense(impl, stack);
-                        //InvUtils.insert(tile.inventory, stacks, false);
-                    }
+            Optional<Entity> entity = getEntity(world, check);
+            if (entity.isPresent()) {
+                Entity e = entity.get();
+                ResourceLocation name = EntityList.getKey(e);
+                IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(name);
+                NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, e, tile.getCurrentSlot());
+                InvUtils.insert(tile.inventory, stacks, false);
+            }
+        } else {
+            int index = tile.nextIndex;
+            ItemStack stack = tile.getNextStackFromInv();
+            if (index == -1 || stack.isEmpty())
+                world.playEvent(1001, pos, 0);
+            else {
+                IBehaviorDispenseItem behavior = this.getBehavior(stack);
+                if (behavior != null) {
+                    behavior.dispense(impl, stack);
                 }
             }
         }

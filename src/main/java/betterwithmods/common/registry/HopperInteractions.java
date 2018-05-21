@@ -135,7 +135,7 @@ public class HopperInteractions {
         }
 
         public SoulUrnRecipe withoutUrn() {
-            SoulUrnRecipe recipe = new SoulUrnRecipe(input,outputs,secondaryOutputs);
+            SoulUrnRecipe recipe = new SoulUrnRecipe(input,getOutputs(),getSecondaryOutputs());
             recipe.hasUrn = false;
             return recipe;
         }
@@ -144,12 +144,12 @@ public class HopperInteractions {
             return hasUrn;
         }
     }
-
+    //TODO this should not be an internal class anymore
     public static class HopperRecipe {
         protected final String filterName;
         protected final Ingredient input;
-        protected List<ItemStack> outputs = new ArrayList<>(); //This goes in
-        protected List<ItemStack> secondaryOutputs = new ArrayList<>(); //This stays on top
+        private List<ItemStack> outputs = new ArrayList<>(); //This goes in
+        private List<ItemStack> secondaryOutputs = new ArrayList<>(); //This stays on top
 
         public HopperRecipe(String filterName, Ingredient input, ItemStack output, ItemStack... secondaryOutput) {
             this(filterName,input,Lists.newArrayList(output),Lists.newArrayList(secondaryOutput));
@@ -178,7 +178,7 @@ public class HopperInteractions {
             if(hopper == null)
                 return;
             SimpleStackHandler inventory = hopper.inventory;
-            for (ItemStack output : outputs) {
+            for (ItemStack output : getOutputs()) {
                 ItemStack remainder = InvUtils.insert(inventory, output, false);
                 if (!remainder.isEmpty())
                     InvUtils.ejectStackWithOffset(world, inputStack.getPosition(), remainder);
@@ -204,18 +204,18 @@ public class HopperInteractions {
         }
 
         public List<ItemStack> getOutputs() {
-            return outputs;
+            return outputs.stream().map(ItemStack::copy).collect(Collectors.toList());
         }
 
         public List<ItemStack> getSecondaryOutputs() {
-            return secondaryOutputs;
+            return secondaryOutputs.stream().map(ItemStack::copy).collect(Collectors.toList());
         }
 
         public boolean canCraft(World world, BlockPos pos) {
             TileFilteredHopper tile = (TileFilteredHopper) world.getTileEntity(pos);
             if (tile != null) {
                 ItemStackHandler inventory = tile.inventory;
-                return !outputs.stream().anyMatch(stack -> !InvUtils.insert(inventory, stack, true).isEmpty());
+                return getOutputs().stream().allMatch(stack -> InvUtils.insert(inventory, stack, true).isEmpty());
             }
             return true;
         }

@@ -2,6 +2,7 @@ package betterwithmods.common.blocks.mechanical;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.block.IOverpower;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.BWSounds;
 import betterwithmods.common.blocks.BWMBlock;
@@ -11,7 +12,6 @@ import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.gameplay.MechanicalBreakage;
 import betterwithmods.util.DirUtils;
 import betterwithmods.util.InvUtils;
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
@@ -34,7 +34,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -48,16 +47,7 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
     private static final AxisAlignedBB W_AABB = new AxisAlignedBB(1.0F - HEIGHT, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     private static final AxisAlignedBB E_AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, HEIGHT, 1.0F, 1.0F);
 
-    private static final HashSet<Material> SOLID_MATERIALS = Sets.newHashSet(
-            Material.ROCK,
-            Material.ANVIL,
-            Material.GLASS,
-            Material.IRON,
-            Material.ICE,
-            Material.PACKED_ICE,
-            Material.REDSTONE_LIGHT,
-            Material.PISTON
-    );
+
 
     public BlockSaw() {
         super(Material.WOOD);
@@ -142,9 +132,13 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
         withTile(world, pos).ifPresent(TileSaw::onChanged);
         if (isActive(state)) {
             if (!world.isRemote) {
-                sawBlockInFront(world, pos, rand);
-                world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+                TileSaw tile = getTile(world,pos);
+                if(tile != null) {
+                    tile.cut(world, pos, rand);
+                    world.scheduleBlockUpdate(pos, this, tickRate(world) + rand.nextInt(6), 5);
+                }
             }
+
         }
     }
 
@@ -269,18 +263,6 @@ public class BlockSaw extends BWMBlock implements IBlockActive, IOverpower {
             float smokeY = yPos + rand.nextFloat() * 0.1F;
             float smokeZ = zPos + (rand.nextFloat() - 0.5F) * zExtent;
             world.spawnParticle(type, smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
-        }
-    }
-
-    private void sawBlockInFront(World world, BlockPos pos, Random rand) {
-        EnumFacing facing = getFacing(world, pos);
-        BlockPos blockPos = pos.offset(facing);
-        boolean success = BWRegistry.WOOD_SAW.craftRecipe(world, blockPos, rand, world.getBlockState(blockPos));
-        if(!success) {
-            IBlockState state = world.getBlockState(blockPos);
-            if(!isChoppingBlock(state,true) && SOLID_MATERIALS.contains(state.getMaterial()) && state.getBlockFaceShape(world,blockPos,facing.getOpposite()) == BlockFaceShape.SOLID) {
-                world.playSound(null,pos, BWSounds.METAL_HACKSAW, SoundCategory.BLOCKS,1.0f,0.80f);
-            }
         }
     }
 

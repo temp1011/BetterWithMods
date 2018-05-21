@@ -1,6 +1,6 @@
 package betterwithmods.module.hardcore.creatures;
 
-import betterwithmods.core.event.EntitySetEquipmentEvent;
+import betterwithmods.bwl.event.EntitySetEquipmentEvent;
 import betterwithmods.module.CompatFeature;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityList;
@@ -71,10 +71,16 @@ public class HCMobEquipment extends CompatFeature {
 
     @Override
     public void init(FMLInitializationEvent event) {
-        entityMap.put(new ResourceLocation("minecraft:zombie"), HCMobEquipment::zombie);
-        entityMap.put(new ResourceLocation("minecraft:husk"), HCMobEquipment::zombie);
-        entityMap.put(new ResourceLocation("minecraft:skeleton"), HCMobEquipment::skeleton);
-        entityMap.put(new ResourceLocation("minecraft:zombie_pigman"), HCMobEquipment::pigman);
+        addEquipmentOverride(new ResourceLocation("minecraft:zombie"), HCMobEquipment::zombie);
+        addEquipmentOverride(new ResourceLocation("minecraft:husk"), HCMobEquipment::zombie);
+        addEquipmentOverride(new ResourceLocation("minecraft:skeleton"), HCMobEquipment::skeleton);
+        addEquipmentOverride(new ResourceLocation("minecraft:zombie_pigman"), HCMobEquipment::pigman);
+    }
+
+    public void addEquipmentOverride(ResourceLocation mob, Equipment equipment) {
+        if(loadPropBool("Override Equipment for " + mob.toString(), "", true)) {
+            entityMap.put(mob,equipment);
+        }
     }
 
     @SubscribeEvent
@@ -88,7 +94,7 @@ public class HCMobEquipment extends CompatFeature {
             equipment.equip(entity);
         }
     }
-
+    
     @Override
     public String getFeatureDescription() {
         return "Change the equipment that mobs spawn with";

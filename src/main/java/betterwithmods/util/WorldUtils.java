@@ -2,6 +2,8 @@ package betterwithmods.util;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityGhast;
@@ -18,6 +20,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -27,12 +30,28 @@ import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
  * @author Koward
  */
 public final class WorldUtils {
+
+    private static final HashSet<Material> SOLID_MATERIALS = Sets.newHashSet(
+            Material.ROCK,
+            Material.ANVIL,
+            Material.GLASS,
+            Material.IRON,
+            Material.ICE,
+            Material.PACKED_ICE,
+            Material.REDSTONE_LIGHT,
+            Material.PISTON
+    );
+
     private WorldUtils() {
     }
 
 
     public static Iterable<BlockPos> getPosInBox(AxisAlignedBB box) {
         return BlockPos.getAllInBox(new BlockPos(box.minX, box.minY, box.minZ), new BlockPos(box.maxX, box.maxY, box.maxZ));
+    }
+
+    public static boolean isSolid(World world, BlockPos pos, EnumFacing facing, IBlockState state) {
+        return SOLID_MATERIALS.contains(state.getMaterial()) && state.getBlockFaceShape(world,pos,facing.getOpposite()) == BlockFaceShape.SOLID;
     }
 
     /**
