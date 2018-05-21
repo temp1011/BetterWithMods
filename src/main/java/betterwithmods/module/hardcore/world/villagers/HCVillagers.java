@@ -25,7 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class HCVillagers extends Feature {
 
-
     private static final ResourceLocation LEVELING = new ResourceLocation(BWMod.MODID, "villager_leveling");
 
     private static boolean clearTrades = true;
@@ -52,7 +51,6 @@ public class HCVillagers extends Feature {
     public void init(FMLInitializationEvent event) {
         if (clearTrades) {
         }
-
     }
 
     @SubscribeEvent

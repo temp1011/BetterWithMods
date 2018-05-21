@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.IRecipeOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
@@ -18,6 +19,10 @@ public class SawRecipe extends BlockRecipe {
 
     public SawRecipe(BlockIngredient input, List<ItemStack> outputs) {
         super(input, outputs);
+    }
+
+    public SawRecipe(BlockIngredient input, IRecipeOutputs recipeOutput) {
+        super(input, recipeOutput);
     }
 
     @Override

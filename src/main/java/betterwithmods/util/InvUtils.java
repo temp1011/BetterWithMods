@@ -25,6 +25,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -40,6 +41,10 @@ public class InvUtils {
                 return Arrays.stream(a.getMatchingStacks()).allMatch(b::apply);
             return false;
         });
+    }
+
+    public static boolean isIngredientValid(Ingredient ingredient) {
+        return ArrayUtils.isEmpty(ingredient.getMatchingStacks());
     }
 
     public static boolean containsIngredient(ItemStackHandler handler, Ingredient ingredient) {
@@ -592,6 +597,8 @@ public class InvUtils {
     }
 
     public static ItemStack setCount(ItemStack input, int count) {
+        if(input.isEmpty())
+            return input;
         ItemStack stack = input.copy();
         stack.setCount(count);
         return stack;
@@ -642,4 +649,6 @@ public class InvUtils {
         }
         return splitStacks;
     }
+
+
 }
