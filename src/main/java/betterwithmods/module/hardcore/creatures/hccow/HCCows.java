@@ -4,8 +4,12 @@ import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.damagesource.BWDamageSource;
 import betterwithmods.module.Feature;
 import net.minecraft.client.model.ModelCow;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -16,8 +20,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HCCows extends Feature {
     public static final BWDamageSource kick = new BWDamageSource.MultiDamageSource("kick");
+    public static final DataParameter<Boolean> SCARED = EntityDataManager.createKey(EntityCow.class, DataSerializers.BOOLEAN);
 
+    public static boolean retaliation;
 
+    public static AxisAlignedBB getKickBox(EntityLivingBase entity) {
+        Vec3d look = entity.getLook(1).rotateYaw(180);
+        return new AxisAlignedBB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5).offset(look.x, look.y, look.z).grow(0.25);
+    }
+
+    @Override
+    public void setupConfig() {
+        retaliation = loadPropBool("Make cows retaliate", "Cows will now retaliate when attacked or scared", true);
+    }
 
     @Override
     public String getFeatureDescription() {
@@ -26,8 +41,12 @@ public class HCCows extends Feature {
 
     @SubscribeEvent
     public void addEntityAI(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityCow) {
-            ((EntityCow) event.getEntity()).targetTasks.addTask(1, new AIKick((EntityLivingBase) event.getEntity(),1d));
+        if (retaliation) {
+            Entity entity = event.getEntity();
+            if (entity instanceof EntityCow) {
+                ((EntityCow) entity).targetTasks.addTask(1, new AIKick((EntityLivingBase) event.getEntity(), 1d));
+                entity.getDataManager().register(SCARED, false);
+            }
         }
     }
 
@@ -38,22 +57,16 @@ public class HCCows extends Feature {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void render(RenderLivingEvent.Post<EntityCow> event){
+    public void render(RenderLivingEvent.Pre<EntityCow> event) {
 
         EntityLivingBase entity = event.getEntity();
-        if(entity instanceof EntityCow) {
-            Vec3d look = entity.getLook(1).rotateYaw(180);
-
-            AxisAlignedBB box = new AxisAlignedBB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5).offset(look.x, look.y, look.z).grow(0.25);
-
-            RenderUtils.renderDebugBoundingBox(event.getX(), event.getY(), event.getZ(), box);
+        if (entity instanceof EntityCow) {
+            RenderUtils.renderDebugBoundingBox(event.getX(), event.getY(), event.getZ(), getKickBox(entity));
 
             ModelCow cow = (ModelCow) event.getRenderer().getMainModel();
-            if(entity.getRevengeTarget() != null) {
-                cow.leg1.rotateAngleY += 1;
-                cow.leg2.rotateAngleY += 1;
-                cow.leg3.rotateAngleY += 1;
-                cow.leg4.rotateAngleY += 1;
+            if (entity.getDataManager().get(SCARED)) {
+                System.out.println(cow.leg2.rotateAngleX);
+                cow.leg2.rotateAngleX = -1;
             }
         }
     }

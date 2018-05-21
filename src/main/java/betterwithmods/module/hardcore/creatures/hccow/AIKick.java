@@ -31,29 +31,34 @@ public class AIKick extends EntityAIBase {
 
     @Override
     public void resetTask() {
+        entity.getDataManager().set(HCCows.SCARED, false);
         ticks = 0;
     }
 
     @Override
-    public void updateTask() {
+    public void startExecuting() {
+        super.startExecuting();
+        entity.getDataManager().set(HCCows.SCARED, true);
+    }
 
+    @Override
+    public void updateTask() {
         World world = entity.getEntityWorld();
-        if(world.isRemote)
+        if (world.isRemote)
             return;
-        if(ticks-- < 0) {
+        if (ticks-- < 0) {
 
             Vec3d look = entity.getLook(1).rotateYaw(180);
-            AxisAlignedBB box = new AxisAlignedBB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5).offset(look.x, look.y, look.z).grow(radius).offset(entity.posX, entity.posY, entity.posZ);
-
+            AxisAlignedBB box = HCCows.getKickBox(entity).grow(radius).offset(entity.posX, entity.posY, entity.posZ);
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, box, entity -> entity != null && !entity.getClass().isAssignableFrom(this.entity.getClass()));
-            if(!entities.isEmpty()) {
+            if (!entities.isEmpty()) {
                 entity.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1, 0);
                 entities.forEach(entity -> {
                     entity.knockBack(entity, 1, -look.x, -look.z);
                     entity.attackEntityFrom(HCCows.kick, 5);
                 });
             }
-            ticks=20;
+            ticks = 20;
         }
 
     }
