@@ -29,28 +29,35 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber
 public class BlastingOilEvent {
     // TODO: Instead of disabling this module consider on performance tweaks for massive-multiplayer servers with A LOT of entities
-
+        //TODO Make this a Feature in 1.13
 
     @SubscribeEvent
     public static void onPlayerTakeDamage(LivingHurtEvent e) {
         if (Gameplay.disableBlastingOilEvents)
             return;
+
+        if(Gameplay.blacklistDamageSources.contains(e.getSource().damageType))
+            return;
+
         DamageSource BLAST_OIL = new DamageSource("blastingoil");
         EntityLivingBase living = e.getEntityLiving();
         if (living.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             IItemHandler inventory = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            int count = 0;
-            for (int i = 0; i < inventory.getSlots(); i++) {
-                ItemStack stack = inventory.getStackInSlot(i);
+            if(inventory != null) {
+                int count = 0;
+                for (int i = 0; i < inventory.getSlots(); i++) {
+                    ItemStack stack = inventory.getStackInSlot(i);
 
-                if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
-                    count += stack.getCount();
-                    inventory.extractItem(i, stack.getCount(), false);
+                    if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
+                        count += stack.getCount();
+                        inventory.extractItem(i, stack.getCount(), false);
+                    }
                 }
-            }
-            if (count > 0) {
-                living.attackEntityFrom(BLAST_OIL, Float.MAX_VALUE);
-                living.getEntityWorld().createExplosion(null, living.posX, living.posY + living.height / 16, living.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
+                if (count > 0) {
+
+                    living.attackEntityFrom(BLAST_OIL, Float.MAX_VALUE);
+                    living.getEntityWorld().createExplosion(null, living.posX, living.posY + living.height / 16, living.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
+                }
             }
         }
     }
