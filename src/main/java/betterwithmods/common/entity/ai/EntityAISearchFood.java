@@ -42,6 +42,7 @@ public class EntityAISearchFood extends EntityAIBase {
                     }
                 }
             }
+
             if (targetItem != null) {
                 BlockPos targetPos = targetItem.getPosition();
                 if (entityPos.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 2D && targetItem.getItem().getCount() > 0) {
@@ -87,6 +88,7 @@ public class EntityAISearchFood extends EntityAIBase {
                 }
             }
         }
+
         if (targetItem == null || targetItem.isDead)
             return false;
         if (entity.getGrowingAge() < 1 && !entity.isInLove()) {

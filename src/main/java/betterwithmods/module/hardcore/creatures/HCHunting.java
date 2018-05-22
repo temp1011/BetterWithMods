@@ -1,14 +1,12 @@
 package betterwithmods.module.hardcore.creatures;
 
 import betterwithmods.common.BWOreDictionary;
-import betterwithmods.common.entity.ai.EntityAIEatFood;
 import betterwithmods.common.entity.ai.ShooterSpiderWeb;
 import betterwithmods.module.Feature;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -55,7 +53,6 @@ public class HCHunting extends Feature {
         if (evt.getEntity() instanceof EntityCreature) {
             EntityCreature entity = (EntityCreature) evt.getEntity();
             if (entity instanceof EntityZombie) {
-                ((EntityZombie) entity).tasks.addTask(0, new EntityAIEatFood(entity, isMeat));
                 for (Class clazz : zombiesAttack) {
                     ((EntityZombie) entity).targetTasks.addTask(3, new EntityAINearestAttackableTarget(entity, clazz, true));
                 }
@@ -64,7 +61,6 @@ public class HCHunting extends Feature {
                 for (Class clazz : spiderAttack) {
                     ((EntitySpider) entity).targetTasks.addTask(3, new EntityAINearestAttackableTarget(entity, clazz, false));
                 }
-                ((EntitySpider) entity).tasks.addTask(0, new EntityAIEatFood(entity, itemStack -> itemStack.getItem() == Items.CHICKEN || itemStack.getItem() == Items.COOKED_CHICKEN));
                 if (spidersShootWebs) {
                     ((EntitySpider) entity).tasks.addTask(3, new ShooterSpiderWeb((EntitySpider) entity, 200, 15.0F));
                 }
