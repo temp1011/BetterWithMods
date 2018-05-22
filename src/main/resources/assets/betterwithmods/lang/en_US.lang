@@ -526,6 +526,8 @@ bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
 bwm.random_output.tooltip=Count: %s-%s
 bwm.chance_output.tooltip=Chance: %d%%
 
+bwm.millstone_blocked.message=Blocked
+bwm.millstone_blocked.tooltip=The Millstone has too many solid blocks around it.
 
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight
