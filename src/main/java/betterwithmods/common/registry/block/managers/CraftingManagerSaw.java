@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class SawManagerBlock extends CraftingManagerBlock<SawRecipe> {
+public class CraftingManagerSaw extends CraftingManagerBlock<SawRecipe> {
 
     public SawRecipe addRecipe(ItemStack input, ItemStack outputs) {
         return addRecipe(input, Lists.newArrayList(outputs));

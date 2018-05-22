@@ -2,7 +2,7 @@ package betterwithmods.common.registry.block.recipe;
 
 import betterwithmods.api.recipe.IRecipeOutputs;
 import betterwithmods.common.blocks.mechanical.tile.TileTurntable;
-import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.block.managers.CraftingManagerTurntable;
 import betterwithmods.event.FakePlayerHandler;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
@@ -62,7 +62,7 @@ public class TurntableRecipe extends BlockRecipe {
 
     @Override
     public boolean craftRecipe(World world, BlockPos pos, Random rand, IBlockState state) {
-        TileTurntable turntable = TurntableManagerBlock.findTurntable(world, pos);
+        TileTurntable turntable = CraftingManagerTurntable.findTurntable(world, pos);
         if(turntable != null && turntable.getPotteryRotation() >= getRotations()) {
             InvUtils.ejectStackWithOffset(world, pos, onCraft(world, pos));
             state.getBlock().onBlockHarvested(world, pos, state, FakePlayerHandler.getPlayer());

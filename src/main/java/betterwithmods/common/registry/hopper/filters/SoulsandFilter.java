@@ -1,19 +1,20 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.hopper.filters;
 
 import betterwithmods.BWMod;
 import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class SoulsandFilter extends HopperFilter{
+public class SoulsandFilter extends HopperFilter {
 
     public SoulsandFilter(Ingredient filter, List<Ingredient> filtered) {
-        super(BWMod.MODID+":soul_sand", filter, filtered);
+        super(new ResourceLocation(BWMod.MODID,"soul_sand"), filter, filtered);
     }
 
     @Override

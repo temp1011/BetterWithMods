@@ -1,4 +1,4 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.hopper.filters;
 
 import betterwithmods.BWMod;
 import betterwithmods.api.tile.IHopperFilter;
@@ -7,6 +7,7 @@ import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 
 public class SelfHopperFilter implements IHopperFilter {
 
@@ -26,8 +27,8 @@ public class SelfHopperFilter implements IHopperFilter {
     }
 
     @Override
-    public String getName() {
-        return BWMod.MODID + ":self";
+    public ResourceLocation getName() {
+        return new ResourceLocation(BWMod.MODID, "self");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package betterwithmods.testing;
 
 import betterwithmods.api.tile.IHeated;
-import betterwithmods.common.registry.bulk.manager.CookingPotManager;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerPot;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import betterwithmods.testing.base.BaseBulkTest;
@@ -52,7 +52,7 @@ public class CookingPotTests extends BaseBulkTest<CookingPotRecipe> {
 
     @Before
     public void beforeTest() {
-        TEST_MANAGER = new CookingPotManager();
+        TEST_MANAGER = new CraftingManagerPot();
         List<Ingredient> inputs = Lists.newArrayList(Ingredient.fromStacks(new ItemStack(Blocks.COBBLESTONE)));
         List<Ingredient> inputs2 = Lists.newArrayList(new OreIngredient("cobblestone"));
 

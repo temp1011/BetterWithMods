@@ -3,6 +3,7 @@ package betterwithmods.common;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.api.util.IVariantProvider;
 import betterwithmods.common.blocks.*;
+import betterwithmods.common.items.ItemBark;
 import betterwithmods.common.items.ItemMaterial;
 import betterwithmods.common.registry.variants.BlockVariant;
 import betterwithmods.common.registry.variants.WoodVariant;
@@ -101,6 +102,7 @@ public class BWOreDictionary {
         registerOre("blockConcentratedHellfire", BlockAesthetic.getStack(BlockAesthetic.EnumType.HELLFIRE));
         registerOre("blockBarrel", new ItemStack(BWMBlocks.BARREL));
         //Added bark subtype entries for Roots compatibility
+        registerOre("barkWood", ItemBark.getBarks(1));
         registerOre("barkWood", new ItemStack(BWMItems.BARK, 1, OreDictionary.WILDCARD_VALUE));
         registerOre("barkOak", new ItemStack(BWMItems.BARK, 1, 0));
         registerOre("barkSpruce", new ItemStack(BWMItems.BARK, 1, 1));
@@ -206,6 +208,9 @@ public class BWOreDictionary {
         stacks.forEach(s -> OreDictionary.registerOre(ore, s));
     }
 
+    public static void registerOre(String ore, List<ItemStack> stacks) {
+        stacks.forEach(s -> OreDictionary.registerOre(ore, s));
+    }
 
     public static void registerOre(String ore, ItemStack... items) {
         for (ItemStack i : items)

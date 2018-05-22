@@ -61,7 +61,7 @@ public abstract class BaseBulkTest<T extends BulkRecipe > extends BaseTest {
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isEmpty();
         TEST_MANAGER.addRecipe(recipe);
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isNotEmpty();
-        TEST_MANAGER.remove(recipe);
+        TEST_MANAGER.removeRecipe(recipe);
     }
 
     @Test

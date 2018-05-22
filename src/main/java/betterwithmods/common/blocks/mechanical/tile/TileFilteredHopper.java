@@ -11,8 +11,8 @@ import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.mech_machine.BlockMechMachine;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.common.blocks.tile.TileVisibleInventory;
-import betterwithmods.common.registry.HopperFilter;
-import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.hopper.filters.HopperFilter;
+import betterwithmods.common.registry.hopper.recipes.HopperRecipe;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -98,14 +98,18 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     public void insert(Entity entity) {
         if (!InvUtils.isFull(inventory) && entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item, this)) {
-                this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+
+            HopperRecipe recipe = BWRegistry.FILTERD_HOPPER.findRecipe(this, item.getItem()).orElse(null);
+            if (recipe != null) {
+                if (recipe.craftRecipe(item, world, pos, this)) {
+                    this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                }
             } else if (canFilterProcessItem(item.getItem())) {
                 if (InvUtils.insertFromWorld(inventory, item, 0, 18, false))
                     this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                hopperFilter.onInsert(world, pos, this, entity);
             }
         }
-        hopperFilter.onInsert(world, pos, this, entity);
     }
 
     private void extract() {
@@ -239,7 +243,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
         this.soulsRetained += numSouls;
         ISoulContainer container = getSoulContainer();
 
-        if(this.soulsRetained > 7 && !isPowered()) {
+        if (this.soulsRetained > 7 && !isPowered()) {
             overpower();
             return;
         }

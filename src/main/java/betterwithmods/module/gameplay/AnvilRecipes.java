@@ -3,9 +3,9 @@ package betterwithmods.module.gameplay;
 import betterwithmods.BWMod;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.Feature;
@@ -15,7 +15,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreIngredient;
 
 /**
@@ -55,15 +57,16 @@ public class AnvilRecipes extends Feature {
     }
 
     private static IRecipe addAnvilRecipe(IRecipe recipe) {
-        AnvilCraftingManager.ANVIL_CRAFTING.add(recipe);
+        BWRegistry.ANVIL.addRecipe(recipe);
         if (recipe.getRecipeOutput().isEmpty()) {
             BWMod.logger.warn("Recipe is missing output " + recipe.getGroup());
         }
         return recipe;
     }
 
-    @Override
-    public void init(FMLInitializationEvent event) {
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         addSteelShapedRecipe("block_dispenser", new ItemStack(BWMBlocks.BLOCK_DISPENSER), "MMMM", "MUUM", "STTS", "SRRS", 'M', Blocks.MOSSY_COBBLESTONE, 'U', new ItemStack(BWMBlocks.URN, 1, 8), 'S', "stone", 'R', "dustRedstone", 'T', Blocks.REDSTONE_TORCH);
         addSteelShapedRecipe("buddy_block", new ItemStack(BWMBlocks.BUDDY_BLOCK), "SSLS", "LTTS", "STTL", "SLSS", 'S', "stone", 'T', Blocks.REDSTONE_TORCH, 'L', ItemMaterial.getStack(ItemMaterial.EnumMaterial.POLISHED_LAPIS));
         addSteelShapedRecipe("detector", new ItemStack(BWMBlocks.DETECTOR), "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', ItemMaterial.getStack(ItemMaterial.EnumMaterial.POLISHED_LAPIS), 'T', Blocks.REDSTONE_TORCH, 'S', "stone", 'R', "dustRedstone");
@@ -96,6 +99,11 @@ public class AnvilRecipes extends Feature {
         addSteelShapedRecipe("steel_axle", new ItemStack(BWMBlocks.STEEL_AXLE, 2), "  NG", " NBN", "NBN ", "GN  ", 'N', "nuggetSoulforgedSteel", 'G', "gearSoulforgedSteel", 'B', "hideBelt");
         addSteelShapedRecipe("steel_pressure_plate", new ItemStack(BWMBlocks.STEEL_PRESSURE_PLATE, 2), "IIII", " RR ", 'I', "ingotSoulforgedSteel", 'R', "dustRedstone");
         addSteelShapedRecipe("lightning_rod", new ItemStack(BWMBlocks.CANDLE_HOLDER, 2), "N", "N", "N", "I", 'I', "ingotSoulforgedSteel", 'N', "nuggetSoulforgedSteel");
+    }
+
+    @Override
+    public boolean hasSubscriptions() {
+        return true;
     }
 }
 

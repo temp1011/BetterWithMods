@@ -1,9 +1,7 @@
 package betterwithmods.module.compat.jei.wrapper;
 
-import betterwithmods.common.BWMBlocks;
-import betterwithmods.common.BWRegistry;
 import betterwithmods.api.recipe.IOutput;
-import betterwithmods.common.registry.HopperInteractions;
+import betterwithmods.common.registry.hopper.recipes.HopperRecipe;
 import com.google.common.collect.Lists;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.ingredients.IIngredients;
@@ -20,10 +18,10 @@ import java.util.List;
  */
 public class HopperRecipeWrapper implements IRecipeWrapper {
 
-    public final HopperInteractions.HopperRecipe recipe;
+    public final HopperRecipe recipe;
     private final IJeiHelpers helpers;
 
-    public HopperRecipeWrapper(IJeiHelpers helpers, HopperInteractions.HopperRecipe recipe) {
+    public HopperRecipeWrapper(IJeiHelpers helpers, HopperRecipe recipe) {
         this.recipe = recipe;
         this.helpers = helpers;
     }

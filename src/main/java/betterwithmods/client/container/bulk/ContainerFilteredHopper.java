@@ -3,7 +3,7 @@ package betterwithmods.client.container.bulk;
 import betterwithmods.client.container.ContainerProgress;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
-import betterwithmods.common.registry.HopperFilter;
+import betterwithmods.common.registry.hopper.filters.HopperFilter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

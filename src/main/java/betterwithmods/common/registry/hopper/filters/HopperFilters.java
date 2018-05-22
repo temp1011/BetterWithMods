@@ -1,8 +1,9 @@
-package betterwithmods.common.registry;
+package betterwithmods.common.registry.hopper.filters;
 
 import betterwithmods.api.tile.IHopperFilter;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
 
@@ -14,14 +15,18 @@ import java.util.Map;
  */
 public class HopperFilters {
 
-    private Map<String, IHopperFilter> FILTERS = Maps.newHashMap();
+    private Map<ResourceLocation, IHopperFilter> FILTERS = Maps.newHashMap();
 
     public void addFilter(IHopperFilter filter) {
         FILTERS.put(filter.getName(), filter);
     }
 
-    public IHopperFilter getFilter(String name) {
+    public IHopperFilter getFilter(ResourceLocation name) {
         return FILTERS.getOrDefault(name,HopperFilter.NONE);
+    }
+
+    public IHopperFilter getFilter(String name) {
+        return getFilter(new ResourceLocation(name));
     }
 
     public IHopperFilter getFilter(ItemStack stack) {

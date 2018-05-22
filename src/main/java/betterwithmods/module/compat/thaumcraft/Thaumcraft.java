@@ -3,11 +3,11 @@ package betterwithmods.module.compat.thaumcraft;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
 import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.*;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.items.ItemArcaneScroll;
 import betterwithmods.common.items.ItemMaterial;
-import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.module.CompatFeature;
 import betterwithmods.module.gameplay.miniblocks.ItemCamo;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
@@ -66,7 +66,7 @@ public class Thaumcraft extends CompatFeature {
 
     public static void registerAnvilRecipeAspects() {
         ArrayList<String> history = new ArrayList<>();
-        for (IRecipe recipe : AnvilCraftingManager.ANVIL_CRAFTING) {
+        for (IRecipe recipe : BWRegistry.ANVIL.getRecipes()) {
 
             AspectList tmp = null;
 
@@ -91,7 +91,6 @@ public class Thaumcraft extends CompatFeature {
         if (changeStart) {
             MinecraftForge.EVENT_BUS.register(new StartChanges());
         }
-
     }
 
     @Override
@@ -105,7 +104,12 @@ public class Thaumcraft extends CompatFeature {
 
         //Fix the Axe recipe changing the aspects to have metal
         //TODO remove this if fixed by Azanor
-        ThaumcraftApi.registerComplexObjectTag("plankWood", new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag("plankWood", new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag("stickWood", new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag("slabWood", new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.PLANKS), new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(Items.STICK), new AspectList().add(Aspect.PLANT, 1));
+        ThaumcraftApi.registerObjectTag(new ItemStack(Blocks.WOODEN_SLAB), new AspectList().add(Aspect.PLANT, 1));
         //This happens due to shears too
         ThaumcraftApi.registerObjectTag(ItemMaterial.getStack(ItemMaterial.EnumMaterial.LEATHER_CUT), new AspectList().add(Aspect.BEAST, 2).add(Aspect.PROTECT, 2));
 

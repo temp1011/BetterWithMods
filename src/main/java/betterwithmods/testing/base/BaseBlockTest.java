@@ -41,7 +41,7 @@ public abstract class BaseBlockTest<T extends BlockRecipe> extends BaseTest {
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isEmpty();
         TEST_MANAGER.addRecipe(recipe);
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isNotEmpty();
-        TEST_MANAGER.remove(recipe);
+        TEST_MANAGER.removeRecipe(recipe);
     }
 
     @Test

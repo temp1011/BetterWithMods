@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TurntableManagerBlock extends CraftingManagerBlock<TurntableRecipe> {
+public class CraftingManagerTurntable extends CraftingManagerBlock<TurntableRecipe> {
 
     public TurntableRecipe addDefaultRecipe(ItemStack input, ItemStack productState) {
         return addDefaultRecipe(new BlockIngredient(input), BWMRecipes.getStateFromStack(productState), Lists.newArrayList());

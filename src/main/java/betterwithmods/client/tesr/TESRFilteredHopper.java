@@ -3,7 +3,7 @@ package betterwithmods.client.tesr;
 import betterwithmods.client.model.filters.ModelWithResource;
 import betterwithmods.client.model.render.RenderUtils;
 import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
-import betterwithmods.common.registry.HopperFilter;
+import betterwithmods.common.registry.hopper.filters.HopperFilter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;

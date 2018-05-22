@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.anvil;
 
+import betterwithmods.common.registry.base.CraftingManagerBase;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -7,18 +8,15 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
+import javax.annotation.Nonnull;
 import java.util.List;
 
-public class AnvilCraftingManager {
-
-    public static List<IRecipe> ANVIL_CRAFTING = new ArrayList<>();
-
+public class CraftingManagerAnvil extends CraftingManagerBase<IRecipe> {
     /**
      * Retrieves an ItemStack that has multiple recipes for it.
      */
-    public static ItemStack findMatchingResult(InventoryCrafting inventory, World world) {
-        for (IRecipe irecipe : ANVIL_CRAFTING) {
+    public ItemStack findMatchingResult(InventoryCrafting inventory, World world) {
+        for (IRecipe irecipe : recipes) {
             if (irecipe.matches(inventory, world)) {
                 return irecipe.getCraftingResult(inventory);
             }
@@ -34,10 +32,9 @@ public class AnvilCraftingManager {
     }
 
 
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inventory, World craftMatrix) {
 
-    public static NonNullList<ItemStack> getRemainingItems(InventoryCrafting inventory, World craftMatrix) {
-
-        for (IRecipe irecipe : ANVIL_CRAFTING) {
+        for (IRecipe irecipe : recipes) {
             if (irecipe.matches(inventory, craftMatrix)) {
                 return irecipe.getRemainingItems(inventory);
             }
@@ -49,7 +46,7 @@ public class AnvilCraftingManager {
             }
         }
 
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inventory.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inventory.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
             nonnulllist.set(i, inventory.getStackInSlot(i));
@@ -59,4 +56,14 @@ public class AnvilCraftingManager {
     }
 
 
+    @Override
+    public List<IRecipe> getDisplayRecipes() {
+        return recipes;
+    }
+
+    @Override
+    public IRecipe addRecipe(@Nonnull IRecipe recipe) {
+        this.recipes.add(recipe);
+        return recipe;
+    }
 }

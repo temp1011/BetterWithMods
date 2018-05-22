@@ -17,16 +17,18 @@ import betterwithmods.common.potion.BWPotion;
 import betterwithmods.common.potion.PotionSlowfall;
 import betterwithmods.common.potion.PotionTruesight;
 import betterwithmods.common.registry.BellowsManager;
-import betterwithmods.common.registry.HopperFilters;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.block.managers.KilnManagerBlock;
-import betterwithmods.common.registry.block.managers.SawManagerBlock;
-import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
+import betterwithmods.common.registry.anvil.CraftingManagerAnvil;
+import betterwithmods.common.registry.block.managers.CrafingManagerKiln;
+import betterwithmods.common.registry.block.managers.CraftingManagerSaw;
+import betterwithmods.common.registry.block.managers.CraftingManagerTurntable;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.StateIngredient;
-import betterwithmods.common.registry.bulk.manager.CookingPotManager;
-import betterwithmods.common.registry.bulk.manager.MillManager;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerMill;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerPot;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
+import betterwithmods.common.registry.hopper.filters.HopperFilters;
+import betterwithmods.common.registry.hopper.manager.CraftingManagerHopper;
 import betterwithmods.manual.api.API;
 import betterwithmods.manual.common.api.ManualAPIImpl;
 import betterwithmods.module.hardcore.creatures.EntityTentacle;
@@ -70,12 +72,15 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = BWMod.MODID)
 public class BWRegistry {
 
-    public static final CookingPotManager CAULDRON = new CookingPotManager();
-    public static final CookingPotManager CRUCIBLE = new CookingPotManager();
-    public static final MillManager MILLSTONE = new MillManager();
-    public static final SawManagerBlock WOOD_SAW = new SawManagerBlock();
-    public static final KilnManagerBlock KILN = new KilnManagerBlock();
-    public static final TurntableManagerBlock TURNTABLE = new TurntableManagerBlock();
+    public static final CraftingManagerPot CAULDRON = new CraftingManagerPot();
+    public static final CraftingManagerPot CRUCIBLE = new CraftingManagerPot();
+    public static final CraftingManagerMill MILLSTONE = new CraftingManagerMill();
+    public static final CraftingManagerSaw WOOD_SAW = new CraftingManagerSaw();
+    public static final CrafingManagerKiln KILN = new CrafingManagerKiln();
+    public static final CraftingManagerTurntable TURNTABLE = new CraftingManagerTurntable();
+    public static final CraftingManagerHopper FILTERD_HOPPER = new CraftingManagerHopper();
+    public static final CraftingManagerAnvil ANVIL = new CraftingManagerAnvil();
+
     public static final HopperFilters HOPPER_FILTERS = new HopperFilters();
 
     @GameRegistry.ObjectHolder("betterwithmods:true_sight")

@@ -1,6 +1,6 @@
 package betterwithmods.testing;
 
-import betterwithmods.common.registry.block.managers.SawManagerBlock;
+import betterwithmods.common.registry.block.managers.CraftingManagerSaw;
 import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.SawRecipe;
@@ -24,7 +24,7 @@ public class SawRecipesTest extends BaseBlockTest<SawRecipe> {
     public void beforeTest() {
         world = new FakeWorld();
 
-        TEST_MANAGER = new SawManagerBlock();
+        TEST_MANAGER = new CraftingManagerSaw();
         world.setBlockState(origin, Blocks.PLANKS.getDefaultState());
         world.setBlockState(origin.up(), Blocks.LOG.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X));
 

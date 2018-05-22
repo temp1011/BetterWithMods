@@ -15,7 +15,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
-public class MillManager extends CraftingManagerBulk<MillRecipe> {
+public class CraftingManagerMill extends CraftingManagerBulk<MillRecipe> {
     public MillRecipe addMillRecipe(List<Ingredient> inputs, List<ItemStack> outputs, SoundEvent type) {
         return addRecipe(new MillRecipe(inputs, outputs).setSound(type));
     }
