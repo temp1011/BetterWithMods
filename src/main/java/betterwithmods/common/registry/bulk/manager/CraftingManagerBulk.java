@@ -2,7 +2,6 @@ package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.api.tile.IBulkTile;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
-import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -52,11 +51,11 @@ public abstract class CraftingManagerBulk<T extends BulkRecipe> {
     }
 
     protected List<T> findRecipeFuzzy(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(), outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> r.getRecipeOutput().matchesFuzzy(outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeExact(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(), outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> r.getRecipeOutput().matches(outputs)).collect(Collectors.toList());
     }
 
     public boolean canCraft(IBulkTile tile, ItemStackHandler inv) {

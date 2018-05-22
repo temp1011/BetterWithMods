@@ -1,5 +1,9 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.api.recipe.IRecipeOutputs;
+import betterwithmods.api.recipe.impl.ChanceOutputs;
+import betterwithmods.api.recipe.impl.CombinedOutputs;
+import betterwithmods.api.recipe.impl.ListOutputs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.blocks.BlockAesthetic;
@@ -19,7 +23,7 @@ public class HarderSteelRecipe extends Feature {
 
     @Override
     public void setupConfig() {
-        super.setupConfig();
+        urnReturnChance = loadPropDouble("Urn Return Chance", "Percent chance (0.0-1.0) that the urn is returned when creating the steel.", 0.75);
     }
 
     @Override
@@ -27,17 +31,22 @@ public class HarderSteelRecipe extends Feature {
         return "Whether Steel requires End Slag, a material only available after the End.";
     }
 
+
     @Override
     public void init(FMLInitializationEvent event) {
         BWRegistry.CRUCIBLE.addStokedRecipe(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX)));
-        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon"), Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX))), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new ItemStack(BWMBlocks.URN, 1, 0)));
+        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon"), Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.SOUL_FLUX))), getOutputs());
         BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), Lists.newArrayList(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)));
     }
 
     @Override
     public void disabledInit(FMLInitializationEvent event) {
         BWRegistry.CRUCIBLE.addStokedRecipe(Ingredient.fromStacks(ItemMaterial.getStack(ItemMaterial.EnumMaterial.ENDER_SLAG)), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE)));
-        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon")), Lists.newArrayList(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT), new ItemStack(BWMBlocks.URN, 1, 0)));
+        BWRegistry.CRUCIBLE.addStokedRecipe(Lists.newArrayList(new OreIngredient("blockSoulUrn"), new OreIngredient("ingotIron"), new OreIngredient("dustCarbon")), getOutputs());
         BWRegistry.KILN.addStokedRecipe(new ItemStack(Blocks.END_STONE), Lists.newArrayList(BlockAesthetic.getStack(BlockAesthetic.EnumType.WHITECOBBLE), ItemMaterial.getStack(ItemMaterial.EnumMaterial.BRIMSTONE)));
+    }
+
+    public IRecipeOutputs getOutputs() {
+        return new CombinedOutputs(new ListOutputs(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), new ChanceOutputs(new ItemStack(BWMBlocks.URN, 1, 0), urnReturnChance));
     }
 }

@@ -1,5 +1,8 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.api.recipe.impl.RandomCountOutputs;
+import betterwithmods.api.recipe.impl.RandomOutput;
+import betterwithmods.api.util.IWood;
 import betterwithmods.BWMod;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWMBlocks;
@@ -24,8 +27,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Random;
-
 /**
  * Created by primetoxinz on 5/16/17.
  */
@@ -39,7 +40,7 @@ public class SawRecipes extends Feature {
     @Override
     public void setupConfig() {
         //TODO make the default 4 in 1.13
-        plankCount = loadPropInt("Saw Plank Output", "Plank count that is output when a log is chopped by a Saw.", 6);
+        plankCount = loadPropInt("Saw Plank Output", "Plank count that is output when a log is chopped by a Saw.", 4);
         barkCount = loadPropInt("Saw Bark Output", "Bark count that is output when a log is chopped by a Saw.", 1);
         sawDustCount = loadPropInt("Saw sawdust Output", "Sawdust count that is output when a log is chopped by a Saw.", 2);
     }
@@ -54,13 +55,8 @@ public class SawRecipes extends Feature {
         BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(BWMBlocks.ROPE));
         for (int i = 0; i < 9; i++)
             BWRegistry.WOOD_SAW.addSelfdropRecipe(new ItemStack(Blocks.RED_FLOWER, 1, i));
-        BWRegistry.WOOD_SAW.addRecipe(new SawRecipe(new BlockIngredient(new ItemStack(Blocks.MELON_BLOCK)), NonNullList.create()) {
-            @Override
-            public NonNullList<ItemStack> getOutputs() {
-                Random random = new Random();
-                return InvUtils.asNonnullList(new ItemStack(Items.MELON, 3 + random.nextInt(5)));
-            }
-        });
+
+        BWRegistry.WOOD_SAW.addRecipe(new SawRecipe(new BlockIngredient(new ItemStack(Blocks.MELON_BLOCK)), new RandomCountOutputs(new RandomOutput(new ItemStack(Items.MELON), 3, 8))));
 
         BWOreDictionary.findLogRecipes();
         //TODO configure this
@@ -75,8 +71,7 @@ public class SawRecipes extends Feature {
                 }
             }
         }
-
-}
+    }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {

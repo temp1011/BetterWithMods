@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.IRecipeOutputs;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
 import betterwithmods.event.FakePlayerHandler;
@@ -38,6 +39,14 @@ public class TurntableRecipe extends BlockRecipe {
         this.productState = productState;
         this.representative = representative;
     }
+
+    public TurntableRecipe(BlockIngredient input, IBlockState productState, ItemStack representative, IRecipeOutputs outputs, int rotations) {
+        super(input, outputs);
+        this.rotations = rotations;
+        this.productState = productState;
+        this.representative = representative;
+    }
+
 
     public int getRotations() {
         return rotations;

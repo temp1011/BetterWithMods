@@ -1,6 +1,7 @@
 package betterwithmods.common.registry.bulk.manager;
 
 import betterwithmods.api.tile.IBulkTile;
+import betterwithmods.api.recipe.IRecipeOutputs;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.blocks.mechanical.tile.TileCookingPot;
 import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
@@ -17,6 +18,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
+
+    public CookingPotRecipe addRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int heat) {
+        return addRecipe(new CookingPotRecipe(inputs, outputs, heat));
+    }
 
     public CookingPotRecipe addRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {
         return addRecipe(new CookingPotRecipe(inputs, outputs, heat));
@@ -46,6 +51,9 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
         return addRecipe(inputs, outputs, BWMHeatRegistry.STOKED_HEAT);
     }
 
+    public CookingPotRecipe addStokedRecipe(List<Ingredient> inputs, IRecipeOutputs outputs) {
+        return addRecipe(inputs, outputs, BWMHeatRegistry.STOKED_HEAT);
+    }
 
     //Unstoked
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, ItemStack output) {
@@ -73,6 +81,10 @@ public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
     }
 
     public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, List<ItemStack> outputs) {
+        return addRecipe(inputs, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
+    }
+
+    public CookingPotRecipe addUnstokedRecipe(List<Ingredient> inputs, IRecipeOutputs outputs) {
         return addRecipe(inputs, outputs, BWMHeatRegistry.UNSTOKED_HEAT);
     }
 

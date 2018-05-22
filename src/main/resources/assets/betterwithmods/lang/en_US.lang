@@ -429,7 +429,7 @@ death.attack.saw=%s forgot the lessons of wood shop safety
 death.attack.steel_saw.0=became a %s siding.
 death.attack.steel_saw.1=%s forgot the lessons of steel shop safety
 death.attack.chopping_block=%s lost their head
-death.blasting_oil=%s is having a blast
+death.attack.blasting_oil=%s was not careful with their unstable explosives
 death.acid_rain=%s should have packed a steel umbrella
 death.squid.attack=%s was eaten by a Squid.
 
@@ -453,6 +453,12 @@ bwm.config.debug.tooltip=Debug Info for certain features
 bwm.config.vanilla_tweaks.tooltip=Changes to how Vanilla Minecraft works
 bwm.config.pulley.tooltip=Limitations of the platforms of the pulley
 bwm.hcfurnace.cook_time.tooltip=Cook Time: %s ticks
+
+bwm.random_output.tooltip=Count: %s-%s
+bwm.chance_output.tooltip=Chance: %d%%
+
+bwm.millstone_blocked.message=Blocked
+bwm.millstone_blocked.tooltip=The Millstone has too many solid blocks around it.
 
 bwm.effect.slow_fall=Slow Fall
 bwm.effect.true_sight=True Sight

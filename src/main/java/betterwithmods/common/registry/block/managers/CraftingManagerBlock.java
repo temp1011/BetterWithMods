@@ -1,7 +1,6 @@
 package betterwithmods.common.registry.block.managers;
 
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
-import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
@@ -41,11 +40,11 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
     }
 
     protected List<T> findRecipeFuzzy(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matches(r.getOutputs(), outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> r.getRecipeOutput().matchesFuzzy(outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeExact(List<ItemStack> outputs) {
-        return recipes.stream().filter(r -> InvUtils.matchesExact(r.getOutputs(), outputs)).collect(Collectors.toList());
+        return recipes.stream().filter(r -> r.getRecipeOutput().matches(outputs)).collect(Collectors.toList());
     }
 
     protected List<T> findRecipeByInput(ItemStack input) {
@@ -57,10 +56,10 @@ public abstract class CraftingManagerBlock<T extends BlockRecipe> {
     }
 
     public Optional<T> findRecipe(World world, BlockPos pos, IBlockState state) {
-        if(recipeCache.containsKey(state)) {
+        if (recipeCache.containsKey(state)) {
             return Optional.of(recipeCache.get(state));
         }
-        Optional<T> recipe =  findRecipes(world, pos, state).stream().findFirst();
+        Optional<T> recipe = findRecipes(world, pos, state).stream().findFirst();
         recipe.ifPresent(t -> recipeCache.put(state, t));
         return recipe;
     }

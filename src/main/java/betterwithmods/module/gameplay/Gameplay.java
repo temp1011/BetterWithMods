@@ -6,6 +6,7 @@ import betterwithmods.module.Module;
 import betterwithmods.module.ModuleLoader;
 import betterwithmods.module.gameplay.breeding_harness.BreedingHarness;
 import betterwithmods.module.gameplay.miniblocks.MiniBlocks;
+import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -33,6 +35,7 @@ public class Gameplay extends Module {
     }
 
     private String[] waterwheelFluidConfig;
+    public static List<String> blacklistDamageSources;
 
     @Override
     public void addFeatures() {
@@ -71,6 +74,15 @@ public class Gameplay extends Module {
         waterwheelFluidConfig = loader.configHelper.loadPropStringList("Waterwheel fluids", name, "Fluids which will allow the Waterwheel to turn, format fluid_name", new String[]{
                 "swamp_water"
         });
+
+        blacklistDamageSources = Lists.newArrayList(ConfigHelper.loadPropStringList("Blasting oil damage source blacklist", name,"Disallow these damage sources from disturbing blasting oil", new String[]{
+                "drown",
+                "cramming",
+                "generic",
+                "wither",
+                "starve",
+                "outOfWorld"
+        }));
 
         super.setupConfig();
     }

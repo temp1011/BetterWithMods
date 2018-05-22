@@ -98,7 +98,7 @@ public class TileFilteredHopper extends TileVisibleInventory implements IMechani
     public void insert(Entity entity) {
         if (!InvUtils.isFull(inventory) && entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item)) {
+            if (HopperInteractions.attemptToCraft(hopperFilter.getName(), getBlockWorld(), getBlockPos(), item, this)) {
                 this.getBlockWorld().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((getBlockWorld().rand.nextFloat() - getBlockWorld().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             } else if (canFilterProcessItem(item.getItem())) {
                 if (InvUtils.insertFromWorld(inventory, item, 0, 18, false))

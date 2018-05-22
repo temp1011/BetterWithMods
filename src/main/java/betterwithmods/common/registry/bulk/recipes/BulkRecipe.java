@@ -1,35 +1,44 @@
 package betterwithmods.common.registry.bulk.recipes;
 
 import betterwithmods.api.tile.IBulkTile;
+import betterwithmods.api.recipe.IRecipeOutputs;
+import betterwithmods.api.recipe.impl.ListOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BulkRecipe implements Comparable<BulkRecipe> {
 
     protected NonNullList<Ingredient> inputs;
-    protected List<ItemStack> outputs;
+    protected IRecipeOutputs recipeOutput;
     protected int priority;
+
+    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int priority) {
+        this.inputs = InvUtils.asNonnullList(inputs);
+        this.recipeOutput = outputs;
+        this.priority = priority;
+    }
 
     public BulkRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs) {
         this(inputs, outputs, 0);
     }
 
-    public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
-        this.outputs = outputs;
+    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs) {
         this.inputs = InvUtils.asNonnullList(inputs);
-        this.priority = priority;
+        this.recipeOutput = outputs;
+    }
+
+    public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
+        this(inputs, new ListOutputs(outputs), priority);
     }
 
     public NonNullList<ItemStack> onCraft(@Nullable World world, IBulkTile tile, ItemStackHandler inv) {
@@ -41,8 +50,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
         return NonNullList.create();
     }
 
+    public IRecipeOutputs getRecipeOutput() {
+        return recipeOutput;
+    }
+
     public List<ItemStack> getOutputs() {
-        return outputs.stream().map(ItemStack::copy).collect(Collectors.toList());
+        return recipeOutput.getOutputs();
     }
 
     public List<Ingredient> getInputs() {
@@ -59,12 +72,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public boolean isInvalid() {
-        return (getInputs().isEmpty() || getInputs().stream().anyMatch(i -> ArrayUtils.isEmpty(i.getMatchingStacks())) || getOutputs().isEmpty());
+        return (getInputs().isEmpty() || getInputs().stream().anyMatch(InvUtils::isIngredientValid) || recipeOutput.isInvalid());
     }
 
     @Override
     public String toString() {
-        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.inputs, this.outputs);
+        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.inputs, this.recipeOutput);
     }
 
     /**
