@@ -75,7 +75,7 @@ public class Gameplay extends Module {
                 "swamp_water"
         });
 
-        blacklistDamageSources = Lists.newArrayList(ConfigHelper.loadPropStringList("Blasting oil damage source blacklist", name,"Disallow these damage sources from disturbing blasting oil", new String[]{
+        blacklistDamageSources = Lists.newArrayList(loader.configHelper.loadPropStringList("Blasting oil damage source blacklist", name,"Disallow these damage sources from disturbing blasting oil", new String[]{
                 "drown",
                 "cramming",
                 "generic",

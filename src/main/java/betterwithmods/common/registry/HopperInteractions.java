@@ -2,9 +2,9 @@ package betterwithmods.common.registry;
 
 import betterwithmods.api.recipe.IRecipeOutputs;
 import betterwithmods.api.recipe.impl.ListOutputs;
+import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWRegistry;
-import betterwithmods.common.blocks.BlockUrn;
-import betterwithmods.common.blocks.mechanical.tile.TileEntityFilteredHopper;
+import betterwithmods.common.blocks.mechanical.tile.TileFilteredHopper;
 import betterwithmods.common.blocks.tile.SimpleStackHandler;
 import betterwithmods.util.InvUtils;
 import betterwithmods.util.StackIngredient;
@@ -83,7 +83,7 @@ public class HopperInteractions {
         return RECIPES.stream().filter(r -> r.input.apply(input)).collect(Collectors.toList());
     }
 
-    public static boolean attemptToCraft(String filterName, World world, BlockPos pos, EntityItem input, TileEntityFilteredHopper tile) {
+    public static boolean attemptToCraft(String filterName, World world, BlockPos pos, EntityItem input, TileFilteredHopper tile) {
         for (HopperRecipe recipe : RECIPES) {
             if (recipe.isRecipe(filterName, input)) {
                 if (recipe.canCraft(world, pos)) {
@@ -103,12 +103,12 @@ public class HopperInteractions {
 
         @Override
         public List<ItemStack> getInputContainer() {
-            return Lists.newArrayList(BlockUrn.getStack(BlockUrn.EnumType.EMPTY, 1));
+            return Lists.newArrayList(new ItemStack(BWMBlocks.URN));
         }
 
         @Override
         public List<ItemStack> getOutputContainer() {
-            return Lists.newArrayList(BlockUrn.getStack(BlockUrn.EnumType.FULL, 1));
+            return Lists.newArrayList(new ItemStack(BWMBlocks.SOUL_URN));
         }
     }
 
@@ -123,7 +123,7 @@ public class HopperInteractions {
         }
 
         @Override
-        public void onCraft(World world, BlockPos pos, EntityItem item, TileEntityFilteredHopper tile) {
+        public void onCraft(World world, BlockPos pos, EntityItem item, TileFilteredHopper tile) {
             tile.increaseSoulCount(1);
             if (!world.isRemote) {
                 world.playSound(null, pos, SoundEvents.ENTITY_GHAST_AMBIENT, SoundCategory.BLOCKS, 1.0F, world.rand.nextFloat() * 0.1F + 0.45F);
@@ -166,7 +166,7 @@ public class HopperInteractions {
             return false;
         }
 
-        public void craft(EntityItem inputStack, World world, BlockPos pos, TileEntityFilteredHopper tile) {
+        public void craft(EntityItem inputStack, World world, BlockPos pos, TileFilteredHopper tile) {
             SimpleStackHandler inventory = tile.inventory;
             for (ItemStack output : getOutputs()) {
                 ItemStack remainder = InvUtils.insert(inventory, output, false);
@@ -177,7 +177,7 @@ public class HopperInteractions {
             onCraft(world, pos, inputStack, tile);
         }
 
-        public void onCraft(World world, BlockPos pos, EntityItem item, TileEntityFilteredHopper tile) {
+        public void onCraft(World world, BlockPos pos, EntityItem item, TileFilteredHopper tile) {
             item.getItem().shrink(1);
             if (item.getItem().getCount() <= 0)
                 item.setDead();
@@ -220,7 +220,7 @@ public class HopperInteractions {
         }
 
         public boolean canCraft(World world, BlockPos pos) {
-            TileEntityFilteredHopper tile = (TileEntityFilteredHopper) world.getTileEntity(pos);
+            TileFilteredHopper tile = (TileFilteredHopper) world.getTileEntity(pos);
             if (tile != null) {
                 ItemStackHandler inventory = tile.inventory;
                 List<ItemStack> outputs = getOutputs();

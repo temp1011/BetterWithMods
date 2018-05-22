@@ -7,6 +7,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import org.fest.assertions.Assertions;
 
+import java.util.Optional;
+
 
 public abstract class BaseBlockTest<T extends BlockRecipe> extends BaseTest {
 
@@ -67,10 +69,13 @@ public abstract class BaseBlockTest<T extends BlockRecipe> extends BaseTest {
         Assertions.assertThat(recipe.isInvalid()).isFalse();
         Assertions.assertThat(TEST_MANAGER.getRecipes()).isEmpty();
         TEST_MANAGER.addRecipe(recipe);
-        Assertions.assertThat(TEST_MANAGER.getRecipes()).hasSize(1);
-        Assertions.assertThat(TEST_MANAGER.canCraft(world, origin, world.getBlockState(pos))).isTrue();
-        Assertions.assertThat(TEST_MANAGER.craftItem(world, origin, world.getBlockState(pos))).isNotEmpty();
-        TEST_MANAGER.getRecipes().clear();
+        Optional<T> foundRecipe = TEST_MANAGER.findRecipe(world,origin, world.getBlockState(pos));
+        Assertions.assertThat(foundRecipe.isPresent()).isTrue();
+        if(foundRecipe.isPresent()) {
+            T actualRecipe = foundRecipe.get();
+            Assertions.assertThat(actualRecipe.craftRecipe(world, origin, world.rand, world.getBlockState(pos))).isTrue();
+            TEST_MANAGER.getRecipes().clear();
+        }
     }
 }
 

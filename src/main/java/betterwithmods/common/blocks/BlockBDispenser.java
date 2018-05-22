@@ -34,7 +34,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class BlockBDispenser extends BlockDispenser  {
+public class BlockBDispenser extends BlockDispenser {
     public static final RegistryDefaulted<Item, IBehaviorDispenseItem> BLOCK_DISPENSER_REGISTRY = new RegistryDefaulted<>(new BehaviorDefaultDispenseBlock());
     public static final RegistryDefaulted<Block, IBehaviorCollect> BLOCK_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorBreakBlock());
     public static final RegistryDefaulted<ResourceLocation, IBehaviorEntity> ENTITY_COLLECT_REGISTRY = new RegistryDefaulted<>(new BehaviorEntity());
@@ -44,7 +44,7 @@ public class BlockBDispenser extends BlockDispenser  {
         this.setCreativeTab(BWCreativeTabs.BWTAB);
         this.setHardness(3.5F);
         this.setHarvestLevel("pickaxe", 0);
-        this.setDefaultState(getDefaultState().withProperty(FACING,EnumFacing.NORTH).withProperty(TRIGGERED,false));
+        this.setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(TRIGGERED, false));
     }
 
     @Override
@@ -96,31 +96,32 @@ public class BlockBDispenser extends BlockDispenser  {
                 BlockPos check = pos.offset(impl.getBlockState().getValue(FACING));
                 Block block = world.getBlockState(check).getBlock();
 
-            if (world.getBlockState(check).getBlockHardness(world, check) < 0)
-                return;
-            IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
-            if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
-                NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
-                InvUtils.insert(tile.inventory, stacks, false);
-            }
+                if (world.getBlockState(check).getBlockHardness(world, check) < 0)
+                    return;
+                IBehaviorCollect behavior = BLOCK_COLLECT_REGISTRY.getObject(block);
+                if (!world.isAirBlock(check) || !block.isReplaceable(world, check)) {
+                    NonNullList<ItemStack> stacks = behavior.collect(new BlockSourceImpl(world, check));
+                    InvUtils.insert(tile.inventory, stacks, false);
+                }
 
-            Optional<Entity> entity = getEntity(world, check);
-            if (entity.isPresent()) {
-                Entity e = entity.get();
-                ResourceLocation name = EntityList.getKey(e);
-                IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(name);
-                NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, e, tile.getCurrentSlot());
-                InvUtils.insert(tile.inventory, stacks, false);
-            }
-        } else {
-            int index = tile.nextIndex;
-            ItemStack stack = tile.getNextStackFromInv();
-            if (index == -1 || stack.isEmpty())
-                world.playEvent(1001, pos, 0);
-            else {
-                IBehaviorDispenseItem behavior = this.getBehavior(stack);
-                if (behavior != null) {
-                    behavior.dispense(impl, stack);
+                Optional<Entity> entity = getEntity(world, check);
+                if (entity.isPresent()) {
+                    Entity e = entity.get();
+                    ResourceLocation name = EntityList.getKey(e);
+                    IBehaviorEntity behaviorEntity = ENTITY_COLLECT_REGISTRY.getObject(name);
+                    NonNullList<ItemStack> stacks = behaviorEntity.collect(world, check, e, tile.getCurrentSlot());
+                    InvUtils.insert(tile.inventory, stacks, false);
+                }
+            } else {
+                int index = tile.nextIndex;
+                ItemStack stack = tile.getNextStackFromInv();
+                if (index == -1 || stack.isEmpty())
+                    world.playEvent(1001, pos, 0);
+                else {
+                    IBehaviorDispenseItem behavior = this.getBehavior(stack);
+                    if (behavior != null) {
+                        behavior.dispense(impl, stack);
+                    }
                 }
             }
         }

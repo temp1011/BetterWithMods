@@ -36,26 +36,27 @@ public class BlastingOilEvent {
         if (Gameplay.disableBlastingOilEvents)
             return;
 
-        if(Gameplay.blacklistDamageSources.contains(e.getSource().damageType))
+        if (Gameplay.blacklistDamageSources.contains(e.getSource().damageType))
             return;
 
         DamageSource BLAST_OIL = new DamageSource("blastingoil");
         EntityLivingBase living = e.getEntityLiving();
         if (living.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             IItemHandler inventory = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if(inventory != null) {
+            if (inventory != null) {
                 int count = 0;
                 for (int i = 0; i < inventory.getSlots(); i++) {
                     ItemStack stack = inventory.getStackInSlot(i);
 
-                if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
-                    count += stack.getCount();
-                    inventory.extractItem(i, stack.getCount(), false);
+                    if (!stack.isEmpty() && stack.isItemEqual(ItemMaterial.getStack(ItemMaterial.EnumMaterial.BLASTING_OIL))) {
+                        count += stack.getCount();
+                        inventory.extractItem(i, stack.getCount(), false);
+                    }
                 }
-            }
-            if (count > 0) {
-                living.attackEntityFrom(BLAST_OIL, Float.MAX_VALUE);
-                living.getEntityWorld().createExplosion(null, living.posX, living.posY + living.height / 16, living.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
+                if (count > 0) {
+                    living.attackEntityFrom(BLAST_OIL, Float.MAX_VALUE);
+                    living.getEntityWorld().createExplosion(null, living.posX, living.posY + living.height / 16, living.posZ, (float) (Math.sqrt(count / 5) / 2.5 + 1), true);
+                }
             }
         }
     }
@@ -87,3 +88,4 @@ public class BlastingOilEvent {
         toRemove.forEach(highestPoint::remove);
     }
 }
+

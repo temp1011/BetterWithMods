@@ -33,7 +33,7 @@ public class TileKiln extends TileCamo implements ITickable {
                 world.sendBlockBreakProgress(0, cookPos, prevProgress);
                 cookSpeed = calculateSpeed();
             }
-            if (BWRegistry.KILN.craftRecipe(world, cookPos, world.rand, cookState)) {
+            if (recipe.craftRecipe(world, cookPos, world.rand, cookState)) {
                 world.sendBlockBreakProgress(0, cookPos, -1);
                 cookTicks = 0;
                 prevProgress = -1;

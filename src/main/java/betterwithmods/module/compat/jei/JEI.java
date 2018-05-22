@@ -8,6 +8,7 @@ import betterwithmods.client.container.anvil.ContainerSteelAnvil;
 import betterwithmods.client.gui.GuiSteelAnvil;
 import betterwithmods.client.gui.bulk.GuiCauldron;
 import betterwithmods.client.gui.bulk.GuiCrucible;
+import betterwithmods.client.gui.bulk.GuiFilteredHopper;
 import betterwithmods.client.gui.bulk.GuiMill;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMItems;
@@ -53,15 +54,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
-
-import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CAULDRON;
-import static betterwithmods.common.blocks.mechanical.BlockCookingPot.EnumType.CRUCIBLE;
-import static betterwithmods.common.blocks.mechanical.BlockMechMachines.EnumType.*;
 
 @mezz.jei.api.JEIPlugin
 public class JEI implements IModPlugin {
@@ -240,6 +233,5 @@ public class JEI implements IModPlugin {
     }
 
 
-    }
-
 }
+

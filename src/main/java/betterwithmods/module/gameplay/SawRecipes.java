@@ -1,9 +1,8 @@
 package betterwithmods.module.gameplay;
 
+import betterwithmods.BWMod;
 import betterwithmods.api.recipe.impl.RandomCountOutputs;
 import betterwithmods.api.recipe.impl.RandomOutput;
-import betterwithmods.api.util.IWood;
-import betterwithmods.BWMod;
 import betterwithmods.api.util.IBlockVariants;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWMRecipes;
@@ -15,12 +14,10 @@ import betterwithmods.common.registry.block.recipe.SawRecipe;
 import betterwithmods.common.registry.crafting.ChoppingRecipe;
 import betterwithmods.module.Feature;
 import betterwithmods.module.hardcore.crafting.HCLumber;
-import betterwithmods.util.InvUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

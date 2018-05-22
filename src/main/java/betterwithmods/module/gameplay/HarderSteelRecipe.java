@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.OreIngredient;
  * Created by primetoxinz on 5/10/17.
  */
 public class HarderSteelRecipe extends Feature {
+    public static double urnReturnChance;
 
     @Override
     public void setupConfig() {
@@ -47,6 +48,6 @@ public class HarderSteelRecipe extends Feature {
     }
 
     public IRecipeOutputs getOutputs() {
-        return new CombinedOutputs(new ListOutputs(ItemMaterial.getMaterial(ItemMaterial.EnumMaterial.INGOT_STEEL)), new ChanceOutputs(new ItemStack(BWMBlocks.URN, 1, 0), urnReturnChance));
+        return new CombinedOutputs(new ListOutputs(ItemMaterial.getStack(ItemMaterial.EnumMaterial.STEEL_INGOT)), new ChanceOutputs(new ItemStack(BWMBlocks.URN, 1, 0), urnReturnChance));
     }
 }
