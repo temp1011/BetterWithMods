@@ -32,11 +32,5 @@ public class ReflectionLib {
 
     public static final String[] ENCHANTMENT_APPLICIBLE_EQUIPMENT_TYPES = new String[]{"field_185263_a", "applicableEquipmentTypes"};
 
-    public static final String CTM_TTR = "team.chisel.ctm.client.texture.type.TextureTypeRegistry";
-    public static final String CTM_ITT = "team.chisel.ctm.api.texture.ITextureType";
-    public static final String CTM_TTS = "betterwithmods.module.hardcore.world.strata.TextureTypeStrata";
-    public static final Pair<String, String> CTM_REGISTER = Pair.of("register", "register");
-
-
     public static final Pair<String, String> SILK_TOUCH_DROP = Pair.of("getSilkTouchDrop", "func_180643_i");
 }
