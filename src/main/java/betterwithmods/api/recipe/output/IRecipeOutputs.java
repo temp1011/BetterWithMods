@@ -18,7 +18,6 @@ public interface IRecipeOutputs {
 
     boolean isInvalid();
 
-
     default List<List<IOutput>> getExpandedOutputs(int boxes) {
         return InvUtils.splitIntoBoxes(getDisplayOutputs(), boxes);
     }

@@ -1,8 +1,10 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.input.impl.BlockInputs;
+import betterwithmods.api.recipe.matching.BlockMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.api.recipe.output.impl.ListOutputs;
-import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -19,15 +21,15 @@ import java.util.Random;
  * @version 03/19/2018
  */
 public abstract class BlockRecipe {
-    private final BlockIngredient input;
+    private final IRecipeInputs<Boolean, BlockMatchInfo> recipeInputs;
     private final IRecipeOutputs recipeOutput;
 
     public BlockRecipe(BlockIngredient input, List<ItemStack> outputs) {
-        this(input, new ListOutputs(outputs));
+        this(new BlockInputs(input), new ListOutputs(outputs));
     }
 
-    public BlockRecipe(BlockIngredient input, IRecipeOutputs recipeOutput) {
-        this.input = input;
+    public BlockRecipe(IRecipeInputs<Boolean, BlockMatchInfo> recipeInputs, IRecipeOutputs recipeOutput) {
+        this.recipeInputs = recipeInputs;
         this.recipeOutput = recipeOutput;
     }
 
@@ -46,7 +48,11 @@ public abstract class BlockRecipe {
     }
 
     public BlockIngredient getInput() {
-        return input;
+        return (BlockIngredient) recipeInputs.getInput();
+    }
+
+    public IRecipeInputs<Boolean, BlockMatchInfo> getRecipeInputs() {
+        return recipeInputs;
     }
 
     public IRecipeOutputs getRecipeOutput() {
@@ -59,18 +65,20 @@ public abstract class BlockRecipe {
 
     @Override
     public String toString() {
-        return String.format("%s-> %s", input, getOutputs());
+        return String.format("%s-> %s", getInput(), getOutputs());
     }
 
     public boolean isInvalid() {
-        return (input.isSimple() && InvUtils.isIngredientValid(input) || recipeOutput.isInvalid());
+        return recipeInputs.isInvalid() || recipeOutput.isInvalid();
     }
 
     public boolean matches(World world, BlockPos pos, IBlockState state) {
-        return getInput().apply(world, pos, state);
+        return recipeInputs.matches(new BlockMatchInfo(world, pos, state));
     }
 
     public boolean isHidden() {
         return false;
     }
+
+
 }

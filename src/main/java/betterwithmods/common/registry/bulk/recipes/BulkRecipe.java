@@ -1,5 +1,8 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.input.impl.BulkListInputs;
+import betterwithmods.api.recipe.matching.BulkMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.api.recipe.output.impl.ListOutputs;
 import betterwithmods.util.InvUtils;
@@ -17,27 +20,27 @@ import java.util.List;
 
 public class BulkRecipe implements Comparable<BulkRecipe> {
 
-    protected NonNullList<Ingredient> inputs;
     protected IRecipeOutputs recipeOutput;
+    protected IRecipeInputs<Integer, BulkMatchInfo> recipeInputs;
     protected int priority;
 
-    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int priority) {
-        this.inputs = InvUtils.asNonnullList(inputs);
+    public BulkRecipe(IRecipeInputs<Integer, BulkMatchInfo> inputs, IRecipeOutputs outputs, int priority) {
+        this.recipeInputs = inputs;
         this.recipeOutput = outputs;
         this.priority = priority;
+    }
+
+    public BulkRecipe(IRecipeInputs<Integer, BulkMatchInfo> inputs, IRecipeOutputs outputs) {
+        this(inputs, outputs, 0);
     }
 
     public BulkRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs) {
         this(inputs, outputs, 0);
     }
 
-    public BulkRecipe(List<Ingredient> inputs, IRecipeOutputs outputs) {
-        this.inputs = InvUtils.asNonnullList(inputs);
-        this.recipeOutput = outputs;
-    }
 
     public BulkRecipe(List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int priority) {
-        this(inputs, new ListOutputs(outputs), priority);
+        this(new BulkListInputs(inputs), new ListOutputs(outputs), priority);
     }
 
     public NonNullList<ItemStack> onCraft(World world, TileEntity tile, ItemStackHandler inv) {
@@ -58,11 +61,13 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public List<Ingredient> getInputs() {
-        return inputs;
+        return recipeInputs.getInputs();
     }
 
+
+    //TODO abstract?
     protected boolean consumeIngredients(ItemStackHandler inventory, NonNullList<ItemStack> containItems) {
-        HashSet<Ingredient> toConsume = new HashSet<>(inputs);
+        HashSet<Ingredient> toConsume = new HashSet<>(recipeInputs.getInputs());
         for (Ingredient ingredient : toConsume) {
             if (!InvUtils.consumeItemsInInventory(inventory, ingredient, false, containItems))
                 return false;
@@ -71,12 +76,12 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public boolean isInvalid() {
-        return (getInputs().isEmpty() || getInputs().stream().anyMatch(InvUtils::isIngredientValid) || recipeOutput.isInvalid());
+        return recipeInputs.isInvalid() || recipeOutput.isInvalid();
     }
 
     @Override
     public String toString() {
-        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.inputs, this.recipeOutput);
+        return String.format("%s: %s -> %s", getClass().getSimpleName(), this.recipeInputs, this.recipeOutput);
     }
 
     /**
@@ -99,12 +104,7 @@ public class BulkRecipe implements Comparable<BulkRecipe> {
     }
 
     public int matches(ItemStackHandler inventory) {
-        int index = Integer.MAX_VALUE;
-        for (Ingredient ingredient : inputs) {
-            if ((index = Math.min(index, InvUtils.getFirstOccupiedStackOfItem(inventory, ingredient))) == -1)
-                return -1;
-        }
-        return index;
+        return recipeInputs.matches(new BulkMatchInfo(inventory));
     }
 
     public boolean isHidden() {

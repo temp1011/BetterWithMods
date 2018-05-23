@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.matching.BulkMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.api.tile.IHeatRecipe;
 import net.minecraft.item.ItemStack;
@@ -18,8 +20,8 @@ public class CookingPotRecipe extends BulkRecipe implements IHeatRecipe{
         this.heat = heat;
     }
 
-    public CookingPotRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int heat) {
-        super(inputs, outputs);
+    public CookingPotRecipe(IRecipeInputs<Integer, BulkMatchInfo> inputs, IRecipeOutputs outputs, int heat) {
+        super(inputs, outputs, 0);
         this.heat = heat;
     }
 

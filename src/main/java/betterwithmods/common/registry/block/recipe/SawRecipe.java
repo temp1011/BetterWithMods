@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.matching.BlockMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.block.state.IBlockState;
@@ -21,8 +23,8 @@ public class SawRecipe extends BlockRecipe {
         super(input, outputs);
     }
 
-    public SawRecipe(BlockIngredient input, IRecipeOutputs recipeOutput) {
-        super(input, recipeOutput);
+    public SawRecipe(IRecipeInputs<Boolean, BlockMatchInfo> recipeInputs, IRecipeOutputs recipeOutput) {
+        super(recipeInputs, recipeOutput);
     }
 
     @Override

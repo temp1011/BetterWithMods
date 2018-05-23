@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.bulk.recipes;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.matching.BulkMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -18,10 +20,9 @@ public class MillRecipe extends BulkRecipe {
 
     private int ticks;
 
-    public MillRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int priority, SoundEvent sound, int ticks) {
-        super(inputs, outputs, priority);
+    public MillRecipe(IRecipeInputs<Integer, BulkMatchInfo> inputs, IRecipeOutputs outputs, SoundEvent sound) {
+        super(inputs, outputs, 0);
         this.sound = sound;
-        this.ticks = ticks;
     }
 
     public MillRecipe(@Nonnull List<Ingredient> inputs, @Nonnull List<ItemStack> outputs, int ticks) {

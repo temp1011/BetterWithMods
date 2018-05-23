@@ -1,5 +1,6 @@
 package betterwithmods.common.registry.bulk.manager;
 
+import betterwithmods.api.recipe.input.impl.BulkListInputs;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.api.tile.IHeated;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityCookingPot;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class CookingPotManager extends CraftingManagerBulk<CookingPotRecipe> {
 
     public CookingPotRecipe addRecipe(List<Ingredient> inputs, IRecipeOutputs outputs, int heat) {
-        return addRecipe(new CookingPotRecipe(inputs, outputs, heat));
+        return addRecipe(new CookingPotRecipe(new BulkListInputs(inputs), outputs, heat));
     }
 
     public CookingPotRecipe addRecipe(List<Ingredient> inputs, List<ItemStack> outputs, int heat) {

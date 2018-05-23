@@ -1,5 +1,7 @@
 package betterwithmods.common.registry.block.recipe;
 
+import betterwithmods.api.recipe.input.IRecipeInputs;
+import betterwithmods.api.recipe.matching.BlockMatchInfo;
 import betterwithmods.api.recipe.output.IRecipeOutputs;
 import betterwithmods.common.blocks.mechanical.tile.TileEntityTurntable;
 import betterwithmods.common.registry.block.managers.TurntableManagerBlock;
@@ -40,8 +42,8 @@ public class TurntableRecipe extends BlockRecipe {
         this.representative = representative;
     }
 
-    public TurntableRecipe(BlockIngredient input, IBlockState productState, ItemStack representative, IRecipeOutputs outputs, int rotations) {
-        super(input, outputs);
+    public TurntableRecipe(IRecipeInputs<Boolean, BlockMatchInfo> inputs, IBlockState productState, ItemStack representative, IRecipeOutputs outputs, int rotations) {
+        super(inputs, outputs);
         this.rotations = rotations;
         this.productState = productState;
         this.representative = representative;
