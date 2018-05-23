@@ -1,9 +1,9 @@
 package betterwithmods.module.gameplay;
 
 import betterwithmods.BWMod;
-import betterwithmods.api.recipe.impl.ChanceOutput;
-import betterwithmods.api.recipe.impl.ListOutputs;
-import betterwithmods.api.recipe.impl.WeightedOutputs;
+import betterwithmods.api.recipe.output.impl.ChanceOutput;
+import betterwithmods.api.recipe.output.impl.ListOutputs;
+import betterwithmods.api.recipe.output.impl.WeightedOutputs;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;
 import betterwithmods.common.BWRegistry;

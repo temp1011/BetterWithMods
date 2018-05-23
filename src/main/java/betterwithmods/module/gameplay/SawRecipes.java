@@ -1,7 +1,7 @@
 package betterwithmods.module.gameplay;
 
-import betterwithmods.api.recipe.impl.RandomCountOutputs;
-import betterwithmods.api.recipe.impl.RandomOutput;
+import betterwithmods.api.recipe.output.impl.RandomCountOutputs;
+import betterwithmods.api.recipe.output.impl.RandomOutput;
 import betterwithmods.api.util.IWood;
 import betterwithmods.common.BWMBlocks;
 import betterwithmods.common.BWOreDictionary;

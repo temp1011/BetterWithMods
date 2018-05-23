@@ -1,7 +1,7 @@
 package betterwithmods.common.registry.bulk.recipes;
 
-import betterwithmods.api.recipe.IRecipeOutputs;
-import betterwithmods.api.recipe.impl.ListOutputs;
+import betterwithmods.api.recipe.output.IRecipeOutputs;
+import betterwithmods.api.recipe.output.impl.ListOutputs;
 import betterwithmods.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
