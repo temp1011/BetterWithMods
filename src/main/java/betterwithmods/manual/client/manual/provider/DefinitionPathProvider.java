@@ -34,7 +34,7 @@ public class DefinitionPathProvider implements PathProvider {
     };
 
     public static boolean isBlacklisted(ItemStack stack) {
-        return blacklist.stream().anyMatch(s -> stack.isItemEqual(s));
+        return blacklist.stream().anyMatch(stack::isItemEqual);
     }
 
     @Nullable

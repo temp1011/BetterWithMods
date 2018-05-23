@@ -79,9 +79,9 @@ public class ColorUtils {
     public static float[] average(float[]... arrays) {
         int divisor = arrays.length;
         float[] output = new float[arrays[0].length];
-        for (int i = 0; i < divisor; i++) {
-            for (int j = 0; j < arrays[i].length; j++) {
-                output[j] += arrays[i][j];
+        for (float[] array : arrays) {
+            for (int j = 0; j < array.length; j++) {
+                output[j] += array[j];
             }
         }
         for (int i = 0; i < output.length; i++) {

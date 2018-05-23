@@ -125,7 +125,7 @@ public class Church extends AbandonedVillagePiece {
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int size) {
-        return new StructureVillagePieces.PieceWeight(Church.class, 20, MathHelper.getInt(random, 0 + size, 1 + size));
+        return new StructureVillagePieces.PieceWeight(Church.class, 20, MathHelper.getInt(random, size, 1 + size));
     }
 
     @Override

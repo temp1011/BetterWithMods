@@ -172,10 +172,7 @@ public class InvUtils {
             copy.setCount(count);
         }
         ItemStack inserted = insert(inv, copy, true);
-        if (inserted.equals(copy)) {
-            return false;
-        }
-        return true;
+        return !inserted.equals(copy);
     }
 
 

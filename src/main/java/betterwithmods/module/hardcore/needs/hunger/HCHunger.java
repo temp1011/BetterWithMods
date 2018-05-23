@@ -249,7 +249,7 @@ public class HCHunger extends CompatFeature {
         event.maxHunger = 60;
     }
 
-    //Chaneg speed based on Hunger
+    //Change speed based on Hunger
     @SubscribeEvent
     public void givePenalties(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayer) {
@@ -405,7 +405,7 @@ public class HCHunger extends CompatFeature {
             World world = Minecraft.getMinecraft().world;
             EntityPlayer player = world.getPlayerEntityByUUID(UUID.fromString(uuid));
             FatPenalty fat = PlayerHelper.getFatPenalty(player);
-            if (player != null && player instanceof AbstractClientPlayer)
+            if (player instanceof AbstractClientPlayer)
                 putFat((AbstractClientPlayer) player, fat);
         }
     }

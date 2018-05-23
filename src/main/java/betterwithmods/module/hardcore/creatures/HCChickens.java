@@ -234,9 +234,7 @@ public class HCChickens extends Feature {
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-            if (capability == EGG_LAYER_CAP)
-                return true;
-            return false;
+            return capability == EGG_LAYER_CAP;
         }
 
         @Nullable

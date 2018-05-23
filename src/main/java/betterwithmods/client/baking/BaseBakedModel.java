@@ -31,7 +31,7 @@ import javax.vecmath.Vector3f;
 import java.util.EnumMap;
 
 public abstract class BaseBakedModel implements IBakedModel {
-    private final EnumMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap = new EnumMap(ItemCameraTransforms.TransformType.class);
+    private final EnumMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap = new EnumMap<>(ItemCameraTransforms.TransformType.class);
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {

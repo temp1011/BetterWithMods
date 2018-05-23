@@ -7,12 +7,10 @@ import betterwithmods.util.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.event.RegistryEvent;
+
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
  * Created by primetoxinz on 5/10/17.

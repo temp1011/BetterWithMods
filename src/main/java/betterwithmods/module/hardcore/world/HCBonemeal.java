@@ -31,7 +31,7 @@ public class HCBonemeal extends Feature {
     public static Set<ItemStack> FERTILIZERS = Sets.newHashSet(new ItemStack(BWMItems.FERTILIZER), new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()));
     private static boolean removeBonemealRecipe;
 
-    public static void registerFertilzier(ItemStack stack) {
+    public static void registerFertilizer(ItemStack stack) {
         FERTILIZERS.add(stack);
     }
 
@@ -74,7 +74,7 @@ public class HCBonemeal extends Feature {
         Block block = world.getBlockState(pos).getBlock();
         EntityPlayer player = e.getEntityPlayer();
 
-        if (block != null && block instanceof IPlantable) {
+        if (block instanceof IPlantable) {
             Block below = world.getBlockState(pos.down()).getBlock();
             if (ItemFertilizer.processBlock(below, world, pos.down())) {
                 if (!player.capabilities.isCreativeMode)

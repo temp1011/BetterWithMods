@@ -37,7 +37,7 @@ public class ModelKey<T extends IRenderComparable<T>> {
 
     @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof ModelKey) ){
+        if (!(other instanceof ModelKey)){
             return false;
         }
 

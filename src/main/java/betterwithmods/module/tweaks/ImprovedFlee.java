@@ -89,9 +89,7 @@ public class ImprovedFlee extends Feature {
             return true;
         if (animal instanceof AbstractHorse && ((AbstractHorse) animal).isTame())
             return true;
-        if (!EntityUtils.hasAI(animal, EntityAIFlee.class))
-            return true;
-        return false;
+        return !EntityUtils.hasAI(animal, EntityAIFlee.class);
     }
 
     @Override

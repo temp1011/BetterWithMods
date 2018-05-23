@@ -94,22 +94,22 @@ public class Quaternion {
     
     public void write(ByteArrayDataOutput out) {
         double[] d = toStaticArray();
-        for (int i = 0; i < d.length; i++) {
-            out.writeDouble(d[i]);
+        for (double aD : d) {
+            out.writeDouble(aD);
         }
     }
     
     public void write(ByteBuf out) {
         double[] d = toStaticArray();
-        for (int i = 0; i < d.length; i++) {
-            out.writeDouble(d[i]);
+        for (double aD : d) {
+            out.writeDouble(aD);
         }
     }
     
     public void write(DataOutputStream out) throws IOException {
         double[] d = toStaticArray();
-        for (int i = 0; i < d.length; i++) {
-            out.writeDouble(d[i]);
+        for (double aD : d) {
+            out.writeDouble(aD);
         }
     }
     
@@ -154,7 +154,7 @@ public class Quaternion {
         @Override
         protected double[] initialValue() {
             return new double[4];
-        };
+        }
     };
     
     public double[] toStaticArray() {

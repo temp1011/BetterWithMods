@@ -13,7 +13,7 @@ public interface BaseOrientation extends IStringSerializable {
         @SideOnly(Side.CLIENT)
         @Override
         public TRSRTransformation toTransformation() {
-            return new TRSRTransformation(ModelRotation.X0_Y0);
+            return TRSRTransformation.from(ModelRotation.X0_Y0);
         }
 
         @Override

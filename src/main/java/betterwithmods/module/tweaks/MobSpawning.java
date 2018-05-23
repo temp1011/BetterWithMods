@@ -56,13 +56,13 @@ public class MobSpawning extends Feature {
             SLIME.addIngredient(new BlockMaterialIngredient(Material.GRASS, Material.ROCK, Material.GROUND));
         }
 
-        Iterator<Biome> iterator = Biome.REGISTRY.iterator();
-        while (iterator.hasNext()) {
-            Biome biome = iterator.next();
-            if (jungleSpiders && BiomeDictionary.hasType(biome, BiomeDictionary.Type.JUNGLE))
+        for (Biome biome : Biome.REGISTRY) {
+            if (jungleSpiders && BiomeDictionary.hasType(biome, BiomeDictionary.Type.JUNGLE)) {
                 EntityRegistry.addSpawn(EntityJungleSpider.class, 100, 1, 3, EnumCreatureType.MONSTER, biome);
-            if (witches && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))
+            }
+            if (witches && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP)) {
                 EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biome);
+            }
         }
     }
 

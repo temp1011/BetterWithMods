@@ -38,6 +38,7 @@ public enum ColumnOrientation implements BaseOrientation {
     public static BaseOrientation getFromVec(Vec3d hit, EnumFacing facing) {
         if (true)
             return DOWN;
+
         float hitXFromCenter = (float) (hit.x - 0.5F);
         float hitYFromCenter = (float) (hit.y - 0.5F);
         float hitZFromCenter = (float) (hit.z - 0.5F);
@@ -89,7 +90,7 @@ public enum ColumnOrientation implements BaseOrientation {
     @SideOnly(Side.CLIENT)
     @Override
     public TRSRTransformation toTransformation() {
-        return new TRSRTransformation(ModelRotation.getModelRotation(x, y));
+        return TRSRTransformation.from(ModelRotation.getModelRotation(x, y));
     }
 
     @Override

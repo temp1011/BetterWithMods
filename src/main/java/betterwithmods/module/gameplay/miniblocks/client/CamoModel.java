@@ -37,7 +37,7 @@ public class CamoModel extends ModelFactory<CamoInfo> {
             textures.put(facing.getName2(), RenderUtils.getTextureFromFace(object.getState(), facing).getIconName());
         }
 
-        TRSRTransformation state = new TRSRTransformation(ModelRotation.X0_Y0);
+        TRSRTransformation state = TRSRTransformation.from(ModelRotation.X0_Y0);
         IModel retexture = template.retexture(textures.build()).uvlock(true);
         return new WrappedBakedModel(retexture.bake(state, DefaultVertexFormats.BLOCK, RenderUtils.textureGetter), RenderUtils.getParticleTexture(object.getState())).addDefaultBlockTransforms();
     }

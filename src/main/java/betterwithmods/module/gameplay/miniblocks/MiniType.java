@@ -1,11 +1,14 @@
 package betterwithmods.module.gameplay.miniblocks;
 
+import betterwithmods.BWMod;
 import betterwithmods.common.blocks.camo.BlockCamo;
 import betterwithmods.common.blocks.camo.TileCamo;
 import betterwithmods.module.gameplay.miniblocks.blocks.*;
 import betterwithmods.module.gameplay.miniblocks.tiles.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -58,8 +61,8 @@ public enum MiniType {
     public static void registerTiles() {
         for (MiniType type : VALUES) {
             if (type.tile != null) {
-                if (TileEntity.getKey(type.tile) == null) {
-                    GameRegistry.registerTileEntity(type.tile, "bwm." + type.name);
+                if (TileEntity.getKey(type.tile) == null) { //TODO - datafixer for conversion
+                    GameRegistry.registerTileEntity(type.tile, new ResourceLocation(BWMod.MODID, type.name));
                 }
             }
         }

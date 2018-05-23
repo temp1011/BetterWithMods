@@ -57,7 +57,7 @@ public enum PedestalOrientation implements BaseOrientation {
     @SideOnly(Side.CLIENT)
     @Override
     public TRSRTransformation toTransformation() {
-        return new TRSRTransformation(ModelRotation.getModelRotation(x, y));
+        return TRSRTransformation.from(ModelRotation.getModelRotation(x, y));
     }
 
     @Override

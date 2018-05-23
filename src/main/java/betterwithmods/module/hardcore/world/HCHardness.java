@@ -1,8 +1,6 @@
 package betterwithmods.module.hardcore.world;
 
-import betterwithmods.BWMod;
 import betterwithmods.module.Feature;
-import betterwithmods.module.tweaks.AxeLeaves;
 import betterwithmods.util.item.ToolsManager;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;

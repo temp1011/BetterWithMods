@@ -117,9 +117,7 @@ public class ContainerInfernalEnchanter extends Container {
                     return false;
             }
 
-            if (item.getItem().canApplyAtEnchantingTable(item, enchantment)) {
-                return true;
-            }
+            return item.getItem().canApplyAtEnchantingTable(item, enchantment);
         }
         return false;
     }

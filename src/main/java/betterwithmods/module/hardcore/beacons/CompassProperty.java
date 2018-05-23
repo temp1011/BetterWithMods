@@ -38,7 +38,7 @@ public class CompassProperty implements IItemPropertyGetter {
                 d1 = MathHelper.positiveModulo(d1 / 360.0D, 1.0D);
 
                 CapabilityBeacon beacons = worldIn.getCapability(CapabilityBeacon.BEACON_CAPABILITY, EnumFacing.UP);
-                double angle = 0;
+                double angle;
                 if (beacons != null) {
                     angle = this.getAngleToPos(beacons.getClosest(worldIn, entity), entity);
                 } else {

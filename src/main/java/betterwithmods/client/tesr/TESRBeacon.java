@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by primetoxinz on 7/17/17.
+ * adapted from {@link net.minecraft.client.renderer.tileentity.TileEntityBeaconRenderer}
  */
 public class TESRBeacon extends TileEntitySpecialRenderer<TileBeacon> {
 
@@ -31,8 +32,7 @@ public class TESRBeacon extends TileEntitySpecialRenderer<TileBeacon> {
             List<TileBeacon.BeamSegment> segments = te.getSegments();
             GlStateManager.disableFog();
             int i = 0;
-            for (int j = 0; j < segments.size(); ++j) {
-                TileBeacon.BeamSegment segment = segments.get(j);
+            for (TileBeacon.BeamSegment segment : segments) {
                 renderBeamSegment(x, y, z, partialTicks, te.getBeamScale(), te.getWorld().getTotalWorldTime(), i, segment.getHeight(), segment.getColors());
                 i += segment.getHeight();
             }

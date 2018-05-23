@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class EntityTentacle extends Entity implements IEntityAdditionalSpawnData {
-    private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.<Integer>createKey(net.minecraft.entity.projectile.EntityFishHook.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.createKey(net.minecraft.entity.projectile.EntityFishHook.class, DataSerializers.VARINT);
     private boolean inGround;
     private int ticksInGround;
     private EntityLivingBase angler;

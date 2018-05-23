@@ -113,7 +113,7 @@ public abstract class Module {
 
             if (feature.enabled && !enabledFeatures.contains(feature))
                 enabledFeatures.add(feature);
-            else if (!feature.enabled && enabledFeatures.contains(feature))
+            else if (!feature.enabled)
                 enabledFeatures.remove(feature);
 
             if (!feature.enabled)

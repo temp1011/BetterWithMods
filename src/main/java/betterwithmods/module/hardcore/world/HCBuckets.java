@@ -350,7 +350,7 @@ public class HCBuckets extends Feature {
         if (world.isAirBlock(pos)) {
             world.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
         } else {
-            placeLavaBucket(world, pos.offset(EnumFacing.VALUES[world.rand.nextInt(6)]), depth++);
+            placeLavaBucket(world, pos.offset(EnumFacing.VALUES[world.rand.nextInt(6)]), depth);
         }
     }
 

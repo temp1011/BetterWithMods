@@ -32,7 +32,7 @@ public class PropertyObject<T> implements IUnlistedProperty<T> {
     }
 
     public PropertyObject(String name, Class<T> clazz) {
-        this(name, clazz, Predicates.alwaysTrue(), input -> Objects.toString(input));
+        this(name, clazz, Predicates.alwaysTrue(), Objects::toString);
     }
 
     @Override

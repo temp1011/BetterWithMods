@@ -108,9 +108,7 @@ public class WorldPollutionCapability {
 
         @Override
         public void removePollution(ChunkPos pos) {
-            if (pollution.containsKey(pos))
                 pollution.remove(pos);
-            if (leaves.containsKey(pos))
                 leaves.remove(pos);
         }
 

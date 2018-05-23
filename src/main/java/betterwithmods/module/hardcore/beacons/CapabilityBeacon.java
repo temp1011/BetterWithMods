@@ -40,9 +40,7 @@ public class CapabilityBeacon implements ICapabilitySerializable<NBTTagCompound>
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        if (capability == BEACON_CAPABILITY)
-            return true;
-        return false;
+        return capability == BEACON_CAPABILITY;
     }
 
     @Nullable
@@ -69,8 +67,8 @@ public class CapabilityBeacon implements ICapabilitySerializable<NBTTagCompound>
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         NBTTagList list = nbt.getTagList("list", 10);
-        for (Iterator<NBTBase> it = list.iterator(); it.hasNext(); ) {
-            NBTTagCompound tag = (NBTTagCompound) it.next();
+        for (NBTBase aList : list) {
+            NBTTagCompound tag = (NBTTagCompound) aList;
             Pair<Long, Integer> b = readBeaconEntry(tag);
             beacons.put(b.getKey(), b.getValue());
         }

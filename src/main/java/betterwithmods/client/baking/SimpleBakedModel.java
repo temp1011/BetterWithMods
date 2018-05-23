@@ -70,12 +70,12 @@ public class SimpleBakedModel implements IBakedModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return parent != null ? parent.isAmbientOcclusion() : true;
+        return parent == null || parent.isAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return parent != null ? parent.isGui3d() : true;
+        return parent == null || parent.isGui3d();
     }
 
     @Override

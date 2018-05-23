@@ -147,9 +147,7 @@ public final class ManualAPIImpl implements ManualAPI {
 
     @Override
     public void addProvider(final ContentProvider provider) {
-        if (!contentProviders.contains(provider)) {
             contentProviders.add(provider);
-        }
     }
 
     @Override

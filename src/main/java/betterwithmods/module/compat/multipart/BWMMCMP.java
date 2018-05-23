@@ -43,7 +43,7 @@ public class BWMMCMP implements IMCMPAddon {
     }
 
     private boolean placeSiding(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, IBlockState newState) {
-        if (!stack.isEmpty() && stack.getItem() instanceof ItemCamo && player.canPlayerEdit(pos, facing, stack) && world.mayPlace(newState.getBlock(), pos, false, facing, (Entity) null)) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemCamo && player.canPlayerEdit(pos, facing, stack) && world.mayPlace(newState.getBlock(), pos, false, facing, null)) {
 
             if (ItemCamo.placeBlockAt((ItemCamo) stack.getItem(), stack, player, world, pos, facing, hitX, hitY, hitZ, newState)) {
                 newState = world.getBlockState(pos);

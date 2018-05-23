@@ -277,9 +277,10 @@ public final class SpaceUtils {
         double x, y, z;
         x = y = z = 0;
         boolean first = true;
-        for (int i = 0; i < vs.length; i++) {
-            Vec3d v = vs[i];
-            if (v == null) continue;
+        for (Vec3d v : vs) {
+            if (v == null) {
+                continue;
+            }
             if (first) {
                 first = false;
                 x = v.x;
@@ -287,9 +288,15 @@ public final class SpaceUtils {
                 z = v.z;
                 continue;
             }
-            if (v.x < x) x = v.x;
-            if (v.y < y) y = v.y;
-            if (v.z < z) z = v.z;
+            if (v.x < x) {
+                x = v.x;
+            }
+            if (v.y < y) {
+                y = v.y;
+            }
+            if (v.z < z) {
+                z = v.z;
+            }
         }
         return new Vec3d(x, y, z);
     }
@@ -298,9 +305,10 @@ public final class SpaceUtils {
         double x, y, z;
         x = y = z = 0;
         boolean first = true;
-        for (int i = 0; i < vs.length; i++) {
-            Vec3d v = vs[i];
-            if (v == null) continue;
+        for (Vec3d v : vs) {
+            if (v == null) {
+                continue;
+            }
             if (first) {
                 first = false;
                 x = v.x;
@@ -308,9 +316,15 @@ public final class SpaceUtils {
                 z = v.z;
                 continue;
             }
-            if (v.x > x) x = v.x;
-            if (v.y > y) y = v.y;
-            if (v.z > z) z = v.z;
+            if (v.x > x) {
+                x = v.x;
+            }
+            if (v.y > y) {
+                y = v.y;
+            }
+            if (v.z > z) {
+                z = v.z;
+            }
         }
         return new Vec3d(x, y, z);
     }
