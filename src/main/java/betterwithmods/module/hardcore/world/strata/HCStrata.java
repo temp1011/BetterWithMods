@@ -103,21 +103,6 @@ public class HCStrata extends Feature {
     }
 
     @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        if (Loader.isModLoaded("ctm")) {
-            try {
-                Class clazz = Class.forName(CTM_TTR);
-                Class clazz1 = Class.forName(CTM_ITT);
-                Class clazz2 = Class.forName(CTM_TTS);
-                Method register = ReflectionHelper.findMethod(clazz, CTM_REGISTER.getKey(), CTM_REGISTER.getValue(), String.class, clazz1);
-                register.invoke(null, "bwm_strata", clazz2.newInstance());
-            } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     public void postInit(FMLPostInitializationEvent event) {
         ENABLED = ModuleLoader.isFeatureEnabled(HCStrata.class);
         for (BWOreDictionary.Ore ore : BWOreDictionary.oreNames) {
